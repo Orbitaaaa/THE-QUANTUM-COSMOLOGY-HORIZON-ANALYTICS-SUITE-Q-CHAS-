@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -32,12 +33,15 @@ def _cmd_fetch(args: argparse.Namespace) -> int:
 
 
 def _cmd_build(args: argparse.Namespace) -> int:
+    for var in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+        os.environ.setdefault(var, "1")
     from .export import build_all
 
     manifest = build_all(out_dir=Path(args.out), raw_dir=Path(args.raw_dir), fast=args.fast,
-                         spherex_frames=args.spherex_frames, null_sims=args.null_sims)
-    print(json.dumps({"bundles": manifest["bundles"], "warnings": manifest["warnings"]}, indent=2))
-    return 0
+                         spherex_frames=args.spherex_frames, null_sims=args.null_sims,
+                         only=args.only or None)
+    print(json.dumps({k: manifest[k] for k in ("bundles", "warnings", "errors", "timings_s")}, indent=2))
+    return 1 if manifest["errors"] else 0
 
 
 def _cmd_info(args: argparse.Namespace) -> int:
@@ -65,6 +69,8 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--fast", action="store_true", help="smaller grids and fewer simulations (CI smoke build)")
     b.add_argument("--spherex-frames", type=int, default=240, help="SPHEREx frames to locate (0 to skip)")
     b.add_argument("--null-sims", type=int, default=100, help="isotropic simulations for likelihood calibration")
+    b.add_argument("--only", nargs="*", help="rebuild only these bundles (topology lattice sky cmb resonance "
+                   "spherex horizon bounce gw validation)")
     b.set_defaults(func=_cmd_build)
 
     i = sub.add_parser("info", help="list the dataset registry and what is on disk")
