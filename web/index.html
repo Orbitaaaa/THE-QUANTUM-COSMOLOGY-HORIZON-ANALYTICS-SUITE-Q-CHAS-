@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Q-CHAS: cosmic-topology and horizon-information analytics on real Planck, WMAP, SPHEREx and LIGO data (NASA Space Apps)."
+    />
+    <title>Q-CHAS · Mission Console</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      // apply the stored theme before first paint (dark by default)
+      try {
+        var t = localStorage.getItem('qchas.theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <style>
+      html { background: #060a12; }
+      html[data-theme='light'] { background: #eef1f6; }
+    </style>
+  </head>
+  <body>
+    <noscript>Q-CHAS needs JavaScript to load its data bundles and render the analyses.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

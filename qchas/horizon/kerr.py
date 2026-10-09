@@ -1,13 +1,17 @@
-"""Kerr horizons: thermodynamics, remnants of binary mergers, ringdown and echo delays.
+"""Kerr horizons: thermodynamics, remnants of binary mergers, ringdown and echo delays, [QG] Secs. 17-19.
 
 Geometric units (G = c = 1) internally; helpers convert solar masses to seconds and to
-Planck units. Used to put real LIGO-Virgo remnants into the horizon-capacity tools.
+Planck units. Used to put real LIGO-Virgo remnants into the horizon-capacity tools. The
+remnant, QNM and echo-delay formulas reproduce the nine rows of the [QG] Sec. 19.1 table to
+about 1 %; the Teukolsky spin-down table of [QG] Sec. 17 is quoted with consistency checks.
 """
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+
+import numpy as np
 
 from ..constants import C_LIGHT, G_NEWTON, L_PLANCK, M_PLANCK, M_SUN, YEAR
 
@@ -136,3 +140,73 @@ def echo_delay(m_sun: float, chi: float) -> float:
 def echo_reflectivity_bound(entropy_nats: float) -> float:
     """log10 of the echo power bound |R|^2 <= e^{-S}, [QG] Sec. 18 prediction 2."""
     return -entropy_nats / math.log(10)
+
+
+# --- Hawking spin-down with exact Teukolsky greybody factors, quoted from [QG] Sec. 17 ------
+
+#: [QG] Sec. 17 table: field, a_*, f = -M^2 dM/dt, g = -(M/a_*) dJ/dt, d ln a_*/d ln M,
+#: GSL ratio dS_rad/(-dS_BH) (None where the horizon area grows), sign-law violations
+SPIN_DOWN_TABLE = [
+    ("scalar", 0.001, 7.38e-5, None, None, 1.78, 0), ("scalar", 0.200, 7.34e-5, 9.45e-5, -0.713, 1.84, 0),
+    ("scalar", 0.400, 7.11e-5, 1.13e-4, -0.414, 1.85, 0), ("scalar", 0.555, 6.97e-5, 1.39e-4, -0.001, 1.89, 0),
+    ("scalar", 0.600, 6.97e-5, 1.50e-4, 0.151, 1.91, 0), ("scalar", 0.800, 7.91e-5, 2.29e-4, 0.899, 2.25, 0),
+    ("scalar", 0.900, 1.04e-4, 3.19e-4, 1.075, 3.98, 0), ("scalar", 0.990, 2.24e-4, 6.06e-4, 0.699, None, 0),
+    ("photon", 0.001, 3.36e-5, None, None, 1.50, 0), ("photon", 0.200, 4.27e-5, 5.21e-4, 10.204, 1.56, 0),
+    ("photon", 0.400, 7.57e-5, 6.60e-4, 6.718, 1.73, 0), ("photon", 0.600, 1.59e-4, 9.67e-4, 4.067, 2.09, 0),
+    ("photon", 0.800, 4.01e-4, 1.71e-3, 2.249, 3.50, 0), ("photon", 0.900, 7.52e-4, 2.63e-3, 1.500, 27.25, 0),
+    ("photon", 0.990, 2.13e-3, 5.78e-3, 0.712, None, 0),
+    ("graviton", 0.001, 3.84e-6, None, None, 1.35, 0), ("graviton", 0.300, 1.49e-5, 2.23e-4, 12.938, 1.49, 0),
+    ("graviton", 0.500, 6.82e-5, 6.24e-4, 7.142, 1.77, 0), ("graviton", 0.700, 3.91e-4, 2.32e-3, 3.939, 2.79, 0),
+    ("graviton", 0.900, 4.10e-3, 1.54e-2, 1.760, None, 0), ("graviton", 0.990, 3.56e-2, 9.50e-2, 0.672, None, 0),
+]
+SPIN_DOWN_FACTS = {
+    "fixed_point_scalar": 0.555,
+    "page1976_f0": {"scalar": [7.38e-5, 7.44e-5], "graviton": [3.84e-6, 3.8e-6]},
+    "superradiant_gain_a0999": {"scalar_l1m1": 0.0035, "photon_l1m1": 0.0439, "graviton_l2m2": 1.02},
+    "born_at_0.99": {"a_0.5_mass_fraction": 0.77, "a_0.1_mass_fraction": 0.66, "fields": "photons + gravitons"},
+    "source": "[QG] Sec. 17, Theorem K'",
+}
+
+
+def spin_down_rate(field: str, a_star: float) -> tuple[float, float]:
+    """(f, g) of the [QG] Sec. 17 table, log-interpolated in a_* within the tabulated range."""
+    rows = [r for r in SPIN_DOWN_TABLE if r[0] == field and r[3] is not None]
+    a = [r[1] for r in rows]
+    if not a[0] <= a_star <= a[-1]:
+        raise ValueError(f"a_* = {a_star} outside the tabulated range {a[0]}-{a[-1]} for {field}")
+    f = math.exp(float(np.interp(a_star, a, [math.log(r[2]) for r in rows])))
+    g = math.exp(float(np.interp(a_star, a, [math.log(r[3]) for r in rows])))
+    return f, g
+
+
+def spin_down_mass_fraction(a_start: float = 0.99, a_end: float = 0.5,
+                            fields=("photon", "graviton"), n: int = 2000) -> float:
+    """M(a_end)/M(a_start) from d ln a_*/d ln M = g/f - 2 summed over fields (table-interpolated)."""
+    grid = np.linspace(a_start, a_end, n)
+    rate = []
+    for a in grid:
+        f = g = 0.0
+        for fld in fields:
+            fi, gi = spin_down_rate(fld, float(a))
+            f, g = f + fi, g + gi
+        rate.append(1.0 / (a * (g / f - 2.0)))  # d ln M / d a_*
+    rate = np.asarray(rate)
+    return float(math.exp(np.sum(0.5 * (rate[1:] + rate[:-1]) * np.diff(grid))))
+
+
+def to_json() -> dict:
+    """The "kerr_spin_down" part of horizon.json: quoted table plus consistency checks."""
+    rows = []
+    for fld, a, f, g, dlna, gsl, viol in SPIN_DOWN_TABLE:
+        rows.append({"field": fld, "a_star": a, "f": f, "g": g, "dlna_dlnM": dlna, "gsl_ratio": gsl,
+                     "area_grows": gsl is None, "sign_violations": viol,
+                     "dlna_dlnM_from_f_g": None if g is None else g / f - 2.0})
+    return {
+        "fixed_point_scalar": SPIN_DOWN_FACTS["fixed_point_scalar"],
+        "rows": rows,
+        "facts": SPIN_DOWN_FACTS,
+        "spin_down_check": {"a_start": 0.99, "a_end": 0.5, "mass_fraction": spin_down_mass_fraction(0.99, 0.5),
+                            "paper": 0.77, "computed": True,
+                            "note": "integrates the tabulated photon + graviton rates, interpolated in a_*"},
+        "source": "[QG] Sec. 17",
+    }
