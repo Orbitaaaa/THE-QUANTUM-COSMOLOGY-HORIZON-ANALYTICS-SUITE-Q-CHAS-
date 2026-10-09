@@ -1,0 +1,76 @@
+/* QES & Atmosphere: radial diagram and clickable paper table rows. */
+
+.qes-diagram-host {
+  margin-top: 12px;
+  padding: 10px 12px 4px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+.qes-diagram .qes-interior {
+  fill: color-mix(in srgb, var(--text-3) 10%, transparent);
+}
+.qes-diagram .qes-island {
+  fill: color-mix(in srgb, var(--series-1) 22%, transparent);
+  stroke: color-mix(in srgb, var(--series-1) 60%, transparent);
+  stroke-width: 1;
+}
+.qes-diagram .qes-rad {
+  fill: color-mix(in srgb, var(--series-2) 20%, transparent);
+  stroke: color-mix(in srgb, var(--series-2) 60%, transparent);
+  stroke-width: 1;
+}
+.qes-diagram .qes-axis {
+  stroke: var(--chart-axis);
+  stroke-width: 1.4;
+  fill: none;
+}
+.qes-diagram .qes-axis-head {
+  fill: var(--chart-axis);
+}
+.qes-diagram .qes-horizon {
+  stroke: var(--text-1);
+  stroke-width: 2;
+}
+.qes-diagram .qes-qes {
+  stroke: var(--series-1);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+.qes-diagram .qes-rb {
+  stroke: var(--series-2);
+  stroke-width: 1.5;
+}
+.qes-diagram .qes-origin {
+  fill: var(--text-2);
+}
+.qes-diagram .qes-bracket {
+  stroke: var(--text-2);
+  stroke-width: 1.2;
+  fill: none;
+}
+.qes-diagram text {
+  font-size: 12px;
+}
+.qes-diagram .qes-region {
+  fill: var(--text-1);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.qes-diagram .qes-label {
+  fill: var(--text-1);
+}
+.qes-diagram .qes-label.mono {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.qes-diagram .qes-small {
+  fill: var(--text-3);
+  font-size: 11px;
+}
+tr.qes-row {
+  cursor: pointer;
+}
+tr.qes-row:focus-visible td {
+  background: var(--accent-wash);
+}

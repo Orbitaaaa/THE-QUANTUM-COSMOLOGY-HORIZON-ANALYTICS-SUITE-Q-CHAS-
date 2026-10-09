@@ -463,9 +463,43 @@ export interface DecodingRun {
   dynamics: string;
   t: number | null;
   s: number[];
+  /** mean over `samples` draws; values near 1e-16 (or slightly negative) are numerical zeros */
   infidelity: number[];
+  /** sample standard deviation per s */
+  std?: number[];
   bound: number[];
+  samples?: number;
+  seed?: number;
+  computed?: boolean;
   [extra: string]: unknown;
+}
+
+/** The [QG] Theorem R table (Sec. 15) as printed. */
+export interface DecodingPaperTable {
+  n_bh: number;
+  k: number;
+  samples: number;
+  s: number[];
+  bound: number[];
+  haar_old: number[];
+  eth: Record<string, number[]>;
+  haar_young: number[];
+  source: string;
+}
+
+/** One row of the quoted [QG] Sec. 17 (Theorem K') Kerr spin-down table. */
+export interface KerrSpinDownRow {
+  field: string;
+  a_star: number;
+  f: number;
+  g: number | null;
+  dlna_dlnM: number | null;
+  /** null where the paper prints "area grows" */
+  gsl_ratio: number | null;
+  area_grows: boolean;
+  sign_violations: number;
+  /** computed consistency check from the quoted f and g */
+  dlna_dlnM_from_f_g: number | null;
 }
 
 export interface HorizonBundle {
@@ -482,20 +516,30 @@ export interface HorizonBundle {
   };
   capacity: {
     ladder: { type: string; label: string; trace: string; entropy: string; source: string }[];
-    de_sitter: { entropy_nats: number; log10_entropy: number; horizon_radius_Gpc: number; [extra: string]: number };
+    de_sitter: {
+      entropy_nats: number;
+      log10_entropy: number;
+      horizon_radius_Gpc: number;
+      Lambda_m2?: number;
+      omega_lambda?: number;
+      [extra: string]: number | undefined;
+    };
     min_area_lp2: number;
     window_examples: { m_star: number; width: number; beta?: number; ln_trace: number; theorem_G_v?: number; delta_S_BH: number }[];
     window_mass_planck?: number;
   };
-  qes: { rows: QesRow[]; laws: Record<string, unknown> };
+  qes: {
+    rows: QesRow[];
+    laws: { depth_coeff?: number; depth_err?: number; lag_offset_rs?: number; source?: string; [extra: string]: unknown };
+  };
   atmosphere: {
     gaps: number[];
     share: number[];
     /** null where the paper prints no value for that gap */
     paper_share: (number | null)[];
     area_coeff: number;
-    /** quoted continuum values plus their "source" string */
-    continuum: Record<string, number | string>;
+    /** quoted continuum values ([BH] Sec. 15: area_coeff, f1, f2, f3) plus their "source" string */
+    continuum: { area_coeff?: number; f1?: number; f2?: number; f3?: number; source?: string; [extra: string]: number | string | undefined };
     n_sites?: number;
     n_ball?: number;
     ell_max?: number;
@@ -510,7 +554,14 @@ export interface HorizonBundle {
       max_dev: number;
       early_recovered_step: number;
       late_recovered_step: number;
-      [extra: string]: number | string;
+      n_qubits?: number;
+      max_step?: number;
+      final_bits_with_diary?: number;
+      early_diary_step?: number;
+      late_diary_step?: number;
+      recovery_threshold_bits?: number;
+      source?: string;
+      [extra: string]: number | string | undefined;
     };
     /** false when the run size differs from the paper's (fast builds) */
     paper_comparable?: boolean;
@@ -519,11 +570,16 @@ export interface HorizonBundle {
     haar_old: DecodingRun;
     eth: Record<string, DecodingRun>;
     haar_young: DecodingRun;
-    paper: Record<string, unknown>;
+    paper: DecodingPaperTable;
   };
   kerr_spin_down: {
     fixed_point_scalar: number;
-    rows: Record<string, number | string | boolean | null>[];
+    rows: KerrSpinDownRow[];
+    /** further quoted [QG] Sec. 17 numbers (Page 1976 checks, superradiant gains, spin-down) */
+    facts?: Record<string, unknown>;
+    /** computed: spin-down from a = 0.99 to 0.5 by integrating the quoted rates */
+    spin_down_check?: { a_start: number; a_end: number; mass_fraction: number; paper: number; computed?: boolean; note?: string };
+    source?: string;
     [extra: string]: unknown;
   };
   claims: Claim[];
@@ -562,21 +618,37 @@ export interface BounceBundle {
 export interface GwEvent {
   name: string;
   source: string;
+  /** GPS time of the event; strain.t is in seconds relative to it */
+  tevent?: number;
   m1: number;
   m2: number;
   a1: number | null;
   a2: number | null;
+  /** 'detector' (redshifted) or 'source' frame for m1, m2, mf */
+  mass_frame?: string;
+  approximant?: string;
   mf: number;
   af: number;
+  mf_source?: number | null;
+  redshift?: number | null;
+  /** frame in which S_BH, T_H and the lifetimes are evaluated */
+  thermo_frame?: string;
   f220_Hz: number;
   tau220_ms: number;
   echo_delay_ms: number;
+  S_BH_nats?: number;
   S_BH_log10: number;
+  S_BH_bits_log10?: number;
+  /** log10 of the echo-power bound |R|^2 <= e^{-S} ([QG] Sec. 18) */
   echo_bound_log10: number | null;
   T_H_K: number;
+  r_plus_km?: number;
   t_evap_log10_yr: number;
   page_time_log10_yr: number;
+  /** the emission model behind t_evap (massless scalar, Schwarzschild) */
+  lifetime_model?: string;
   strain: {
+    /** seconds relative to tevent */
     t: number[];
     H1: number[];
     L1: number[];
@@ -584,6 +656,13 @@ export interface GwEvent {
     band: [number, number];
     fs_export?: number;
     units?: string;
+    /** positive: L1 later than H1 */
+    lag_ms?: number;
+    /** -1: L1 inverted relative to H1 */
+    lag_sign?: number;
+    lag_corr?: number;
+    lag_convention?: string;
+    lag_window_s?: [number, number];
     [extra: string]: unknown;
   } | null;
   ringdown_fit: {
@@ -592,14 +671,31 @@ export interface GwEvent {
     t0_ms_after_peak: number;
     f_err_Hz?: number;
     tau_err_ms?: number;
-    snr?: number;
-    p_noise?: number;
+    f_sys_Hz?: number;
+    tau_sys_ms?: number;
+    f_stat_Hz?: number | null;
+    tau_stat_ms?: number | null;
+    snr?: number | null;
+    p_noise?: number | null;
+    sigma?: number | null;
     significant?: boolean;
+    t0_range_ms?: [number, number];
+    window_ms?: number;
+    per_start?: { t0_ms: number[]; f_Hz: number[]; tau_ms: number[] };
+    n_noise?: number;
+    t_peak_gps?: number;
+    /** band of the ringdown fit (wider than strain.band) */
+    band?: [number, number];
+    kerr_f220_Hz?: number;
+    kerr_tau220_ms?: number;
+    f_pull?: number | null;
+    tau_pull?: number | null;
     [extra: string]: unknown;
   } | null;
   [extra: string]: unknown;
 }
 
+/** One row of the [QG] Sec. 19.1 nine-event echo table, with our recomputed f220 and delay. */
 export interface GwPaperEvent {
   event: string;
   snr: number;
@@ -607,14 +703,36 @@ export interface GwPaperEvent {
   af: number;
   f220: number;
   dt_ms: number;
-  R90: number;
+  gamma?: number;
+  echo_snr?: number;
+  p?: number;
+  /** 90 % upper limit on R; null where the paper prints "> 1" (see R90_label) */
+  R90: number | null;
+  R90_label?: string;
+  f220_ours?: number;
+  dt_ms_ours?: number;
 }
 
 export interface GwBundle {
   events: GwEvent[];
   paper_events: GwPaperEvent[];
-  gwtc: Record<string, unknown>[] | null;
+  /** GWOSC catalogue rows; null when the build host could not reach GWOSC */
+  gwtc: (Record<string, unknown> & { possible_neutron_star?: boolean })[] | null;
   combined_R90: number;
+  paper_echo_summary?: {
+    combined_R90?: number;
+    sum_snr2?: number;
+    p_combined?: number;
+    p_fisher?: number;
+    A90_gamma09?: number;
+    dt_gw150914_ms?: { ours: number; abedi: number };
+    masses?: string;
+    source?: string;
+  };
+  /** quoted [QG] Sec. 19.2 ringdown table; pairs are [value, uncertainty] */
+  paper_ringdown?: { rows: Record<string, string | number | [number, number]>[]; source?: string };
+  echo_bound_check?: { m_sun: number; log10_R2: number; log10_R2_ours?: number; source?: string; computed?: boolean };
+  source?: string;
   [extra: string]: unknown;
 }
 

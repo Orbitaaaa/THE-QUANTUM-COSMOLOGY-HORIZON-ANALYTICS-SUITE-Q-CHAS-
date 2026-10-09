@@ -1,0 +1,113 @@
+/* Crossed-Product Capacity Monitor: the algebra ladder stepper. */
+
+.cap-ladder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) 64px minmax(0, 1fr);
+  align-items: stretch;
+}
+.cap-rung {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 12px 11px;
+  border: 1px solid var(--line-2);
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+}
+.cap-rung:hover {
+  border-color: var(--text-3);
+}
+.cap-rung[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+.cap-rung-step {
+  font: 600 10px/1.2 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.cap-rung-type {
+  font: 650 24px/1.1 var(--font-mono);
+  color: var(--text-1);
+}
+.cap-rung-label {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.cap-rung-row {
+  font-size: 12px;
+  line-height: 1.35;
+}
+.cap-rung-row .k {
+  font: 600 10px/1.4 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-right: 6px;
+}
+.cap-rung-row .v {
+  color: var(--text-1);
+}
+.cap-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 4px;
+  text-align: center;
+  font: 500 10px/1.25 var(--font-mono);
+  color: var(--text-3);
+}
+.cap-arrow svg {
+  width: 30px;
+  height: 14px;
+  color: var(--text-3);
+}
+.cap-detail {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+.cap-detail h3 {
+  margin: 0 0 6px;
+  font: 600 12px/1.3 var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--text-1);
+}
+.cap-detail p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.cap-detail p:last-child {
+  margin-bottom: 0;
+}
+.cap-stepper-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+@media (max-width: 960px) {
+  .cap-ladder {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cap-arrow {
+    flex-direction: row;
+    padding: 6px 0;
+  }
+  .cap-arrow svg {
+    transform: rotate(90deg);
+  }
+}
