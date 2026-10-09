@@ -1,0 +1,65 @@
+name: Build data bundles and deploy dashboard
+
+# Runs the full analysis on a GitHub-hosted runner, which can reach every public archive
+# (Planck PR3 at IRSA/ESA, GWOSC, SPHEREx at IRSA, WMAP at LAMBDA), then publishes the
+# static dashboard to GitHub Pages. Enable Pages with "Source: GitHub Actions" once.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install analytics core
+        run: pip install -e ".[dev]"
+      - name: Cache public datasets
+        uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: raw-data-full-${{ hashFiles('qchas/data/registry.py') }}
+      - name: Fetch real datasets including the 1.6 GB Planck PR3 Commander map
+        run: qchas fetch --planck
+      - name: Run analyses and write dashboard bundles
+        run: qchas build
+      - name: Build dashboard
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
