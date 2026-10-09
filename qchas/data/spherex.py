@@ -80,8 +80,13 @@ def list_keys(prefix: str = "qr3/level2/", max_keys: int = 4000, suffix: str = "
 
 
 def list_weeks(release: str = "qr3") -> list[str]:
-    xml = _get(f"{SPHEREX_S3}/?list-type=2&delimiter=/&prefix={release}/level2/").decode()
-    return re.findall(rf"<Prefix>({release}/level2/[^<]+/)</Prefix>", xml)
+    return list_prefixes(f"{release}/level2/")
+
+
+def list_prefixes(prefix: str) -> list[str]:
+    """Immediate sub-'folders' of ``prefix`` in the bucket."""
+    xml = _get(f"{SPHEREX_S3}/?list-type=2&delimiter=/&prefix={prefix}").decode()
+    return [p for p in re.findall(r"<Prefix>([^<]+/)</Prefix>", xml) if p != prefix]
 
 
 def _hdu_spans(raw: bytes) -> list[tuple[dict[str, str], int, int]]:
@@ -145,17 +150,27 @@ def frame_from_key(key: str) -> Frame:
 
 
 def sample_frames(n_frames: int = 240, release: str = "qr3", workers: int = 12, seed: int = 0) -> list[Frame]:
-    """Pick ``n_frames`` Level-2 frames spread over all released weeks and read their WCS."""
-    weeks = list_weeks(release)
-    per_week = max(1, n_frames // max(1, len(weeks)))
+    """Pick ``n_frames`` Level-2 frames spread evenly over released weeks and all six detectors.
+
+    Each week holds one or more pipeline-version folders, each split into detector folders 1..6;
+    we sample the same number of frames from every (week, detector) folder and read their WCS.
+    """
+    folders: list[str] = []
+    for wk in list_weeks(release):
+        for version in list_prefixes(wk):
+            folders += list_prefixes(version)
+    if not folders:
+        return []
+    per_folder = max(1, -(-n_frames // len(folders)))
     rng = np.random.default_rng(seed)
     chosen: list[str] = []
-    for wk in weeks:
-        keys = list_keys(wk, max_keys=3000)
-        if not keys:
-            continue
-        idx = rng.choice(len(keys), size=min(per_week, len(keys)), replace=False)
-        chosen += [keys[i] for i in sorted(idx)]
+    for folder in folders:
+        keys = list_keys(folder, max_keys=2000)
+        if keys:
+            idx = rng.choice(len(keys), size=min(per_folder, len(keys)), replace=False)
+            chosen += [keys[i] for i in sorted(idx)]
+    if len(chosen) > n_frames:
+        chosen = [chosen[i] for i in sorted(rng.choice(len(chosen), size=n_frames, replace=False))]
     frames: list[Frame] = []
     with ThreadPoolExecutor(workers) as pool:
         for fr in pool.map(_safe_frame, chosen):

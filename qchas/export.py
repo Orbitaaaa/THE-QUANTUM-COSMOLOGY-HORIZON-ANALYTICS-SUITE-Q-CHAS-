@@ -164,6 +164,8 @@ def _spherex(n_frames: int, out_dir: Path) -> dict:
     thumbs = []
     thumb_dir = out_dir / "spherex"
     thumb_dir.mkdir(exist_ok=True)
+    for old in thumb_dir.glob("*.png"):
+        old.unlink()
     picked = {}
     for f, row in zip(frames, rows):
         picked.setdefault(f.detector, (f, row))
@@ -290,10 +292,15 @@ def build_all(out_dir: Path | None = None, raw_dir: Path | None = None, *, fast:
         b.run("validation", lambda: collect(out_dir), "validation.json")
 
     prov = load_provenance(raw_dir)
+    prev = json.loads((out_dir / "manifest.json").read_text()) if only and (out_dir / "manifest.json").exists() else {}
+    if prev:
+        # partial rebuild: keep what earlier full builds recorded for the bundles not rebuilt now
+        b.warnings += prev.get("warnings", [])
+        b.timings = {**prev.get("timings_s", {}), **b.timings}
     manifest = {
         "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
         "qchas_version": __version__,
-        "cmb_map_source": None if sky is None else sky.source_name,
+        "cmb_map_source": prev.get("cmb_map_source") if sky is None else sky.source_name,
         "fast_build": fast,
         "datasets": prov,
         "bundles": sorted(set(b.bundles + _existing(out_dir))),
