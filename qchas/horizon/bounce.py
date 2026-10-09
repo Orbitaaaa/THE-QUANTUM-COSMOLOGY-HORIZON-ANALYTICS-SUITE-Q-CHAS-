@@ -191,9 +191,11 @@ FWHM_PRODUCT_LIMIT = 2.0 * math.sqrt(math.log(2.0) / 12.0)  # 0.4807: e^{-12 x^2
 
 
 def _fwhm(f, t_peak: float, peak: float, span: float) -> tuple[float, float]:
-    lo = brentq(lambda t: f(t) - 0.5 * peak, t_peak - span, t_peak, xtol=1e-13)
-    hi = brentq(lambda t: f(t) - 0.5 * peak, t_peak, t_peak + span, xtol=1e-13)
-    return lo, hi
+    """Half-maximum crossings of f on either side of its peak, searched within +-span."""
+    g = lambda t: f(t) - 0.5 * peak  # noqa: E731
+    if g(t_peak - span) > 0.0 or g(t_peak + span) > 0.0:
+        raise ValueError(f"<a^-2> stays above half its peak within +-{span:.3g} of the bounce: FWHM undefined")
+    return brentq(g, t_peak - span, t_peak, xtol=1e-13), brentq(g, t_peak, t_peak + span, xtol=1e-13)
 
 
 def time_grid(a_max: float, n_uniform: int = 241, n_bounce: int = 161) -> np.ndarray:
@@ -211,13 +213,18 @@ def bounce_run(a_max: float, T=None) -> dict:
     f = lambda tt: float(moments(tt, a_max)["a_inv2"][0])  # noqa: E731
     t_peak = math.pi / 2  # |Psi|^2 is symmetric about the bounce
     peak = f(t_peak)
-    lo, hi = _fwhm(f, t_peak, peak, min(1.2, 2.0 / a_max))
+    try:  # search the whole half period; for a_max < ~0.3 <a^-2> never halves and the FWHM is None
+        lo, hi = _fwhm(f, t_peak, peak, min(math.pi / 2, 2.0 / a_max))
+        fwhm = hi - lo
+    except ValueError:
+        fwhm = None
     a_min = float(moments(t_peak, a_max)["a_mean"][0])
     return {
         "a_max": a_max, "T": t.tolist(), "a_mean": m["a_mean"].tolist(), "a_inv2": m["a_inv2"].tolist(),
         "norm_max_dev": float(np.max(np.abs(m["norm"] - 1.0))),
-        "t_bounce": t_peak, "a_min": a_min, "peak_a_inv2": peak, "fwhm_T": hi - lo,
-        "fwhm_times_amax": (hi - lo) * a_max, "period": math.pi, "computed": True, "method": "exact",
+        "t_bounce": t_peak, "a_min": a_min, "peak_a_inv2": peak, "fwhm_T": fwhm,
+        "fwhm_times_amax": None if fwhm is None else fwhm * a_max, "period": math.pi, "computed": True,
+        "method": "exact",
     }
 
 
@@ -253,8 +260,9 @@ def spectrum_check(length: float = PAPER_SPECTRUM_GRID[0], n: int = PAPER_SPECTR
 class FDEvolution:
     """Spectral evolution of the packet on a finite-difference grid, as in [QG] Sec. 21.
 
-    Only the eigenpairs carrying the packet are computed (MRRR on an index window), and
-    the window is checked to hold the packet's norm to 1e-12.
+    Only the eigenpairs carrying the packet are computed (bisection and inverse iteration on an
+    index window, O(n m) memory; scipy's MRRR driver allocates n x n), and the window is
+    checked to hold the packet's norm to 1e-12.
     """
 
     def __init__(self, a_max: float, length: float = PAPER_EVOLUTION_GRID[0],
@@ -264,7 +272,7 @@ class FDEvolution:
         j0 = int(round(0.5 * (MASS * a_max**2 / 2.0)))  # mean odd level: n_full ~ 6 a_max^2
         jw = int(width_sigmas * math.sqrt(6.0) * a_max / 2.0) + 20
         lo, hi = max(0, j0 - jw), min(n - 1, j0 + jw)
-        w, v = eigh_tridiagonal(d, e, select="i", select_range=(lo, hi), lapack_driver="stemr")
+        w, v = eigh_tridiagonal(d, e, select="i", select_range=(lo, hi), lapack_driver="stebz")
         psi0 = np.exp(-6.0 * (a - a_max) ** 2)
         psi0 /= np.linalg.norm(psi0)
         c = v.T @ psi0
@@ -387,6 +395,7 @@ def to_json(a_values=(1.5, 2, 3, 4, 6, 8, 16), fd_values=(2, 4, 8, 16), fast: bo
             run.setdefault("paper", {})["a_min_theorem_N"] = PAPER_ISOTROPIC_AMIN_THEOREM_N[a_max]
         if float(a_max) in fd:
             run["paper_grid"] = fd[float(a_max)]
+        run.setdefault("paper", {})  # the contract always carries a (possibly empty) paper block
         runs.append(run)
     spec = spectrum_check()
     spec_lo = spectrum_check(*PAPER_EVOLUTION_GRID, n_eig=1500)

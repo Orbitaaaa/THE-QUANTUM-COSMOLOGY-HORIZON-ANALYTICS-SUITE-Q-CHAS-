@@ -223,6 +223,37 @@ def test_sc_certified_shear():
     assert np.allclose(np.einsum("aij,bij->ab", E, E), np.eye(5))
 
 
+def test_degenerate_inputs_raise():
+    for B in (np.zeros((3, 3)), np.array([[1.0, 0, 0], [0, 1, 0], [1, 1, 0]]), np.full((3, 3), np.nan)):
+        for f in (L.epstein_z2, L.lll_reduce, L.normalize, L.dual_basis):
+            with pytest.raises(ValueError):
+                f(B)
+    with pytest.raises(ValueError):
+        L.epstein_z2_gram(np.diag([1.0, 1.0, -1.0]))
+    with pytest.raises(ValueError):  # too flat to enumerate: refused instead of allocating GBs
+        L.epstein_z2(np.diag([1.0, 1.0, 1e-7]))
+
+
+def test_skewed_gram_is_reduced():
+    """Z and M = dZ/dh are GL(3,Z)-covariant: Z(U h U^T) = Z(h), M_h = U^T M_{UhU^T} U; and
+    homogeneous: Z(c h) = Z(h)/c^2, M(c h) = M(h)/c^3. The skewed input takes the LLL path."""
+    B = L.normalize(L.cubic_basis("BCC") + 0.07 * np.random.default_rng(8).normal(size=(3, 3)), "covolume")
+    h = L.gram(B)
+    U = np.array([[7, 3, 0], [14, 5, 4], [3, 1, 1]])
+    hs = U @ h @ U.T
+    assert L._box_size(L._box_for(L.EWALD_RADIUS, np.diag(np.linalg.inv(hs)))) > 50 * L._BOX_REDUCE
+    z, M = L.epstein_z2_gram(h, grad=True)
+    zs, Ms = L.epstein_z2_gram(hs, grad=True)
+    assert zs == pytest.approx(z, rel=1e-10)
+    assert np.allclose(U.T @ Ms @ U, M, rtol=0, atol=1e-10 * np.abs(M).max())
+    z3, M3 = L.epstein_z2_gram(3.7 * h, grad=True)
+    assert z3 == pytest.approx(z / 3.7**2, rel=1e-12) and np.allclose(M3, M / 3.7**3, rtol=1e-10)
+    Bs = U @ B
+    g = L.lattice_vectors(Bs, 1.6)
+    g0 = L.lattice_vectors(B, 1.6)
+    assert len(g) == len(g0) and np.allclose(np.sort(np.linalg.norm(g, axis=1)), np.linalg.norm(g0, axis=1))
+
+
 def test_rhombohedral_curve():
     c = L.rhombohedral_curve(np.arange(40.0, 119.6, 0.5))
     a, z = np.array(c["alpha_deg"]), np.array(c["Z"])
@@ -250,7 +281,7 @@ def test_haar_sampler_siegel():
     """Siegel: E #{g != 0 : |g| <= r} = 4 pi r^3 / 3 for Haar-random unimodular lattices."""
     r = F.siegel_check(np.random.default_rng(1), n=1000, t_max=F.T_MAX, radii=(0.8, 1.0))
     for mean, err, ref in zip(r["mean_count"], r["stderr"], r["siegel"]):
-        assert abs(mean - ref) < 4 * err + 0.05 * ref  # truncated cusp: a few % low at T_MAX = 5
+        assert abs(mean - ref) < 4 * err + 0.01 * ref  # T_MAX = 10: truncation bias below 1 %
 
 
 def test_kak_density_and_reduction():
@@ -276,6 +307,23 @@ def test_flow_fast():
     assert "FCC" in ends
 
 
+def test_inertial_flow_lyapunov():
+    """Theorem H.2: W = Z + tr u^2 / (2 kappa) is non-increasing and det h stays 1."""
+    from scipy.integrate import solve_ivp
+    kappa = 2.0
+    h0 = F.haar_random_grams(np.random.default_rng(17), 1)[0]
+    sol = solve_ivp(F._rhs_factory(kappa, "inertial"), (0.0, 5.0), np.concatenate([h0.ravel(), np.zeros(9)]),
+                    method="DOP853", rtol=1e-9, atol=1e-12, dense_output=True)
+    W = []
+    for t in np.linspace(0.0, 5.0, 41):
+        y = sol.sol(t)
+        h, X = y[:9].reshape(3, 3), y[9:].reshape(3, 3)
+        u = np.linalg.solve(h, X)
+        W.append(F.energy(F._sym(h)) + np.trace(u @ u) / (2 * kappa))
+        assert np.linalg.det(h) == pytest.approx(1.0, abs=1e-6)  # integrator drift only
+    assert np.all(np.diff(W) <= 1e-9) and W[-1] < W[0]
+
+
 def test_flow_leaves_sc_and_stays_at_minima():
     rng = np.random.default_rng(9)
     S = rng.normal(size=(3, 3)) * 1e-3
@@ -289,7 +337,8 @@ def test_flow_leaves_sc_and_stays_at_minima():
 
 def test_relaxation_numbers():
     d = F.relaxation_numbers()
-    c = d["computed"]
+    assert d["computed"] is True
+    c = d["ours"]
     assert c["kappa_cE_coeff"] == pytest.approx(d["kappa_cE_coeff"], abs=0.005)
     assert c["fcc_mu_min"] == pytest.approx(d["kappa_cE_rate_fcc"], abs=5e-4)
     assert c["TL4_per_dtau"] == pytest.approx(d["TL4_per_dtau"], abs=0.005)
@@ -298,15 +347,19 @@ def test_relaxation_numbers():
 
 @pytest.mark.slow
 def test_basins_n120():
-    s = F.basin_statistics(n=120, kappa=1.0)
+    """[TOP] Prop. H.3: gradient flow from Haar-random lattices ends at FCC in 190/240 cases,
+    at BCC otherwise. Same-seed regression check, compared within 3 joint sigma."""
+    s = F.basin_statistics(n=120)
+    assert s["mode"] == "gradient" and s["kappa"] is None and s["t_max"] == F.T_MAX
     assert s["counts"].get("other", 0) == 0 and "SC" not in s["counts"]
     assert s["unconverged"] == 0
     assert s["counts"]["FCC"] + s["counts"]["BCC"] == 120
-    assert s["counts"]["FCC"] > s["counts"]["BCC"]
+    p = 190 / 240
+    assert abs(s["fcc_fraction"] - p) < 3 * math.sqrt(p * (1 - p) * (1 / 120 + 1 / 240))
     d = F.to_json(stats=s)
     assert set(d["flows"]) >= {"n", "counts", "paper_counts", "trajectories"}
-    assert len(d["flows"]["trajectories"]) == 24
-    json.dumps(d)
+    assert d["flows"]["computed"] is True and len(d["flows"]["trajectories"]) == 24
+    json.dumps(d, allow_nan=False)
 
 
 # --- circles --------------------------------------------------------------------------
@@ -364,6 +417,11 @@ def test_ghost_images():
     r = np.linalg.norm(x + (n @ Bs) @ R.T, axis=1)
     assert len(im) == int(np.sum(r <= 1.5))
     assert sum(e["inside_horizon"] for e in im) == int(np.sum(r <= 0.5)) >= 2
+    im0 = C.ghost_images((10.0, 20.0), 0.0, B, 0.8)
+    assert im0[0]["l"] is None and im0[0]["b"] is None
+    json.dumps(im0, allow_nan=False)
+    with pytest.raises(ValueError):
+        C.ghost_images((10.0, 20.0), 0.1, B, 0.0)
 
 
 def test_fcc_preregistered_rotation():

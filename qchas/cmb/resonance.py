@@ -9,7 +9,12 @@ the orientation-averaged C_l are identical ([TOP] Sec. 14, "Resonance search"):
               = U diag(w) U^T,   U[lm, kappa] = r_l Delta_l(k0) Y^r_lm(kappa_hat),  w = 16 pi^2 a / N,
 
 a real term of rank <= N (the shell is closed under kappa -> -kappa, so blocks with l + l'
-odd cancel). The amplitude a is fixed by the fractional bump f = max_l Delta C_l / C_l^LCDM.
+odd cancel). The amplitude a is fixed by the fractional bump f = max_l Delta C_l / C_l^LCDM
+(the "C_l bump f at its peak multipole" of [TOP] Sec. 11.6; for every shell of the Sec. 11.6
+table the peak of Delta D_l falls on the same multipole). Here ``a`` is absolute (P_R units);
+[TOP] Sec. 11.8 uses the relative strength a_rel = int (Delta P / P) dln k = a / P_R(k0), with
+f = a_rel G(k0) (:func:`line_G`).
+
 Inverses, determinants, KL divergences and Gaussian log-likelihoods of C0 + U W U^T use the
 Woodbury identity and the matrix determinant lemma, O(n^2 N) once C0 is factorized.
 """
@@ -25,6 +30,7 @@ from scipy.linalg import cho_factor, cholesky, solve_triangular
 
 from . import covariance as cov
 from . import harmonics as H
+from .camb_model import primordial_power
 from .transfer import load_transfer
 
 LMIN, LMAX = cov.LMIN, cov.LMAX
@@ -155,7 +161,37 @@ def line_gain(k0: float, lmin: int = LMIN, lmax: int = LMAX) -> np.ndarray:
 
 def line_amplitude(k0: float, f: float, lmin: int = LMIN, lmax: int = LMAX) -> float:
     """Line strength a (absolute, P_R units) whose isotropic bump peaks at max_l Delta C_l / C_l = f."""
+    if not (np.isfinite(f) and f >= 0):
+        raise ValueError(f"bump f must be finite and >= 0, got {f}")
     return float(f / np.max(line_gain(k0, lmin, lmax)))
+
+
+def line_G(k0: float, lmin: int = LMIN, lmax: int = LMAX) -> float:
+    """[TOP] Sec. 11.8 G(k0): bump f = a_rel G(k0) for a line of relative strength a_rel = int (Delta P/P) dln k."""
+    return float(np.max(line_gain(k0, lmin, lmax)) * primordial_power(k0))
+
+
+def single_field_max_f(shape, d_over_D: float, m2: float, growth: float = 5.0) -> dict:
+    """Largest single-field bump on a shell, [TOP] Sec. 11.8 Exit 1.
+
+    The line must fit between neighbouring shells, so its half-width is the ln-k gap h to the
+    nearest shell (only the one above for the lowest shell); with d ln P / d ln k <= ``growth``
+    its strength is a_rel <= h (e^{growth h} - 1) and f <= a_rel G(k0).
+    """
+    tf = load_transfer()
+    k0_chi = 2.0 * np.pi * np.sqrt(m2) / (2.0 * d_over_D)
+    shells = all_shells(shape, d_over_D, 2.0 * k0_chi * (1.0 + 1e-6))  # 2 kappa is always a dual vector
+    i = int(np.argmin([abs(s["k_chi"] / k0_chi - 1.0) for s in shells]))
+    if abs(shells[i]["k_chi"] / k0_chi - 1.0) > 1e-7:
+        raise ValueError(f"no dual shell with m2 = {m2} for {shape} at d/D = {d_over_D}")
+    gaps = [np.log(shells[i + 1]["k_chi"] / shells[i]["k_chi"])]
+    if i > 0:
+        gaps.append(np.log(shells[i]["k_chi"] / shells[i - 1]["k_chi"]))
+    h = float(min(gaps))
+    a_max = h * np.expm1(growth * h)
+    g = line_G(k0_chi / tf.chi_star)
+    return {"k_chi": shells[i]["k_chi"], "n_vectors": shells[i]["n_vectors"], "half_width": h,
+            "a_max": float(a_max), "G": g, "f_max": float(a_max * g)}
 
 
 def isotropic_line_cl(k0: float, a: float, lmin: int = LMIN, lmax: int = LMAX) -> np.ndarray:
@@ -323,6 +359,30 @@ def resonance_table(sizes=(1.05, 1.15, 1.2, 1.3), shells=(9, 16), fs=(0.25, 0.5)
     return rows
 
 
+def single_field_table() -> dict:
+    """[TOP] Sec. 11.8 Exit 1, computed: single-field f limits on the 80 grid shells and the lowest-shell rows.
+
+    The allowed line takes f = min(computed single-field limit, quoted Planck cap).
+    """
+    grid = preregistered_grid()
+    f_grid = [single_field_max_f(g["shape"], g["d_over_D"], g["m2"])["f_max"] for g in grid]
+    rows = []
+    for p in PAPER_SINGLE_FIELD["rows"]:
+        sh = min(list_shells(p["torus"], p["d_over_D"]), key=lambda s: abs(s["k_chi"] - p["k0_chi"]))
+        sf = single_field_max_f(p["torus"], p["d_over_D"], sh["m2"])
+        f = min(sf["f_max"], p["planck_cap"])
+        k0 = resonance_kl(p["torus"], p["d_over_D"], None, 0.0)
+        k1 = resonance_kl(p["torus"], p["d_over_D"], sh["m2"], f)
+        rows.append({"torus": p["torus"], "d_over_D": p["d_over_D"], "m2": sh["m2"], "k0_chi": sh["k_chi"],
+                     "n_vectors": sh["n_vectors"], "single_field_max_f": sf["f_max"], "planck_cap": p["planck_cap"],
+                     "f": f, "kl_no_line": k0, "kl_allowed_line": k1, "gain": k1 / k0, "computed": True,
+                     "paper": {k: p[k] for k in ("k0_chi", "single_field_max_f", "kl_no_line", "kl_allowed_line", "gain")}})
+    return {"rows": rows, "n_shells": len(grid), "n_f_below_0.05": int(np.sum(np.asarray(f_grid) < 0.05)),
+            "f_max_grid": [{"shape": g["shape"], "d_over_D": g["d_over_D"], "m2": g["m2"], "f_max": f}
+                           for g, f in zip(grid, f_grid)],
+            "paper": PAPER_SINGLE_FIELD, "computed": True, "source": PAPER_SINGLE_FIELD["source"]}
+
+
 # --- benchmark ------------------------------------------------------------------------------
 
 def woodbury_benchmark(ranks=(6, 8, 12), n_orient: int = 20, shape: str = "cubic", d_over_D: float = 1.2,
@@ -340,13 +400,15 @@ def woodbury_benchmark(ranks=(6, 8, 12), n_orient: int = 20, shape: str = "cubic
     x = np.linalg.cholesky(c0) @ rng.standard_normal(c0.shape[0])
     base = Factorized.of(c0)
     by_rank = {6: 1.0, 8: 3.0, 12: 2.0}
+    if shape != "cubic" or any(r not in by_rank for r in ranks):
+        raise ValueError("benchmark shells exist for the cubic torus with ranks 6, 8, 12")
     rots = [H.random_rotation(rng) for _ in range(n_orient)]
     out = {"n": int(c0.shape[0]), "ranks": list(ranks), "n_orientations": n_orient,
-           "direct_ms": [], "woodbury_ms": [], "max_rel_diff": [], "shape": shape, "d_over_D": d_over_D}
+           "direct_ms": [], "woodbury_ms": [], "max_abs_diff": 0.0, "max_rel_diff": [], "shape": shape,
+           "d_over_D": d_over_D, "computed": True}
     for r in ranks:
         m2 = by_rank[r]
         kv = shell_vectors(shape, d_over_D, m2)
-        assert kv.shape[0] == r
         k0 = float(np.linalg.norm(kv, axis=1).mean())
         a = line_amplitude(k0, 0.5)
         w = np.full(r, 16.0 * np.pi**2 * a / r)
@@ -360,7 +422,9 @@ def woodbury_benchmark(ranks=(6, 8, 12), n_orient: int = 20, shape: str = "cubic
         t_wood = (time.perf_counter() - t) / n_orient
         out["direct_ms"].append(1e3 * t_direct)
         out["woodbury_ms"].append(1e3 * t_wood)
-        out["max_rel_diff"].append(float(np.max(np.abs(np.subtract(direct, wood)) / np.abs(direct))))
+        diff = np.abs(np.subtract(direct, wood))
+        out["max_abs_diff"] = max(out["max_abs_diff"], float(np.max(diff)))
+        out["max_rel_diff"].append(float(np.max(diff / np.abs(direct))))
     return out
 
 
@@ -374,7 +438,7 @@ def resonance_bundle(benchmark_orientations: int = 20) -> dict:
         "shells": shells,
         "n_shells": sum(len(v) for v in shells.values()),
         "woodbury_benchmark": woodbury_benchmark(n_orient=benchmark_orientations),
-        "single_field": PAPER_SINGLE_FIELD,
+        "single_field": single_field_table(),
         "exits_3d": PAPER_EXITS_3D["rows"],
         "ceiling": PAPER_CEILING,
         "search_paper": PAPER_SEARCH,

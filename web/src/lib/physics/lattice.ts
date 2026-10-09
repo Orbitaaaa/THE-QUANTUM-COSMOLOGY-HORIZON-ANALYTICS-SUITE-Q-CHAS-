@@ -13,10 +13,15 @@
  */
 
 import { Z2_CERTIFIED } from './constants';
-import { type Mat3, type Vec3, clone3, det3, dot, inv3, matmul3, norm, scaleMat3, transpose3, vecMat } from './vec';
+import { type Mat3, type Vec3, clone3, det3, dot, identity3, inv3, matmul3, norm, scaleMat3, transpose3, vecMat } from './vec';
 
 /** Ewald cutoff on |g| and |k| at unit covolume (Prop. E.2 sums |g|, |k| <= 4.5 exactly). */
 export const EWALD_RADIUS = 5.0;
+
+/** Integer boxes larger than this are first LLL-reduced (as in the Python). */
+const BOX_REDUCE = 20 ** 3;
+/** Enumerations larger than this many integer points are refused (Python `_BOX_MAX`). */
+export const MAX_BOX_POINTS = 4_000_000;
 
 export type CubicShape = 'SC' | 'BCC' | 'FCC';
 export const SHAPES: readonly CubicShape[] = ['SC', 'BCC', 'FCC'];
@@ -77,26 +82,47 @@ function gso(B: Mat3): { Bs: Vec3[]; mu: number[][] } {
   return { Bs, mu };
 }
 
-/** LLL reduction of a row basis; returns the reduced basis (same lattice). */
-export function lllReduce(B0: Mat3, delta = 0.99): Mat3 {
+/** Throw unless B is a finite basis of rank 3. */
+export function checkBasis(B: Mat3): void {
+  const flat = [...B[0], ...B[1], ...B[2]];
+  if (!flat.every(Number.isFinite)) throw new Error('a lattice basis must be a finite 3x3 array');
+  const scale = Math.max(...flat.map(Math.abs));
+  if (!(scale > 0) || !(Math.abs(det3(B)) > 1e-13 * scale ** 3)) throw new Error('lattice basis is singular (rank < 3)');
+}
+
+/**
+ * LLL reduction of a row basis. Returns the reduced basis and the unimodular U with
+ * `B_red = U B` (same lattice), as `lll_reduce` in the Python.
+ */
+export function lllReduceWithTransform(B0: Mat3, delta = 0.99): { B: Mat3; U: Mat3 } {
   const B = clone3(B0);
+  const U = identity3();
   let k = 1;
   let guard = 0;
-  while (k < 3 && guard++ < 10_000) {
+  while (k < 3) {
+    if (guard++ > 100_000) throw new Error('LLL reduction did not terminate (basis too ill-conditioned)');
     for (let j = k - 1; j >= 0; j--) {
       const q = Math.round(gso(B).mu[k]![j]!);
-      if (q) for (let a = 0; a < 3; a++) B[k]![a] = B[k]![a]! - q * B[j]![a]!;
+      if (q)
+        for (let a = 0; a < 3; a++) {
+          B[k]![a] = B[k]![a]! - q * B[j]![a]!;
+          U[k]![a] = U[k]![a]! - q * U[j]![a]!;
+        }
     }
     const { Bs, mu } = gso(B);
     const m = mu[k]![k - 1]!;
     if (dot(Bs[k]!, Bs[k]!) >= (delta - m * m) * dot(Bs[k - 1]!, Bs[k - 1]!)) k++;
     else {
       [B[k - 1], B[k]] = [B[k]!, B[k - 1]!];
+      [U[k - 1], U[k]] = [U[k]!, U[k - 1]!];
       k = Math.max(k - 1, 1);
     }
   }
-  return B;
+  return { B, U };
 }
+
+/** LLL reduction of a row basis; returns the reduced basis (same lattice). */
+export const lllReduce = (B0: Mat3, delta = 0.99): Mat3 => lllReduceWithTransform(B0, delta).B;
 
 /** Rescale to unit covolume ('covolume') or unit shortest vector ('shortest'). */
 export function normalize(B: Mat3, to: 'covolume' | 'shortest' = 'covolume'): Mat3 {
@@ -115,31 +141,60 @@ function boxFor(radius: number, invDiag: readonly number[]): [number, number, nu
   return invDiag.map((d) => Math.floor(radius * Math.sqrt(Math.max(d, 0)) + 1e-9)) as [number, number, number];
 }
 
-/** All lattice vectors with 0 < |g| <= radius (both signs), sorted by length. */
-export function latticeVectors(B: Mat3, radius: number, includeZero = false): LatticeVector[] {
+const boxPoints = (box: readonly number[]): number => box.reduce((p, n) => p * (2 * n + 1), 1);
+
+function boxOf(B: Mat3, radius: number): [number, number, number] {
   const hinv = inv3(gram(B));
-  const [n0, n1, n2] = boxFor(radius, [hinv[0][0], hinv[1][1], hinv[2][2]]);
+  return boxFor(radius, [hinv[0][0], hinv[1][1], hinv[2][2]]);
+}
+
+function refuse(points: number): never {
+  throw new RangeError(
+    `lattice enumeration needs ${points.toExponential(1)} integer points (limit ${MAX_BOX_POINTS.toExponential(0)}): ` +
+      'the radius is too large for this lattice (e.g. d/D too small)',
+  );
+}
+
+/**
+ * All lattice vectors with 0 < |g| <= radius (both signs), sorted by length. A skewed basis is
+ * LLL-reduced first when that shrinks the enumeration box; boxes above `MAX_BOX_POINTS` throw
+ * a RangeError instead of freezing the page.
+ */
+export function latticeVectors(B: Mat3, radius: number, includeZero = false): LatticeVector[] {
+  checkBasis(B);
+  if (!(radius >= 0 && Number.isFinite(radius))) throw new RangeError(`invalid enumeration radius ${radius}`);
+  let E = B;
+  let U: Mat3 | null = null;
+  let box = boxOf(B, radius);
+  if (boxPoints(box) > BOX_REDUCE) {
+    const red = lllReduceWithTransform(B);
+    const boxR = boxOf(red.B, radius);
+    if (boxPoints(boxR) < boxPoints(box)) [E, U, box] = [red.B, red.U, boxR];
+  }
+  if (boxPoints(box) > MAX_BOX_POINTS) refuse(boxPoints(box));
+  const [n0, n1, n2] = box;
   const r2max = radius * radius * (1 + 1e-12);
   const out: LatticeVector[] = [];
   for (let a = -n0; a <= n0; a++)
     for (let b = -n1; b <= n1; b++)
       for (let c = -n2; c <= n2; c++) {
         if (!includeZero && a === 0 && b === 0 && c === 0) continue;
-        const g = vecMat([a, b, c], B);
+        const g = vecMat([a, b, c], E);
         const r2 = dot(g, g);
-        if (r2 <= r2max) out.push({ n: [a, b, c], g, length: Math.sqrt(r2) });
+        if (r2 <= r2max) out.push({ n: U ? vecMat([a, b, c], U) : [a, b, c], g, length: Math.sqrt(r2) });
       }
   out.sort((x, y) => x.length - y.length);
   return out;
 }
 
-/** A shortest nonzero lattice vector and its length. */
+/** A shortest nonzero lattice vector and its length (`n` refers to the given basis B). */
 export function shortestVector(B: Mat3): LatticeVector {
-  const R = lllReduce(B);
+  checkBasis(B);
+  const { B: R, U } = lllReduceWithTransform(B);
   const cand = latticeVectors(R, norm(R[0]) * (1 + 1e-9));
   const best = cand[0];
   if (!best) throw new Error('degenerate lattice');
-  return best;
+  return { ...best, n: vecMat(best.n, U) };
 }
 
 /** int_1^inf t e^{-pi x t} dt. */
@@ -199,8 +254,11 @@ export function epsteinZ2Gram(h: Mat3, radius = EWALD_RADIUS): number {
         }
     return 2 * s;
   };
-  const s1 = half(boxFor(radius, [hinv[0][0], hinv[1][1], hinv[2][2]]), h, phi1);
-  const s2 = half(boxFor(radius, [h[0][0], h[1][1], h[2][2]]), hinv, phi2);
+  const nbox = boxFor(radius, [hinv[0][0], hinv[1][1], hinv[2][2]]);
+  const kbox = boxFor(radius, [h[0][0], h[1][1], h[2][2]]);
+  if (boxPoints(nbox) + boxPoints(kbox) > MAX_BOX_POINTS) refuse(boxPoints(nbox) + boxPoints(kbox));
+  const s1 = half(nbox, h, phi1);
+  const s2 = half(kbox, hinv, phi2);
   return Math.PI ** 2 * (s1 + (2 + s2) / V - 0.5);
 }
 
@@ -209,6 +267,7 @@ export function epsteinZ2Gram(h: Mat3, radius = EWALD_RADIUS): number {
  * as in [TOP] Prop. E.2 (certified values in `Z2_CERTIFIED`).
  */
 export function epsteinZ2(B: Mat3, unitCovolume = true, radius = EWALD_RADIUS): number {
+  checkBasis(B);
   const V = covolume(B);
   const Bu = lllReduce(scaleMat3(B, 1 / Math.cbrt(V)));
   const z = epsteinZ2Gram(gram(Bu), radius);

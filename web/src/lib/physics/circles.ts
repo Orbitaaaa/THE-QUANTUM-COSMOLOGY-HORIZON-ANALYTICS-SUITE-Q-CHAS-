@@ -35,8 +35,11 @@ export function vecToLb(v: readonly number[]): [number, number] {
 
 const asDirection = (d: LB | Vec3): Vec3 => (d.length === 2 ? lbToVec(d[0], d[1]) : unit([d[0], d[1], d[2]!]));
 
-/** Rescale a row basis so its shortest lattice vector has length d/D. */
-export const scaledBasis = (basis: Mat3, dOverD: number): Mat3 => scaleMat3(basis, dOverD / shortestVector(basis).length);
+/** Rescale a row basis so its shortest lattice vector has length d/D (d/D must be positive). */
+export function scaledBasis(basis: Mat3, dOverD: number): Mat3 {
+  if (!(Number.isFinite(dOverD) && dOverD > 0)) throw new RangeError('d_over_D must be a positive number');
+  return scaleMat3(basis, dOverD / shortestVector(basis).length);
+}
 
 export interface CirclePair {
   n: Vec3;
@@ -126,6 +129,8 @@ export function ghostImages(
   horizonOverD = CHI_STAR,
   maxDistanceOverD?: number,
 ): GhostImage[] {
+  if (!(sourceDistanceOverD >= 0 && Number.isFinite(sourceDistanceOverD)))
+    throw new RangeError('source_distance_over_D must be >= 0');
   const x = scale(asDirection(sourceDirection), sourceDistanceOverD);
   const rmax = maxDistanceOverD ?? 2 * horizonOverD;
   const B = scaledBasis(basis, dOverD);

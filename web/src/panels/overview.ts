@@ -50,18 +50,23 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
     badges: [badge('measured', m?.cmb_map_source ?? undefined)].filter(() => !!m),
   });
   const built = new Set(m?.bundles ?? []);
-  const totalBytes = m ? Object.values(m.datasets).reduce((s, d) => s + (d.bytes || 0), 0) : null;
-  const nWarn = m?.warnings.length ?? 0;
+  const totalBytes = m ? Object.values(m.datasets ?? {}).reduce((s, d) => s + (d.bytes || 0), 0) : null;
+  const nWarn = m?.warnings?.length ?? 0;
+  const nErr = m?.errors?.length ?? 0;
   status.body.append(
     tiles(
       statTile({ label: 'CMB map in use', value: m?.cmb_map_source ?? null, mono: true, sub: 'Planck PR3 preferred, WMAP 9-yr ILC fallback' }),
       statTile({ label: 'Pipeline build', value: m ? fmtUtc(m.generated_utc) : null, mono: true, sub: m ? `qchas ${m.qchas_version}` : 'not run' }),
-      statTile({ label: 'Datasets on record', value: m ? Object.keys(m.datasets).length : null, sub: m ? `${fmtBytes(totalBytes)} with SHA-256` : 'see Data & Provenance' }),
+      statTile({ label: 'Datasets on record', value: m ? Object.keys(m.datasets ?? {}).length : null, sub: m ? `${fmtBytes(totalBytes)} with SHA-256` : 'see Data & Provenance' }),
       statTile({ label: 'Bundles built', value: m ? `${BUILT.filter((b) => built.has(b)).length} / ${BUILT.length}` : null, sub: 'web/public/data/' }),
       statTile({
         label: 'Build warnings',
         value: m ? nWarn : null,
-        sub: m ? statusPill(nWarn ? 'warning' : 'good', nWarn ? 'review in Data & Provenance' : 'none') : 'no build yet',
+        sub: m
+          ? nErr
+            ? statusPill('serious', `${nErr} builder${nErr === 1 ? '' : 's'} failed`)
+            : statusPill(nWarn ? 'warning' : 'good', nWarn ? 'review in Data & Provenance' : 'none')
+          : 'no build yet',
       }),
     ),
   );
@@ -75,7 +80,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
       { style: { marginTop: '12px' } },
       note(
         [
-          'The Planck 2018 sky shows no evidence for a torus of any allowed size; it excludes small tori (d > 1.04 D for FCC, 1.00 D for BCC, 0.985 D cubic, 95 %). [TOP] Sec. 9',
+          'The Planck 2018 sky shows no evidence for a torus of any allowed size and excludes small tori at 95 %: it requires d > 1.04 D for FCC, d > 1.00 D for BCC and d > 0.985 D for the cubic torus. [TOP] Sec. 9',
           'A pre-registered search finds no topological resonance (p = 0.78). Resonance amplifies the topological signal up to 64-fold only at known orientation. [TOP] Sec. 11',
           'A torus as large as 3 D could be decided only by a multi-field primordial line mapped in three dimensions, not by the CMB alone. [TOP] Sec. 11',
           "Field theory on a fixed background forces Hawking's curve; finite capacity A/4G, derived from the crossed product, forces the island and the Page transfer law. [BH] Theorems B, D, E, G",
@@ -100,13 +105,14 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   type Num = number | null | undefined;
   const lattice = get<{
     critical?: { FCC?: { Z: number } };
-    flows?: { counts?: Record<string, number>; paper_counts?: Record<string, number>; source?: string };
+    flows?: { n?: number; counts?: Record<string, number>; paper_counts?: Record<string, number>; source?: string };
   }>('lattice.json');
   const resonance = get<{ search?: { p_max?: Num } | null }>('resonance.json');
   const cmb = get<{ stats?: { S12_obs?: Num }; source?: string }>('cmb.json');
   const horizon = get<{ page?: { page_time?: Num }; capacity?: { de_sitter?: { log10_entropy?: Num } } }>('horizon.json');
   const bounce = get<{ runs?: { a_max?: number; a_min?: Num; paper?: { a_min?: number | string | null } }[] }>('bounce.json');
-  const run0 = bounce?.runs?.[0];
+  // compare with a run the paper tabulates (a_max = 2 in [QG] Theorem Lambda), else the first run
+  const run0 = bounce?.runs?.find((r) => r.paper?.a_min !== undefined && r.paper.a_min !== null) ?? bounce?.runs?.[0];
   const gw = get<{ events?: unknown[] }>('gw.json');
 
   interface KeyNumber {
@@ -118,14 +124,20 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   }
   const counts = lattice?.flows?.counts;
   const paperCounts = lattice?.flows?.paper_counts;
+  // runs of different size are compared by their FCC share, not by raw counts
+  const share = (c?: Record<string, number>): string => {
+    const fcc = c?.FCC ?? 0;
+    const total = Object.values(c ?? {}).reduce((a, b) => a + b, 0);
+    return total ? `${fcc} : ${c?.BCC ?? 0} (FCC ${Math.round((100 * fcc) / total)} % of ${total})` : '—';
+  };
   const m1: KeyNumber[] = [
     { label: 'Casimir Z(2) at the FCC minimum', value: lattice?.critical?.FCC ? fmtNum(lattice.critical.FCC.Z, 8) : null, bundle: 'lattice.json', kind: 'computed', paper: `${Z2_CERTIFIED.value.FCC.toFixed(8)} · ${Z2_CERTIFIED.source}` },
     {
       label: 'Shape-flow basins FCC : BCC',
-      value: counts ? `${counts.FCC ?? 0} : ${counts.BCC ?? 0}` : null,
+      value: counts ? share(counts) : null,
       bundle: 'lattice.json',
       kind: 'computed',
-      paper: paperCounts ? `${paperCounts.FCC ?? '—'} : ${paperCounts.BCC ?? '—'} · ${lattice?.flows?.source ?? '[TOP]'}` : undefined,
+      paper: paperCounts ? `${share(paperCounts)} · [TOP] Remark after Prop. E.2` : undefined,
     },
     { label: 'Resonance search p (max statistic)', value: resonance?.search ? fmtNum(resonance.search.p_max, 2) : null, bundle: 'resonance.json', kind: 'measured', paper: '0.78 · [TOP] Sec. 11.6' },
     { label: 'S1/2 of the map in use', value: cmb?.stats ? fmtNum(cmb.stats.S12_obs, 4) : null, bundle: 'cmb.json', kind: 'measured' },
@@ -400,7 +412,8 @@ async function mountSky(host: HTMLElement, head: HTMLElement, foot: HTMLElement,
     ? {
         map: mapRes.data.map,
         mask: mapRes.data.mask,
-        limit: Math.max(Math.abs(mapRes.data.entry.min), Math.abs(mapRes.data.entry.max)) || undefined,
+        // the exported 99.5 % display range; min/max are Galactic-plane extremes that wash out the CMB
+        limit: mapRes.data.entry.range ? Math.abs(mapRes.data.entry.range[1]) || undefined : undefined,
         unit: mapRes.data.meta.unit === 'uK' ? 'μK' : mapRes.data.meta.unit,
       }
     : null;

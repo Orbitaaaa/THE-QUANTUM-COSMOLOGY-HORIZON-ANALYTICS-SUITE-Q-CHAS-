@@ -13,11 +13,13 @@ rings at about 1 % of the peak just above it). CAMB's own C_l carry the same tru
 x = k chi_* < l the ratio Delta_l / j_l(x) is smooth (checked on the untruncated l = 16, 17), so for
 every l whose first non-zero sample exceeds 1e-3 of its peak we continue
 Delta_l(x) = j_l(x) (c0 + c1 x), fitted to the first four non-zero samples. This changes C_18 by
-+0.08 %, C_19 by +0.014 % and the others by < 3e-5, and the torus KL divergences of
-:mod:`qchas.cmb.covariance` by -1.2 % to +0.1 %; the raw CAMB array is kept as
-:attr:`TransferFunctions.delta_q_camb` and ``load_transfer(repair=False)`` uses it. The paper
-([TOP] Sec. 14: "the isotropic integral reproduces CAMB's C_l to 1e-15") evidently used the raw
-arrays.
++0.08 %, C_19 by +0.015 % and the others by < 3e-5, and the torus KL divergences of
+:mod:`qchas.cmb.covariance` by -1.4 % (cubic 1.5 D) to +0.1 % (-0.4 % to -0.7 % at 1.2-1.3 D); the
+raw CAMB array is kept as :attr:`TransferFunctions.delta_q_camb` and ``load_transfer(repair=False)``
+uses it. The paper ([TOP] Sec. 14: "the isotropic integral reproduces CAMB's C_l to 1e-15")
+evidently used the raw arrays: raw transfer functions reproduce its printed BCC 1.2 D KL (0.50)
+and cubic 1.3 D Pinsker bound (0.25), the repaired ones give 0.494 and 0.244. The covariance
+module always uses the repaired functions.
 
 Units: :meth:`TransferFunctions.delta` returns Delta_l(k) T_CMB in uK, so that
 

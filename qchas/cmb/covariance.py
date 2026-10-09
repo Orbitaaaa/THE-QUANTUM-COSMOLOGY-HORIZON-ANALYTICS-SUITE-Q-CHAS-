@@ -12,9 +12,18 @@ kills every block with l + l' odd. With i^l = r_l (l even) or i r_l (l odd), r_l
 
 summed over one representative of each +-kappa pair, in chunks with BLAS. As in [TOP] Sec. 14 the
 sum is exact for |kappa| chi_* <= 70, capped at 24 and at least 12 fundamental shells
-(|kappa| <= 24 k_1, >= 12 k_1 with k_1 the shortest dual vector), and the isotropic continuum
-4 pi int_{k > k_cut} dln k P_R Delta_l^2 is added on the diagonal. Lattice sizes are d/D with d
-the shortest lattice vector and D = 2 chi_*.
+(|kappa| <= 24 k_1, >= 12 k_1; we read "fundamental shell" as k_1 = the shortest dual vector,
+which reproduces the paper's cubic 1.5 D entry 0.029 where the uncapped sum gives 0.028), and the
+isotropic continuum 4 pi int_{k > k_cut} dln k P_R Delta_l^2 is added on the diagonal. Lattice
+sizes are d/D with d the shortest lattice vector and D = 2 chi_*.
+
+Convergence: the cutoff changes D_l by < 0.1 % (as [TOP] Sec. 14 states), but near d = D the KL
+divergence is not converged in it: |kappa| chi_* <= 110 raises the cubic 1.0 D value from 19.06
+to 19.41 (140: 19.45) and FCC 1.0 D from 38.10 to 38.80. The paper's own l <= 40 statement
+([TOP] Sec. 10: FCC 1.05 D, 10.4 -> 10.8) matches this module at the doubled cutoff (10.41 -> 10.73),
+not at 70 (10.15 -> 10.33). The tables use the paper's cutoff; at
+1.2 D raising it moves KL by < 0.5 %, and at 1.5 D the 24-shell cap (k chi_* = 50 for cubic)
+leaves the cubic value 0.0286 about 3 % above its converged 0.0277.
 
 The KL divergence of two zero-mean Gaussians, [TOP] Theorem P, is
 KL(P_T || P_inf) = 1/2 [tr(C_inf^{-1} C_T) - n - ln det(C_inf^{-1} C_T)], and every test has
@@ -24,7 +33,6 @@ power minus size at most min(1, sqrt(KL/2)).
 from __future__ import annotations
 
 import hashlib
-import itertools
 import os
 from functools import lru_cache
 
@@ -52,6 +60,8 @@ PAPER_KL = {
     "pinsker": {"cubic": [1.00, 1.00, 0.86, 0.56, 0.41, 0.25, 0.12],
                 "BCC": [1.00, 1.00, 1.00, 0.69, 0.50, 0.29, 0.13],
                 "FCC": [1.00, 1.00, 1.00, 0.81, 0.58, 0.34, 0.15]},
+    "lmax40_FCC_1.05": {"lmax30": 10.4, "lmax40": 10.8, "source": "[TOP] Sec. 10"},
+    "polarization_FCC": {"1.05": [10.15, 10.94], "1.1": [3.01, 3.18], "source": "[TOP] Sec. 10"},
     "source": "[TOP] Theorem P, Sec. 10",
 }
 #: [TOP] Sec. 8 table (page 21): D_2 (uK^2) and KL (l <= 30); LCDM D_2 = 1016
@@ -104,7 +114,7 @@ def _check_basis(basis) -> np.ndarray:
     return b
 
 
-def shortest_vector_length(basis: np.ndarray, max_points: int = 10_000_000) -> float:
+def shortest_vector_length(basis: np.ndarray, max_points: int = 2_000_000) -> float:
     """Length of the shortest non-zero lattice vector, exact for any (also unreduced) basis.
 
     A vector v = n B shorter than the shortest basis row r0 has |n_i| <= r0 |B^{-1} e_i|.
@@ -112,9 +122,9 @@ def shortest_vector_length(basis: np.ndarray, max_points: int = 10_000_000) -> f
     b = _check_basis(basis)
     r0 = float(np.min(np.linalg.norm(b, axis=1)))
     nb = np.ceil(r0 * np.linalg.norm(np.linalg.inv(b), axis=0) + 1e-9).astype(int)
-    if np.prod(2 * nb + 1) > max_points:
+    if np.prod(2.0 * nb + 1) > max_points:
         raise ValueError("lattice basis too skewed; reduce it (e.g. LLL) first")
-    n = np.array(list(itertools.product(*(np.arange(-m, m + 1) for m in nb))), dtype=float)
+    n = np.stack(np.meshgrid(*(np.arange(-m, m + 1.0) for m in nb), indexing="ij"), axis=-1).reshape(-1, 3)
     n = n[np.any(n != 0, axis=1)]
     return float(np.min(np.linalg.norm(n @ b, axis=1)))
 
@@ -130,13 +140,21 @@ def volume_over_D3(shape, d_over_D: float) -> float:
     return float(abs(np.linalg.det(lattice_basis(shape))) * d_over_D**3)
 
 
+def as_rotation(R) -> np.ndarray:
+    """R as a proper rotation; an improper orthogonal matrix is replaced by -R (every lattice is -I symmetric)."""
+    r = np.asarray(R, dtype=float)
+    if r.shape != (3, 3) or not np.all(np.isfinite(r)) or np.max(np.abs(r @ r.T - np.eye(3))) > 1e-8:
+        raise ValueError("R must be an orthogonal 3x3 matrix")
+    return r if np.linalg.det(r) > 0 else -r
+
+
 def scaled_basis(shape, d_over_D: float, chi_star: float | None = None, R: np.ndarray | None = None) -> np.ndarray:
     """Basis rows in Mpc with shortest vector d = (d/D) 2 chi_*, rotated by R (rows b -> R b)."""
     if not (np.isfinite(d_over_D) and d_over_D > 0):
         raise ValueError(f"d/D must be positive, got {d_over_D}")
     chi = load_transfer().chi_star if chi_star is None else chi_star
     b = lattice_basis(shape) * d_over_D * 2.0 * chi
-    return b if R is None else b @ np.asarray(R, dtype=float).T
+    return b if R is None else b @ as_rotation(R).T
 
 
 def dual_basis(basis: np.ndarray) -> np.ndarray:
@@ -234,7 +252,9 @@ def mode_vectors(kvecs: np.ndarray, tf: TransferFunctions, lmin: int = LMIN, lma
 
 
 def block_diag_rotation(R: np.ndarray, lmin: int = LMIN, lmax: int = LMAX) -> np.ndarray:
-    """Dense real Wigner matrix D(R) = blockdiag(R_l) with Y^r(R n) = D Y^r(n)."""
+    """Dense real Wigner matrix D(R) = blockdiag(R_l) with Y^r(R n) = D Y^r(n), R a proper rotation."""
+    if np.linalg.det(as_rotation(R)) * np.linalg.det(R) < 0:  # improper R: Y^r(R n) = (-1)^l D(-R) Y^r(n)
+        raise ValueError("block_diag_rotation needs a proper rotation (det R = +1)")
     n = H.n_modes(lmin, lmax)
     d = np.zeros((n, n))
     for l, sl in H.block_slices(lmin, lmax).items():
@@ -243,7 +263,8 @@ def block_diag_rotation(R: np.ndarray, lmin: int = LMIN, lmax: int = LMAX) -> np
 
 
 def rotate_covariance(C: np.ndarray, R: np.ndarray, lmin: int = LMIN, lmax: int = LMAX) -> np.ndarray:
-    """C(R) = D(R) C D(R)^T: covariance of the lattice rotated actively by R."""
+    """C(R) = D(R) C D(R)^T: covariance of the lattice rotated actively by R (improper R -> -R)."""
+    R = as_rotation(R)
     sl = H.block_slices(lmin, lmax)
     blocks = {l: H.real_rotation_block(l, R) for l in sl}
     out = np.empty_like(C)
@@ -335,6 +356,7 @@ def torus_covariance(shape, d_over_D: float, R: np.ndarray | None = None, lmin: 
     if method not in ("wigner", "lattice"):
         raise ValueError(f"method must be 'wigner' or 'lattice', got {method!r}")
     shells = (float(shells[0]), float(shells[1]))
+    R = None if R is None else as_rotation(R)
     if R is not None and method == "lattice":
         return _direct_covariance(shape, d_over_D, R, lmin, lmax, kcut_chi, shells)
     c0 = _lattice_frame_covariance(shape, d_over_D, lmin, lmax, kcut_chi, shells, cache)
@@ -450,7 +472,8 @@ def kl_unit_crossing(shape: str, bracket: tuple[float, float] = (1.05, 1.3), lma
                      xtol: float = 5e-4) -> float:
     """Size d/D at which KL(l <= lmax) = 1 (Brent root of ln KL; covariances not cached).
 
-    [TOP] Sec. 8 quotes d ~ 1.13 D (cubic), 1.16 D (BCC), 1.18 D (FCC).
+    [TOP] Sec. 8 quotes d ~ 1.13 D (cubic), 1.16 D (BCC), 1.18 D (FCC); we find 1.122, 1.146, 1.169.
+    The paper's own Theorem P table (BCC 1.15 D: 0.95 < 1) puts the BCC crossing below 1.15 D too.
     """
     c_inf = lcdm_covariance(LMIN, lmax)
 

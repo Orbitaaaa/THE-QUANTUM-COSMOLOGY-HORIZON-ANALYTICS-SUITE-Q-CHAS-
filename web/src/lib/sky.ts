@@ -485,6 +485,41 @@ export function createMollweide(el: HTMLElement, opts: SkyViewOptions = {}): Sky
     ctx.stroke();
   }
 
+  /**
+   * Fill a closed great-circle polygon. Longitudes are unwrapped along the outline so a footprint
+   * straddling the l = 180 deg seam is drawn on both edges (clipped to the ellipse) instead of
+   * being filled across the whole map; a polygon enclosing a pole keeps its outline only.
+   */
+  function fillPolygon(ctx: CanvasRenderingContext2D, pts: V3[], color: string): void {
+    if (pts.length < 3) return;
+    const lbs = pts.map((v) => vecToLb(v));
+    const wrap180 = (x: number): number => ((((x + 180) % 360) + 360) % 360) - 180;
+    const lam: number[] = [wrap180(lbs[0]![0])];
+    for (let i = 1; i < lbs.length; i++) lam.push(lam[i - 1]! + wrap180(lbs[i]![0] - lbs[i - 1]![0]));
+    if (Math.abs(lam[lam.length - 1]! - lam[0]!) > 180) return;
+    const lo = Math.min(...lam);
+    const hi = Math.max(...lam);
+    const shifts = [0, ...(hi > 180 ? [-360] : []), ...(lo < -180 ? [360] : [])];
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(dims.w / 2, dims.h / 2, dims.ew / 2, dims.eh / 2, 0, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = color;
+    for (const shift of shifts) {
+      ctx.beginPath();
+      lam.forEach((L, i) => {
+        const [x, y] = mollweideForward(L + shift, lbs[i]![1], { wrap: false });
+        const [px, py] = toCanvas(x, y);
+        if (i) ctx.lineTo(px, py);
+        else ctx.moveTo(px, py);
+      });
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
   function marker(ctx: CanvasRenderingContext2D, p: [number, number], color: string, label?: string): void {
     ctx.beginPath();
     ctx.arc(p[0], p[1], 4.5, 0, 2 * Math.PI);
@@ -541,19 +576,7 @@ export function createMollweide(el: HTMLElement, opts: SkyViewOptions = {}): Sky
         if (o.label) marker(ctx, project(lbToVec(o.center[0], o.center[1])), color, o.label);
       } else if (o.kind === 'polygon') {
         const pts = polygonPoints(o.vertices);
-        if (o.fill) {
-          ctx.beginPath();
-          pts.forEach((v, i) => {
-            const p = project(v);
-            if (i) ctx.lineTo(p[0], p[1]);
-            else ctx.moveTo(p[0], p[1]);
-          });
-          ctx.closePath();
-          ctx.globalAlpha = 0.18;
-          ctx.fillStyle = color;
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
+        if (o.fill) fillPolygon(ctx, pts, color);
         polyline(ctx, pts);
       } else if (o.kind === 'chord') {
         // the chord passes through the observer; on a projection we join the two sky points
@@ -639,6 +662,7 @@ export function createMollweide(el: HTMLElement, opts: SkyViewOptions = {}): Sky
       ro.disconnect();
       offTheme();
       pickers.clear();
+      root.remove();
     },
   };
   return view;

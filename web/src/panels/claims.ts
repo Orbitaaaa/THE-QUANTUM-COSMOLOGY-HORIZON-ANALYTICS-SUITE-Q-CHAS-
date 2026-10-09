@@ -148,7 +148,7 @@ function legendPanel() {
         'Proved: a theorem, proposition or lemma of the paper (possibly conditional on stated hypotheses, which the printed status names).',
         'Computed: a numerical result (linear theory, simulation, lattice computation) with the precision the paper states.',
         'Measured: a data analysis of public observations (Planck, WMAP, LIGO), calibrated as the paper describes.',
-        'Assumed: a hypothesis, conditional statement or estimate the papers do not prove.',
+        'Assumed: a hypothesis, conditional statement, estimate or path-integral derivation that the papers do not prove as a theorem.',
         'Open: a quantity the papers say must still be measured.',
       ],
       'Badge legend',

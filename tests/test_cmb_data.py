@@ -52,6 +52,9 @@ def test_unit_factor_and_beam():
     assert M._unit_factor("mK, thermodynamic") == 1e3
     assert M._unit_factor("K_CMB") == 1e6
     assert M._unit_factor("uK") == 1.0
+    for bad in ("K_RJ", "mK, antenna", "MJy/sr", "counts"):
+        with pytest.raises(ValueError):
+            M._unit_factor(bad)
     assert np.allclose(M.gaussian_beam(60.0, 200), hp.gauss_beam(np.radians(1.0), lmax=200), rtol=1e-12)
 
 
@@ -102,6 +105,68 @@ def test_planck_absent_is_none(tmp_path):
     assert S.load_planck_tt(tmp_path) is None
     with pytest.raises(FileNotFoundError):
         M.prepare_sky("planck", raw_dir=tmp_path)
+
+
+def _write_commander_like(path, inp_K: np.ndarray, nside: int) -> None:
+    """PR3 Commander column layout (NESTED, K_CMB); I_STOKES deliberately differs from I_STOKES_INP."""
+    zero = np.zeros(12 * nside**2, dtype=np.float32)
+    names = ["I_STOKES", "Q_STOKES", "U_STOKES", "TMASK", "PMASK", "I_STOKES_INP", "Q_STOKES_INP", "U_STOKES_INP"]
+    cols = [zero + 1.0, zero, zero, zero + 1, zero + 1, inp_K.astype(np.float32), zero, zero]
+    units = ["K_CMB"] * 3 + ["NONE"] * 2 + ["K_CMB"] * 3
+    hp.write_map(str(path), cols, nest=True, coord="G", column_names=names, column_units=units,
+                 fits_IDL=False, dtype=np.float32, overwrite=True)
+
+
+def test_planck_branch_on_synthetic_files(tmp_path, monkeypatch):
+    """The Planck code path end to end on small files in the PR3 formats (no KQ75 mask on disk)."""
+    from qchas.data.registry import DATASETS
+
+    def on_disk(key, raw_dir=None):  # the registry's size floor (1 GB) would hide the small test files
+        p = tmp_path / DATASETS[key].filename
+        return p if p.exists() else None
+
+    monkeypatch.setattr(M, "available", on_disk)
+    monkeypatch.setattr(S, "available", on_disk)
+    nside_in = 128
+    rng = np.random.default_rng(11)
+    alm = M.gaussian_alm(_toy_cl(3 * nside_in - 1), 3 * nside_in - 1, rng)
+    sky_ring = hp.alm2map(hp.almxfl(alm, M.gaussian_beam(5.0, 3 * nside_in - 1)), nside_in, lmax=3 * nside_in - 1)
+    inp_K = hp.reorder(sky_ring, r2n=True) * 1e-6
+    _write_commander_like(tmp_path / DATASETS["planck_commander"].filename, inp_K, nside_in)
+    ell = np.arange(2, 2509)
+    rows = np.column_stack([ell, 1000.0 + ell, np.full(ell.size, 100.0), np.full(ell.size, 160.0)])
+    np.savetxt(tmp_path / DATASETS["planck_tt"].filename, rows, fmt=["%6d", "%15.8E", "%15.8E", "%15.8E"],
+               header="   L    TT             -dTT            +dTT")
+
+    full = M.load_planck_commander(tmp_path)
+    assert full.meta["column"] == "I_STOKES_INP" and full.meta["unit_factor_to_uK"] == 1e6
+    assert full.beam_fwhm_arcmin == 5.0 and full.nside == nside_in
+    sky_p = M.prepare_sky("auto", raw_dir=tmp_path)
+    assert sky_p.source_name == "Planck-PR3-Commander"
+    a_in = H.healpy_to_real(alm, 2, 30, 3 * nside_in - 1)
+    assert np.linalg.norm(sky_p.alm_real - a_in) / np.linalg.norm(a_in) < 0.01
+    assert sky_p.mask_fraction is None and any("KQ75" in w for w in sky_p.meta["warnings"])
+    meta, arrays = M.sky_map_export(sky_p)
+    assert meta["mask_file"] is None and "sky_mask.bin" not in arrays and meta["source"] == "Planck-PR3-Commander"
+
+    planck = S.load_planck_tt(tmp_path)
+    assert np.allclose(planck.select(2, 4).err_minus, 100.0) and np.allclose(planck.select(2, 4).err_plus, 160.0)
+    model = S.cl_from_dl(np.arange(2, 31), np.full(29, 1000.0))
+    f = S.cmb_fields(sky_p, None, planck, model_cl_band=model, n_realizations=5_000, nside_search=8)
+    json.dumps(f)
+    assert f["source"] == "Planck-PR3-Commander" and f["stats"]["primary"] == "planck"
+    assert np.isclose(f["stats"]["D2_obs"], 1002.0) and f["observed"]["wmap"] is None
+    assert f["observed"]["planck"]["err_plus"][0] == 160.0
+    assert f["stats"]["extraction_check"]["published_D"][0] == 1002.0
+    assert len(f["stats"]["extraction_check"]["paper_D_extracted_rel_diff"]) == 5
+    assert f["stats"]["paper_check"]["D2_planck_spectrum"] == pytest.approx(1002.0)
+    assert not any("I_STOKES_INP" in w for w in sky_p.meta["warnings"])
+
+    inp_K[:4] = hp.UNSEEN  # the four NESTED children of one Nside-64 pixel
+    _write_commander_like(tmp_path / DATASETS["planck_commander"].filename, inp_K, nside_in)
+    sky_u = M.prepare_sky("planck", raw_dir=tmp_path)
+    assert sky_u.meta["extraction"]["unseen_pixels_zeroed"] == 1
+    assert any("no valid input" in w for w in sky_u.meta["warnings"])
 
 
 @needs_wmap
@@ -219,6 +284,22 @@ def test_cmb_fields_structure(sky, wmap_tt):
     assert st["p_C2"]["planck"] is None and 0 < st["p_C2"]["wmap"] < st["p_C2"]["map"] < 1
     assert st["axes"]["source"] == "WMAP9-ILC"
     assert st["extraction_check"]["published_D"][0] == pytest.approx(150.6398)
+    for key in ("D2_obs", "S12_obs", "S12_lcdm_median", "p_C2", "p_S12"):  # docs/ARCHITECTURE.md cmb.json stats
+        assert key in st
+    # keys read by qchas.validation._group_cmb_stats
+    pc = st["paper_check"]
+    assert 0 < pc["p_S12_planck_value"] < 1 and 0 < pc["p_C2_planck_value"] < 1 and pc["S12_lcdm_median"] > 0
+
+
+@needs_wmap
+def test_statistics_on_a_sub_band(sky, wmap_tt):
+    model = S.cl_from_dl(np.arange(3, 21), np.full(18, 1000.0))
+    f = S.cmb_fields(sky, wmap_tt, None, lmin=3, lmax=20, model_cl_band=model, n_realizations=2_000, nside_search=4)
+    json.dumps(f)
+    st = f["stats"]
+    assert f["map_D"] == pytest.approx(sky.D_ell[1:19].tolist())
+    assert st["D2_obs"] is None and st["p_C2"]["wmap"] is None and st["p_S12"]["map"] is not None
+    assert "axes" not in st and st["paper_check"]["p_S12_planck_value"] is None
 
 
 # --- slow: paper numbers and full-resolution simulations ------------------------------------
@@ -252,7 +333,9 @@ def test_planck_pipeline_against_paper():
     sky_p = M.prepare_sky("auto")
     assert sky_p.source_name == "Planck-PR3-Commander"
     d = np.asarray(sky_p.D_ell[:5])
-    assert np.allclose(d, M.PAPER_PIPELINE["D_extracted"], rtol=0.05)
+    # same map and procedure: only the paper's integer rounding and its simulated pixel-window
+    # correction separate the two (a 1 deg beam applied by mistake would already move D_6 by 3 %)
+    assert np.allclose(d, M.PAPER_PIPELINE["D_extracted"], rtol=0.02)
     planck = S.load_planck_tt()
     assert np.allclose(planck.select(2, 6).D, M.PAPER_PIPELINE["D_published"], rtol=0.01)
     assert abs(float(S.s_half(planck.cl_band())) / S.PAPER_STATS["S12_planck"] - 1) < 0.01

@@ -45,6 +45,8 @@ def _as_direction(d) -> np.ndarray:
 
 def scaled_basis(basis: np.ndarray, d_over_D: float) -> np.ndarray:
     """Rescale a row basis so its shortest lattice vector has length d/D."""
+    if not (math.isfinite(d_over_D) and d_over_D > 0.0):
+        raise ValueError("d_over_D must be a positive number")
     B = np.asarray(basis, dtype=float)
     return B * (d_over_D / shortest_vector(B)[1])
 
@@ -114,8 +116,11 @@ def ghost_images(source_direction, source_distance_over_D: float, basis: np.ndar
     """Every image x + g of a source at x (direction, distance in D) out to ``max_distance``.
 
     Default ``max_distance_over_D`` is twice the horizon. Each entry gives the observed
-    Galactic (l, b), distance (D and Gpc) and whether the image lies inside the horizon.
+    Galactic (l, b), distance (D and Gpc) and whether the image lies inside the horizon; an
+    image at the observer (source distance 0) has ``l = b = None``.
     """
+    if not source_distance_over_D >= 0.0:
+        raise ValueError("source_distance_over_D must be >= 0")
     Rm = _rotation(R)
     x = _as_direction(source_direction) * float(source_distance_over_D)
     rmax = 2.0 * horizon_over_D if max_distance_over_D is None else float(max_distance_over_D)
@@ -126,13 +131,10 @@ def ghost_images(source_direction, source_distance_over_D: float, basis: np.ndar
     keep = r <= rmax
     out = []
     for yi, ri, ni in zip(y[keep], r[keep], n[keep]):
-        if ri > 0.0:
-            l, b = vec_to_lb(yi)
-        else:
-            l, b = np.nan, np.nan
+        l, b = (float(a) for a in vec_to_lb(yi)) if ri > 1e-12 else (None, None)
         out.append({
             "n": [int(v) for v in ni], "is_source": bool(not np.any(ni)),
-            "l": float(l), "b": float(b), "distance_over_D": float(ri),
+            "l": l, "b": b, "distance_over_D": float(ri),
             "distance_Gpc": float(ri * D_LSS_GPC), "inside_horizon": bool(ri <= horizon_over_D),
         })
     out.sort(key=lambda e: e["distance_over_D"])

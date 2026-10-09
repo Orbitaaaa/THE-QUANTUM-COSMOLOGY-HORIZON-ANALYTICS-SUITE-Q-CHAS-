@@ -24,7 +24,10 @@ import numpy as np
 from ..data.fetch import DEFAULT_RAW_DIR, available
 from ..data.registry import DATASETS
 from . import harmonics as H
-from .maps import SkyData, sky_map_export  # noqa: F401  (sky_map_export re-exported for the exporter)
+from .maps import (  # noqa: F401  (sky_map_export re-exported for the exporter)
+    SkyData,
+    sky_map_export,
+)
 
 LMIN, LMAX = 2, 30
 N_GAUSS_LEGENDRE = 400
@@ -125,7 +128,7 @@ def load_planck_tt(raw_dir: Path | None = None) -> Spectrum | None:
     return Spectrum(
         name="planck", ell=t[:, 0].astype(int), D=t[:, 1], err=0.5 * (lo + hi), err_minus=lo, err_plus=hi,
         meta={"file": ds.filename, "citation": ds.citation, "label": "Planck 2018 TT (published)",
-              "estimator": "Commander likelihood for l < 30 (Planck 2018 results V)"},
+              "estimator": "Commander for 2 <= l <= 29, Plik for l >= 30 (Planck 2018 results V)"},
     )
 
 
@@ -345,6 +348,13 @@ def _hist(x: np.ndarray, bins: int = 60) -> dict:
     return {"edges": edges.tolist(), "counts": counts.tolist(), "overflow": int(np.sum(x > hi))}
 
 
+def _sky_band(sky: SkyData, values, lmin: int, lmax: int) -> np.ndarray:
+    """Entries of a per-l array of ``sky`` (over sky.lmin..sky.lmax) restricted to lmin..lmax."""
+    if lmin < sky.lmin or lmax > sky.lmax:
+        raise ValueError(f"sky covers {sky.lmin}..{sky.lmax}, not {lmin}..{lmax}")
+    return np.asarray(values, dtype=float)[lmin - sky.lmin: lmax - sky.lmin + 1]
+
+
 def low_l_statistics(sky: SkyData | None, wmap: Spectrum | None, planck: Spectrum | None, *,
                      lmin: int = LMIN, lmax: int = LMAX, model_cl_band: np.ndarray | None = None,
                      n_realizations: int = N_REALIZATIONS, seed: int = SEED, nside_search: int = 64) -> dict:
@@ -361,12 +371,12 @@ def low_l_statistics(sky: SkyData | None, wmap: Spectrum | None, planck: Spectru
     inputs: dict[str, np.ndarray | None] = {
         "planck": None if planck is None else planck.cl_band(lmin, lmax),
         "wmap": None if wmap is None else wmap.cl_band(lmin, lmax),
-        "map": None if sky is None else np.asarray(sky.cl),
+        "map": None if sky is None else _sky_band(sky, sky.cl, lmin, lmax),
     }
     res = {k: (None if c is None else anomaly_pvalues(c, model, lmin, sims, s_sims)) for k, c in inputs.items()}
 
     def pick(key: str) -> dict:
-        return {k: (None if r is None else r[key]) for k, r in res.items()}
+        return {k: (None if r is None else r.get(key)) for k, r in res.items()}
 
     primary = "planck" if res["planck"] else ("wmap" if res["wmap"] else "map")
     theta = np.arange(0.0, 180.01, 2.0)
@@ -386,7 +396,7 @@ def low_l_statistics(sky: SkyData | None, wmap: Spectrum | None, planck: Spectru
         "D2": pick("D2"), "S12": pick("S12"),
         "p_C2": pick("p_C2"), "p_C2_analytic": pick("p_C2_analytic"), "p_S12": pick("p_S12"),
         "labels": {
-            "planck": "Planck 2018 published TT (Commander, l < 30)",
+            "planck": "Planck 2018 published TT (Commander for l <= 29, Plik at l = 30)",
             "wmap": "WMAP 9-yr published TT (maximum likelihood, l <= 32)",
             "map": None if sky is None else f"our full-sky extraction from the {sky.source_name} map",
         },
@@ -397,15 +407,18 @@ def low_l_statistics(sky: SkyData | None, wmap: Spectrum | None, planck: Spectru
         },
         "paper": dict(pc),
         "paper_check": {
-            "note": "our LambdaCDM realizations evaluated at the Planck values printed in [TOP]",
-            "p_S12_at_paper_S12": float(np.mean(s_sims <= pc["S12_planck"])),
-            "p_C2_at_paper_D2": float(np.mean(sims[:, 0] <= cl_from_dl(2, pc["D2_planck"]))) if lmin == 2 else None,
-            "S12_lcdm_median": float(np.median(s_sims)), "D2_lcdm": float(dl_from_cl(2, model[0])),
+            "note": "our LambdaCDM realizations evaluated at the Planck values printed in [TOP] Sec. 8",
+            "p_S12_planck_value": float(np.mean(s_sims <= pc["S12_planck"])) if (lmin, lmax) == (LMIN, LMAX) else None,
+            "p_C2_planck_value": float(np.mean(sims[:, 0] <= cl_from_dl(2, pc["D2_planck"]))) if lmin == 2 else None,
+            "S12_lcdm_median": float(np.median(s_sims)) if (lmin, lmax) == (LMIN, LMAX) else None,
+            "D2_lcdm": float(dl_from_cl(2, model[0])) if lmin == 2 else None,
+            "S12_planck_spectrum": res["planck"]["S12"] if res["planck"] and (lmin, lmax) == (LMIN, LMAX) else None,
+            "D2_planck_spectrum": res["planck"].get("D2") if res["planck"] else None,
         },
         "lcdm_D": dl_from_cl(ell, model).tolist(),
     }
-    if sky is not None and lmin <= 3 <= lmax:
-        out["axes"] = quadrupole_octopole_alignment(sky.alm_real, lmin, lmax, nside_search, sky.source_name)
+    if sky is not None and lmin <= 2 and lmax >= 3:
+        out["axes"] = quadrupole_octopole_alignment(sky.alm_real, sky.lmin, sky.lmax, nside_search, sky.source_name)
     return out
 
 
@@ -420,6 +433,9 @@ def extraction_check(sky: SkyData, wmap: Spectrum | None, planck: Spectrum | Non
     if ref is not None:
         out["published"] = ref.meta.get("label")
         out["published_D"] = ref.select(sky.lmin, sky.lmax).D.tolist()
+    if sky.source_name == SOURCE_PLANCK and sky.lmin <= 2 and sky.lmax >= 6:
+        ours = _sky_band(sky, sky.D_ell, 2, 6)
+        out["paper_D_extracted_rel_diff"] = (ours / np.asarray(PAPER_PIPELINE["D_extracted"]) - 1).tolist()
     return out
 
 
@@ -433,7 +449,7 @@ def cmb_fields(sky: SkyData | None, wmap: Spectrum | None = None, planck: Spectr
         "source": None if sky is None else sky.source_name,
         "ell": list(range(lmin, lmax + 1)),
         "observed": observed_dict(wmap, planck, lmin, lmax),
-        "map_D": None if sky is None else np.asarray(sky.D_ell).tolist(),
+        "map_D": None if sky is None else _sky_band(sky, sky.D_ell, lmin, lmax).tolist(),
         "lcdm_D": stats.pop("lcdm_D"),
         "stats": stats,
     }

@@ -125,6 +125,11 @@ export interface MollweideOptions {
   lon0?: number;
   /** astronomical convention: longitude increases to the left (default true) */
   flipLon?: boolean;
+  /**
+   * wrap the longitude offset into [-180, 180) (default true); false keeps it as given, so a
+   * path unwrapped across the l = lon0 + 180 seam projects continuously beyond the ellipse
+   */
+  wrap?: boolean;
 }
 
 /** Auxiliary angle t with 2t + sin 2t = pi sin(lat), by Newton iteration. */
@@ -148,9 +153,8 @@ function mollweideTheta(lat: number): number {
  * y in [-sqrt 2, sqrt 2] (y up).
  */
 export function mollweideForward(l: number, b: number, opts: MollweideOptions = {}): [number, number] {
-  const { lon0 = 0, flipLon = true } = opts;
-  let lam = mod(l - lon0 + 180, 360) - 180;
-  lam *= DEG;
+  const { lon0 = 0, flipLon = true, wrap = true } = opts;
+  const lam = (wrap ? mod(l - lon0 + 180, 360) - 180 : l - lon0) * DEG;
   const t = mollweideTheta(b * DEG);
   const x = ((2 * Math.SQRT2) / Math.PI) * lam * Math.cos(t);
   return [flipLon ? -x : x, Math.SQRT2 * Math.sin(t)];

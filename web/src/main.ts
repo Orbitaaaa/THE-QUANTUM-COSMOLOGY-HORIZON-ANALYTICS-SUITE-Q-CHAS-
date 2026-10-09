@@ -169,7 +169,10 @@ function paintStatus(m: Manifest | null): void {
   fBundles.value.textContent = `${BUILT_BUNDLES.filter((b) => built.has(b)).length} / ${BUILT_BUNDLES.length}`;
   fVersion.value.textContent = m.qchas_version ?? '—';
   const n = m.warnings?.length ?? 0;
-  warnValue.replaceChildren(h('span', { class: `indicator ${n ? 'warning' : 'good'}` }, n ? `${n} active` : 'none'));
+  const nErr = m.errors?.length ?? 0;
+  const label = [nErr ? `${nErr} failed` : '', n ? `${n} active` : ''].filter(Boolean).join(' · ') || 'none';
+  warnValue.replaceChildren(h('span', { class: `indicator ${nErr ? 'serious' : n ? 'warning' : 'good'}` }, label));
+  fWarn.title = nErr ? `Build errors: ${m.errors!.map((e) => e.bundle).join(', ')}` : 'Build warnings';
   built.add('manifest.json');
   for (const r of ROUTES) setDot(r, built);
 }
@@ -220,7 +223,18 @@ async function route(): Promise<void> {
   pageBody.replaceChildren(h('div', { class: 'page-loading' }, 'Loading tool…'));
   main.scrollTop = 0;
 
-  const mod = await PANEL_LOADERS[id]();
+  let mod: Awaited<ReturnType<(typeof PANEL_LOADERS)[typeof id]>>;
+  try {
+    mod = await PANEL_LOADERS[id]();
+  } catch (err) {
+    // e.g. a stale chunk after a redeploy: say so instead of spinning forever
+    console.error(err);
+    if (my === token)
+      pageBody.replaceChildren(
+        h('div', { class: 'empty-state', role: 'alert' }, icon('warning'), h('div', null, h('div', { class: 'empty-title' }, 'This tool could not be loaded'), h('div', { class: 'empty-text' }, `${String(err)}. Reload the page to fetch the current build.`))),
+      );
+    return;
+  }
   if (my !== token) return;
   pageTitle.textContent = mod.title;
   pageSub.textContent = mod.subtitle ?? info.blurb;
@@ -232,8 +246,11 @@ async function route(): Promise<void> {
     manifest,
     theme: currentTheme(),
     load: loadBundle,
-    onCleanup: (fn) => cleanups.push(fn),
-    onThemeChange: (cb) => cleanups.push(onThemeChange(cb)),
+    // after navigation away, release immediately instead of leaking into the next route
+    onCleanup: (fn) => (my === token ? cleanups.push(fn) : fn()),
+    onThemeChange: (cb) => {
+      if (my === token) cleanups.push(onThemeChange(cb));
+    },
     setSubtitle: (t) => (pageSub.textContent = t),
     setHeaderExtras: (nodes) => headExtras.replaceChildren(...nodes),
     navigate: (rid) => (location.hash = `#/${rid}`),

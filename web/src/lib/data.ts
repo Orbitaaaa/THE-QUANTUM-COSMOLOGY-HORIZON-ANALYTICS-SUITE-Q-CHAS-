@@ -4,7 +4,8 @@
  * Bundles are produced by `qchas build` into web/public/data/ and fetched at runtime from
  * ./data/. A missing bundle is reported as such (`{ ok: false, reason: 'missing' }`) and the
  * panel renders an explicit "not built yet" state; nothing here ever substitutes placeholder
- * values for data. Results are cached per URL for the lifetime of the page.
+ * values for data. Results are cached per URL for the lifetime of the page, except transient
+ * network failures, which are retried on the next request.
  */
 
 /** Galactic (l, b) in degrees. */
@@ -27,14 +28,26 @@ export interface DatasetRecord {
   citation: string;
 }
 
+/** A bundle whose builder raised during `qchas build` (the other bundles are still written). */
+export interface BuildError {
+  bundle: string;
+  error: string;
+  trace?: string;
+}
+
 export interface Manifest {
   generated_utc: string;
   qchas_version: string;
-  /** e.g. "WMAP9-ILC" or "Planck-PR3-Commander" */
+  /** e.g. "WMAP9-ILC" or "Planck-PR3-Commander"; null when no sky map could be prepared */
   cmb_map_source: string | null;
   datasets: Record<string, DatasetRecord>;
+  /** files actually written (JSON bundles and .bin maps) */
   bundles: string[];
   warnings: string[];
+  /** builders that failed (export.py); absent in older manifests */
+  errors?: BuildError[];
+  fast_build?: boolean;
+  timings_s?: Record<string, number>;
 }
 
 // --- topology.json -------------------------------------------------------------------
@@ -120,6 +133,35 @@ export interface Claim {
   source: string;
 }
 
+/** One cubic-family circle pattern in the lattice frame (qchas.topology.circles.circle_table). */
+export interface CircleTable {
+  shape: string;
+  d_over_D: number;
+  n_pairs: number;
+  radius_deg: number | null;
+  angles_between_centres_deg: number[];
+  shells: { length_over_D: number; radius_deg: number; n_pairs: number; angles_between_centres_deg: number[] }[];
+  computed?: boolean;
+}
+
+/** Theorem B / B-loc visual: renormalized local variance on a z-slice (qchas.topology.vacuum). */
+export interface VacuumSlice {
+  manifold: string;
+  m_L: number;
+  L: number;
+  x: number[];
+  y: number[];
+  z: number;
+  excess: number[][];
+  excess_minus_min: number[][];
+  min: number;
+  max: number;
+  smoothing_sigma: number | null;
+  cutoff_mL: number;
+  computed?: boolean;
+  source?: string;
+}
+
 export interface TopologyBundle {
   manifolds: ManifoldEntry[];
   principles: PrincipleEntry[];
@@ -129,6 +171,26 @@ export interface TopologyBundle {
   exclusion_torus: ExclusionTorusEntry[];
   other_flat: OtherFlatEntry[];
   claims: Claim[];
+  /** matched-circle tables at 0.985 D and 0.8 D and the [TOP] Sec. 9 FCC orientation (not in the contract yet) */
+  circles?: {
+    chi_star_over_D: number;
+    D_Gpc: number;
+    tables: CircleTable[];
+    paper_table: { shape: string; pairs: number; centres: string; radius: string | null; angles_deg: number[] }[];
+    paper_fig4: { d_over_D: number; radius_deg: number; pairs: Record<string, number> };
+    fcc_preregistered: {
+      R: Matrix3;
+      assignment: number[];
+      signs: number[];
+      residual_rms_deg: number;
+      residual_max_deg: number;
+      axes_gal_paper: LBPair[];
+      source: string;
+    };
+    source: string;
+  };
+  /** Theorem B / B-loc vacuum-variance slices (not in the contract yet) */
+  vacuum?: Record<string, VacuumSlice | LBPair[] | string>;
 }
 
 // --- lattice.json --------------------------------------------------------------------
@@ -173,8 +235,11 @@ export interface SkyMapEntry {
   name: string;
   file: string;
   description: string;
+  /** extremes of the map (often Galactic-plane residuals; not a good colour limit) */
   min: number;
   max: number;
+  /** symmetric display range [-r, r], r = 99.5th percentile of |value| (export.py) */
+  range?: [number, number];
 }
 
 export interface SkyMapMeta {
@@ -184,7 +249,9 @@ export interface SkyMapMeta {
   unit: string;
   maps: SkyMapEntry[];
   mask_file: string | null;
+  mask?: { name: string; fsky: number; threshold: number | null } | null;
   source: string;
+  computed?: boolean;
 }
 
 // --- cmb.json ------------------------------------------------------------------------
@@ -192,7 +259,14 @@ export interface SkyMapMeta {
 export interface SpectrumSeries {
   ell: number[];
   D: number[];
+  /** symmetric error (or the mean of the asymmetric pair) */
   err: number[];
+  err_minus?: number[];
+  err_plus?: number[];
+  label?: string | null;
+  estimator?: string | null;
+  citation?: string | null;
+  file?: string | null;
 }
 
 export type ShapeSeries = Record<string, number[]>;
@@ -210,14 +284,18 @@ export interface LikelihoodRow {
 }
 
 export interface CmbBundle {
-  source: string;
+  /** null when no sky map could be prepared */
+  source: string | null;
   ell: number[];
   observed: { wmap: SpectrumSeries | null; planck: SpectrumSeries | null };
-  map_D: number[];
+  /** D_l of our own a_lm extraction; null without a sky map */
+  map_D: number[] | null;
   lcdm_D: number[];
   torus_D: ShapeSeries;
   stats: {
-    D2_obs: number;
+    /** 'planck' | 'wmap' | 'map': the input D2_obs and S12_obs refer to */
+    primary?: string;
+    D2_obs: number | null;
     S12_obs: number;
     S12_lcdm_median: number;
     p_C2: Record<string, number | null>;
@@ -231,16 +309,20 @@ export interface CmbBundle {
     FCC: number[];
     paper: Record<string, Record<string, number>>;
     pinsker_bound: ShapeSeries;
+    [extra: string]: unknown;
   };
   ceiling: {
     d_over_D: number[];
     causal_ball: number[];
     boundary_sphere: number[];
     lss_ball: number[];
-    cmb_l30: number[];
+    /** the paper leaves the last entry blank: null */
+    cmb_l30: (number | null)[];
     source: string;
   };
-  likelihood: LikelihoodRow[];
+  /** null until the orientation-scanned likelihood (qchas.cmb.likelihood) has run */
+  likelihood: LikelihoodRow[] | null;
+  [extra: string]: unknown;
 }
 
 // --- resonance.json ------------------------------------------------------------------
@@ -254,6 +336,7 @@ export interface ResonanceKlRow {
   f: number;
   kl: number;
   gain: number;
+  computed?: boolean;
   paper?: { no_line?: PaperValue; kl?: PaperValue; gain?: PaperValue };
 }
 
@@ -291,8 +374,10 @@ export interface ResonanceBundle {
     p_avg: number;
     paper: { S_max: number; p_max: number; S_avg: number; p_avg: number };
   } | null;
-  exits_3d: { spectrum: string; [d: string]: number | string }[];
+  /** blank cells of the [TOP] Sec. 11.8 table are null */
+  exits_3d: { spectrum: string; [d: string]: number | string | null }[];
   source: string;
+  [extra: string]: unknown;
 }
 
 // --- spherex.json --------------------------------------------------------------------
@@ -338,10 +423,12 @@ export interface QesRow {
   mass: number;
   c: number;
   rb_over_rs: number;
+  s_bh?: number;
   depth: number;
   lag: number;
   t_scr: number;
   s_gen_minus_s_bh: number;
+  converged?: boolean;
   paper: Partial<Record<'depth' | 'lag' | 't_scr' | 's_gen_minus_s_bh', number>>;
 }
 
@@ -357,6 +444,15 @@ export interface EvaporationRun {
   envelope: number[];
   page_average: number[];
   diary_mi: number[];
+  s_ref?: number[];
+  max_bits?: number;
+  max_step?: number;
+  max_dev?: number;
+  max_dev_step?: number;
+  final_bits?: number;
+  recovered_step?: number | null;
+  recovery_threshold_bits?: number;
+  computed?: boolean;
 }
 
 /** Output of qchas.horizon.evaporation.decoding_infidelity(). */
@@ -388,21 +484,36 @@ export interface HorizonBundle {
     ladder: { type: string; label: string; trace: string; entropy: string; source: string }[];
     de_sitter: { entropy_nats: number; log10_entropy: number; horizon_radius_Gpc: number; [extra: string]: number };
     min_area_lp2: number;
-    window_examples: { m_star: number; width: number; ln_trace: number; delta_S_BH: number }[];
+    window_examples: { m_star: number; width: number; beta?: number; ln_trace: number; theorem_G_v?: number; delta_S_BH: number }[];
+    window_mass_planck?: number;
   };
   qes: { rows: QesRow[]; laws: Record<string, unknown> };
   atmosphere: {
     gaps: number[];
     share: number[];
-    paper_share: number[];
+    /** null where the paper prints no value for that gap */
+    paper_share: (number | null)[];
     area_coeff: number;
-    continuum: Record<string, number>;
+    /** quoted continuum values plus their "source" string */
+    continuum: Record<string, number | string>;
+    n_sites?: number;
+    n_ball?: number;
+    ell_max?: number;
+    entropy?: number;
   };
   evaporation: {
     no_diary: EvaporationRun;
     early_diary: EvaporationRun;
     late_diary: EvaporationRun;
-    paper: { max_bits: number; max_dev: number; early_recovered_step: number; late_recovered_step: number };
+    paper: {
+      max_bits: number;
+      max_dev: number;
+      early_recovered_step: number;
+      late_recovered_step: number;
+      [extra: string]: number | string;
+    };
+    /** false when the run size differs from the paper's (fast builds) */
+    paper_comparable?: boolean;
   };
   decoding: {
     haar_old: DecodingRun;
@@ -410,7 +521,11 @@ export interface HorizonBundle {
     haar_young: DecodingRun;
     paper: Record<string, unknown>;
   };
-  kerr_spin_down: { fixed_point_scalar: number; rows: Record<string, number | string>[] };
+  kerr_spin_down: {
+    fixed_point_scalar: number;
+    rows: Record<string, number | string | boolean | null>[];
+    [extra: string]: unknown;
+  };
   claims: Claim[];
 }
 
@@ -424,7 +539,9 @@ export interface BounceRun {
   a_min: number;
   peak_a_inv2: number;
   fwhm_T: number;
-  paper: { a_min?: PaperValue; peak_a_inv2?: PaperValue; fwhm_T?: PaperValue };
+  /** printed values where the paper tabulates this a_max (empty object otherwise) */
+  paper: { a_min?: PaperValue; peak_a_inv2?: PaperValue; fwhm_T?: PaperValue; [extra: string]: PaperValue | undefined };
+  [extra: string]: unknown;
 }
 
 export interface BounceBundle {
@@ -437,6 +554,7 @@ export interface BounceBundle {
   units: { ell_over_lP: number; [extra: string]: number | string };
   /** [QG] status rows for the bounce results (optional) */
   claims?: Claim[];
+  [extra: string]: unknown;
 }
 
 // --- gw.json -------------------------------------------------------------------------
@@ -458,8 +576,28 @@ export interface GwEvent {
   T_H_K: number;
   t_evap_log10_yr: number;
   page_time_log10_yr: number;
-  strain: { t: number[]; H1: number[]; L1: number[]; fs: number; band: [number, number] } | null;
-  ringdown_fit: { f_Hz: number; tau_ms: number; t0_ms_after_peak: number } | null;
+  strain: {
+    t: number[];
+    H1: number[];
+    L1: number[];
+    fs: number;
+    band: [number, number];
+    fs_export?: number;
+    units?: string;
+    [extra: string]: unknown;
+  } | null;
+  ringdown_fit: {
+    f_Hz: number;
+    tau_ms: number;
+    t0_ms_after_peak: number;
+    f_err_Hz?: number;
+    tau_err_ms?: number;
+    snr?: number;
+    p_noise?: number;
+    significant?: boolean;
+    [extra: string]: unknown;
+  } | null;
+  [extra: string]: unknown;
 }
 
 export interface GwPaperEvent {
@@ -477,6 +615,28 @@ export interface GwBundle {
   paper_events: GwPaperEvent[];
   gwtc: Record<string, unknown>[] | null;
   combined_R90: number;
+  [extra: string]: unknown;
+}
+
+// --- validation.json (written by qchas.validation; not in the contract yet) ------------
+
+export interface ValidationRow {
+  group: string;
+  quantity: string;
+  ours: number;
+  paper: number;
+  rel_diff: number;
+  verdict: 'match' | 'differs';
+  source: string;
+  note: string;
+}
+
+export interface ValidationBundle {
+  rows: ValidationRow[];
+  summary: { total: number; match: number; differs: number };
+  skipped: string[];
+  note: string;
+  computed?: boolean;
 }
 
 // --- registry and loaders --------------------------------------------------------------
@@ -492,10 +652,12 @@ export interface BundleMap {
   'horizon.json': HorizonBundle;
   'bounce.json': BounceBundle;
   'gw.json': GwBundle;
+  'validation.json': ValidationBundle;
 }
 
 export type BundleName = keyof BundleMap;
 
+/** The bundles of the docs/ARCHITECTURE.md data contract (validation.json is an optional extra). */
 export const BUNDLE_NAMES: BundleName[] = [
   'manifest.json',
   'topology.json',
@@ -521,6 +683,7 @@ const REQUIRED_KEYS: Record<BundleName, string[]> = {
   'horizon.json': ['page'],
   'bounce.json': ['runs'],
   'gw.json': ['events'],
+  'validation.json': ['rows'],
 };
 
 export type LoadFailure = { ok: false; reason: 'missing' | 'invalid' | 'network'; name: string; message: string };
@@ -573,7 +736,10 @@ export function loadBundle<K extends BundleName>(name: K): Promise<LoadResult<Bu
   let p = cache.get(name) as Promise<LoadResult<BundleMap[K]>> | undefined;
   if (!p) {
     p = fetchJson(name).then((r) => {
-      if (!r.ok) return r;
+      if (!r.ok) {
+        if (r.reason === 'network') cache.delete(name);
+        return r;
+      }
       const d = r.data;
       const missing = REQUIRED_KEYS[name].filter((k) => !(d && typeof d === 'object' && k in d));
       if (missing.length)
@@ -624,7 +790,10 @@ export function loadBinary(
       const out = new Float32Array(n);
       for (let i = 0; i < n; i++) out[i] = view.getFloat32(4 * i, true);
       return { ok: true, name: file, data: out };
-    })();
+    })().then((r) => {
+      if (!r.ok && r.reason === 'network') cache.delete(key);
+      return r;
+    });
     cache.set(key, p);
   }
   return p;

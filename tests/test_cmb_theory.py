@@ -1,5 +1,7 @@
 """Transfer functions, [TOP] Eq. (2) torus covariance, KL / Pinsker, and topological resonance."""
 
+import json
+
 import numpy as np
 import pytest
 from scipy.interpolate import CubicSpline
@@ -79,7 +81,8 @@ def test_transfer_against_denser_camb_sampling(tf):
     pars.Accuracy.IntkAccuracyBoost = 4.0
     td = camb.get_results(pars).get_cmb_transfer_data(tp="scalar")
     q = np.asarray(td.q)
-    dense = np.asarray(td.delta_p_l_k[0][:39]) * tf.t_cmb_uk
+    rows = [int(np.flatnonzero(np.asarray(td.L) == l)[0]) for l in range(2, 41)]
+    dense = np.asarray(td.delta_p_l_k[0][rows]) * tf.t_cmb_uk
     sel = (q * tf.chi_star > 0.5) & (q * tf.chi_star < 160.0)
     ours = tf.delta_table(q[sel]).T
     scale = np.max(np.abs(dense[:, sel]), axis=1, keepdims=True)
@@ -170,12 +173,38 @@ def test_eq2_real_assembly_matches_complex_formula(tf):
     assert np.max(np.abs(ref.real[odd])) < 1e-11 * np.max(np.abs(ours))
 
 
+def test_mode_vectors_match_healpy_plane_wave():
+    """End to end: a^r of the map cos(k.x) + sin(k.x) on the sphere |x| = 1, via healpy and
+    harmonics.healpy_to_real, equals 4 pi r_l j_l(k) Y^r_lm(k_hat) (cos feeds even l, sin odd l)."""
+    import healpy as hp
+
+    nside, lmax = 64, 30
+    n = np.array(hp.pix2vec(nside, np.arange(hp.nside2npix(nside)))).T
+    kap = np.array([2.0, -3.5, 4.1])
+    sky = np.cos(n @ kap) + np.sin(n @ kap)
+    ar = H.healpy_to_real(hp.map2alm(sky, lmax=lmax, iter=5), 2, lmax)
+    ells, _ = H.lm_index(2, lmax)
+    k = np.linalg.norm(kap)
+    pred = 4 * np.pi * C.ell_phase(2, lmax) * spherical_jn(ells, k) * C.real_ylm_unit(2, lmax, (kap / k)[None])[0]
+    assert np.max(np.abs(ar - pred)) < 1e-8 * np.max(np.abs(pred))
+
+
 def test_rotated_lattice_equals_wigner_rotation():
     rng = np.random.default_rng(11)
     rot = H.random_rotation(rng)
     cw = C.torus_covariance("FCC", 1.05, rot, method="wigner")
     cl = C.torus_covariance("FCC", 1.05, rot, method="lattice")
     assert np.max(np.abs(cw - cl)) / np.max(np.abs(cl)) < 1e-10  # [TOP] Sec. 9: 3e-15
+
+
+def test_improper_and_invalid_rotations():
+    rng = np.random.default_rng(5)
+    rot = H.random_rotation(rng)
+    c = C.torus_covariance("BCC", 1.2, rot)
+    assert np.allclose(C.torus_covariance("BCC", 1.2, -rot), c, rtol=0, atol=1e-12 * np.abs(c).max())
+    assert np.allclose(C.torus_covariance("BCC", 1.2, -rot, method="lattice"), c, rtol=0, atol=1e-10 * np.abs(c).max())
+    with pytest.raises(ValueError):
+        C.torus_covariance("BCC", 1.2, 1.01 * rot)
 
 
 def test_orientation_average_is_torus_cl():
@@ -348,3 +377,92 @@ def test_woodbury_benchmark_small():
     out = Rz.woodbury_benchmark(ranks=(6, 12), n_orient=2)
     assert out["n"] == 957
     assert max(out["max_rel_diff"]) < 1e-10
+    for key in ("ranks", "direct_ms", "woodbury_ms", "max_abs_diff"):  # resonance.json contract
+        assert key in out
+    assert 0.0 <= out["max_abs_diff"] < 1e-8
+    with pytest.raises(ValueError):
+        Rz.woodbury_benchmark(ranks=(7,), n_orient=1)
+
+
+def test_line_rejects_negative_bump():
+    with pytest.raises(ValueError):
+        Rz.line_lowrank("cubic", 1.3, 16, -0.1)
+    with pytest.raises(ValueError):
+        Rz.line_amplitude(0.001, float("nan"))
+
+
+def test_woodbury_rank_zero_is_base():
+    c0 = C.torus_covariance("cubic", 1.3)
+    base = Rz.Factorized.of(c0)
+    x = np.linspace(-50.0, 50.0, c0.shape[0])
+    ll = Rz.woodbury_loglike(x, base, np.zeros((c0.shape[0], 0)), np.zeros(0))
+    assert ll == pytest.approx(Rz.gaussian_loglike(x, c0), rel=1e-12)
+
+
+def test_single_field_limits_sec11_8():
+    """[TOP] Sec. 11.8 Exit 1: h = ln-k gap to the nearest shell, a <= h (e^{5h} - 1), f = a G(k0)."""
+    for row in Rz.PAPER_SINGLE_FIELD["rows"]:
+        sh = min(Rz.list_shells(row["torus"], row["d_over_D"]), key=lambda s: abs(s["k_chi"] - row["k0_chi"]))
+        assert round(sh["k_chi"], 2) == row["k0_chi"] and sh["n_vectors"] == row["n_vectors"]
+        sf = Rz.single_field_max_f(row["torus"], row["d_over_D"], sh["m2"])
+        assert round(sf["f_max"], 2) == row["single_field_max_f"], (row, sf)
+    grid = Rz.preregistered_grid()
+    f = np.array([Rz.single_field_max_f(g["shape"], g["d_over_D"], g["m2"])["f_max"] for g in grid])
+    assert int(np.sum(f < 0.05)) == Rz.PAPER_SINGLE_FIELD["shells_with_f_below_0.05"]["count"] == 32
+    assert np.min(np.abs(f - 0.05)) > 0.003  # nearest: 0.0357 and 0.054, so the count is robust
+    k0 = 2.62 / load_transfer().chi_star
+    assert Rz.line_G(k0) == pytest.approx(np.max(Rz.line_gain(k0)) * C.primordial_power(k0), rel=1e-12)
+
+
+@pytest.mark.slow
+def test_allowed_line_table_sec11_8():
+    """[TOP] Sec. 11.8 table: K with the largest allowed line, f = min(single-field limit, Planck cap)."""
+    tab = Rz.single_field_table()
+    assert tab["n_shells"] == 80 and tab["n_f_below_0.05"] == 32
+    for r in tab["rows"]:
+        p = r["paper"]
+        assert r["kl_no_line"] == pytest.approx(p["kl_no_line"], rel=0.015, abs=0.005)  # BCC 1.2 D: 0.494
+        assert r["kl_allowed_line"] == pytest.approx(p["kl_allowed_line"], abs=0.006), r
+        assert r["gain"] == pytest.approx(p["gain"], abs=0.06)
+    json.dumps(tab, allow_nan=False)
+
+
+@pytest.mark.slow
+def test_kl_unit_crossing():
+    """[TOP] Sec. 8: KL > 1 up to d ~ 1.13 D (cubic), 1.16 D (BCC), 1.18 D (FCC); ours 1.122, 1.146, 1.169.
+
+    The paper's own Theorem P table puts the BCC crossing below 1.15 D (0.95 at 1.15 D).
+    """
+    brackets = {"cubic": (1.1, 1.15), "BCC": (1.1, 1.15), "FCC": (1.15, 1.2)}
+    for shape, (lo, hi) in brackets.items():
+        d = C.kl_unit_crossing(shape, bracket=(lo, hi), xtol=2e-3)
+        assert lo < d < hi
+        assert d == pytest.approx(C.PAPER_SEC8["kl_above_1_up_to"][shape], abs=0.016), shape
+
+
+@pytest.mark.slow
+def test_bundles_follow_data_contract():
+    kl = C.kl_table()
+    assert set(C.SHAPES) <= set(kl) and set(kl["paper"]["cubic"]) == {"1.0", "1.05", "1.1", "1.15", "1.2", "1.3", "1.5"}
+    assert all(len(kl["pinsker_bound"][s]) == len(kl["d_over_D"]) for s in C.SHAPES)
+    td = C.torus_D_bundle()
+    assert set(td) == {"FCC_0.985", "cubic_0.985", "BCC_0.985", "FCC_0.70"} and all(len(v) == 29 for v in td.values())
+    res = Rz.resonance_bundle(benchmark_orientations=2)
+    row = res["kl_table"][0]
+    assert {"shape", "d_over_D", "no_line", "shell", "n_vectors", "f", "kl", "gain", "paper"} <= set(row)
+    assert {"m2", "k_chi", "n_vectors"} <= set(res["shells"]["cubic_1.2"][0]) and res["n_shells"] == 80
+    assert {"spectrum", "d1.5", "d2", "d3"} <= set(res["exits_3d"][0])
+    for obj in (kl, td, res, C.sec8_table()):
+        json.dumps(obj, allow_nan=False)
+
+
+@pytest.mark.slow
+def test_lmax40_statement_uses_doubled_cutoff():
+    """[TOP] Sec. 10: l <= 40 adds 3 % (10.4 -> 10.8 at FCC 1.05 D), reproduced with |kappa| chi_* <= 110."""
+    kw = {"kcut_chi": 110.0, "shells": (16, 40), "cache": False}
+    k30 = C.kl_gaussian(C.torus_covariance("FCC", 1.05, lmax=30, **kw), C.lcdm_covariance(2, 30))
+    k40 = C.kl_gaussian(C.torus_covariance("FCC", 1.05, lmax=40, **kw), C.lcdm_covariance(2, 40))
+    paper = C.PAPER_KL["lmax40_FCC_1.05"]
+    assert k30 == pytest.approx(paper["lmax30"], abs=0.05)
+    assert k40 == pytest.approx(paper["lmax40"], rel=0.01)
+    assert 0.02 < k40 / k30 - 1 < 0.045

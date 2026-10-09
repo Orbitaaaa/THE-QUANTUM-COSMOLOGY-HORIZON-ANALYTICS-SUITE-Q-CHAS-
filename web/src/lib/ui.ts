@@ -160,12 +160,14 @@ export function badge(kind: ProvenanceKind, source?: string, title?: string): HT
  * Map a status string from a paper's status table ("Theorem, unconditional", "Numerical, ...",
  * "Pre-registered data analysis", "Conditional: ...", "Must be measured; ...") to a provenance
  * kind. The leading clause decides; qualifiers after ';' or ',' refine only when it is silent.
+ * A statement "derived by the gravitational path integral" ([BH] Sec. 16, H* for an evaporating
+ * hole) is not a theorem of the paper, so it counts as assumed, never as proved.
  */
 export function classifyStatus(status: string): ProvenanceKind {
   const s = status.toLowerCase().trim();
   const lead = s.split(/[;,:(]/)[0] ?? s;
   if (/^(must be|unknown|open|undetermined)/.test(lead)) return 'open';
-  if (/^(conditional|hypothes|assum|not used|conjectur|estimate)/.test(lead)) return 'assumed';
+  if (/^(conditional|hypothes|assum|not used|conjectur|estimate|derived|postulat)/.test(lead)) return 'assumed';
   if (/theorem|proved|proof|lemma|corollary|proposition/.test(lead)) return 'proved';
   if (/data|measur|observ/.test(lead)) return 'measured';
   if (/comput|numer|simulat|calculat/.test(lead)) return 'computed';

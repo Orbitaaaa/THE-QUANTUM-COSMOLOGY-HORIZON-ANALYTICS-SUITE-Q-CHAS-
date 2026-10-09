@@ -39,6 +39,10 @@ from ..constants import HESSIAN_CERTIFIED, Z2_CERTIFIED
 PI = math.pi
 #: Ewald cutoff on |g| and |k| at unit covolume ([TOP] Prop. E.2 sums |g|, |k| <= 4.5 exactly)
 EWALD_RADIUS = 5.0
+#: integer boxes larger than this are first LLL-reduced; larger than _BOX_MAX are refused
+_BOX_REDUCE = 20**3
+_BOX_MAX = 4_000_000
+_BOX_CACHE_MAX = 20_000
 
 #: certified gaps, [TOP] Prop. E.2(c)
 GAPS_CERTIFIED = {"BCC-FCC": 0.009748764250334, "SC-BCC": 0.56043571417364}
@@ -48,6 +52,28 @@ _ALIASES = {"SC": "SC", "CUBIC": "SC", "SIMPLE CUBIC": "SC", "BCC": "BCC", "FCC"
 
 
 # --- bases ------------------------------------------------------------------------------
+
+def check_basis(B: np.ndarray) -> np.ndarray:
+    """B as a float (3, 3) array; ValueError if it is not finite or not of rank 3."""
+    B = np.asarray(B, dtype=float)
+    if B.shape != (3, 3) or not np.all(np.isfinite(B)):
+        raise ValueError("a lattice basis must be a finite 3x3 array whose rows are basis vectors")
+    s = np.linalg.svd(B, compute_uv=False)
+    if not s[-1] > 1e-13 * s[0]:
+        raise ValueError("lattice basis is singular (rank < 3)")
+    return B
+
+
+def check_gram(h: np.ndarray) -> np.ndarray:
+    """Symmetrized h; ValueError unless it is a finite positive-definite 3x3 matrix."""
+    h = np.asarray(h, dtype=float)
+    if h.shape != (3, 3) or not np.all(np.isfinite(h)):
+        raise ValueError("a Gram matrix must be a finite 3x3 array")
+    h = 0.5 * (h + h.T)
+    if not _is_positive_definite(h):
+        raise ValueError("Gram matrix is not positive definite")
+    return h
+
 
 def canonical_shape(shape: str) -> str:
     """Map 'cubic'/'SC'/'bcc'/... to one of 'SC', 'BCC', 'FCC'."""
@@ -82,8 +108,7 @@ def rhombohedral_basis(alpha_deg: float) -> np.ndarray:
 
 def basis_from_gram(h: np.ndarray) -> np.ndarray:
     """A basis (rows) with Gram matrix ``h = B B^T`` (Cholesky, lower-triangular rows)."""
-    h = np.asarray(h, dtype=float)
-    return np.linalg.cholesky(0.5 * (h + h.T))
+    return np.linalg.cholesky(check_gram(h))
 
 
 def gram(B: np.ndarray) -> np.ndarray:
@@ -97,13 +122,13 @@ def covolume(B: np.ndarray) -> float:
 
 def dual_basis(B: np.ndarray, two_pi: bool = True) -> np.ndarray:
     """Dual-lattice basis (rows): ``2 pi inv(B).T`` (or ``inv(B).T`` with ``two_pi=False``)."""
-    D = np.linalg.inv(np.asarray(B, dtype=float)).T
+    D = np.linalg.inv(check_basis(B)).T
     return 2.0 * PI * D if two_pi else D
 
 
 def normalize(B: np.ndarray, to: str = "covolume") -> np.ndarray:
     """Rescale to unit covolume (``to='covolume'``) or unit shortest vector (``to='shortest'``)."""
-    B = np.asarray(B, dtype=float)
+    B = check_basis(B)
     if to == "covolume":
         return B / covolume(B) ** (1.0 / 3.0)
     if to == "shortest":
@@ -127,11 +152,13 @@ def _gso(B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 def lll_reduce(B: np.ndarray, delta: float = 0.99) -> tuple[np.ndarray, np.ndarray]:
     """LLL reduction of a row basis. Returns ``(B_red, U)`` with ``B_red = U @ B``, U unimodular."""
-    B = np.array(B, dtype=float)
+    B = np.array(check_basis(B))
     n = B.shape[0]
     U = np.eye(n, dtype=np.int64)
     k = 1
-    while k < n:
+    for _ in range(100_000):
+        if k >= n:
+            return B, U
         for j in range(k - 1, -1, -1):
             _, mu = _gso(B)
             q = int(round(mu[k, j]))
@@ -145,7 +172,7 @@ def lll_reduce(B: np.ndarray, delta: float = 0.99) -> tuple[np.ndarray, np.ndarr
             B[[k - 1, k]] = B[[k, k - 1]]
             U[[k - 1, k]] = U[[k, k - 1]]
             k = max(k - 1, 1)
-    return B, U
+    raise RuntimeError("LLL reduction did not terminate (basis too ill-conditioned)")
 
 
 def minkowski_reduce(B: np.ndarray, rtol: float = 1e-12) -> tuple[np.ndarray, np.ndarray]:
@@ -156,7 +183,7 @@ def minkowski_reduce(B: np.ndarray, rtol: float = 1e-12) -> tuple[np.ndarray, np
     """
     B, U = lll_reduce(B)
     coeffs = [c for c in itertools.product((-1, 0, 1), repeat=2) if c != (0, 0)]
-    while True:
+    for _ in range(100_000):
         order = np.argsort(np.einsum("ij,ij->i", B, B), kind="stable")
         B, U = B[order], U[order]
         changed = False
@@ -175,15 +202,34 @@ def minkowski_reduce(B: np.ndarray, rtol: float = 1e-12) -> tuple[np.ndarray, np
                 break
         if not changed:
             return B, U
+    raise RuntimeError("Minkowski reduction did not terminate")
 
 
-@lru_cache(maxsize=256)
-def _int_box(n0: int, n1: int, n2: int) -> np.ndarray:
-    """Nonzero integer vectors of the box |n_i| <= N_i, one of each +-pair (lexicographic half)."""
+def _half_box(n0: int, n1: int, n2: int) -> np.ndarray:
     r = [np.arange(-n, n + 1) for n in (n0, n1, n2)]
     g = np.stack(np.meshgrid(*r, indexing="ij"), axis=-1).reshape(-1, 3)
     first = np.where(g[:, 0] != 0, g[:, 0], np.where(g[:, 1] != 0, g[:, 1], g[:, 2]))
     return np.ascontiguousarray(g[first > 0]).astype(float)
+
+
+_half_box_cached = lru_cache(maxsize=256)(_half_box)
+
+
+def _box_size(box: tuple[int, int, int]) -> int:
+    return math.prod(2 * n + 1 for n in box)
+
+
+def _int_box(n0: int, n1: int, n2: int) -> np.ndarray:
+    """Nonzero integer vectors of the box |n_i| <= N_i, one of each +-pair (lexicographic half).
+
+    Small boxes are cached; boxes above ``_BOX_MAX`` points raise ValueError instead of
+    exhausting memory (a lattice that needs them is nearly degenerate at this radius).
+    """
+    size = _box_size((n0, n1, n2))
+    if size > _BOX_MAX:
+        raise ValueError(f"lattice sum needs {size:.3g} integer points; the lattice is too close to "
+                         "degenerate (or the radius too large) for direct enumeration")
+    return _half_box_cached(n0, n1, n2) if size <= _BOX_CACHE_MAX else _half_box(n0, n1, n2)
 
 
 def _box_for(radius: float, inv_diag: np.ndarray) -> tuple[int, int, int]:
@@ -195,12 +241,21 @@ def lattice_vectors(B: np.ndarray, radius: float, include_zero: bool = False,
     """All lattice vectors with ``0 < |g| <= radius`` (both signs), sorted by length.
 
     With ``return_coeffs`` also returns the integer coefficient rows ``n`` (``g = n @ B``).
+    A skewed basis is LLL-reduced first when that shrinks the enumeration box.
     """
-    B = np.asarray(B, dtype=float)
-    hinv = np.linalg.inv(B @ B.T)
-    half = _int_box(*_box_for(radius, np.diag(hinv)))
+    B = check_basis(B)
+    box = _box_for(radius, np.diag(np.linalg.inv(B @ B.T)))
+    U = None
+    if _box_size(box) > _BOX_REDUCE:
+        Br, Ur = lll_reduce(B)
+        box_r = _box_for(radius, np.diag(np.linalg.inv(Br @ Br.T)))
+        if _box_size(box_r) < _box_size(box):
+            B, U, box = Br, Ur, box_r
+    half = _int_box(*box)
     n = np.concatenate([half, -half]) if half.size else np.zeros((0, 3))
     g = n @ B
+    if U is not None:
+        n = n @ U
     r2 = np.einsum("ij,ij->i", g, g)
     keep = r2 <= radius**2 * (1.0 + 1e-12)
     n, g, r2 = n[keep], g[keep], r2[keep]
@@ -274,20 +329,53 @@ def d2phi2(y):
 
 # --- Z(2) -------------------------------------------------------------------------------
 
+def _is_positive_definite(h: np.ndarray) -> bool:
+    """Sylvester's criterion for a symmetric 3x3 matrix (finite entries)."""
+    a, b, c = h[0, 0], h[0, 1], h[1, 1]
+    return bool(np.isfinite(h).all() and a > 0.0 and a * c - b * b > 0.0 and np.linalg.det(h) > 0.0)
+
+
 def epstein_z2_gram(h: np.ndarray, radius: float = EWALD_RADIUS,
                     grad: bool = False):
     """Z(h) = sum_{n != 0} (n^T h n)^-2 for a Gram matrix h of any covolume (Ewald, t = 1).
 
-    The split is tuned to covolume ~ 1 (``radius`` refers to unit covolume). With ``grad``
-    returns ``(Z, M)`` where ``M = dZ/dh`` is the symmetric gradient (``dZ = tr(M dh)``).
+    ``radius`` is the cutoff at unit covolume: h is rescaled to det h = 1 (Z is homogeneous of
+    degree -2, M of degree -3) and, if its basis is skewed, LLL-reduced (h -> U h U^T,
+    M -> U^T M U). With ``grad`` returns ``(Z, M)`` where ``M = dZ/dh`` is the symmetric
+    gradient (``dZ = tr(M dh)``).
     """
     h = np.asarray(h, dtype=float)
+    if h.shape != (3, 3):
+        raise ValueError("a Gram matrix must be a 3x3 array")
     h = 0.5 * (h + h.T)
-    hinv = np.linalg.inv(h)
-    hinv = 0.5 * (hinv + hinv.T)
+    if not _is_positive_definite(h):
+        raise ValueError("Gram matrix is not finite and positive definite")
+    s = np.linalg.det(h) ** (1.0 / 3.0)
+    hn = h / s
+    hinv = np.linalg.inv(hn)
+    nbox, kbox = _box_for(radius, np.diag(hinv)), _box_for(radius, np.diag(hn))
+    U = None
+    if _box_size(nbox) + _box_size(kbox) > _BOX_REDUCE:
+        _, U = lll_reduce(basis_from_gram(hn))
+        Uf = U.astype(float)
+        hn = Uf @ hn @ Uf.T
+        hn = 0.5 * (hn + hn.T)
+        hinv = np.linalg.inv(hn)
+        nbox, kbox = _box_for(radius, np.diag(hinv)), _box_for(radius, np.diag(hn))
+    out = _ewald_gram(hn, 0.5 * (hinv + hinv.T), nbox, kbox, radius, grad)
+    if not grad:
+        return out / s**2
+    z, M = out
+    if U is not None:
+        M = Uf.T @ M @ Uf
+    return z / s**2, 0.5 * (M + M.T) / s**3
+
+
+def _ewald_gram(h: np.ndarray, hinv: np.ndarray, nbox, kbox, radius: float, grad: bool):
+    """Ewald sum of [TOP] Prop. E.2 for a positive-definite Gram h of covolume ~ 1."""
     V = math.sqrt(np.linalg.det(h))
-    N = _int_box(*_box_for(radius, np.diag(hinv)))
-    K = _int_box(*_box_for(radius, np.diag(h)))
+    N = _int_box(*nbox)
+    K = _int_box(*kbox)
     x = np.einsum("ni,ij,nj->n", N, h, N)
     y = np.einsum("ni,ij,nj->n", K, hinv, K)
     mx = x <= radius**2
@@ -301,7 +389,7 @@ def epstein_z2_gram(h: np.ndarray, radius: float = EWALD_RADIUS,
     A = 2.0 * np.einsum("n,ni,nj->ij", dphi1(x), N, N)
     C = 2.0 * np.einsum("n,ni,nj->ij", dphi2(y), K, K)
     M = PI**2 * (A - hinv @ C @ hinv / V - (2.0 + s2) / (2.0 * V) * hinv)
-    return Z, 0.5 * (M + M.T)
+    return Z, M
 
 
 def epstein_z2(B: np.ndarray, unit_covolume: bool = True, radius: float = EWALD_RADIUS) -> float:
@@ -309,7 +397,7 @@ def epstein_z2(B: np.ndarray, unit_covolume: bool = True, radius: float = EWALD_
 
     ``unit_covolume=True`` (default) rescales to covolume 1 first, as in [TOP] Prop. E.2.
     """
-    B = np.asarray(B, dtype=float)
+    B = check_basis(B)
     V = covolume(B)
     Bu, _ = lll_reduce(B / V ** (1.0 / 3.0))
     z = epstein_z2_gram(Bu @ Bu.T, radius)

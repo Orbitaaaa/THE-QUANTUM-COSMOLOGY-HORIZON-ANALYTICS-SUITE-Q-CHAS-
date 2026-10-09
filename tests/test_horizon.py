@@ -149,6 +149,15 @@ def test_evaporation_10_qubits():
     assert d["recovered_step"] is not None and d["recovered_step"] > n // 2
 
 
+def test_evaporation_and_decoding_reject_bad_input():
+    with pytest.raises(ValueError):
+        evaporation.evaporate(6, 7)
+    with pytest.raises(ValueError):
+        evaporation.evaporate(6, -1)
+    with pytest.raises(ValueError):
+        evaporation.decoding_infidelity(3, 1, samples=1, dynamics="gue")
+
+
 @pytest.mark.slow
 def test_evaporation_20_qubits_paper_numbers():
     p = evaporation.PAPER_EVAPORATION
@@ -301,6 +310,27 @@ def test_fd_spectrum_reproduces_dirichlet_levels():
     assert abs(w[-1] - exact[-1]) / exact[-1] < 5e-3
 
 
+def test_exact_solution_matches_hermite_expansion():
+    # independent route: odd oscillator levels (m = 12, omega = 1) weighted by the coherent state
+    a_max, alpha = 2.0, math.sqrt(6.0) * 2.0
+    nmax = 160
+    n = np.arange(nmax + 1)
+    c = np.exp(-alpha**2 / 2 + n * math.log(alpha) - 0.5 * np.array([math.lgamma(k + 1) for k in n]))
+    c = np.where(n % 2 == 1, c, 0.0)
+    c /= np.linalg.norm(c)
+    a = np.linspace(1e-6, a_max + 3.0, 2001)
+    x = math.sqrt(12.0) * a
+    phi = np.zeros((nmax + 1, a.size))
+    phi[0] = (12.0 / math.pi) ** 0.25 * np.exp(-x * x / 2)
+    phi[1] = math.sqrt(2.0) * x * phi[0]
+    for k in range(2, nmax + 1):
+        phi[k] = math.sqrt(2.0 / k) * x * phi[k - 1] - math.sqrt((k - 1) / k) * phi[k - 2]
+    for t in (0.3, math.pi / 2 - 0.05, math.pi / 2):
+        psi = (c * np.exp(-1j * (n + 0.5) * t)) @ (math.sqrt(2.0) * phi)
+        exact = bounce.density(a, t, a_max)
+        assert np.max(np.abs(np.abs(psi) ** 2 - exact)) < 1e-10 * np.max(exact)
+
+
 def test_exact_solution_matches_fd_spectral_evolution():
     fd = bounce.FDEvolution(2.0, 10.0, 4000)
     for t in (0.7, math.pi / 2, 2.3):
@@ -347,6 +377,19 @@ def test_fd_paper_grid_reproduces_lambda_table(a_max):
     assert s["fwhm_T"] == pytest.approx(fwhm, rel=0.006)
 
 
+def test_fd_peak_converges_to_exact_at_first_order():
+    # the printed 262 is the h = 24/6001 grid sum; its deficit is the O(h) end term h f(0)/2 at a = 0
+    exact = bounce.peak_a_inv2_closed_form(2.0)
+    f0 = 4.0 * math.sqrt(12.0 / math.pi) * 24.0**2  # lim |Psi|^2 / a^2 at the bounce, p = 12 a_max
+    gaps = []
+    for n in (6000, 12000, 24000):
+        h = 24.0 / (n + 1)
+        gap = exact - bounce.FDEvolution(2.0, 24.0, n).summary()["peak_a_inv2"]
+        assert gap == pytest.approx(0.5 * h * f0, rel=0.05)
+        gaps.append(gap)
+    assert gaps[0] / gaps[1] == pytest.approx(2.0, rel=0.05) and gaps[1] / gaps[2] == pytest.approx(2.0, rel=0.05)
+
+
 @pytest.mark.slow
 @pytest.mark.parametrize("a_max", [8, 16])
 def test_fd_paper_grid_reproduces_lambda_table_large(a_max):
@@ -355,6 +398,12 @@ def test_fd_paper_grid_reproduces_lambda_table_large(a_max):
     assert round(s["peak_a_inv2"]) == peak
     assert round(s["a_min"], 4) == pytest.approx(amin, abs=1e-4)
     assert s["fwhm_T"] == pytest.approx(fwhm, rel=0.006)
+
+
+def test_bounce_fwhm_undefined_for_tiny_universes():
+    assert bounce.bounce_run(0.2, T=[math.pi / 2])["fwhm_T"] is None
+    r = bounce.bounce_run(0.5, T=[math.pi / 2])
+    assert 1.0 < r["fwhm_T"] < math.pi and r["fwhm_times_amax"] == pytest.approx(0.5 * r["fwhm_T"])
 
 
 def test_graviton_metric_perturbation():
@@ -383,6 +432,7 @@ def test_bounce_to_json():
     assert {"runs", "spectrum_check", "snapshots", "graviton", "mixmaster", "planck_bounce_test", "units"} <= set(d)
     assert d["mixmaster"]["a_min"] == 0.256
     assert d["planck_bounce_test"]["kc_excluded_above"] == 4.9e-4
+    assert all(isinstance(r["paper"], dict) for r in d["runs"])
     run2 = next(r for r in d["runs"] if r["a_max"] == 2.0)
     assert run2["paper"]["peak_a_inv2"] == 262.0
     assert round(run2["paper_grid"]["peak_a_inv2"]) == 262

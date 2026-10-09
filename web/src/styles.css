@@ -292,6 +292,10 @@ a.status-field:hover {
   background: var(--warning);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 22%, transparent);
 }
+.indicator.serious::before {
+  background: var(--serious);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--serious) 22%, transparent);
+}
 .indicator.critical::before {
   background: var(--critical);
 }

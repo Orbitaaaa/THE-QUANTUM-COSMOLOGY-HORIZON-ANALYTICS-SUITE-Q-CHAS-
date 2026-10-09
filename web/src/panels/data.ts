@@ -43,9 +43,13 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   }
 
   const m = res.data;
-  const datasets = Object.entries(m.datasets).map(([key, d]) => ({ key, ...d }));
+  const datasets = Object.entries(m.datasets ?? {}).map(([key, d]) => ({ key, ...d }));
   const totalBytes = datasets.reduce((s, d) => s + (d.bytes || 0), 0);
-  const built = new Set(m.bundles);
+  const built = new Set(m.bundles ?? []);
+  const warningsList = m.warnings ?? [];
+  const errors = m.errors ?? [];
+  // builder names in manifest.errors are bundle stems ("cmb"), except the sky map builder
+  const failed = new Set(errors.map((e) => (e.bundle === 'sky' ? 'sky_map.json' : `${e.bundle}.json`)));
 
   const summary = panel({ title: 'Build summary' });
   summary.body.append(
@@ -60,23 +64,38 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
 
   const warnings = panel({
     title: 'Build warnings',
-    subtitle: 'Inputs the build host could not reach and what was used instead',
+    subtitle: 'Inputs the build host could not reach, what was used instead, and builders that failed',
     id: 'warnings',
     span: 6,
     stretch: true,
   });
-  warnings.body.append(
-    m.warnings.length
-      ? h('ul', { class: 'warning-list' }, ...m.warnings.map((w) => h('li', null, icon('warning', 'warning'), h('span', null, w))))
-      : statusPill('good', 'No warnings: every input was reachable'),
-  );
+  if (errors.length)
+    warnings.body.append(
+      h(
+        'ul',
+        { class: 'warning-list' },
+        ...errors.map((e) =>
+          h('li', null, icon('critical', 'build error'), h('span', null, h('strong', null, `${e.bundle}: `), e.error)),
+        ),
+      ),
+    );
+  if (warningsList.length)
+    warnings.body.append(
+      h('ul', { class: 'warning-list' }, ...warningsList.map((w) => h('li', null, icon('warning', 'warning'), h('span', null, w)))),
+    );
+  else if (!errors.length) warnings.body.append(statusPill('good', 'No warnings: every input was reachable'));
 
   const bundles = panel({ title: 'Bundles', subtitle: 'web/public/data/', span: 6, stretch: true, flush: true });
   bundles.body.append(
     table(
       [
         { key: 'name', label: 'Bundle', format: (r) => h('code', null, r.name) },
-        { key: 'state', label: 'State', format: (r) => (r.ok ? statusPill('good', 'built') : statusPill('warning', 'not built')) },
+        {
+          key: 'state',
+          label: 'State',
+          format: (r) =>
+            r.ok ? statusPill('good', 'built') : failed.has(r.name) ? statusPill('serious', 'build failed') : statusPill('warning', 'not built'),
+        },
       ],
       BUNDLE_NAMES.filter((n) => n !== 'manifest.json').map((name) => ({ name, ok: built.has(name) })),
     ),
@@ -125,8 +144,11 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   );
 
   el.append(grid(summary.root), grid(warnings.root, bundles.root), grid(table1.root), grid(accessNote().root));
-  const n = m.warnings.length;
-  ctx.setHeaderExtras([statusPill(n ? 'warning' : 'good', n ? `${n} warning${n === 1 ? '' : 's'}` : 'no warnings')]);
+  const n = warningsList.length;
+  ctx.setHeaderExtras([
+    ...(errors.length ? [statusPill('serious', `${errors.length} builder${errors.length === 1 ? '' : 's'} failed`)] : []),
+    statusPill(n ? 'warning' : 'good', n ? `${n} warning${n === 1 ? '' : 's'}` : 'no warnings'),
+  ]);
 }
 
 function hostOf(url: string): string {

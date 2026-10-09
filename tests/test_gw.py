@@ -111,6 +111,14 @@ def test_to_json_without_data(tmp_path):
         assert row["f220_ours"] == pytest.approx(row["f220"], rel=0.01)
         assert row["dt_ms_ours"] == pytest.approx(row["dt_ms"], rel=0.015)
     assert d["echo_bound_check"]["log10_R2_ours"] / 1e80 == pytest.approx(-1.75, abs=0.005)
+    labels = {r["event"]: r["R90_label"] for r in d["paper_events"]}
+    assert labels["GW150914"] == "0.67" and labels["GW151012"] == "> 1" and labels["GW250114"] == "0.28"
+
+
+def test_malformed_catalogue_is_reported(tmp_path):
+    (tmp_path / gw.GWTC_FILE).write_text("[1, 2, 3]")
+    d = gw.to_json(tmp_path)
+    assert d["gwtc"] is None and any("unreadable" in w for w in d["warnings"])
 
 
 def test_missing_strain_is_reported(tmp_path):
@@ -119,6 +127,31 @@ def test_missing_strain_is_reported(tmp_path):
     ev = gw.analyse_event("TEST", params, tmp_path)
     assert ev["strain"] is None and ev["ringdown_fit"] is None
     assert ev["warnings"] and ev["f220_Hz"] > 0
+
+
+def test_unreadable_strain_is_reported(tmp_path):
+    for det in ("H1", "L1"):
+        (tmp_path / f"bad_{det}.hdf5").write_bytes(b"not an HDF5 file")
+    params = {"tevent": 1.0, "m1": 36.0, "m2": 29.0, "a1": 0.0, "a2": 0.0, "fband": [43, 300],
+              "fn_H1": "bad_H1.hdf5", "fn_L1": "bad_L1.hdf5"}
+    ev = gw.analyse_event("TEST", params, tmp_path)
+    assert ev["strain"] is None and ev["ringdown_fit"] is None
+    assert any("unreadable" in w for w in ev["warnings"])
+    (tmp_path / gw.TUTORIAL_EVENTS_FILE).write_text(json.dumps({"TEST": params, "BROKEN": {"m1": 30.0}}))
+    d = gw.to_json(tmp_path)
+    assert [e["name"] for e in d["events"]] == ["TEST"]
+    assert any("BROKEN" in w for w in d["warnings"]) and any("unreadable" in w for w in d["warnings"])
+
+
+def test_catalogue_neutron_star_events_get_no_bbh_remnant():
+    rows = gw.parse_gwosc_allevents({"events": {
+        "GW200115_042309-v2": {"commonName": "GW200115_042309", "GPS": 1263097407.7, "mass_1_source": 5.9,
+                               "mass_2_source": 1.44, "chi_eff": -0.19, "redshift": 0.06},
+        "GW170104-v2": {"commonName": "GW170104", "GPS": 1167559936.6, "mass_1_source": 30.8,
+                        "mass_2_source": 20.0, "chi_eff": -0.04, "redshift": 0.20}}})
+    nsbh, bbh = rows[1], rows[0]
+    assert nsbh["possible_neutron_star"] and nsbh["f220_Hz"] is None and nsbh["af_estimate"] is None
+    assert not bbh["possible_neutron_star"] and bbh["f220_Hz"] > 0
 
 
 def test_remnant_summary_units():

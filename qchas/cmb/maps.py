@@ -2,8 +2,9 @@
 
 [TOP] Sec. 9 ("Data") and Sec. 14 ("Planck pipeline"): the inpainted Commander temperature is
 averaged to Nside 64 in the NESTED scheme and the real multipoles 2 <= l <= 30 are extracted by
-HEALPix quadrature with four Jacobi iterations up to l = 64 and a pixel-window correction; on a
-simulated sky processed identically the residual is 0.26 % of the signal.
+HEALPix quadrature with four Jacobi iterations up to l = 64 and a pixel-window correction
+"measured by simulation"; on a simulated sky processed identically the residual is 0.26 % of
+the signal.
 
 Steps implemented here, for either the Planck PR3 Commander map (preferred, 5' FWHM) or the
 WMAP 9-year ILC map (1 deg FWHM, Bennett et al. 2013, ApJS 208, 20):
@@ -15,6 +16,11 @@ WMAP 9-year ILC map (1 deg FWHM, Bennett et al. 2013, ApJS 208, 20):
 4. ``healpy.map2alm`` with ``iter=4`` up to ``lmax_alm`` (64 by default, as in the paper);
 5. divide by b_l p_l (input Gaussian beam times Nside-64 pixel window);
 6. convert to the stacked real vector of :mod:`qchas.cmb.harmonics` (``healpy_to_real``).
+
+Two choices differ in form from the paper's wording: p_l is the analytic HEALPix window (healpy's
+file, or :func:`exact_pixel_window`), and :func:`simulate_pipeline` checks it instead of
+measuring it (per-l gains within 3e-3 of 1); the beam division is ours, negligible for the 5'
+Commander beam (b_30 = 0.9998) and essential for the 1 deg ILC (b_30 = 0.85).
 
 The same steps run on Gaussian LambdaCDM skies (:func:`simulate_pipeline`) to measure the residual.
 """
@@ -102,8 +108,10 @@ class Extraction:
 # --- small helpers -----------------------------------------------------------------------
 
 def _unit_factor(unit: str | None) -> float:
-    """Multiplier from a FITS temperature unit to uK."""
+    """Multiplier from a thermodynamic (CMB) FITS temperature unit to uK."""
     u = (unit or "").strip().lower().replace("_", " ").replace(",", " ")
+    if any(w in u.split() for w in ("rj", "antenna", "brightness")) or "mjy" in u:
+        raise ValueError(f"temperature unit {unit!r} is not thermodynamic (CMB) temperature")
     head = u.split()[0] if u.split() else ""
     if head in ("uk", "muk", "microk"):
         return 1.0
@@ -244,7 +252,7 @@ def load_wmap_ilc(raw_dir: Path | None = None) -> FullResMap:
         raise FileNotFoundError(f"WMAP ILC map not found in {raw_dir}; run `qchas fetch`")
     hdr = _header(path)
     col = hdr["columns"].index("TEMPERATURE") if "TEMPERATURE" in hdr["columns"] else 0
-    factor = _unit_factor(hdr["units"][col] if hdr["units"] else "mK")
+    factor = _unit_factor((hdr["units"][col] if hdr["units"] else "") or "mK")
     m = np.asarray(_read_nested(path, col), dtype=np.float64) * factor
     ds = DATASETS["wmap_ilc"]
     return FullResMap(
@@ -273,8 +281,8 @@ def load_planck_commander(raw_dir: Path | None = None, memmap: bool = True) -> F
     hdr = _header(path)
     cols = [c.upper() for c in hdr["columns"]]
     col = cols.index("I_STOKES_INP") if "I_STOKES_INP" in cols else 0
-    unit = hdr["units"][col] if hdr["units"] else "K_CMB"
-    factor = _unit_factor(unit or "K_CMB")
+    unit = (hdr["units"][col] if hdr["units"] else "") or "K_CMB"
+    factor = _unit_factor(unit)
     m = np.asarray(_read_nested(path, col, memmap=memmap), dtype=np.float32) * np.float32(factor)
     ds = DATASETS["planck_commander"]
     return FullResMap(
@@ -401,6 +409,7 @@ def prepare_sky(source: str = "auto", nside: int = 64, lmin: int = 2, lmax: int 
 
     ``source`` is 'auto', 'planck' or 'wmap'. The returned map is Nside ``nside`` RING, Galactic,
     uK with monopole and dipole removed; ``alm_real`` uses the :mod:`qchas.cmb.harmonics` convention.
+    Without the KQ75 file ``mask`` is all ones, ``mask_fraction`` is None and a warning is recorded.
     """
     raw_dir = Path(raw_dir or DEFAULT_RAW_DIR)
     src = source.lower()
@@ -421,6 +430,12 @@ def prepare_sky(source: str = "auto", nside: int = 64, lmin: int = 2, lmax: int 
                        lmax_alm=lmax_alm, iterations=iterations)
     name, nside_in, meta = full.name, full.nside, dict(full.meta)
     del full
+    if name == SOURCE_PLANCK and str(meta.get("column", "")).upper() != "I_STOKES_INP":
+        warnings.append(f"Planck Commander file has no I_STOKES_INP column; using {meta.get('column')} "
+                        "(not the inpainted map of [TOP] Sec. 9)")
+    if ex.info["unseen_pixels_zeroed"]:
+        warnings.append(f"{name}: {ex.info['unseen_pixels_zeroed']} Nside-{nside} pixels had no valid input and "
+                        "were set to zero before the full-sky harmonic analysis")
 
     mask_out = load_kq75_mask(nside, mask_threshold, raw_dir)
     if mask_out is None:
@@ -536,9 +551,13 @@ def _description(sky: SkyData) -> str:
 
 
 def sky_map_export(sky: SkyData) -> tuple[dict, dict[str, np.ndarray]]:
-    """``sky_map.json`` content and the binary arrays (Float32 LE RING maps, UInt8 mask) by file name."""
+    """``sky_map.json`` content and the binary arrays (Float32 LE RING maps, UInt8 mask) by file name.
+
+    When the KQ75 mask was unavailable no mask array is returned and ``mask_file`` is null.
+    """
     full = np.asarray(sky.map_uK, dtype="<f4")
     low = np.asarray(sky.lowl_map_uK, dtype="<f4")
+    has_mask = sky.mask_fraction is not None
 
     def _entry(name: str, arr: np.ndarray, desc: str) -> dict:
         r = float(np.percentile(np.abs(arr), 99.5))
@@ -552,13 +571,15 @@ def sky_map_export(sky: SkyData) -> tuple[dict, dict[str, np.ndarray]]:
             _entry("lowl", low, f"{sky.lmin} <= l <= {sky.lmax} reconstruction from the extracted a_lm "
                                 f"(beam and pixel window removed)"),
         ],
-        "mask_file": "sky_mask.bin",
+        "mask_file": "sky_mask.bin" if has_mask else None,
         "mask": {"name": "WMAP KQ75 (9-yr)", "fsky": sky.fsky,
-                 "threshold": (sky.meta.get("mask") or {}).get("threshold")} if sky.mask_fraction is not None else None,
+                 "threshold": (sky.meta.get("mask") or {}).get("threshold")} if has_mask else None,
         "source": sky.source_name,
         "computed": True,
     }
-    arrays = {"sky_map_full.bin": full, "sky_map_lowl.bin": low, "sky_mask.bin": np.asarray(sky.mask, dtype=np.uint8)}
+    arrays = {"sky_map_full.bin": full, "sky_map_lowl.bin": low}
+    if has_mask:
+        arrays["sky_mask.bin"] = np.asarray(sky.mask, dtype=np.uint8)
     return meta, arrays
 
 

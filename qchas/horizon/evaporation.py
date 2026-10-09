@@ -114,6 +114,8 @@ def evaporate(n_qubits: int = 20, diary_step: int | None = None, seed: int = 0,
     min{S_H, log2 d_B + S(Ref)} of Theorem E(i) (S(R) = S(B Ref)), Page's exact average for
     the same dimensions, and the diary's mutual information I(Ref : R).
     """
+    if diary_step is not None and not 0 <= diary_step <= n_qubits:
+        raise ValueError(f"diary_step must lie in 0..{n_qubits} (emissions before the diary), got {diary_step}")
     rng = np.random.default_rng(seed)
     psi = np.zeros((2**n_qubits, 1, 1), dtype=complex)
     psi[0, 0, 0] = 1.0
@@ -190,6 +192,8 @@ def decoding_infidelity(n_bh: int = 7, k: int = 2, s_values=None, samples: int =
     is maximally entangled with n_bh qubits of early radiation E; a young one starts in
     |0...0>. ``dynamics`` is "haar" or "eth" (U = e^{-iHt}, GUE spectrum on [-1, 1]).
     """
+    if dynamics not in ("haar", "eth"):
+        raise ValueError(f"dynamics must be 'haar' or 'eth', got {dynamics!r}")
     rng = np.random.default_rng(seed)
     n_total = n_bh + k
     d_b, d_d, dim = 2**n_bh, 2**k, 2**(n_bh + k)
@@ -236,6 +240,7 @@ def to_json(n_qubits: int = 20, samples: int = 6, seed: int = 0) -> dict:
             "early_diary": evaporate(n_qubits, early, seed + 1),
             "late_diary": evaporate(n_qubits, late, seed + 2),
             "paper": PAPER_EVAPORATION,
+            "paper_comparable": n_qubits == PAPER_EVAPORATION["n_qubits"],
         },
         "decoding": decoding_table(samples, seed),
         "claims": CLAIMS,

@@ -66,12 +66,13 @@ const TEX_W = 1024;
 const TEX_H = 512;
 
 export function createGlobe(el: HTMLElement, opts: SkyViewOptions = {}): GlobeView {
+  // create the WebGL context first: if it fails, nothing is left in `el` for the Mollweide fallback
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: false });
   const root = h('div', { class: 'sky-view' });
   if (opts.height) root.style.height = `${opts.height}px`;
   else root.style.height = '420px';
   el.append(root);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: false });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
   renderer.setClearColor(0x000000, 0);
   root.append(renderer.domElement);

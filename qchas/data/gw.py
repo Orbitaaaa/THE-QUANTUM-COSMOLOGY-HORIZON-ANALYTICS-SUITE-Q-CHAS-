@@ -43,6 +43,8 @@ LAG_WINDOW_S = (0.10, 0.02)
 EXPORT_FS = 2048
 #: ringdown band of [QG] Sec. 19.2 (extended to 2 f220 for light remnants)
 RINGDOWN_BAND = (20.0, 1000.0)
+#: catalogue components lighter than this (source frame, Msun) may be neutron stars: no BBH remnant fit
+NS_MAX_MASS = 3.0
 
 #: [QG] Sec. 19.1 echo search in public LIGO-Virgo strain (R90 = None means "> 1": unconstrained)
 _ECHO_FIELDS = ("event", "snr", "mf", "af", "f220", "dt_ms", "gamma", "echo_snr", "p", "R90")
@@ -290,13 +292,26 @@ def analyse_event(name: str, params: dict, raw_dir: str | Path | None = None, n_
     band = tuple(float(b) for b in params["fband"])
     data = {}
     for det, p in paths.items():
-        strain, gps0, fs = read_losc_hdf5(p)
+        try:
+            strain, gps0, fs = read_losc_hdf5(p)
+        except (OSError, KeyError, ValueError) as exc:
+            out["warnings"].append(f"{name}: {p.name} unreadable ({type(exc).__name__}: {exc})")
+            return out
+        if not np.all(np.isfinite(strain)):
+            out["warnings"].append(f"{name}: {p.name} contains non-finite samples (data-quality gap)")
+            return out
         white = whiten(strain, fs)
         data[det] = {"white": white, "bp": bandpass(white, fs, band), "gps0": gps0, "fs": fs}
     fs = data["H1"]["fs"]
     gps0 = data["H1"]["gps0"]
-    t = gps0 + np.arange(data["H1"]["bp"].size) / fs
+    if data["L1"]["gps0"] != gps0 or data["L1"]["fs"] != fs or data["L1"]["bp"].size != data["H1"]["bp"].size:
+        out["warnings"].append(f"{name}: H1 and L1 files do not cover the same samples")
+        return out
     i_ev = int(round((out["tevent"] - gps0) * fs))
+    if not (int(4 * fs) <= i_ev <= data["H1"]["bp"].size - int(4 * fs)):
+        out["warnings"].append(f"{name}: tevent lies within 4 s of the file edges")
+        return out
+    t = gps0 + np.arange(data["H1"]["bp"].size) / fs
     ncrop = int(round(CROP_S * fs))
     sl = slice(i_ev - ncrop, i_ev + ncrop + 1)
     h1, l1 = data["H1"]["bp"], data["L1"]["bp"]
@@ -352,9 +367,10 @@ def parse_gwosc_allevents(data: dict | str | Path) -> list[dict]:
     """Rows of the GWOSC event API JSON (``/eventapi/json/allevents/``), one per event.
 
     Robust to null and missing fields. When several versions of an event are listed, the
-    highest version is kept. Where the final mass and chi_eff are known, the remnant spin is
-    estimated with the aligned-spin fit (both spins set to chi_eff, an approximation) and
-    the Kerr numbers are added.
+    highest version is kept. Where the component masses and chi_eff are known and both
+    components exceed ``NS_MAX_MASS`` (binary black holes), the remnant spin is estimated
+    with the aligned-spin fit (both spins set to chi_eff, an approximation) and the Kerr
+    numbers are added; events that may contain a neutron star are flagged instead.
     """
     if not isinstance(data, dict):
         with open(data) as f:
@@ -378,7 +394,9 @@ def parse_gwosc_allevents(data: dict | str | Path) -> list[dict]:
     for version, row in best.values():
         row["version"] = version
         row.update({"af_estimate": None, "f220_Hz": None, "echo_delay_ms": None, "S_BH_log10": None})
-        if row["m1_source"] and row["m2_source"] and row["chi_eff"] is not None:
+        masses = [m for m in (row["m1_source"], row["m2_source"]) if m is not None]
+        row["possible_neutron_star"] = bool(masses) and min(masses) < NS_MAX_MASS
+        if row["m1_source"] and row["m2_source"] and row["chi_eff"] is not None and not row["possible_neutron_star"]:
             mf_fit, af = kerr.remnant_aligned(row["m1_source"], row["m2_source"], row["chi_eff"], row["chi_eff"])
             mf_src = row["mf_source"] or mf_fit
             z = row["redshift"] or 0.0
@@ -406,7 +424,7 @@ def to_json(raw_dir: str | Path | None = None, n_noise: int = 40, events=None) -
     if (raw / GWTC_FILE).exists():
         try:
             gwtc = parse_gwosc_allevents(raw / GWTC_FILE)
-        except (ValueError, KeyError, TypeError) as exc:
+        except (ValueError, KeyError, TypeError, AttributeError, OSError) as exc:
             warnings.append(f"GWOSC catalogue unreadable: {exc}")
     else:
         warnings.append("GWOSC event API not reachable from build host; gwtc is null")
@@ -416,14 +434,19 @@ def to_json(raw_dir: str | Path | None = None, n_noise: int = 40, events=None) -
         if events is not None and name not in events:
             continue
         z = z_by_name.get(name) or z_by_name.get(name.replace("LVT", "GW"))
-        ev = analyse_event(name, params, raw, n_noise=n_noise, redshift=z)
+        try:
+            ev = analyse_event(name, params, raw, n_noise=n_noise, redshift=z)
+        except (KeyError, TypeError, ValueError) as exc:
+            warnings.append(f"{name}: tutorial entry not analysable ({type(exc).__name__}: {exc})")
+            continue
         warnings.extend(ev.pop("warnings"))
         out_events.append(ev)
     check = kerr.echo_reflectivity_bound(kerr.KerrHorizon(PAPER_ECHO_BOUND["m_sun"], 0.0).entropy)
     paper_rows = []
     for row in PAPER_ECHO_TABLE:
         f220, _ = kerr.qnm(row["mf"], row["af"])
-        paper_rows.append({**row, "f220_ours": f220, "dt_ms_ours": 1e3 * kerr.echo_delay(row["mf"], row["af"])})
+        paper_rows.append({**row, "R90_label": "> 1" if row["R90"] is None else f"{row['R90']:.2f}",
+                           "f220_ours": f220, "dt_ms_ours": 1e3 * kerr.echo_delay(row["mf"], row["af"])})
     return {
         "events": out_events,
         "paper_events": paper_rows,

@@ -8,15 +8,23 @@ with [X]_0 the traceless part (c_E absorbed into kappa). We integrate the equiva
 form X = h u = dh/dtau:  dX/dtau = X h^-1 X - X - kappa (h M h - tr(Mh)/3 h).
 Z and M come from the analytic Ewald sum of :mod:`qchas.topology.lattice`. The basis is
 Minkowski-reduced whenever it becomes skewed (h -> U h U^T, X -> U X U^T, U in GL(3, Z)).
-``mode='gradient'`` integrates the overdamped limit dh/dtau = -h [M h]_0 instead.
+``mode='gradient'`` integrates the first-order gradient flow dh/dtau = -h [M h]_0 for the
+invariant metric tr u^2 (kappa only rescales its time). The paper's basin count, 190 FCC and
+50 BCC of 240 Haar-random starts, is quoted for "gradient flow" ([TOP] Prop. E.2 remark,
+Prop. H.3, Sec. 14), so :func:`basin_statistics` defaults to that mode; the damped Theorem H.2
+flow (``mode='inertial'``) depends on kappa, which the paper does not state for this run.
 
 Initial lattices are Haar-random ([TOP] Sec. 14 'Shape flow'): h = k diag(e^{2t}) k^T with k
 Haar on SO(3) and t in the Cartan plane (sum t = 0) with density prod_{i<j} |sinh(t_i - t_j)|,
-truncated to the Riemannian ball |t| <= T_MAX = 5. The push-forward of this K-bi-invariant
-ball to SL(3,R)/SL(3,Z) tends to the Haar measure as T_MAX grows (Eskin-McMullen, [TOP]
-ref. 34); :func:`siegel_check` tests the truncation against Siegel's mean value theorem
-E #{g != 0 : |g| <= r} = 4 pi r^3 / 3. At T_MAX = 3, 4, 5 the r = 0.8 count is about 17 %,
-7 % and 3 % low (the missing deep cusp of very skewed lattices).
+truncated to the Riemannian ball |t| <= T_MAX (the paper states no truncation). The push-forward
+of this K-bi-invariant ball to SL(3,R)/SL(3,Z) tends to the Haar measure as T_MAX grows
+(Eskin-McMullen, [TOP] ref. 34); :func:`siegel_check` tests it against Siegel's mean value
+theorem E #{g != 0 : |g| <= r} = 4 pi r^3 / 3. With 8000 samples the counts for r = 0.6-1.2 are
+1.5-4.5 % low at T_MAX = 5 (the missing cusp of very skewed lattices) and agree within 1 %
+(1 sigma) at T_MAX = 7 and 10. Basin fractions move with it: the gradient-flow FCC share is
+84 +- 2 % at T_MAX = 5 (360 flows) and 79.8 +- 1.8 % at T_MAX = 10 (seeds 2026 and 7, 194 and
+189 of 240), against the paper's 190 of 240. We use T_MAX = 10; the start bases are reduced as
+bases, not as Gram matrices, which would square their condition number (~e^{2 sqrt2 T_MAX}).
 """
 
 from __future__ import annotations
@@ -39,7 +47,7 @@ FLOW_RADIUS = 3.8
 #: restart from a reduced basis when prod|b_i|/covolume exceeds this (reduced bases have <= sqrt 2)
 SKEW_MAX = 2.5
 #: default truncation of the Haar sampler (Riemannian radius |t| of the KAK ball)
-T_MAX = 5.0
+T_MAX = 10.0
 #: [TOP] Prop. E.2 remark and Prop. H.3: 240 Haar-random flows end at FCC 190 times, BCC 50 times
 PAPER_COUNTS = {"FCC": 190, "BCC": 50, "other": 0}
 #: quoted from [TOP] Prop. H.3
@@ -98,10 +106,21 @@ def reduce_gram(h: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 def haar_random_grams(rng: np.random.Generator, n: int, t_max: float = T_MAX) -> list[np.ndarray]:
-    """n reduced unimodular Gram matrices k diag(e^{2t}) k^T, KAK-Haar with |t| <= t_max."""
+    """n reduced unimodular Gram matrices k diag(e^{2t}) k^T, KAK-Haar with |t| <= t_max.
+
+    The basis B = k diag(e^t) (rows) is Minkowski-reduced as a basis and squared afterwards:
+    reducing the Gram matrix itself would square its condition number (~e^{2 sqrt2 t_max}).
+    """
     ts = sample_kak_t(rng, n, t_max)
     ks = Rotation.random(n, random_state=rng).as_matrix()
-    return [reduce_gram(k @ np.diag(np.exp(2.0 * t)) @ k.T)[0] for t, k in zip(ts, ks)]
+    out = []
+    for t, k in zip(ts, ks):
+        B = k * np.exp(t)[None, :]
+        _, U = minkowski_reduce(B)
+        Br = U.astype(float) @ B
+        h = _sym(Br @ Br.T)
+        out.append(h / np.linalg.det(h) ** (1.0 / 3.0))
+    return out
 
 
 def siegel_check(rng: np.random.Generator, n: int = 2000, t_max: float = T_MAX,
@@ -258,9 +277,13 @@ def run_flow(h0: np.ndarray, kappa: float = 1.0, mode: str = "inertial", tau_max
                       {"kappa": kappa, "mode": mode})
 
 
-def basin_statistics(n: int = 120, kappa: float = 1.0, mode: str = "inertial", seed: int = 2026,
+def basin_statistics(n: int = 240, kappa: float = 1.0, mode: str = "gradient", seed: int = 2026,
                      t_max: float = T_MAX, n_traj: int = 24, traj_points: int = 200, **kw) -> dict:
-    """Run n Haar-random flows; endpoint counts, fractions and down-sampled (tau, Z) trajectories."""
+    """Run n Haar-random flows; endpoint counts, fractions and down-sampled (tau, Z) trajectories.
+
+    Defaults follow [TOP]: 240 starts, first-order gradient flow (``kappa`` is then irrelevant
+    and reported as None).
+    """
     rng = np.random.default_rng(seed)
     hs = haar_random_grams(rng, n, t_max)
     counts = {"FCC": 0, "BCC": 0, "SC": 0, "other": 0}
@@ -278,7 +301,7 @@ def basin_statistics(n: int = 120, kappa: float = 1.0, mode: str = "inertial", s
         counts.pop("SC")
     f = counts["FCC"] / n
     return {
-        "n": n, "kappa": kappa, "mode": mode, "seed": seed, "t_max": t_max,
+        "n": n, "kappa": None if mode == "gradient" else kappa, "mode": mode, "seed": seed, "t_max": t_max,
         "counts": counts, "fcc_fraction": f, "fcc_fraction_err": math.sqrt(f * (1 - f) / n),
         "paper_counts": {"FCC": PAPER_COUNTS["FCC"], "BCC": PAPER_COUNTS["BCC"]},
         "paper_fcc_fraction": 190 / 240,
@@ -301,16 +324,17 @@ def relaxation_numbers() -> dict:
     L_eV = L_TODAY_GPC * GPC / hbar_c_eV_m
     return {
         **RELAXATION_PAPER,
-        "computed": {"kappa_cE_coeff": coeff, "fcc_mu_min": mu_min,
-                     "TL4_per_dtau": coeff * mu_min, "TL_today": T0_EV * L_eV, "L_today_inv_eV": L_eV},
+        "ours": {"kappa_cE_coeff": coeff, "fcc_mu_min": mu_min,
+                 "TL4_per_dtau": coeff * mu_min, "TL_today": T0_EV * L_eV, "L_today_inv_eV": L_eV},
+        "computed": True,
     }
 
 
 def to_json(stats: dict | None = None, **kw) -> dict:
-    """The ``flows`` and ``relaxation`` pieces of ``lattice.json`` (runs the N = 120 flows if needed)."""
+    """The ``flows`` and ``relaxation`` pieces of ``lattice.json`` (runs the basin flows if needed)."""
     s = basin_statistics(**kw) if stats is None else stats
     flows = {k: s[k] for k in ("n", "counts", "paper_counts", "trajectories")}
     flows.update({k: s[k] for k in ("kappa", "mode", "t_max", "seed", "fcc_fraction",
                                     "fcc_fraction_err", "paper_fcc_fraction", "unconverged")})
-    flows["source"] = "[TOP] Theorem H.2, Sec. 14"
+    flows.update({"computed": True, "source": "[TOP] Theorem H.2, Prop. H.3, Sec. 14"})
     return {"flows": flows, "relaxation": relaxation_numbers()}

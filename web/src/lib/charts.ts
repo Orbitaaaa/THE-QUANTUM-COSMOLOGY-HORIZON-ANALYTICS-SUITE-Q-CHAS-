@@ -335,12 +335,19 @@ function mountChart(
 const fmtDefault = (v: number): string => fmtNum(v, 5);
 
 function seriesTable(
-  series: { name: string; x: (number | string)[]; y: (number | null)[]; error?: number[] }[],
+  series: { name: string; x: (number | string)[]; y: (number | null)[]; error?: number[]; errorAsym?: [number[], number[]] }[],
   xLabel: string,
   fmt: (v: number) => string,
 ): HTMLElement {
   const fmtCell = (v: number | string | null | undefined): string =>
     v === null || v === undefined ? '—' : typeof v === 'number' ? fmt(v) : v;
+  // the table twin carries the same uncertainties as the chart: ± e, or − lo / + hi
+  const errText = (s: (typeof series)[number], i: number): string =>
+    s.errorAsym
+      ? ` −${fmtCell(s.errorAsym[0][i])} / +${fmtCell(s.errorAsym[1][i])}`
+      : s.error
+        ? ` ± ${fmtCell(s.error[i])}`
+        : '';
   const first = series[0];
   const shared = !!first && series.every((s) => s.x.length === first.x.length && s.x.every((v, i) => v === first.x[i]));
   if (shared && first) {
@@ -352,18 +359,18 @@ function seriesTable(
           key: `s${k}`,
           label: s.name,
           align: 'num' as const,
-          format: (r: { i: number }) => fmtCell(s.y[r.i]) + (s.error ? ` ± ${fmtCell(s.error[r.i])}` : ''),
+          format: (r: { i: number }) => fmtCell(s.y[r.i]) + errText(s, r.i),
         })),
       ],
       rows,
     );
   }
-  const rows = series.flatMap((s) => s.x.map((x, i) => ({ series: s.name, x, y: s.y[i] ?? null, e: s.error?.[i] })));
+  const rows = series.flatMap((s) => s.x.map((x, i) => ({ series: s.name, x, y: s.y[i] ?? null, e: errText(s, i) })));
   return table(
     [
       { key: 'series', label: 'Series' },
       { key: 'x', label: xLabel, align: 'num', format: (r) => fmtCell(r.x) },
-      { key: 'y', label: 'Value', align: 'num', format: (r) => fmtCell(r.y) + (r.e !== undefined ? ` ± ${fmtCell(r.e)}` : '') },
+      { key: 'y', label: 'Value', align: 'num', format: (r) => fmtCell(r.y) + r.e },
     ],
     rows,
   );
