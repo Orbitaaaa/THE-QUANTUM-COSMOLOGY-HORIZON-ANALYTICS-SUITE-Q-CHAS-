@@ -18,6 +18,10 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+env:
+  OPENBLAS_NUM_THREADS: "1"
+  OMP_NUM_THREADS: "1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,6 +39,11 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - name: Install analytics core
         run: pip install -e ".[dev]"
+      - name: Cache CAMB transfer functions and torus covariances
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: qchas-cache-${{ hashFiles('qchas/cmb/transfer.py', 'qchas/cmb/covariance.py', 'qchas/constants.py') }}
       - name: Cache public datasets
         uses: actions/cache@v4
         with:

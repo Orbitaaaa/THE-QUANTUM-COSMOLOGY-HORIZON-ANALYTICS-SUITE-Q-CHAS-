@@ -92,7 +92,7 @@ def _topology() -> dict:
 def _lattice(fast: bool) -> dict:
     from .topology import lattice, shapeflow
 
-    return {**lattice.to_json(), **shapeflow.to_json(n=24 if fast else 120)}
+    return {**lattice.to_json(), **shapeflow.to_json(n=24 if fast else 240)}
 
 
 def _sky(b: _Builder, raw_dir: Path):
@@ -113,10 +113,8 @@ def _cmb(sky, raw_dir: Path, fast: bool, likelihood_part: dict | None) -> dict:
     wmap = stats.load_wmap_tt(raw_dir)
     planck = stats.load_planck_tt(raw_dir)
     out = stats.cmb_fields(sky, wmap, planck, n_realizations=20_000 if fast else 100_000)
-    out["torus_D"] = {
-        f"{shape}_{d:g}": covariance.torus_dl(shape, d).tolist()
-        for shape, d in [("FCC", 0.985), ("cubic", 0.985), ("BCC", 0.985), ("FCC", 0.70), ("FCC", 1.05)]
-    }
+    out["torus_D"] = covariance.torus_D_bundle(
+        models=(("FCC", 0.985), ("cubic", 0.985), ("BCC", 0.985), ("FCC", 0.70), ("FCC", 1.05)))
     out["kl"] = covariance.kl_table()
     out["sec8"] = covariance.sec8_table()
     out["ceiling"] = resonance.PAPER_CEILING
@@ -259,9 +257,10 @@ def build_all(out_dir: Path | None = None, raw_dir: Path | None = None, *, fast:
     if want("lattice"):
         b.run("lattice", lambda: _lattice(fast), "lattice.json")
 
-    sky_meta = None
     sky = None
     if want("sky") or want("cmb") or want("resonance"):
+        for stale in ("sky_map_full.bin", "sky_map_lowl.bin", "sky_mask.bin"):
+            (out_dir / stale).unlink(missing_ok=True)
         res = b.run("sky", lambda: _sky(b, raw_dir))
         if res is not None:
             sky, sky_meta = res
@@ -307,8 +306,17 @@ def build_all(out_dir: Path | None = None, raw_dir: Path | None = None, *, fast:
 
 
 def _existing(out_dir: Path) -> list[str]:
-    """Bundles already on disk from earlier partial builds (``--only``)."""
+    """Bundles already on disk from earlier partial builds (``--only``).
+
+    Binary maps count only when the current ``sky_map.json`` still references them, so a stale
+    mask from an earlier build is never advertised.
+    """
     names = ["topology.json", "lattice.json", "sky_map.json", "cmb.json", "resonance.json", "spherex.json",
-             "horizon.json", "bounce.json", "gw.json", "validation.json",
-             "sky_map_full.bin", "sky_map_lowl.bin", "sky_mask.bin"]
-    return [n for n in names if (out_dir / n).exists()]
+             "horizon.json", "bounce.json", "gw.json", "validation.json"]
+    found = [n for n in names if (out_dir / n).exists()]
+    sky = out_dir / "sky_map.json"
+    if sky.exists():
+        meta = json.loads(sky.read_text())
+        refs = [m.get("file") for m in meta.get("maps", [])] + [meta.get("mask_file")]
+        found += [f for f in refs if f and (out_dir / f).exists()]
+    return found

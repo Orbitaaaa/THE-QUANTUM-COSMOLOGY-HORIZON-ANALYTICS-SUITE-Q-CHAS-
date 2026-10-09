@@ -120,7 +120,7 @@ def _group_lattice(r: _Rows, lattice: dict):
     fl = lattice.get("flows", {})
     if fl.get("fcc_fraction") is not None:
         r.add("Shape flow ([TOP] Sec. 6.3)", "fraction of flows ending at FCC", fl["fcc_fraction"], 0.79,
-              "[TOP] Prop. H.3 / Sec. 14", tol=0.1, note=f"N = {fl.get('n')}, kappa = {fl.get('kappa')}; paper N = 240, kappa unstated")
+              "[TOP] Prop. H.3 / Sec. 14", tol=0.1, note=f"N = {fl.get('n')} {fl.get('mode')} flows, Haar starts truncated at |t| <= {fl.get('t_max')}; paper N = 240")
 
 
 def _group_circles(r: _Rows, topo: dict):
@@ -176,6 +176,16 @@ def _group_cmb_stats(r: _Rows, cmb: dict):
               note="Monte Carlo median; seed scatter ~1 %")
         r.add(g, "P(S_1/2 <= 6694 uK^4) under LCDM", pc.get("p_S12_planck_value"), 0.076, "[TOP] Sec. 8 table", tol=0.06)
         r.add(g, "P(C_2 <= Planck's 226 uK^2) under LCDM", pc.get("p_C2_planck_value"), 0.047, "[TOP] Sec. 8 table", tol=0.06)
+        # these two exist only when the Planck PR3 files were reachable from the build host
+        r.add(g, "S_1/2 of the Planck 2018 spectrum, 2 <= l <= 30 (uK^4)", pc.get("S12_planck_spectrum"), 6694,
+              "[TOP] Sec. 8", tol=0.01)
+        r.add(g, "Planck 2018 published D_2 (uK^2)", pc.get("D2_planck_spectrum"), 226, "[TOP] Sec. 8", tol=0.01)
+    ext = st.get("extraction_check") or {}
+    rel = ext.get("paper_D_extracted_rel_diff")
+    if rel and (cmb.get("source") or "").startswith("Planck"):
+        for l, d in zip(range(2, 7), rel):
+            r.add("Planck map pipeline ([TOP] Sec. 9)", f"extracted D_{l} relative to the paper's extraction",
+                  1.0 + d, 1.0, "[TOP] Sec. 9", tol=0.02)
 
 
 def _group_bounce(r: _Rows, bounce: dict):

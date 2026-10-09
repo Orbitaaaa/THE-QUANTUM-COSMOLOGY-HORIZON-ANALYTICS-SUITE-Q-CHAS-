@@ -208,10 +208,23 @@ Missing optional inputs (for example Planck when its archive is unreachable) pro
 }
 ```
 
+### Additions made during implementation (all optional for readers)
+
+* Every quoted row may carry `source`; every computed block may carry `"computed": true`.
+* `topology.json`: `circles` (circle tables at d/D = 0.985 and 0.8, `fcc_preregistered` rotation), `vacuum` (E1/E2 variance grids); manifold entries add `holonomy_order`, `note`.
+* `lattice.json`: `gaps`; `critical.*.gradient_norm`; `flows` adds `mode`, `t_max`, `seed`, `fcc_fraction(_err)`, `unconverged`; `relaxation.ours`.
+* `sky_map.json`: each map has `range` (±99.5th percentile); `mask_file` is `null` when no mask was available.
+* `cmb.json`: `stats` holds `p_C2`, `p_S12`, `D2`, `S12` keyed `planck`/`wmap`/`map`, plus `primary`, `axes`, `extraction_check`, `C_theta`, `S12_lcdm_hist`, `paper`, `paper_check`; `sec8` table; `likelihood_meta`.
+* `resonance.json`: `single_field` is computed (`rows` with `paper`), `woodbury_benchmark.max_abs_diff`, `n_shells`, `search_paper`; ceiling and exits may contain `null` where the paper prints "—".
+* `horizon.json`: `evaporation.paper_comparable`; evaporation runs carry `s_ref`, `max_bits`, `max_step`, `max_dev`, `final_bits`, `recovered_step`.
+* `bounce.json`: `runs[].paper` always present (may be `{}`), `runs[].paper_grid`, `runs[].closed_form`, `snapshots_paper_grid`, `snapshots_a_max_2`, `limits`, `notes`, `claims`, `graviton.h2_peak_by_a_max`; `fwhm_T` may be `null`.
+* `gw.json`: ringdown fit has `f_err_Hz`, `tau_err_ms`, `snr`, `p_noise`, `significant`, `t0_range_ms`; strain has lag fields; `paper_events[].R90` may be `null` with `R90_label` (e.g. "> 1"); `gwtc[].possible_neutron_star`; `paper_echo_summary`, `paper_ringdown`, `echo_bound_check`.
+* `validation.json`: `rows` of `{group, quantity, ours, paper, rel_diff, verdict, source, note}`, `summary`, `skipped`.
+
 ## Web app layout (`web/`)
 
 Vite + TypeScript, no framework. Dependencies: `three` (globe, 3D lattice),
-`plotly.js-basic-dist-min` (charts). Structure:
+`plotly.js-cartesian-dist-min` (charts, including heatmaps). Structure:
 
 ```
 web/

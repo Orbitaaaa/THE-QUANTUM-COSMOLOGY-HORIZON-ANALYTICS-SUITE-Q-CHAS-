@@ -60,7 +60,9 @@ CIRCLE_SEARCH_BOUND = 0.985
 LIKELIHOOD_BOUNDS = {"FCC": 1.04, "BCC": 1.00, "cubic": 0.985}
 #: certified Epstein zeta values at unit covolume, [TOP] Prop. E.2
 Z2_CERTIFIED = {"SC": 16.532315959761670, "BCC": 15.971880245588027, "FCC": 15.962131481337693}
-#: certified Hessian eigenvalues in the 5-dimensional shape space, [TOP] Prop. E.2
+#: certified Hessian eigenvalues in the 5-dimensional shape space, [TOP] Prop. E.2, as printed.
+#: The printed BCC value 3.3953 violates the exact identity tr H = 2 Z / 3; our analytic and
+#: finite-difference Hessians agree on 3.39504 (see qchas.topology.lattice). Keep the quote as printed.
 HESSIAN_CERTIFIED = {
     "FCC": [0.5661, 0.5661, 3.1697, 3.1697, 3.1697],
     "BCC": [0.2314, 0.2314, 3.3953, 3.3953, 3.3953],
