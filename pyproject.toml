@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qchas"
+version = "0.1.0"
+description = "Quantum Cosmology & Horizon Analytics Suite: cosmic-topology and horizon-information analytics on real Planck, WMAP, SPHEREx and LIGO-Virgo data"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "healpy>=1.16",
+  "astropy>=6.0",
+  "h5py>=3.9",
+  "camb>=1.5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+qchas = "qchas.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["qchas*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "slow: long-running numerical validation",
+  "network: needs access to the public data archives",
+]

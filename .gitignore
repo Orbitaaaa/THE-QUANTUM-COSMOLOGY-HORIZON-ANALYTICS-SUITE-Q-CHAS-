@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+# raw downloads (real survey data) live here; never committed
+data/raw/
+data/cache/
+web/node_modules/
+web/dist/
+.DS_Store
