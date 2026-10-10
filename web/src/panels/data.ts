@@ -97,7 +97,11 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
             r.ok ? statusPill('good', 'built') : failed.has(r.name) ? statusPill('serious', 'build failed') : statusPill('warning', 'not built'),
         },
       ],
-      BUNDLE_NAMES.filter((n) => n !== 'manifest.json').map((name) => ({ name, ok: built.has(name) })),
+      // the contract's bundles, then the extras the manifest lists (validation.json, binary maps)
+      [
+        ...BUNDLE_NAMES.filter((n) => n !== 'manifest.json'),
+        ...[...built].filter((n) => n !== 'manifest.json' && !(BUNDLE_NAMES as string[]).includes(n)).sort(),
+      ].map((name) => ({ name, ok: built.has(name) })),
     ),
   );
 

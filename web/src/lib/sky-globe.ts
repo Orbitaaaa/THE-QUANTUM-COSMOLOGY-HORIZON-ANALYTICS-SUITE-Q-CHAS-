@@ -127,7 +127,13 @@ export function createGlobe(el: HTMLElement, opts: SkyViewOptions = {}): GlobeVi
   scene.add(gridGroup, overlayGroup);
   const lineMaterials = new Set<LineMaterial>();
 
-  const store = new OverlayStore(() => rebuildOverlays());
+  // Overlay edits only mark the overlays stale; the next animation frame rebuilds them once, so
+  // adding hundreds of footprints (or moving a slider) costs one rebuild per frame, not one per call.
+  let overlaysStale = false;
+  const store = new OverlayStore(() => {
+    overlaysStale = true;
+    dirty = true;
+  });
   const pickers = new Set<(p: SkyPick) => void>();
 
   // --- helpers --------------------------------------------------------------------------------
@@ -189,6 +195,7 @@ export function createGlobe(el: HTMLElement, opts: SkyViewOptions = {}): GlobeVi
   }
 
   function rebuildOverlays(): void {
+    overlaysStale = false;
     disposeGroup(overlayGroup);
     const r = overlayRadius();
     let chords = 0;
@@ -358,6 +365,7 @@ export function createGlobe(el: HTMLElement, opts: SkyViewOptions = {}): GlobeVi
     if (!root.isConnected) return view.dispose();
     if (!visible) return;
     controls.update();
+    if (overlaysStale) rebuildOverlays();
     if (!dirty) return;
     dirty = false;
     updateLabels();

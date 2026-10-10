@@ -1,0 +1,10 @@
+/* Ghost-Twin Tracker (ghost-twin.ts); shared Module 1 styles live in m1.css. */
+.gt-status {
+  gap: 6px 10px;
+  margin-top: 4px;
+}
+.m1-ruler-mark.gt-tick {
+  top: 4px;
+  height: 12px;
+  border-left: 1px dashed var(--text-2);
+}

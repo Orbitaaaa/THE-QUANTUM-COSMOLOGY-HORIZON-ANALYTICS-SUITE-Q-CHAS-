@@ -383,6 +383,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
     span: 4,
     stretch: true,
   });
+  dsP.root.classList.add('dense-table');
   if (hor.ok) {
     const ds = hor.data.capacity.de_sitter;
     const cap = hor.data.capacity;

@@ -36,7 +36,7 @@ import { ROUTES } from '../routes';
 
 export const title = 'Mission Overview';
 export const subtitle =
-  'Q-CHAS confronts three new results in mathematical physics with real public survey data: WMAP and Planck CMB maps, SPHEREx spectral images and LIGO-Virgo strain.';
+  'Q-CHAS confronts three new results in mathematical physics with real public survey data: the WMAP 9-year CMB map (Planck PR3 when its archive is reachable; the papers\' own Planck results are quoted), SPHEREx spectral images and LIGO strain.';
 
 const BUILT = BUNDLE_NAMES.filter((n) => n !== 'manifest.json');
 
@@ -107,10 +107,10 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
     critical?: { FCC?: { Z: number } };
     flows?: { n?: number; counts?: Record<string, number>; paper_counts?: Record<string, number>; source?: string };
   }>('lattice.json');
-  const resonance = get<{ search?: { p_max?: Num } | null }>('resonance.json');
-  const cmb = get<{ stats?: { S12_obs?: Num }; source?: string }>('cmb.json');
+  const resonance = get<{ search?: { p_max?: Num; map?: string } | null }>('resonance.json');
+  const cmb = get<{ stats?: { S12_obs?: Num; primary?: string; paper?: { S12_planck?: Num } }; source?: string }>('cmb.json');
   const horizon = get<{ page?: { page_time?: Num }; capacity?: { de_sitter?: { log10_entropy?: Num } } }>('horizon.json');
-  const bounce = get<{ runs?: { a_max?: number; a_min?: Num; paper?: { a_min?: number | string | null } }[] }>('bounce.json');
+  const bounce = get<{ runs?: { a_max?: number; a_min?: Num; paper?: { a_min?: number | string | null; source?: string } }[] }>('bounce.json');
   // compare with a run the paper tabulates (a_max = 2 in [QG] Theorem Lambda), else the first run
   const run0 = bounce?.runs?.find((r) => r.paper?.a_min !== undefined && r.paper.a_min !== null) ?? bounce?.runs?.[0];
   const gw = get<{ events?: unknown[] }>('gw.json');
@@ -128,7 +128,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   const share = (c?: Record<string, number>): string => {
     const fcc = c?.FCC ?? 0;
     const total = Object.values(c ?? {}).reduce((a, b) => a + b, 0);
-    return total ? `${fcc} : ${c?.BCC ?? 0} (FCC ${Math.round((100 * fcc) / total)} % of ${total})` : '—';
+    return total ? `${fcc} : ${c?.BCC ?? 0} (${Math.round((100 * fcc) / total)} % FCC)` : '—';
   };
   const m1: KeyNumber[] = [
     { label: 'Casimir Z(2) at the FCC minimum', value: lattice?.critical?.FCC ? fmtNum(lattice.critical.FCC.Z, 8) : null, bundle: 'lattice.json', kind: 'computed', paper: `${Z2_CERTIFIED.value.FCC.toFixed(8)} · ${Z2_CERTIFIED.source}` },
@@ -139,18 +139,30 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
       kind: 'computed',
       paper: paperCounts ? `${share(paperCounts)} · [TOP] Remark after Prop. E.2` : undefined,
     },
-    { label: 'Resonance search p (max statistic)', value: resonance?.search ? fmtNum(resonance.search.p_max, 2) : null, bundle: 'resonance.json', kind: 'measured', paper: '0.78 · [TOP] Sec. 11.6' },
-    { label: 'S1/2 of the map in use', value: cmb?.stats ? fmtNum(cmb.stats.S12_obs, 4) : null, bundle: 'cmb.json', kind: 'measured' },
+    {
+      label: `Resonance search p (S_max); ours on ${resonance?.search?.map ?? 'the build map'}, paper on Planck`,
+      value: resonance?.search ? fmtNum(resonance.search.p_max, 2) : null,
+      bundle: 'resonance.json',
+      kind: 'computed',
+      paper: '0.78 · [TOP] Sec. 11.6',
+    },
+    {
+      label: `S₁/₂ (μK⁴) of the ${cmb?.stats?.primary === 'planck' ? 'Planck 2018' : 'WMAP 9-yr'} spectrum`,
+      value: cmb?.stats ? fmtNum(cmb.stats.S12_obs, 4) : null,
+      bundle: 'cmb.json',
+      kind: 'computed',
+      paper: cmb?.stats?.paper?.S12_planck ? `${fmtNum(cmb.stats.paper.S12_planck, 4)} (Planck) · [TOP] Sec. 8` : undefined,
+    },
   ];
   const m2: KeyNumber[] = [
     { label: 'Page time t_P / t_evap', value: horizon?.page ? fmtNum(horizon.page.page_time, 3) : null, bundle: 'horizon.json', kind: 'computed', paper: `${PAGE_TIME_PAPER.value} · ${PAGE_TIME_PAPER.source}` },
     { label: 'De Sitter entropy log₁₀ S', value: horizon?.capacity?.de_sitter ? fmtNum(horizon.capacity.de_sitter.log10_entropy, 5) : null, bundle: 'horizon.json', kind: 'computed' },
     {
-      label: `Bounce ⟨a⟩_min (ℓ units${run0?.a_max ? `, a_max = ${run0.a_max}` : ''})`,
+      label: `Bounce ⟨a⟩_min, exact (ℓ units${run0?.a_max ? `, a_max = ${run0.a_max}` : ''})`,
       value: run0 ? fmtNum(run0.a_min, 4) : null,
       bundle: 'bounce.json',
       kind: 'computed',
-      paper: run0?.paper?.a_min !== undefined && run0.paper.a_min !== null ? `${run0.paper.a_min} · [QG] Theorem Q` : undefined,
+      paper: run0?.paper?.a_min !== undefined && run0.paper.a_min !== null ? `${run0.paper.a_min} · ${(run0.paper.source ?? '[QG] Theorem Λ table').replace('Lambda', 'Λ')}` : undefined,
     },
     { label: 'LIGO events analysed', value: gw?.events ? String(gw.events.length) : null, bundle: 'gw.json', kind: 'measured' },
   ];
@@ -178,7 +190,10 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
         ),
       ),
       h('div', { class: 'muted small', style: { margin: '14px 0 6px' } }, 'Key numbers'),
-      table(
+      h(
+        'div',
+        { class: 'dense-table' },
+        table(
         [
           { key: 'label', label: 'Quantity', className: 'wrap' },
           {
@@ -188,9 +203,10 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
             format: (r) => (r.value ?? h('span', { class: 'muted', title: `${r.bundle} not built yet` }, 'not built')),
           },
           { key: 'paper', label: 'Paper', className: 'wrap small muted', format: (r) => r.paper ?? '—' },
-          { key: 'kind', label: '', format: (r) => badge(r.kind) },
+          { key: 'kind', label: '', className: 'nowrap', format: (r) => badge(r.kind) },
         ],
         keys,
+        ),
       ),
     );
     return p.root;

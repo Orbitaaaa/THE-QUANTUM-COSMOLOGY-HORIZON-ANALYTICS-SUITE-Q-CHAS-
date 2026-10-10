@@ -1,0 +1,41 @@
+/* Claims ledger: reproduction ledger (validation.json) */
+
+.claims-repro-lede {
+  margin: 12px 0;
+  max-width: 90ch;
+}
+.claims-repro-callout {
+  margin: 14px 0;
+}
+.claims-repro-callout-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-1);
+}
+.claims-repro-callout ul {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--text-2);
+}
+.claims-repro-callout strong {
+  color: var(--text-1);
+}
+.claims-repro-filters {
+  margin-top: 16px;
+}
+.claims-repro-scroll .table-wrap {
+  max-height: 560px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.claims-repro-scroll td.claims-repro-group {
+  color: var(--text-2);
+  min-width: 160px;
+}
+.claims-repro-note {
+  margin-top: 4px;
+  max-width: 48ch;
+}

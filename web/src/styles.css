@@ -67,7 +67,7 @@
   --grid: rgba(40, 70, 120, 0.05);
   --text-1: #0b1220;
   --text-2: #45526a;
-  --text-3: #66738a;
+  --text-3: #5b687e;
   --accent: #2a78d6;
   --accent-ink: #1c5cab;
   --accent-wash: rgba(42, 120, 214, 0.1);
@@ -948,7 +948,9 @@ table.data th {
   color: var(--text-3);
   padding: 8px 10px;
   border-bottom: 1px solid var(--line-2);
-  white-space: nowrap;
+  /* headers wrap between words when a wide table would otherwise scroll sideways */
+  white-space: normal;
+  vertical-align: bottom;
 }
 table.data td {
   padding: 7px 10px;
@@ -970,6 +972,16 @@ table.data .num {
 }
 table.data th.num {
   text-align: right;
+  white-space: normal;
+}
+/* data-dense tables (many columns in a narrow panel): tighter cell padding */
+.dense-table table.data th,
+.dense-table table.data td {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.dense-table table.data .wrap {
+  min-width: 96px;
 }
 table.data .mono {
   font-size: 12px;

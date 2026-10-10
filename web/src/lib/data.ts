@@ -321,7 +321,64 @@ export interface LikelihoodRow {
   p: number;
   n_null: number;
   best_axes_gal: LBPair[];
-  paper?: { max_dlnL?: PaperValue; lnB?: PaperValue; p?: PaperValue };
+  /** fraction of null skies with max Delta lnL >= observed */
+  p_max?: number;
+  null_median?: number;
+  map?: string;
+  /** torus-true calibration (Table 9b analogue) */
+  exclusion?: { median_if_true: number; q05_if_true: number; p_le_obs: number; p_le_label: string; n_true: number; marginal: boolean; verdict: string };
+  /** [TOP] Table 9a (max_dlnL, lnB, p, null95) and/or Table 9b (lnB_planck, verdict, ...) values */
+  paper?: {
+    max_dlnL?: PaperValue;
+    lnB?: PaperValue;
+    p?: PaperValue;
+    null95?: PaperValue;
+    lnB_planck?: PaperValue;
+    verdict?: string;
+    median_if_true?: PaperValue;
+    q05_if_true?: PaperValue;
+    p_le_planck?: PaperValue;
+    sims_if_true?: PaperValue;
+    source?: string;
+    map?: string;
+  };
+}
+
+/** Quadrupole or octopole axis of [TOP] Sec. 9.1 (i), computed on the build map. */
+export interface MultipoleAxis {
+  ell: number;
+  l: number;
+  b: number;
+  vector?: number[];
+  nside_search?: number;
+  dispersion?: number;
+}
+
+export interface Sec8Row {
+  shape: string;
+  d_over_D: number;
+  V_over_D3: number;
+  D2: number;
+  kl: number;
+  D: number[];
+  paper?: { V_over_D3?: number; D2?: number; kl?: number };
+}
+
+export interface LikelihoodMeta {
+  map: string;
+  n_null: number;
+  n_true?: number;
+  n_true_marginal?: number;
+  grid: { n_alpha: number; n_beta: number; n_gamma: number; [k: string]: unknown };
+  statistics?: Record<string, string>;
+  global?: { lnB_avg: number; p: number; n_models: number; definition?: string; paper?: { lnB_avg: number; p: number; n_models: number; source?: string } };
+  fcc_family?: { lnB: number; p: number; sizes?: number[]; definition?: string; paper?: { lnB: number; p: number; source?: string } };
+  best_model?: { shape: string; d_over_D: number; max_dlnL: number; p_max: number; axes_gal: LBPair[]; note?: string };
+  paper_fcc_105_axes_gal?: { axes: LBPair[]; map?: string; source?: string; note?: string };
+  fcc_105_axes_vs_paper?: { separation_deg: number[]; paper_axes: LBPair[]; note?: string };
+  verdict_differences?: { shape: string; d_over_D: number; ours: string; p_le_obs: number; n_true: number; paper: string; paper_p_le_planck: string }[];
+  notes?: string[];
+  [extra: string]: unknown;
 }
 
 export interface CmbBundle {
@@ -341,6 +398,26 @@ export interface CmbBundle {
     S12_lcdm_median: number;
     p_C2: Record<string, number | null>;
     p_S12: Record<string, number | null>;
+    n_realizations?: number;
+    D2_lcdm?: number;
+    /** keyed planck / wmap / map */
+    D2?: Record<string, number | null>;
+    S12?: Record<string, number | null>;
+    labels?: Record<string, string>;
+    S12_lcdm_quantiles?: Record<string, number>;
+    S12_lcdm_hist?: { edges: number[]; counts: number[]; overflow: number };
+    C_theta?: { theta_deg: number[]; lcdm: number[]; planck: number[] | null; wmap: number[] | null; map: number[] | null };
+    axes?: {
+      source: string;
+      quadrupole: MultipoleAxis;
+      octopole: MultipoleAxis;
+      angle_deg: number;
+      p_isotropic: number;
+      method?: string;
+      paper?: { quadrupole: LBPair; octopole: LBPair; angle_deg: number; p_isotropic: number; p_lcdm_sims?: number; source?: string; map?: string };
+    };
+    paper?: { S12_planck?: number; S12_lcdm_median?: number; p_S12_planck?: number; p_C2_planck?: number; D2_planck?: number; D2_lcdm?: number; S12_copi_range?: number[]; source?: string };
+    paper_check?: { note?: string; p_S12_planck_value?: number; p_C2_planck_value?: number; [k: string]: unknown };
     [extra: string]: unknown;
   };
   kl: {
@@ -350,6 +427,8 @@ export interface CmbBundle {
     FCC: number[];
     paper: Record<string, Record<string, number>>;
     pinsker_bound: ShapeSeries;
+    pinsker_bound_paper?: ShapeSeries;
+    source?: string;
     [extra: string]: unknown;
   };
   ceiling: {
@@ -363,6 +442,9 @@ export interface CmbBundle {
   };
   /** null until the orientation-scanned likelihood (qchas.cmb.likelihood) has run */
   likelihood: LikelihoodRow[] | null;
+  likelihood_meta?: LikelihoodMeta | null;
+  /** [TOP] Sec. 8 model table recomputed */
+  sec8?: { ell: number[]; lcdm_D: number[]; rows: Sec8Row[]; source?: string } | null;
   [extra: string]: unknown;
 }
 
@@ -385,6 +467,9 @@ export interface ResonanceShell {
   m2: number;
   k_chi: number;
   n_vectors: number;
+  /** position among all shells of the dual lattice, and within the search grid */
+  index?: number;
+  grid_index?: number;
 }
 
 export interface ResonanceSearchModel {
@@ -393,17 +478,67 @@ export interface ResonanceSearchModel {
   shell_m2: number;
   f: number;
   lnB: number;
+  k_chi?: number;
+  n_vectors?: number;
+  grid_index?: number;
+  p_local?: number;
+}
+
+export interface ResonanceBestModel {
+  shape: string;
+  d_over_D: number;
+  k0_chi?: number;
+  k_chi?: number;
+  n_vectors: number;
+  lnB: number;
+  p_local: number;
+  shell_m2?: number;
+  f?: number;
+}
+
+export interface ResonanceSearchPaper {
+  S_max: number;
+  p_max: number;
+  S_avg: number;
+  p_avg: number;
+  null_median_S_max?: number;
+  best_model?: ResonanceBestModel;
+  power?: Record<string, number>;
+  map?: string;
+  n_null?: number;
+  source?: string;
+  [extra: string]: unknown;
+}
+
+export interface SingleFieldRow {
+  torus: string;
+  d_over_D: number;
+  m2?: number;
+  k0_chi: number;
+  n_vectors: number;
+  single_field_max_f: number;
+  planck_cap: number;
+  f?: number;
+  kl_no_line: number;
+  kl_allowed_line: number;
+  gain: number;
+  paper?: Partial<Omit<SingleFieldRow, 'paper'>>;
 }
 
 export interface ResonanceBundle {
   kl_table: ResonanceKlRow[];
   shells: Record<string, ResonanceShell[]>;
+  n_shells?: number;
   woodbury_benchmark: {
     n: number;
     ranks: number[];
     direct_ms: number[];
     woodbury_ms: number[];
     max_abs_diff: number;
+    max_rel_diff?: number[];
+    n_orientations?: number;
+    shape?: string;
+    d_over_D?: number;
   };
   search: {
     map: string;
@@ -413,8 +548,29 @@ export interface ResonanceBundle {
     null: { S_max: number[]; S_avg: number[] };
     p_max: number;
     p_avg: number;
-    paper: { S_max: number; p_max: number; S_avg: number; p_avg: number };
+    paper: ResonanceSearchPaper;
+    n_models?: number;
+    n_null?: number;
+    null_median_S_max?: number;
+    best?: ResonanceSearchModel;
+    grid?: { n_alpha: number; n_beta: number; n_gamma: number; [k: string]: unknown };
+    grid_check?: { grids: number[][]; S_max: number[]; S_avg: number[]; reference_grid?: number[]; [k: string]: unknown };
+    statistic?: string;
+    notes?: string[];
   } | null;
+  /** the paper's pre-registered search ([TOP] Sec. 11.6), quoted */
+  search_paper?: ResonanceSearchPaper & { grid?: { shapes: string[]; d_over_D: number[]; max_vectors: number; k0_chi_range: number[]; n_shells: number; f: number[]; n_models: number }; planck_isotropic_line_cap_f95?: number[] };
+  /** [TOP] Sec. 11.8 single-field limits, computed, with the printed rows */
+  single_field?: {
+    rows: SingleFieldRow[];
+    n_shells: number;
+    'n_f_below_0.05': number;
+    f_max_grid?: { shape: string; d_over_D: number; m2: number; f_max: number }[];
+    paper?: { growth_bound?: Record<string, string | number>; 'shells_with_f_below_0.05'?: { count: number; of: number }; rows?: SingleFieldRow[]; source?: string };
+    source?: string;
+  };
+  /** [TOP] Sec. 11.2 information ceiling (quoted); null where the paper prints a dash */
+  ceiling?: { d_over_D: number[]; causal_ball: (number | null)[]; boundary_sphere: (number | null)[]; lss_ball: (number | null)[]; cmb_l30: (number | null)[]; source?: string };
   /** blank cells of the [TOP] Sec. 11.8 table are null */
   exits_3d: { spectrum: string; [d: string]: number | string | null }[];
   source: string;

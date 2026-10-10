@@ -279,7 +279,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
         statTile({ label: 'Kerr f₂₂₀', value: fmtNum(e.f220_Hz, 4), unit: 'Hz', badge: badge('computed') }),
         statTile({ label: 'Kerr τ₂₂₀', value: fmtNum(e.tau220_ms, 3), unit: 'ms', badge: badge('computed') }),
         statTile({ label: 'Echo delay (l_P surface)', value: fmtNum(e.echo_delay_ms, 4), unit: 'ms', badge: badge('computed', '[QG] Sec. 19'), sub: 'if a reflecting surface sat one l_P outside the horizon' }),
-        statTile({ label: 'Horizon entropy log₁₀ S_BH', value: fmtNum(e.S_BH_log10, 5), unit: 'nats', badge: badge('computed'), sub: e.S_BH_bits_log10 ? `log₁₀ bits ${fmtNum(e.S_BH_bits_log10, 5)}` : null }),
+        statTile({ label: 'Horizon entropy log₁₀(S_BH / nats)', value: fmtNum(e.S_BH_log10, 5), badge: badge('computed'), sub: e.S_BH_bits_log10 ? `log₁₀(S_BH / bits) = ${fmtNum(e.S_BH_bits_log10, 5)}` : null }),
         statTile({
           label: 'Echo-power bound log₁₀|R|² ≤ −S/ln 10',
           value: fmtSci(e.echo_bound_log10, 3),

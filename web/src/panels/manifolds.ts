@@ -176,6 +176,7 @@ function mountSelector(el: HTMLElement, T: TopologyBundle): void {
     h('div', { class: 'm1-manifold-table' }, tbl.root),
     ...(e16 ? [h('div', { class: 'chart-caption' }, `* ${e16.label}: ${e16.note}.`)] : []),
   );
+  sel.root.classList.add('dense-table');
   el.append(grid(sel.root));
 
   const minimal = minimalSelectingSets(ms);
@@ -403,7 +404,7 @@ function mountCurved(el: HTMLElement, T: TopologyBundle): void {
     title: 'Curved candidates · spherical spaces',
     subtitle: 'Homogeneous quotients S³/G tested against Planck at Ω_k on a pre-registered grid; ln B against simply connected S³ at the same curvature',
     badges: [badge('quoted', '[TOP] Sec. 9.3')],
-    span: 6,
+    span: 12,
     stretch: true,
   });
   sp.body.append(
@@ -430,7 +431,7 @@ function mountCurved(el: HTMLElement, T: TopologyBundle): void {
     title: 'Weeks manifold · Prop. 9.4',
     subtitle: 'Smallest closed hyperbolic space: matched circles need 2χ*/R_c above the systole 0.58460',
     badges: [badge('proved', '[TOP] Prop. 9.4'), badge('quoted', '[TOP] Sec. 9.4')],
-    span: 6,
+    span: 12,
     stretch: true,
   });
   wk.body.append(
@@ -509,14 +510,14 @@ function mountEvidence(el: HTMLElement, T: TopologyBundle, cmb: CmbBundle | null
     title: 'Table 9a · evidence for a torus',
     subtitle: 'Optimal orientation-averaged statistic, calibrated on 141 simulated skies with no topology',
     badges: [badge('quoted', '[TOP] Table 9a')],
-    span: 6,
+    span: 12,
     stretch: true,
   });
   const pb = panel({
     title: 'Table 9b · exclusion of tori',
     subtitle: 'Calibrated on simulated skies in which that torus is true (orientation uniformly random)',
     badges: [badge('quoted', '[TOP] Table 9b')],
-    span: 6,
+    span: 12,
     stretch: true,
   });
   const hostA = h('div');

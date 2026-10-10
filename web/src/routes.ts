@@ -25,7 +25,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Overview',
     group: 'overview',
     blurb: 'Mission status, the two analysis modules, source papers and the onboard physics self-test.',
-    bundles: ['manifest.json'],
+    bundles: ['manifest.json', 'sky_map.json', 'lattice.json', 'resonance.json', 'cmb.json', 'horizon.json', 'bounce.json', 'gw.json'],
     live: true,
   },
   {
@@ -34,7 +34,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Manifold Selector',
     group: 'm1',
     blurb: 'The 18 flat 3-manifolds against principles P1-P4: which survive, by which theorem.',
-    bundles: ['topology.json'],
+    bundles: ['topology.json', 'cmb.json'],
   },
   {
     id: 'lattice',
@@ -42,7 +42,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Lattice Shape Optimizer',
     group: 'm1',
     blurb: 'Standard-Model Casimir energy Z(2) over torus shapes; FCC/BCC minima, SC saddle, shape flow.',
-    bundles: ['lattice.json'],
+    bundles: ['lattice.json', 'validation.json'],
     live: true,
   },
   {
@@ -50,8 +50,8 @@ export const ROUTES: RouteInfo[] = [
     code: '1.3',
     label: 'Ghost-Twin Tracker',
     group: 'm1',
-    blurb: 'Matched circles, twin points n + g/χ* and ghost images of a source on the real sky map.',
-    bundles: ['sky_map.json', 'cmb.json'],
+    blurb: 'Matched circles, twin points n + g/χ* and ghost images on the real CMB map, with SPHEREx frame footprints.',
+    bundles: ['sky_map.json', 'topology.json', 'cmb.json', 'spherex.json'],
     live: true,
   },
   {
@@ -59,16 +59,16 @@ export const ROUTES: RouteInfo[] = [
     code: '1.4',
     label: 'Resonance Shell Inspector',
     group: 'm1',
-    blurb: 'Topological resonance on dual-lattice shells: KL gain, rank-N Woodbury test, Planck search.',
-    bundles: ['resonance.json'],
+    blurb: 'Topological resonance on dual-lattice shells: KL gain at known orientation, rank-N Woodbury test, pre-registered search.',
+    bundles: ['resonance.json', 'cmb.json', 'validation.json'],
   },
   {
     id: 'sky-stats',
     code: '1.5',
     label: 'Sky Statistics',
     group: 'm1',
-    blurb: 'Low-ℓ spectra, S1/2, KL information, the law-of-limitation ceiling and survey footprints.',
-    bundles: ['cmb.json', 'sky_map.json', 'spherex.json'],
+    blurb: 'Low-ℓ spectra, the quadrupole and S₁/₂ anomalies, aligned axes and the orientation-scanned torus likelihood.',
+    bundles: ['cmb.json', 'validation.json'],
   },
   {
     id: 'bounce',
@@ -84,7 +84,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Crossed-Product Capacity',
     group: 'm2',
     blurb: 'Type III₁ → II∞ → II₁: the horizon capacity A/4G from an energy window, de Sitter entropy.',
-    bundles: ['horizon.json'],
+    bundles: ['horizon.json', 'gw.json', 'validation.json'],
     live: true,
   },
   {
@@ -93,7 +93,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Page Curve',
     group: 'm2',
     blurb: "Hawking's curve versus the Page transfer law S(R) ≤ min{S_H, A/4G}; island and interior volume.",
-    bundles: ['horizon.json'],
+    bundles: ['horizon.json', 'gw.json', 'validation.json'],
     live: true,
   },
   {
@@ -102,7 +102,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'QES & Atmosphere',
     group: 'm2',
     blurb: 'The quantum extremal surface of an evaporating hole and the entangled quantum atmosphere.',
-    bundles: ['horizon.json'],
+    bundles: ['horizon.json', 'validation.json'],
     live: true,
   },
   {
@@ -111,7 +111,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Hayden-Preskill Recovery',
     group: 'm2',
     blurb: 'Exactly unitary evaporation of qubits and decoding of a diary thrown in early or late.',
-    bundles: ['horizon.json'],
+    bundles: ['horizon.json', 'validation.json'],
     live: true,
   },
   {
@@ -120,7 +120,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'GW Horizons (LIGO)',
     group: 'm2',
     blurb: 'LIGO strain and ringdowns of real mergers; remnant entropy, Hawking temperature, Page time.',
-    bundles: ['gw.json'],
+    bundles: ['gw.json', 'horizon.json', 'validation.json'],
   },
   {
     id: 'claims',
@@ -128,7 +128,7 @@ export const ROUTES: RouteInfo[] = [
     label: 'Claims Ledger',
     group: 'ledger',
     blurb: 'Every statement with its status as the papers state it: proved, computed, measured or assumed.',
-    bundles: ['topology.json', 'horizon.json'],
+    bundles: ['topology.json', 'horizon.json', 'bounce.json', 'validation.json'],
   },
   {
     id: 'data',
