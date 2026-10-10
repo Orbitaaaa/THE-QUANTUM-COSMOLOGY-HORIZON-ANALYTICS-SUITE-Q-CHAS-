@@ -72,7 +72,44 @@ docs/             architecture and data contract
 
 ## Validation against the papers
 
-<!-- VALIDATION-TABLE -->
+`qchas build` writes `validation.json`, which compares every number Q-CHAS recomputes from scratch with the value printed in the papers: **169 of 173 match** (within tolerance or to the printed precision). The dashboard's Claims Ledger shows every row.
+
+| Result reproduced | Rows | Match |
+|---|---|---|
+| QES ([BH] Sec. 9) | 36 | 36 |
+| Quantum atmosphere ([BH] Sec. 10) | 7 | 7 |
+| Page transfer law ([BH] Fig. 1) | 2 | 2 |
+| Crossed product ([QG] Theorem U) | 1 | 1 |
+| Unitary evaporation ([BH] Sec. 11) | 5 | 5 |
+| Hayden-Preskill decoding ([QG] Theorem R) | 9 | 9 |
+| Casimir lattice ([TOP] Prop. E.2) | 9 | 9 |
+| Shape flow ([TOP] Sec. 6.3) | 1 | 1 |
+| Circles in the sky ([TOP] Sec. 7) | 9 | 9 |
+| Detectability KL ([TOP] Theorem P) | 21 | 21 |
+| Large-angle CMB ([TOP] Sec. 8) | 15 | 15 |
+| Low-l anomalies ([TOP] Sec. 8) | 3 | 3 |
+| Topological resonance ([TOP] Sec. 11.6) | 20 | 20 |
+| Quantum Big Bang ([QG] Theorem Lambda) | 16 | 12 |
+| Kerr ringdown and echoes ([QG] Sec. 19) | 19 | 19 |
+
+Highlights:
+
+* The QES solver reproduces all 12 rows of [BH] Sec. 9 to every printed digit; the Srednicki lattice reproduces the quantum-atmosphere profile (area-law coefficient 0.2952).
+* The certified Casimir values Z(2) for SC, BCC and FCC agree to 6e-16; 240 gradient flows end at FCC in 79.8 % of cases (paper: 79 ± 3 %).
+* The torus covariance reproduces the Theorem P KL table, the Sec. 8 table and the Sec. 11.6 resonance gains (64× at known orientation) to about 1 %.
+* The exactly unitary 20-qubit evaporation reproduces [BH] Sec. 11 (10.28 bits at step 11; diaries recovered at steps 13 and 17) and the [QG] Theorem R decoding table.
+
+Where we differ from the printed papers, we say so:
+
+* **[TOP] Prop. E.2, BCC Hessian.** The printed 3.3953 violates the exact identity tr H = 2Z/3; analytic and finite-difference Hessians give 3.39504.
+* **[QG] Theorem Λ table.** The printed bounce numbers are reproduced on the paper's own finite-difference grid; the exact solution gives a larger peak ⟨a⁻²⟩ (270.7 vs 262 at a_max = 2) and ⟨a⟩_min → 0.1629 ℓ = 0.260 ℓ_P. These 4 rows are the 'differs' entries.
+* **[TOP] Sec. 4.** "Every manifold except E1 fails at least two principles" does not hold for E11, E16 and E18, which fail only P2 by the paper's own table.
+
+**Our own analysis of the real sky** (WMAP 9-year ILC, because the Planck archive is unreachable from the build sandbox; the GitHub Pages build uses Planck PR3):
+
+* Pre-registered topological-resonance search (160 models, 100 null skies): S_max = 0.86, p = 0.79; S_avg = 0.02, p = 0.58. Paper on Planck: S_max = 1.01 (p = 0.78), S_avg = −0.03 (p = 0.53). **No resonance in either map.**
+* Orientation-scanned torus likelihood, 21 models (FCC, BCC, cubic; 0.985–1.3 D), 100 null skies each: the smallest single-model p is 0.03 (cubic, 1.3 D), the same value the paper's Table 9a reports for that model on Planck; with 21 models searched this is the expected look-elsewhere scatter (the paper's global test gives p = 0.15). **No evidence for a torus**, as the paper finds on Planck.
+* Low-ℓ anomalies and the quadrupole–octopole alignment are computed for the published WMAP spectrum and for our own map extraction; see the Sky Statistics view.
 
 ## Data sources
 
