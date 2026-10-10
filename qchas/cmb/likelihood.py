@@ -25,6 +25,11 @@ FFT then evaluates the series on the gamma grid (exact at the grid points for an
 alpha is uniform, cos(beta) on Gauss-Legendre nodes (Haar weight sin beta dbeta; exact for the
 band-limited quadratic form itself), gamma uniform. The maximum is refined from the best grid
 cells by a nested zoom in (alpha, beta) with gamma maximized exactly on the trigonometric series.
+For the cube-aligned lattices the quarter turn about z and the half turn about y are symmetries
+of C0; they are detected numerically from K and used exactly (K^c couples only m = m' mod 4, F has
+period pi/2 in gamma, rows beta > pi/2 mirror rows beta < pi/2), so 1/8 of the grid is evaluated.
+The grid (FULL_GRID) is chosen by measured convergence of ln B on the real map, recorded in
+``likelihood_meta.grid_check`` next to the paper's own grids.
 
 Resonance search ([TOP] Sec. 11.6, pre-registered). Each of the 80 grid shells (FCC/BCC/cubic at
 d/D = 1.05, 1.15, 1.2, 1.3, at most 12 vectors, 2 <= k0 chi_* <= 14) carries a line of C_l bump
@@ -68,8 +73,14 @@ SEARCH_SIZES = tuple(res.PAPER_SEARCH["grid"]["d_over_D"])  # 1.05, 1.15, 1.2, 1
 SEARCH_F = tuple(res.PAPER_SEARCH["grid"]["f"])  # 0.2, 0.4
 
 #: grids by measured accuracy (see :func:`grid_convergence` and likelihood_meta.grid_check)
-FULL_GRID = (60, 31, 120)  # the paper's (alpha, beta, gamma) grid, [TOP] Sec. 14 "Calibration"
-FAST_GRID = (36, 19, 72)  # the paper's resonance-search grid, [TOP] Sec. 14 "Resonance search"
+PAPER_GRID = (60, 31, 120)  # the paper's likelihood grid, [TOP] Sec. 14 "Calibration"
+PAPER_SEARCH_GRID = (36, 19, 72)  # the paper's resonance-search grid, [TOP] Sec. 14 "Resonance search"
+#: chosen by measured convergence on the WMAP map (likelihood_meta.grid_check): at 120 x 61 x 240 every
+#: line-model ln B is within 0.12 of the 240 x 121 x 480 value and every torus ln B at d >= 1.05 D within 0.1
+#: of 180 x 91 x 360; the paper's 60 x 31 x 120 under-resolves orientation peaks for d <= 1.05 D on this map.
+FULL_GRID = (120, 61, 240)
+FAST_GRID = PAPER_GRID
+CHECK_GRIDS = (PAPER_SEARCH_GRID, PAPER_GRID, (180, 91, 360))
 FAST_MODELS = (("FCC", 0.985), ("FCC", 1.05), ("BCC", 1.05), ("cubic", 1.05), ("FCC", 1.2))
 
 NULL_SEED, TRUE_SEED = 911, 931  # [TOP] Sec. 14 used seeds 911-914 (null) and 931-942 (resonant)
@@ -123,6 +134,8 @@ class _Layout:
 
     n: int
     s: int
+    lmin: int
+    lmax: int
     ells: np.ndarray
     ms: np.ndarray
     lslices: dict
@@ -181,7 +194,7 @@ def _layout(lmin: int = LMIN, lmax: int = LMAX, s: int = 1) -> _Layout:
     u_full = np.zeros((ells.size, ells.size), dtype=complex)
     for l, sl in lsl.items():
         u_full[sl, sl] = u_blocks[l]
-    lay = _Layout(n=ells.size, s=s, ells=ells, ms=ms, lslices=lsl, u_blocks=u_blocks, v_blocks=v_blocks,
+    lay = _Layout(n=ells.size, s=s, lmin=lmin, lmax=lmax, ells=ells, ms=ms, lslices=lsl, u_blocks=u_blocks, v_blocks=v_blocks,
                   w_blocks=w_blocks, class_idx=class_idx, steps=steps, mpos_idx=sel, mpos_bounds=bounds, u_full=u_full)
     _LAYOUT_CACHE[key] = lay
     return lay
@@ -193,8 +206,14 @@ def _to_complex(a: np.ndarray, lay: _Layout) -> dict:
 
 
 def _complex_matrix(k: np.ndarray, lay: _Layout) -> np.ndarray:
-    """K^c = U^dagger K U (U block-diagonal in l)."""
-    return lay.u_full.conj().T @ k @ lay.u_full
+    """K^c = U^dagger K U, block by block (U is block-diagonal in l)."""
+    ku = np.empty(k.shape, dtype=complex)
+    for l, sl in lay.lslices.items():
+        ku[:, sl] = k[:, sl] @ lay.u_blocks[l]
+    out = np.empty(k.shape, dtype=complex)
+    for l, sl in lay.lslices.items():
+        out[sl, :] = lay.u_blocks[l].conj().T @ ku[sl, :]
+    return out
 
 
 def _m_period(kc: np.ndarray, ms: np.ndarray, rtol: float = 1e-11) -> int:
@@ -210,8 +229,8 @@ def _m_period(kc: np.ndarray, ms: np.ndarray, rtol: float = 1e-11) -> int:
 def _has_beta_reflection(k: np.ndarray, lmin: int, lmax: int, rtol: float = 1e-11) -> bool:
     """True when D(Ry(pi))^T K D(Ry(pi)) = K, so F(alpha, beta, gamma) = F(alpha + pi, pi - beta, pi - gamma)."""
     ry = H.rotation_from_euler(0.0, np.pi, 0.0)
-    d = cov.block_diag_rotation(ry, lmin, lmax)
-    return bool(np.max(np.abs(d.T @ k @ d - k)) <= rtol * np.max(np.abs(k)))
+    rot = cov.rotate_covariance(k, ry.T, lmin, lmax)  # D(R)^T K D(R) = D(R^T) K D(R^T)^T, blockwise
+    return bool(np.max(np.abs(rot - k)) <= rtol * np.max(np.abs(k)))
 
 
 def _shell_symmetric(shape: str, d_over_D: float, m2: float, s: int, reflect: bool) -> bool:
@@ -335,13 +354,20 @@ class _LineData:
 def _line_data(shape: str, d_over_D: float, c0_inv: np.ndarray, c_l: np.ndarray, lay: _Layout,
                s: int, reflect: bool, fs=SEARCH_F) -> _LineData:
     """Woodbury pieces of the 2 x (shells) line models of one torus ([TOP] Sec. 11.6 grid)."""
+    from .transfer import load_transfer
+
+    tf = load_transfer()
     shells = res.list_shells(shape, d_over_D)
-    vt_cols, consts, dinvs, models, blocks = [], [], [], [], []
+    vt_cols, consts, dinvs, models, blocks, iso1 = [], [], [], [], [], []
     ncol = 0
     for sh in shells:
         if (s > 1 or reflect) and not _shell_symmetric(shape, d_over_D, sh["m2"], s, reflect):
             raise ValueError(f"shell {sh['m2']} of {shape} {d_over_D} breaks the scan symmetry")
         u, w1 = res.line_lowrank(shape, d_over_D, sh["m2"], 1.0)  # w is linear in f
+        # isotropic line of the same strength (= res.line_isotropic_diag at f = 1; linear in f)
+        a1 = float(w1[0]) * u.shape[1] / (16.0 * np.pi**2)
+        k0 = 2.0 * np.pi * np.sqrt(sh["m2"]) / (d_over_D * 2.0 * tf.chi_star)
+        iso1.append(res.isotropic_line_cl(k0, a1, lay.lmin, lay.lmax)[lay.ells - lay.lmin])
         v = c0_inv @ u
         g = u.T @ v
         lam, qv = np.linalg.eigh(0.5 * (g + g.T))
@@ -351,13 +377,13 @@ def _line_data(shape: str, d_over_D: float, c0_inv: np.ndarray, c_l: np.ndarray,
         ncol += u.shape[1]
     vt = np.concatenate(vt_cols, axis=1)
     weights = []
-    for sh, (c0, c1, lam, w1) in zip(shells, blocks):
+    for sh, (c0, c1, lam, w1), iso_1 in zip(shells, blocks, iso1):
         for f in fs:
             wf = f * w1
             col = np.zeros(ncol)
             col[c0:c1] = 1.0 / (1.0 / wf + lam)  # M = (W^-1 + U^T V)^-1 = Q diag(1 / (1/w + lambda)) Q^T
             weights.append(col)
-            iso = c_l + res.line_isotropic_diag(shape, d_over_D, sh["m2"], f)
+            iso = c_l + f * iso_1
             consts.append(-0.5 * float(np.sum(np.log1p(wf * lam))) + 0.5 * float(np.sum(np.log(iso / c_l))))
             dinvs.append(1.0 / c_l - 1.0 / iso)
             models.append({"shape": cov.shape_name(shape), "d_over_D": float(d_over_D), "shell_m2": float(sh["m2"]),
@@ -428,7 +454,9 @@ class _LSE:
                 self.top_val[ii], self.top_pos[ii] = vals[order], pos[order]
 
     def value(self) -> np.ndarray:
-        return self.mx + np.log(self.s)
+        """ln of the weighted sum per model (-inf for models that were not scanned)."""
+        with np.errstate(divide="ignore"):
+            return self.mx + np.log(self.s)
 
 
 class Engine:
@@ -463,8 +491,8 @@ class Engine:
         while s_all > 1 and grid.n_gamma % s_all:
             s_all //= 2
         self.s = s_all
-        self.reflect = bool(prepared) and all(p[6] for p in prepared) and grid.n_alpha % 2 == 0 and \
-            (grid.n_gamma // self.s) % 2 == 0
+        self.model_reflect = bool(prepared) and all(p[6] for p in prepared)
+        self.reflect = self.model_reflect and grid.n_alpha % 2 == 0 and (grid.n_gamma // self.s) % 2 == 0
         self.lay = _layout(lmin, lmax, self.s)
         self.models: list[_TorusModel] = []
         for shape, d, fac, k, kc, s, refl in prepared:
@@ -475,9 +503,17 @@ class Engine:
                             blocks=blocks, s=s, reflect=refl, k_real=k if keep_matrices else None,
                             c0_inv=fac.inv if keep_matrices else None)
             if search and any(abs(d - x) < 1e-9 for x in search_sizes):
-                m.line = _line_data(shape, d, fac.inv, self.c_l, self.lay, self.s, self.reflect)
+                m.line = _line_data(shape, d, fac.inv, self.c_l, self.lay, self.s, self.model_reflect)
             self.models.append(m)
         self.line_models = [lm for t in self.models if t.line is not None for lm in t.line.models]
+        self.rows_per_chunk = rows_per_chunk
+        self._set_grid(grid)
+
+    def _set_grid(self, grid: SO3Grid) -> None:
+        if grid.n_gamma % self.s:
+            raise ValueError(f"n_gamma = {grid.n_gamma} must be a multiple of the symmetry period {self.s}")
+        self.grid = grid
+        self.reflect = self.model_reflect and grid.n_alpha % 2 == 0 and (grid.n_gamma // self.s) % 2 == 0
         self.alpha, self.beta = grid.alpha, grid.beta
         self.n_gamma_eff = grid.n_gamma // self.s
         self.gamma = grid.gamma[: self.n_gamma_eff]
@@ -490,7 +526,14 @@ class Engine:
             half, wb = grid.n_beta, grid.w_beta.copy()
         self.rows_beta, self.w_rows = np.arange(half), wb
         self.edft = _gamma_dft(self.lay, self.gamma)
-        self.rows_per_chunk = rows_per_chunk
+
+    def with_grid(self, grid: SO3Grid) -> "Engine":
+        """The same precomputed models on another grid (shallow copy)."""
+        import copy
+
+        eng = copy.copy(self)
+        eng._set_grid(grid)
+        return eng
 
     def symmetry_info(self) -> dict:
         return {"gamma_period_deg": 360.0 / self.s, "beta_reflection": self.reflect,
@@ -739,6 +782,14 @@ def _paper_row(shape: str, d: float) -> dict:
     return out
 
 
+MARGINAL_P = 0.15  # verdicts with 0 < P(ln B <= obs | true) <= this get the larger torus-true sample
+
+
+def _p_le(true: list, t: int, obs: float) -> float:
+    tl = np.array([r["lnB"] for r in true if r["t"] == t])
+    return float(np.mean(tl <= obs)) if tl.size else float("nan")
+
+
 def _pvalue(null: np.ndarray, obs: float) -> float:
     null = np.asarray(null, dtype=float)
     return float(np.mean(null >= obs)) if null.size else float("nan")
@@ -750,43 +801,108 @@ def _lse_mean(x: np.ndarray, axis=-1) -> np.ndarray:
     return np.squeeze(mx, axis=axis) + np.log(np.mean(np.exp(x - mx), axis=axis))
 
 
+PAPER_FCC_105_AXES = [[280.5, 62.7], [219.4, -14.0], [185.5, 36.8], [277.5, 2.8], [95.0, 57.2], [337.0, 16.9]]
+
+
+def _axes_vs_paper(eng: Engine, obs: dict, lik_idx: list) -> dict | None:
+    """Angle from each of the paper's FCC 1.05 D Planck axes to the nearest of ours (axes are +- pairs)."""
+    t = next((t for t in lik_idx if eng.models[t].shape == "FCC" and abs(eng.models[t].d_over_D - 1.05) < 1e-9), None)
+    if t is None:
+        return None
+    ours = lattice_axes("FCC") @ np.asarray(obs["rot"][t]).T
+    sep = []
+    for l, b in PAPER_FCC_105_AXES:
+        v = H.gal_to_vec(l, b)
+        sep.append(round(float(np.degrees(np.arccos(np.clip(np.max(np.abs(ours @ v)), -1.0, 1.0)))), 2))
+    return {"separation_deg": sep, "paper_axes": PAPER_FCC_105_AXES,
+            "note": ("Best-fit orientations of two maps of the same sky; agreement is a consistency check of the pipeline, "
+                     "not evidence for a torus (neither orientation is significant).")}
+
+
+def _grid_check(eng: Engine, a: np.ndarray, grids, main: dict, lik_idx: list) -> dict:
+    """ln B of every model on the data at several grids (accuracy statement for the chosen grid)."""
+    rows = {"grids": [list(eng.grid.as_dict()[k] for k in ("n_alpha", "n_beta", "n_gamma"))], "seconds": [None],
+            "lnB": [main["lnB"][lik_idx].tolist()], "S_max": [float(np.max(main["line_lnB"]))],
+            "S_avg": [float(_lse_mean(main["line_lnB"]))], "line_lnB": [main["line_lnB"].tolist()]}
+    for g in grids:
+        e2 = eng.with_grid(SO3Grid(*g))
+        t0 = time.perf_counter()
+        r = e2.scan(a, refine=False, lines=True)
+        rows["grids"].append(list(g))
+        rows["seconds"].append(round(time.perf_counter() - t0, 1))
+        rows["lnB"].append(r["lnB"][lik_idx].tolist())
+        rows["S_max"].append(float(np.max(r["line_lnB"])))
+        rows["S_avg"].append(float(_lse_mean(r["line_lnB"])))
+        rows["line_lnB"].append(r["line_lnB"].tolist())
+    ref = int(np.argmax([np.prod(g) for g in rows["grids"]]))
+    lnb, lines = np.array(rows["lnB"]), np.array(rows["line_lnB"])
+    rows["reference_grid"] = rows["grids"][ref]
+    rows["max_abs_dlnB_vs_reference"] = np.max(np.abs(lnb - lnb[ref]), axis=1).tolist()
+    rows["max_abs_dlnB_lines_vs_reference"] = np.max(np.abs(lines - lines[ref]), axis=1).tolist()
+    by_size = {}
+    for j, t in enumerate(lik_idx):
+        d = eng.models[t].d_over_D
+        by_size.setdefault(f"{d:g}", []).append(j)
+    rows["max_abs_dlnB_by_size"] = {k: np.max(np.abs(lnb[:, v] - lnb[ref, v]), axis=1).tolist() for k, v in by_size.items()}
+    rows["models"] = [f"{eng.models[t].shape}_{eng.models[t].d_over_D:g}" for t in lik_idx]
+    del rows["line_lnB"]
+    rows["note"] = ("Same data, same models, only the SO(3) grid changes; the first grid is the one used for every number "
+                    "and calibration in this bundle. The paper's grids are 60 x 31 x 120 (likelihood) and 36 x 19 x 72 "
+                    "(resonance search).")
+    return rows
+
+
 def export_fields(sky, fast: bool = False, null_sims: int = 100, *, workers: int | None = None,
-                  true_sims: int | None = None) -> dict:
-    """``cmb.json -> likelihood, likelihood_meta`` and ``resonance.json -> search`` for the map in ``sky``."""
+                  true_sims: int | None = None, true_sims_marginal: int | None = None,
+                  grid: tuple[int, int, int] | None = None) -> dict:
+    """``cmb.json -> likelihood, likelihood_meta`` and ``resonance.json -> search`` for the map in ``sky``.
+
+    Full build: 21 torus models (FCC/BCC/cubic x d/D in LIKELIHOOD_SIZES) and the 160 pre-registered
+    line models on FULL_GRID, ``null_sims`` isotropic skies for both, ``true_sims`` torus-true skies per
+    model for the exclusion columns, topped up to ``true_sims_marginal`` where the 95% verdict is marginal
+    (0 < P(ln B <= observed | true) <= MARGINAL_P), as the paper did (60 sims, 260 for FCC 1.04 / 1.05 D).
+    ``fast``: 5 + 8 tori on FAST_GRID, 12 null skies, no torus-true skies.
+    """
     t_start = time.perf_counter()
     workers = workers or min(4, os.cpu_count() or 1)
-    grid = SO3Grid(*(FAST_GRID if fast else FULL_GRID))
-    models = list(FAST_MODELS) if fast else [(s, d) for s in SHAPES for d in LIKELIHOOD_SIZES]
-    search_models = [(s, d) for s in SHAPES for d in SEARCH_SIZES]
-    for sm in search_models:
-        if sm not in models:
-            models.append(sm)
+    grid = SO3Grid(*(grid or (FAST_GRID if fast else FULL_GRID)))
+    lik_models = list(FAST_MODELS) if fast else [(s, d) for s in SHAPES for d in LIKELIHOOD_SIZES]
+    models = list(lik_models) + [(s, d) for s in SHAPES for d in SEARCH_SIZES if (s, d) not in lik_models]
+    lik_idx = list(range(len(lik_models)))
     n_null = int(min(null_sims, 12) if fast else null_sims)
-    n_true = int(true_sims if true_sims is not None else (0 if fast else 40))
+    n_true = int(true_sims if true_sims is not None else (0 if fast else 60))
+    n_true_marg = int(true_sims_marginal if true_sims_marginal is not None else (0 if fast else 260))
     a = np.asarray(sky.alm_real, dtype=float)
     map_name = getattr(sky, "source_name", "unknown")
 
     t0 = time.perf_counter()
     eng = Engine(models, grid, search=True)
     t_pre = time.perf_counter() - t0
-
     t0 = time.perf_counter()
     obs = eng.scan(a, refine=True)
     t_obs = time.perf_counter() - t0
+    t0 = time.perf_counter()
+    check = _grid_check(eng, a, () if fast else CHECK_GRIDS, obs, lik_idx)
+    t_check = time.perf_counter() - t0
 
     _WORKER.clear()
     _WORKER.update(engine=eng, refine=True)
-    t0 = time.perf_counter()
-    null = sorted(_run_pool(_null_task, list(range(n_null)), workers), key=lambda r: r["i"])
-    t_null = time.perf_counter() - t0
-    lik_idx = [i for i, m in enumerate(models) if fast or m in [(s, d) for s in SHAPES for d in LIKELIHOOD_SIZES]]
-    t0 = time.perf_counter()
-    true = _run_pool(_true_task, [(t, i) for t in lik_idx for i in range(n_true)], workers) if n_true else []
-    t_true = time.perf_counter() - t0
-    _WORKER.clear()
+    try:
+        t0 = time.perf_counter()
+        null = sorted(_run_pool(_null_task, list(range(n_null)), workers), key=lambda r: r["i"])
+        t_null = time.perf_counter() - t0
+        t0 = time.perf_counter()
+        true = _run_pool(_true_task, [(t, i) for t in lik_idx for i in range(n_true)], workers) if n_true else []
+        marginal = [t for t in lik_idx if 0.0 < _p_le(true, t, float(obs["lnB"][t])) <= MARGINAL_P]
+        if marginal and n_true_marg > n_true:
+            true += _run_pool(_true_task, [(t, i) for t in marginal for i in range(n_true, n_true_marg)], workers)
+        t_true = time.perf_counter() - t0
+    finally:
+        _WORKER.clear()
 
-    null_lnb = np.array([r["lnB"] for r in null]).reshape(n_null, len(models))
-    null_max = np.array([r["max"] for r in null]).reshape(n_null, len(models))
+    nm = len(models)
+    null_lnb = np.array([r["lnB"] for r in null]).reshape(n_null, nm)
+    null_max = np.array([r["max"] for r in null]).reshape(n_null, nm)
 
     rows = []
     for t in lik_idx:
@@ -795,9 +911,9 @@ def export_fields(sky, fast: bool = False, null_sims: int = 100, *, workers: int
         row = {"shape": m.shape, "d_over_D": m.d_over_D, "max_dlnL": mx, "lnB": lnb,
                "null_q95": float(np.quantile(null_lnb[:, t], 0.95)) if n_null else None,
                "p": _pvalue(null_lnb[:, t], lnb) if n_null else None,
+               "null_median": float(np.median(null_lnb[:, t])) if n_null else None,
                "null_q95_max": float(np.quantile(null_max[:, t], 0.95)) if n_null else None,
                "p_max": _pvalue(null_max[:, t], mx) if n_null else None,
-               "null_median": float(np.median(null_lnb[:, t])) if n_null else None,
                "n_null": n_null, "max_dlnL_grid": float(obs["max_grid"][t]),
                "best_axes_gal": axes_galactic(m.shape, obs["rot"][t]),
                "best_euler_deg": [round(float(np.degrees(x)), 3) for x in H.euler_zyz(obs["rot"][t])],
@@ -806,7 +922,9 @@ def export_fields(sky, fast: bool = False, null_sims: int = 100, *, workers: int
         if tl.size:
             p_le = float(np.mean(tl <= lnb))
             row["exclusion"] = {"median_if_true": float(np.median(tl)), "q05_if_true": float(np.quantile(tl, 0.05)),
-                                "p_le_obs": p_le, "n_true": int(tl.size),
+                                "p_le_obs": p_le, "p_le_label": f"<={1.0 / tl.size:.3f}" if p_le == 0 else f"{p_le:.3f}",
+                                "p_le_err": float(np.sqrt(max(p_le, 1.0 / tl.size) * (1.0 - p_le) / tl.size)),
+                                "n_true": int(tl.size), "marginal": bool(t in marginal),
                                 "verdict": "excluded (95%)" if p_le < 0.05 else "allowed"}
         rows.append(row)
 
@@ -825,78 +943,110 @@ def export_fields(sky, fast: bool = False, null_sims: int = 100, *, workers: int
     s_max, s_avg = float(np.max(line_obs)), float(_lse_mean(line_obs))
     null_smax = line_null.max(axis=1) if n_null else np.zeros(0)
     null_savg = _lse_mean(line_null, axis=1) if n_null else np.zeros(0)
-    smodels = []
-    for i, md in enumerate(eng.line_models):
-        smodels.append({**md, "lnB": float(line_obs[i]),
-                        "p_local": _pvalue(line_null[:, i], float(line_obs[i])) if n_null else None})
+    smodels = [{**md, "lnB": float(line_obs[i]),
+                "p_local": _pvalue(line_null[:, i], float(line_obs[i])) if n_null else None}
+               for i, md in enumerate(eng.line_models)]
     ib = int(np.argmax(line_obs))
     paper_search = {k: res.PAPER_SEARCH[k] for k in ("S_max", "p_max", "S_avg", "p_avg", "null_median_S_max",
                                                       "best_model", "power", "source")}
     paper_search["map"] = "Planck 2018 SMICA (inpainted)"
+    paper_search["n_null"] = 100
     search = {
         "map": map_name, "models": smodels, "n_models": len(smodels), "S_max": s_max, "S_avg": s_avg,
         "best": smodels[ib], "null": {"S_max": null_smax.tolist(), "S_avg": null_savg.tolist()},
         "null_median_S_max": float(np.median(null_smax)) if n_null else None,
         "p_max": _pvalue(null_smax, s_max) if n_null else None, "p_avg": _pvalue(null_savg, s_avg) if n_null else None,
-        "n_null": n_null, "grid": grid.as_dict(), "paper": paper_search, "computed": True,
+        "n_null": n_null, "grid": grid.as_dict(), "paper": paper_search,
+        "grid_check": {"grids": check["grids"], "S_max": check["S_max"], "S_avg": check["S_avg"],
+                       "max_abs_dlnB_vs_reference": check["max_abs_dlnB_lines_vs_reference"],
+                       "reference_grid": check["reference_grid"]},
         "statistic": ("ln B per model = ln <exp(Delta lnL(R))>_Haar of torus + line (C0 + U W U^T) against infinite "
-                      "space + the same isotropic line; S_max = max over models, S_avg = ln(mean over models of B)"),
-        "notes": (f"Independent re-analysis on {map_name}, not a reproduction of the Planck numbers. "
-                  "Woodbury identity with linear rotational correlations y_j(R) as exact Fourier series in gamma. "
-                  "Resonance gives up to 64x information only at KNOWN orientation ([TOP] Sec. 11.6); averaging over "
-                  "SO(3) and the 160-model grid consumes most of it. A null result here neither detects nor excludes "
-                  "resonance."),
+                      "space + the same isotropic line; S_max = max over the models, S_avg = ln(mean over models of B); "
+                      "p = fraction of isotropic skies with a statistic >= observed"),
+        "notes": [
+            f"Independent re-analysis on {map_name}; the paper's search ran on the Planck 2018 SMICA map, so the numbers are "
+            "not expected to agree.",
+            "Exact Woodbury evaluation: one quadratic orientation scan per torus (shared with the likelihood) plus linear "
+            "rotational correlations y_j(R) as exact Fourier series in gamma; checked against dense Cholesky evaluation.",
+            "Resonance gives up to 64x information only at KNOWN orientation ([TOP] Sec. 11.6); averaging over SO(3) and the "
+            "160-model grid consumes most of it. This search neither detects nor excludes resonance; deciding a torus as "
+            "large as 3D needs a multi-field primordial line mapped in 3D ([TOP] Sec. 11.8), not the CMB alone.",
+        ],
+        "computed": True, "source": "[TOP] Sec. 11.6",
     }
 
     runtime = time.perf_counter() - t_start
     meta = {
-        "map": map_name, "n_null": n_null, "n_true": n_true, "grid": grid.as_dict(),
+        "map": map_name, "n_null": n_null, "n_true": n_true, "n_true_marginal": n_true_marg,
+        "grid": {**grid.as_dict(), **eng.symmetry_info()},
         "models": [{"shape": eng.models[t].shape, "d_over_D": eng.models[t].d_over_D} for t in lik_idx],
         "statistics": {
             "dlnL": "Delta lnL(R) = -1/2 a^T (C(R)^-1 - C_L^-1) a - 1/2 ln(det C0 / det C_L), C(R) = D(R) C0 D(R)^T",
-            "max_dlnL": "max over SO(3): best grid cells refined by nested zoom in (alpha, beta), gamma maximized exactly",
-            "lnB": "ln <exp(Delta lnL(R))>_Haar on the grid (orientation-averaged Bayes factor, the paper's optimal statistic)",
+            "max_dlnL": "max over SO(3): best 3 grid cells refined by a nested zoom in (alpha, beta) to 0.03 deg, gamma "
+                        "maximized exactly on its Fourier series (max_dlnL_grid: before refinement)",
+            "lnB": "ln <exp(Delta lnL(R))>_Haar by grid quadrature (orientation-averaged Bayes factor, the paper's optimal statistic)",
             "p": "fraction of isotropic LCDM null skies with ln B >= observed",
             "p_max": "fraction of null skies with max Delta lnL >= observed",
             "null_q95": "95% quantile of ln B over the null skies",
-            "exclusion": "torus-true skies (Haar-random orientation): P(ln B <= observed | torus true); < 0.05 -> excluded (95%)",
+            "exclusion": ("torus-true skies (Haar-random orientation), same code and grid: P(ln B <= observed | torus true) "
+                          "< 0.05 -> excluded (95%); n_true sims per model, n_true_marginal where 0 < P <= 0.15"),
         },
+        "grid_check": check,
         "global": {"lnB_avg": glob_obs, "p": _pvalue(glob_null, glob_obs) if n_null else None,
-                   "n_models": int(sel.size), "definition": "ln(mean over the likelihood models of B)",
+                   "n_models": int(sel.size), "definition": "ln(mean over the models of this table of B)",
                    "paper": {"lnB_avg": -0.06, "p": 0.15, "n_models": 27, "source": "[TOP] Sec. 9"}},
         "fcc_family": {"lnB": fcc_obs, "p": _pvalue(fcc_null, fcc_obs) if (n_null and fcc_obs is not None) else None,
                        "sizes": [eng.models[t].d_over_D for t in fcc],
                        "definition": "ln(mean of B over the FCC sizes d/D >= 1 of this table)",
-                       "paper": {"lnB": -0.23, "p": 0.25, "source": "[TOP] Sec. 9 (pre-registered FCC family, its own size grid)"}},
+                       "paper": {"lnB": -0.23, "p": 0.25,
+                                 "source": "[TOP] Sec. 9 (pre-registered FCC family on its own size grid)"}},
         "best_model": {"shape": eng.models[best_t].shape, "d_over_D": eng.models[best_t].d_over_D,
-                       "max_dlnL": float(obs["max"][best_t]),
+                       "max_dlnL": float(obs["max"][best_t]), "p_max": rows[lik_idx.index(best_t)]["p_max"],
                        "axes_gal": axes_galactic(eng.models[best_t].shape, obs["rot"][best_t]),
-                       "note": "largest max Delta lnL of the table; orientations are not significant, not detected structures"},
+                       "note": "largest max Delta lnL of the table; not significant, so not coordinates of detected structures"},
+        "paper_fcc_105_axes_gal": {"axes": PAPER_FCC_105_AXES, "map": "Planck 2018 Commander", "source": "[TOP] Sec. 9",
+                                   "note": "each with its antipode; the paper states these orientations are not significant"},
+        "fcc_105_axes_vs_paper": _axes_vs_paper(eng, obs, lik_idx),
+        "verdict_differences": [
+            {"shape": r["shape"], "d_over_D": r["d_over_D"], "ours": r["exclusion"]["verdict"],
+             "p_le_obs": r["exclusion"]["p_le_obs"], "n_true": r["exclusion"]["n_true"], "paper": r["paper"]["verdict"],
+             "paper_p_le_planck": r["paper"].get("p_le_planck")}
+            for r in rows if "exclusion" in r and r["paper"].get("verdict") and r["exclusion"]["verdict"] != r["paper"]["verdict"]],
         "runtime_s": {"total": round(runtime, 1), "precompute": round(t_pre, 1), "observed": round(t_obs, 1),
-                      "null": round(t_null, 1), "torus_true": round(t_true, 1), "workers": workers},
+                      "grid_check": round(t_check, 1), "null": round(t_null, 1), "torus_true": round(t_true, 1),
+                      "workers": workers},
         "notes": [
             f"Independent re-analysis on {map_name} (full-sky a_lm, 2 <= l <= 30); the paper's Table 9 used the Planck 2018 "
-            "Commander map, so the numbers are not expected to agree. Foreground residuals of a full-sky map near the "
-            "Galactic plane enter both maps differently; the paper's masked check moved FCC 1.05 D from -1.20 to -0.76.",
+            "Commander map, so the numbers are not expected to agree. Foreground residuals near the Galactic plane enter the "
+            "two maps differently; the paper's own masked check moved FCC 1.05 D from -1.20 to -0.76.",
             "No detection is claimed: ln B and max Delta lnL are calibrated on isotropic skies processed with the identical "
             "code and grid. Best-fit orientations are reported for the record only; they are not significant.",
-            "Fourier scan in gamma is exact; it matches brute-force Wigner rotation of the data to < 1e-9 (tests).",
+            "The gamma Fourier scan is exact: it equals brute-force Wigner rotation of the data to < 1e-9 (tests).",
+            "Grid: chosen by measured convergence (grid_check). On this map the paper's 60 x 31 x 120 grid under-resolves "
+            "the narrow orientation peaks of tori with d <= 1.05 D; ln B there still moves by a few tenths at d = 1.05 D "
+            "and by up to ~1 at d <= 1.0 D between the finer grids, small against the exclusion margins.",
+            "Exclusion columns: torus-true skies peak sharply at their true orientation, so their ln B at d <= 1.0 D depends "
+            "on the grid even more than the data's (grid_check: up to several units between the paper's grid and 180 x 91 x "
+            "360 on this map). Our torus-true medians are therefore only qualitatively comparable with the paper's; the test "
+            "itself is valid because data and simulations share the code and grid. Verdicts that differ from the paper's are "
+            "listed in verdict_differences with their Monte Carlo p-value.",
         ],
         "computed": True, "source": "[TOP] Sec. 9, Tables 9a/9b, Sec. 14",
     }
     return {"likelihood": rows, "likelihood_meta": meta, "search": search}
 
 
-# --- grid accuracy check ---------------------------------------------------------------------------
-
-def grid_convergence(a: np.ndarray, models, grids=((24, 13, 48), (36, 19, 72), (60, 31, 120), (90, 46, 180))) -> dict:
-    """ln B and grid max per model on several grids (used to choose FULL_GRID / FAST_GRID)."""
-    out = {"grids": [list(g) for g in grids], "models": [list(m) for m in models], "lnB": [], "max_grid": [], "seconds": []}
+def grid_convergence(a: np.ndarray, models, grids=(PAPER_SEARCH_GRID, PAPER_GRID, FULL_GRID, (180, 91, 360))) -> dict:
+    """ln B and grid max per model on several grids (how FULL_GRID was chosen)."""
+    base = Engine(models, SO3Grid(*grids[0]), search=True)
+    out = {"grids": [list(g) for g in grids], "models": [list(m) for m in models], "lnB": [], "max_grid": [],
+           "line_lnB": [], "seconds": []}
     for g in grids:
-        eng = Engine(models, SO3Grid(*g))
+        eng = base.with_grid(SO3Grid(*g))
         t0 = time.perf_counter()
-        r = eng.scan(a, refine=False, lines=False)
+        r = eng.scan(a, refine=False, lines=True)
         out["seconds"].append(time.perf_counter() - t0)
         out["lnB"].append(r["lnB"].tolist())
         out["max_grid"].append(r["max_grid"].tolist())
+        out["line_lnB"].append(r.get("line_lnB", np.zeros(0)).tolist())
     return out

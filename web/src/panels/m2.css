@@ -141,3 +141,12 @@ ul.m2-proofs.stacked > li + li {
 .tiles + div > .chart-figure {
   margin-top: 12px;
 }
+.m2-dense table.data th,
+.m2-dense table.data td {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.m2-dense table.data th:first-child,
+.m2-dense table.data td:first-child {
+  padding-left: 14px;
+}

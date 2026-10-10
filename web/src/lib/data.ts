@@ -190,7 +190,16 @@ export interface TopologyBundle {
     source: string;
   };
   /** Theorem B / B-loc vacuum-variance slices (not in the contract yet) */
-  vacuum?: Record<string, VacuumSlice | LBPair[] | string>;
+  vacuum?: {
+    E1?: VacuumSlice;
+    E2?: VacuumSlice;
+    /** Gaussian-smoothed versions (sigma = 0.35 lattice units, as [TOP] Fig. 1) */
+    E1_smoothed?: VacuumSlice;
+    E2_smoothed?: VacuumSlice;
+    /** (x, y) in lattice units where the E2 half-turn screw axes cross the slice */
+    E2_axes?: [number, number][];
+    note?: string;
+  };
 }
 
 // --- lattice.json --------------------------------------------------------------------
@@ -208,9 +217,13 @@ export interface CriticalPoint {
 }
 
 export interface FlowTrajectory {
+  /** tau = ln(conformal time), Theorem H.2 */
   tau: number[];
+  /** Z(2) at unit covolume along the flow (rounded to 1e-8 in the bundle) */
   Z: number[];
+  /** 'FCC' | 'BCC' | 'other' */
   end: string;
+  converged?: boolean;
 }
 
 export interface LatticeBundle {
@@ -222,11 +235,39 @@ export interface LatticeBundle {
     n: number;
     counts: Record<string, number>;
     paper_counts: Record<string, number>;
+    /** a sample of the flows (the counts cover all n) */
     trajectories: FlowTrajectory[];
+    /** 'gradient' (Theorem H.2 limit) or 'kinetic' */
+    mode?: string;
+    kappa?: number | null;
+    /** Haar starts truncated at |t| <= t_max */
+    t_max?: number;
+    seed?: number;
+    fcc_fraction?: number;
+    fcc_fraction_err?: number;
+    paper_fcc_fraction?: number;
+    unconverged?: number;
+    computed?: boolean;
     source?: string;
     [extra: string]: unknown;
   };
-  relaxation: { kappa_cE_rate_fcc: number; TL_today: number; source: string; [extra: string]: unknown };
+  /** [TOP] Prop. H.3: quoted values, with our recomputation in `ours` */
+  relaxation: {
+    kappa_cE_rate_fcc: number;
+    TL_today: number;
+    kappa_cE_coeff?: number;
+    TL4_per_dtau?: number;
+    source: string;
+    ours?: {
+      kappa_cE_coeff?: number;
+      fcc_mu_min?: number;
+      TL4_per_dtau?: number;
+      TL_today?: number;
+      L_today_inv_eV?: number;
+    };
+    computed?: boolean;
+    [extra: string]: unknown;
+  };
 }
 
 // --- sky_map.json + binaries -----------------------------------------------------------
@@ -391,6 +432,8 @@ export interface SpherexFrame {
   l: number;
   b: number;
   corners_gal: LBPair[];
+  /** (RA, Dec) corners in degrees */
+  corners_eq?: LBPair[];
   band_um: [number, number];
   key: string;
 }
@@ -403,8 +446,12 @@ export interface SpherexThumbnail {
   b: number;
   band_um: [number, number];
   unit: string;
+  /** display stretch: 1st and 99.5th percentiles of the frame, in `unit` */
   p1: number;
   p995: number;
+  key?: string;
+  /** observation time (UTC, ISO) */
+  date?: string;
 }
 
 export interface SpherexBundle {
@@ -415,6 +462,8 @@ export interface SpherexBundle {
   bands: Record<string, [number, number, number]>;
   frames: SpherexFrame[];
   thumbnails: SpherexThumbnail[];
+  note?: string;
+  source?: string;
 }
 
 // --- horizon.json --------------------------------------------------------------------
@@ -594,20 +643,126 @@ export interface BounceRun {
   a_inv2: number[];
   a_min: number;
   peak_a_inv2: number;
-  fwhm_T: number;
+  /** null when <a^-2>(T) has no resolved half maximum */
+  fwhm_T: number | null;
+  fwhm_times_amax?: number | null;
+  t_bounce?: number;
+  period?: number;
+  norm_max_dev?: number;
+  /** 'exact' (odd coherent-state combination) */
+  method?: string;
+  computed?: boolean;
+  closed_form?: { a_min?: number; peak_a_inv2?: number };
   /** printed values where the paper tabulates this a_max (empty object otherwise) */
-  paper: { a_min?: PaperValue; peak_a_inv2?: PaperValue; fwhm_T?: PaperValue; [extra: string]: PaperValue | undefined };
+  paper: {
+    a_min?: PaperValue;
+    peak_a_inv2?: PaperValue;
+    fwhm_T?: PaperValue;
+    fwhm_times_amax?: PaperValue;
+    /** <a>_min printed in Theorem Q(iii) / Theorem N text */
+    a_min_theorem_Q?: PaperValue;
+    a_min_theorem_N?: PaperValue;
+    source?: string;
+    [extra: string]: PaperValue | undefined;
+  };
+  /** the same run on the paper's finite-difference grid ([QG] Sec. 21) */
+  paper_grid?: {
+    a_max: number;
+    grid: { L: number; n: number };
+    t_bounce: number;
+    bounce_delay: number;
+    peak_a_inv2: number;
+    a_min: number;
+    fwhm_T: number | null;
+    fwhm_times_amax: number | null;
+    levels_used?: number;
+    computed?: boolean;
+    method?: string;
+  };
   [extra: string]: unknown;
+}
+
+/** |Psi(a, T)|^2 at three times around the bounce ([QG] Fig. 1 right). */
+export interface BounceSnapshots {
+  a_max?: number;
+  a: number[];
+  T: number[];
+  psi2: number[][];
+  grid?: { L: number; n: number };
+  method?: string;
+  computed?: boolean;
+  source?: string;
+}
+
+export interface BounceSpectrumCheck {
+  j: number[];
+  E_numeric: number[];
+  E_exact: number[];
+  abs_error?: number[];
+  grid?: { L: number; n: number; h?: number };
+  source?: string;
+}
+
+export interface MixmasterRun {
+  run: string;
+  a_min: number;
+  a_at_pi: number;
+  max_a_inv2: number;
+  max_p_small: number;
+  beta2_at_pi: number;
+  norm_drift: number;
 }
 
 export interface BounceBundle {
   runs: BounceRun[];
-  spectrum_check: { j: number[]; E_numeric: number[]; E_exact: number[] };
-  snapshots: { a: number[]; T: number[]; psi2: number[][] };
-  graviton: { n: number[]; h2_peak: number[] };
-  mixmaster: { a_min: number; source: string };
-  planck_bounce_test: { dchi2_cutoff_max: number; kc_excluded_above: number; source: string };
-  units: { ell_over_lP: number; [extra: string]: number | string };
+  spectrum_check: BounceSpectrumCheck;
+  spectrum_check_evolution_grid?: BounceSpectrumCheck;
+  snapshots: BounceSnapshots;
+  snapshots_paper_grid?: BounceSnapshots;
+  snapshots_a_max_2?: BounceSnapshots;
+  graviton: {
+    n: number[];
+    h2_peak: number[];
+    occupation?: number;
+    a_max?: number;
+    /** a_max -> peak <h_n^2> for each n */
+    h2_peak_by_a_max?: Record<string, number[]>;
+    /** printed peak <a^-2> of Theorem Q'(ii) by a_max */
+    paper_a_inv2_peak?: Record<string, number>;
+    formula?: string;
+    source?: string;
+  };
+  /** large-a_max limits of the exact solution */
+  limits?: { a_min: number; fwhm_times_amax: number; paper_fwhm_times_amax?: number; computed?: boolean };
+  /** quoted [QG] Theorem N / Theorem H tables */
+  mixmaster: {
+    a_min: number;
+    source: string;
+    a_min_range?: [number, number];
+    a_mean_at_pi?: number;
+    a_max?: number;
+    norm_drift?: number;
+    p_below_1e-3_max?: number;
+    a_inv2_bound?: number;
+    runs?: MixmasterRun[];
+    saturation?: { channels: number; peak_H_beta: number; bound: number; peak_a_inv2: number; a_min: number; max_p_small: number; E: number }[];
+    hardy_threshold?: number;
+  };
+  /** quoted [QG] Sec. 19.3 */
+  planck_bounce_test: {
+    dchi2_cutoff_max: number;
+    kc_excluded_above: number;
+    source: string;
+    data?: string;
+    chi2_no_feature?: number;
+    templates?: { name: string; form: string; extra_params: number; dchi2_max: number; p_chance: number }[];
+    kc_best_Mpc?: number;
+    kc_exclusion_dchi2?: number;
+    n_null_skies?: number;
+    verdict?: string;
+  };
+  units: { ell_over_lP: number; a_min_lP?: number; definition?: string; source?: string; [extra: string]: number | string | undefined };
+  notes?: string[];
   /** [QG] status rows for the bounce results (optional) */
   claims?: Claim[];
   [extra: string]: unknown;

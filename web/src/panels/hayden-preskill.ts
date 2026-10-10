@@ -37,7 +37,8 @@ function dynamics(d: HorizonBundle['decoding']): Dyn[] {
   return [
     { key: 'haar_old', label: 'Haar, old hole', run: d.haar_old, paper: d.paper?.haar_old, color: 1 },
     ...eth.map((t, i) => ({ key: `eth_${t}`, label: `GUE e^(−iHt), t = ${t}`, run: d.eth[t]!, paper: d.paper?.eth?.[t], color: 2 + i })),
-    { key: 'haar_young', label: 'Haar, young hole', run: d.haar_young, paper: d.paper?.haar_young, color: 2 + eth.length },
+    // slot 7 rather than 6: slot 6 (green) sits too close to slot 3 when every pair is on screen
+    { key: 'haar_young', label: 'Haar, young hole', run: d.haar_young, paper: d.paper?.haar_young, color: 7 },
   ];
 }
 
@@ -120,7 +121,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
   // --- recovery matrix ------------------------------------------------------------------------------------
   const matP = panel({
     title: 'Recovery matrix',
-    subtitle: 'Rows: dynamics; columns: emitted qubits s; colour: log₁₀ decoding infidelity (darker = recovered)',
+    subtitle: 'Rows: dynamics; columns: emitted qubits s; colour: recovery depth −log₁₀(1 − F), stronger colour = better recovered',
     badges: [badge('computed'), badge('quoted', '[QG] Sec. 15')],
     span: 7,
   });
@@ -147,8 +148,9 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
         const j = sPaper.indexOf(sv);
         const ours = log10OrNull(x.run.infidelity[i]);
         const paper = log10OrNull(x.paper?.[j]);
-        if (mode === 'ours') return ours;
-        if (mode === 'paper') return paper;
+        // recovery depth -log10(1 - F): more is better recovered, so more colour
+        if (mode === 'ours') return ours === null ? null : -ours;
+        if (mode === 'paper') return paper === null ? null : -paper;
         return ours === null || paper === null ? null : ours - paper;
       }),
     );
@@ -160,26 +162,27 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
         matHost,
         {
           z,
-          x: sCols.map(String),
+          x: sCols,
           y: dyn.map((x) => x.label),
           scale: mode === 'ratio' ? 'diverging' : 'sequential',
           zmid: mode === 'ratio' ? 0 : undefined,
-          zmin: mode === 'ratio' ? undefined : -5,
-          zmax: mode === 'ratio' ? undefined : 0,
-          colorbarTitle: mode === 'ratio' ? 'log₁₀ ratio' : 'log₁₀(1 − F)',
-          zLabel: mode === 'ratio' ? 'log₁₀ ours/paper' : 'log₁₀(1 − F)',
+          zmin: mode === 'ratio' ? undefined : 0,
+          zmax: mode === 'ratio' ? undefined : 5,
+          colorbarTitle: mode === 'ratio' ? 'log₁₀ ratio' : '−log₁₀(1 − F)',
+          zLabel: mode === 'ratio' ? 'log₁₀ ours/paper' : '−log₁₀(1 − F)',
         },
         {
           xTitle: 'further emitted qubits s',
           yTitle: 'dynamics',
           height: 320,
           format: (v) => fmtNum(v, 3),
-          layout: { yaxis: { autorange: 'reversed' }, margin: { l: 150, r: 18, t: 12, b: 46, pad: 0 } } as Partial<Layout>,
+          // categorical rows: the shared axis defaults to 'linear', which cannot place strings
+          layout: { yaxis: { type: 'category', autorange: 'reversed' }, xaxis: { dtick: 1 }, margin: { l: 150, r: 18, t: 12, b: 46, pad: 0 } } as Partial<Layout>,
           ariaLabel: 'Recovery matrix of log10 decoding infidelity by dynamics and emitted qubits',
           caption:
             mode === 'ratio'
               ? 'Ours against the printed table: within the sampling noise of 6 draws (~10–20 % at small infidelity), i.e. |log₁₀ ratio| ≲ 0.1.'
-              : 'Colour is clamped to [10⁻⁵, 1]; hover or use Table for the values. Haar and GUE from t = 10 recover the diary within 2–3 qubits beyond k; t = 1 stalls near 0.55; a young hole needs about half of itself emitted.',
+              : 'Recovery depth 5 means infidelity 10⁻⁵ (colour clamped there); hover or use Table for the values. Haar and GUE from t = 10 recover the diary within 2–3 qubits beyond k; t = 1 stalls near 0.55; a young hole needs about half of itself emitted.',
         },
       ),
     );
@@ -226,8 +229,13 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
     );
   }
   drawBudget();
-  const vb = validationBlock(val, ['Hayden-Preskill decoding ([QG] Theorem R)'], { compact: true });
-  if (vb) budP.body.append(h('div', { class: 'm2-section-label', style: { marginTop: '16px' } }, 'Ours vs paper · Haar, old hole'), vb);
+  const vb = validationBlock(val, ['Hayden-Preskill decoding ([QG] Theorem R)'], { summaryOnly: true });
+  if (vb)
+    budP.body.append(
+      h('div', { class: 'm2-section-label', style: { marginTop: '16px' } }, 'Ours vs paper · Haar, old hole, s = 0–8'),
+      vb,
+      h('p', { class: 'small muted', style: { margin: '6px 0 0' } }, 'Each entry is a mean of 6 Haar samples, as in the paper, so the sampling noise is ~10–20 % at the smallest infidelities; the recovery matrix’s log₁₀ ours/paper view shows every entry.'),
+    );
   el.append(grid(matP.root, budP.root));
 
   // --- diary in the black hole -------------------------------------------------------------------------------

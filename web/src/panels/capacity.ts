@@ -179,7 +179,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
       { kind: 'proved', src: '[QG] Theorem U', text: 'Area has a discrete spectrum with smallest non-zero value a₀ = 4√3 πγ l_P² = 5.97 l_P², γ fixed by A/4G (SU(2) counting); horizon Hilbert spaces are finite.' },
       { kind: 'proved', src: '[BH] Theorem I', text: 'Capacity alone does not give the Page curve: the exterior obeys the bound at all times while the radiation can still follow Hawking’s curve. The remaining input is H* (Theorem J).' },
       { kind: 'assumed', src: '[BH] Sec. 16', text: 'H* for an evaporating hole is derived by the gravitational path integral (replica wormholes), not proved as a theorem in the paper.' },
-      { kind: 'computed', src: 'Q-CHAS', text: 'Every number below is computed from these formulas, in the browser or by the Python pipeline. Remnant masses are LIGO tutorial parameters in the detector frame.' },
+      { kind: 'computed', src: 'Q-CHAS', text: 'Every number below is computed from these formulas, in the browser or by the Python pipeline. LIGO remnants come from aligned-spin fits to the tutorial’s component parameters (detector frame).' },
     ], true),
   );
   el.append(grid(ladderP.root, provesP.root));
@@ -477,7 +477,7 @@ export async function mount(el: HTMLElement, ctx: PanelContext): Promise<void> {
       `Planck units: A = 8πM²(1 + √(1 − a*²)), S = A/4G (one quarter nat per Planck area), T_H = √(1 − a*²)/(4π r₊); ` +
       `lifetime t_evap = M³/(3α) with α = 7.44×10⁻⁵ ([BH] Sec. 17): massless-scalar Hawking emission of an isolated Schwarzschild hole (spin ignored). ` +
       (e
-        ? `${e.name}: final mass and spin are the LIGO tutorial parameters (${e.approximant ?? 'tutorial'} template), ${e.mass_frame ?? 'detector'} frame, so redshift is not removed.`
+        ? `${e.name}: final mass and spin from aligned-spin remnant fits to the LIGO tutorial’s component parameters (${e.approximant ?? 'tutorial'} template), ${e.mass_frame ?? 'detector'} frame, so redshift is not removed.`
         : 'Custom hole: mass and spin as set above.');
     if (state.mStarMode === 'hole') {
       drawWindowTiles();

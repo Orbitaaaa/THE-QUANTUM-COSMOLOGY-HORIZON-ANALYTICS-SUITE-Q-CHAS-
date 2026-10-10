@@ -7,7 +7,7 @@
 import { type ChartHandle, type ChartOptions, type LineSeries, lineChart, loadPlotly } from '../lib/charts';
 import type { HorizonBundle, LoadResult, ValidationBundle, ValidationRow } from '../lib/data';
 import type { PanelContext } from '../lib/panel';
-import { type Child, type ProvenanceKind, badge, fmtNum, h, note, statusPill, table, tiles } from '../lib/ui';
+import { type Child, type ProvenanceKind, badge, fmtNum, h, statusPill, table, tiles } from '../lib/ui';
 
 export interface ProofItem {
   kind: ProvenanceKind;
@@ -24,9 +24,6 @@ export function proofList(items: ProofItem[], stacked = false): HTMLUListElement
   );
 }
 
-/** The collapsible "What the paper proves" box. */
-export const provesNote = (items: ProofItem[], open = true, title = 'What the paper proves'): HTMLDetailsElement =>
-  note(proofList(items), title, open);
 
 const fmtVal = (v: number): string => (Math.abs(v) >= 1e6 || (Math.abs(v) < 1e-3 && v !== 0) ? fmtNum(v, 4) : fmtNum(v, 6));
 
@@ -122,7 +119,7 @@ export function diaryChart(host: HTMLElement, ev: HorizonBundle['evaporation'], 
       height,
       refLines: [
         ...(early.diary_step ? [{ axis: 'x' as const, value: early.diary_step, label: 'early in' }] : []),
-        ...(pageStep ? [{ axis: 'x' as const, value: pageStep, label: 'Page time' }] : []),
+        ...(pageStep ? [{ axis: 'x' as const, value: pageStep, label: 'Page' }] : []),
         ...(late.diary_step ? [{ axis: 'x' as const, value: late.diary_step, label: 'late in' }] : []),
         // recovery threshold, unlabelled (the caption names it) so it does not cover the markers
         { axis: 'y' as const, value: p.recovery_threshold_bits ?? 1.9 },

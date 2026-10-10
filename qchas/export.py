@@ -295,7 +295,11 @@ def build_all(out_dir: Path | None = None, raw_dir: Path | None = None, *, fast:
     prev = json.loads((out_dir / "manifest.json").read_text()) if only and (out_dir / "manifest.json").exists() else {}
     if prev:
         # partial rebuild: keep what earlier full builds recorded for the bundles not rebuilt now
-        b.warnings += prev.get("warnings", [])
+        # drop earlier warnings about stages that have just been rebuilt successfully
+        rebuilt_ok = {k for k in b.timings if k not in {e["bundle"] for e in b.errors}}
+        stale = {"likelihood": "Torus likelihood", "spherex": "SPHEREx frames", "sky": "Planck PR3", "gw": "GWOSC"}
+        b.warnings += [w for w in prev.get("warnings", [])
+                       if not any(k in rebuilt_ok and w.startswith(stale[k]) for k in stale)]
         b.timings = {**prev.get("timings_s", {}), **b.timings}
     manifest = {
         "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
