@@ -10,6 +10,15 @@ spectral images, and **LIGO-Virgo** strain.
 | **1 · Global Topology & All-Sky Survey Analyst** | Selects the shape of flat space from four principles, relaxes the torus shape under Standard-Model Casimir stress, draws the predicted circles-in-the-sky and ghost images, quantifies how much any survey can ever learn about topology, and runs the topological-resonance (rank-N Woodbury) test | Planck PR3 Commander / WMAP 9-yr ILC maps and spectra; SPHEREx QR3 footprints |
 | **2 · Dressed Horizon & Evaporation Simulator** | Turns the type III₁ → II algebra ladder into a horizon capacity A/4G, plots Hawking's curve against the Page transfer law, locates the quantum extremal surface and the quantum atmosphere, simulates exactly unitary evaporation and Hayden-Preskill recovery, and evolves the unitary quantum Big Bang | LIGO strain of GW150914, LVT151012, GW151226, GW170104; GWOSC catalogue |
 
+![Ghost-Twin Tracker: the real WMAP sky with a torus overlaid](docs/img/ghost-twin.png)
+
+The repository ships with a complete build from real data in `web/public/data/`, so the
+dashboard runs immediately: `cd web && npm install && npm run dev`. Views: Overview;
+Module 1 — Manifold Selector, Lattice Shape Optimizer, Ghost-Twin Tracker, Resonance Shell
+Inspector, Sky Statistics, Quantum Big Bang; Module 2 — Crossed-Product Capacity, Page Curve,
+QES & Atmosphere, Hayden-Preskill Recovery, GW Horizons (LIGO); Claims Ledger (with the
+reproduction ledger) and Data & Provenance.
+
 ## The science, stated as the papers state it
 
 Q-CHAS implements three research notes (PDFs supplied with the submission):
@@ -54,7 +63,9 @@ data that is present (for example WMAP instead of Planck) and says so in the sta
 never substitutes simulated data for observations.
 
 The GitHub Actions workflow `.github/workflows/pages.yml` performs the full build, including
-the Planck PR3 map, on a GitHub-hosted runner and publishes the dashboard to GitHub Pages.
+the Planck PR3 map, on a GitHub-hosted runner and publishes the dashboard to GitHub Pages. It
+runs on pushes to `main` (or manually); enable Pages once with *Settings → Pages → Source:
+GitHub Actions*.
 
 ## Repository layout
 
