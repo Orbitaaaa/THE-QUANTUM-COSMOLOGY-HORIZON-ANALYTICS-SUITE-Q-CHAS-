@@ -174,7 +174,7 @@ function mountSelector(el: HTMLElement, T: TopologyBundle): void {
     presetRow,
     resultTiles,
     h('div', { class: 'm1-manifold-table' }, tbl.root),
-    e16 ? h('div', { class: 'chart-caption' }, `* ${e16.label}: ${e16.note}.`) : null,
+    ...(e16 ? [h('div', { class: 'chart-caption' }, `* ${e16.label}: ${e16.note}.`)] : []),
   );
   el.append(grid(sel.root));
 

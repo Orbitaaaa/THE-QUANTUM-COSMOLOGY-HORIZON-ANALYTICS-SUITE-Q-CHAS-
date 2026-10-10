@@ -118,7 +118,7 @@ describe('rotations', () => {
       [350, 179, 5],
       [123, 45, 270],
     ] as const) {
-      const R = eulerZYZ(...ang);
+      const R = eulerZYZ(ang[0], ang[1], ang[2]);
       expect(maxAbsDiff(eulerZYZ(...eulerFromMatrix(R)), R)).toBeLessThan(1e-12);
     }
     // gimbal lock keeps the rotation

@@ -742,7 +742,7 @@ export interface BounceBundle {
     a_mean_at_pi?: number;
     a_max?: number;
     norm_drift?: number;
-    p_below_1e-3_max?: number;
+    'p_below_1e-3_max'?: number;
     a_inv2_bound?: number;
     runs?: MixmasterRun[];
     saturation?: { channels: number; peak_H_beta: number; bound: number; peak_a_inv2: number; a_min: number; max_p_small: number; E: number }[];
