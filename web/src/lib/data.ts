@@ -1198,27 +1198,14 @@ export function loadBinary(
   let p = cache.get(key) as Promise<LoadResult<Float32Array | Uint8Array>> | undefined;
   if (!p) {
     p = (async (): Promise<LoadResult<Float32Array | Uint8Array>> => {
-      let res: Response;
-      try {
-        res = await fetcher(dataUrl(file));
-      } catch (err) {
-        return { ok: false, reason: 'network', name: file, message: String(err) };
+      const got = await fetchBytes(file);
+      if (!(got instanceof ArrayBuffer)) {
+        // hosts that cannot serve raw binaries get a base64 JSON copy: <file>.b64.json
+        const alt = await fetchBase64Copy(file);
+        if (!alt) return got;
+        return decode(alt);
       }
-      if (res.status === 404 || (res.ok && looksLikeHtml(res)))
-        return { ok: false, reason: 'missing', name: file, message: `${file} not found` };
-      if (!res.ok) return { ok: false, reason: 'network', name: file, message: `HTTP ${res.status} for ${file}` };
-      const buf = await res.arrayBuffer();
-      const width = kind === 'f32' ? 4 : 1;
-      if (buf.byteLength % width !== 0)
-        return { ok: false, reason: 'invalid', name: file, message: `${file}: ${buf.byteLength} bytes is not a whole number of values` };
-      const n = buf.byteLength / width;
-      if (expectedLength !== undefined && n !== expectedLength)
-        return { ok: false, reason: 'invalid', name: file, message: `${file}: ${n} values, expected ${expectedLength}` };
-      if (kind === 'u8') return { ok: true, name: file, data: new Uint8Array(buf) };
-      const view = new DataView(buf);
-      const out = new Float32Array(n);
-      for (let i = 0; i < n; i++) out[i] = view.getFloat32(4 * i, true);
-      return { ok: true, name: file, data: out };
+      return decode(got);
     })().then((r) => {
       if (!r.ok && r.reason === 'network') cache.delete(key);
       return r;
@@ -1226,6 +1213,49 @@ export function loadBinary(
     cache.set(key, p);
   }
   return p;
+
+  function decode(buf: ArrayBuffer): LoadResult<Float32Array | Uint8Array> {
+    const width = kind === 'f32' ? 4 : 1;
+    if (buf.byteLength % width !== 0)
+      return { ok: false, reason: 'invalid', name: file, message: `${file}: ${buf.byteLength} bytes is not a whole number of values` };
+    const n = buf.byteLength / width;
+    if (expectedLength !== undefined && n !== expectedLength)
+      return { ok: false, reason: 'invalid', name: file, message: `${file}: ${n} values, expected ${expectedLength}` };
+    if (kind === 'u8') return { ok: true, name: file, data: new Uint8Array(buf) };
+    const view = new DataView(buf);
+    const out = new Float32Array(n);
+    for (let i = 0; i < n; i++) out[i] = view.getFloat32(4 * i, true);
+    return { ok: true, name: file, data: out };
+  }
+}
+
+async function fetchBytes(file: string): Promise<ArrayBuffer | LoadResult<never>> {
+  let res: Response;
+  try {
+    res = await fetcher(dataUrl(file));
+  } catch (err) {
+    return { ok: false, reason: 'network', name: file, message: String(err) };
+  }
+  if (res.status === 404 || (res.ok && looksLikeHtml(res)))
+    return { ok: false, reason: 'missing', name: file, message: `${file} not found` };
+  if (!res.ok) return { ok: false, reason: 'network', name: file, message: `HTTP ${res.status} for ${file}` };
+  return res.arrayBuffer();
+}
+
+/** Base64 JSON copy of a binary bundle ({"encoding": "base64", "data": "..."}), or null when absent. */
+async function fetchBase64Copy(file: string): Promise<ArrayBuffer | null> {
+  try {
+    const res = await fetcher(dataUrl(`${file}.b64.json`));
+    if (!res.ok || looksLikeHtml(res)) return null;
+    const body = (await res.json()) as { encoding?: string; data?: string };
+    if (body.encoding !== 'base64' || typeof body.data !== 'string') return null;
+    const raw = atob(body.data);
+    const bytes = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    return bytes.buffer;
+  } catch {
+    return null;
+  }
 }
 
 export interface SkyMapData {
