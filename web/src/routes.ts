@@ -161,6 +161,48 @@ export const PANEL_LOADERS: Record<RouteId, () => Promise<PanelModule>> = {
 
 export const routeById = (id: string): RouteInfo | undefined => ROUTES.find((r) => r.id === id);
 
+// --- show vs console -----------------------------------------------------------------------
+
+/**
+ * Plain anchors owned by the judge-facing show (docs/SHOW.md "Routing"). Artifact hosts pass
+ * only plain anchors, so the show never uses `#/`. `breakthrough` is Act 3A (black hole) and
+ * `bounce` Act 3B (Big Bang); `blackhole` and `breakthrough-bounce` are accepted aliases.
+ */
+export const SHOW_ANCHORS = ['discovery', 'experiment', 'breakthrough', 'bounce', 'evidence'] as const;
+export type ShowAnchor = (typeof SHOW_ANCHORS)[number];
+
+const SHOW_ALIASES: Record<string, ShowAnchor> = {
+  blackhole: 'breakthrough',
+  'black-hole': 'breakthrough',
+  'breakthrough-blackhole': 'breakthrough',
+  'breakthrough-bounce': 'bounce',
+};
+
+export type AppView = { mode: 'show'; anchor: ShowAnchor | null; at?: number } | { mode: 'console' };
+
+/**
+ * Which top-level view a hash selects. `#/...` is always the mission console; an empty hash is
+ * the show's landing; a show anchor opens that act (`#discovery-12` opens it paused at 12 s, for
+ * QA screenshots); a bare console id (`#qes`, tolerated by `parseHash`) still opens the console;
+ * anything else falls back to the show's landing.
+ */
+export function viewForHash(hash: string): AppView {
+  const raw = hash.replace(/^#/, '');
+  if (raw.startsWith('/')) return { mode: 'console' };
+  let key = (raw.split(/[/?&]/)[0] ?? '').toLowerCase();
+  if (!key) return { mode: 'show', anchor: null };
+  let at: number | undefined;
+  const timed = /^([a-z-]+?)-(\d+(?:\.\d+)?)$/.exec(key);
+  if (timed && (SHOW_ANCHORS.includes(timed[1] as ShowAnchor) || SHOW_ALIASES[timed[1]!])) {
+    key = timed[1]!;
+    at = Number(timed[2]);
+  }
+  const anchor = (SHOW_ANCHORS as readonly string[]).includes(key) ? (key as ShowAnchor) : SHOW_ALIASES[key];
+  if (anchor) return at === undefined ? { mode: 'show', anchor } : { mode: 'show', anchor, at };
+  if (routeById(key)) return { mode: 'console' };
+  return { mode: 'show', anchor: null };
+}
+
 /** Parse `#/route` (also tolerates `#route` and trailing segments such as `#/data/warnings`). */
 export function parseHash(hash: string): { id: RouteId; rest: string[] } {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);

@@ -1438,3 +1438,29 @@ details.note .note-body li + li {
     background: none;
   }
 }
+
+/* the judge-facing show (src/show) is the landing page; the console sits behind it */
+.app[hidden] {
+  display: none !important;
+}
+html.show-mode,
+html.show-mode body {
+  background: #03050b;
+  overflow: hidden;
+}
+.show-link {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-right: 1px solid var(--line);
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.show-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}

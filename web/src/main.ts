@@ -10,7 +10,8 @@ import { BUNDLE_NAMES, type Manifest, loadBundle } from './lib/data';
 import type { PanelContext, RouteId, RouteInfo } from './lib/panel';
 import { applyTheme, currentTheme, onThemeChange, storedTheme } from './lib/theme';
 import { clear, fmtUtc, h, icon } from './lib/ui';
-import { NAV_GROUPS, PANEL_LOADERS, ROUTES, parseHash } from './routes';
+import { NAV_GROUPS, PANEL_LOADERS, ROUTES, parseHash, viewForHash } from './routes';
+import type { ShowController } from './show/show';
 
 applyTheme(storedTheme(), false);
 
@@ -56,10 +57,13 @@ const clock = statusField('UTC');
 const themeBtn = h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Toggle light or dark theme' });
 const menuBtn = h('button', { type: 'button', class: 'icon-btn menu-btn', 'aria-label': 'Open navigation' }, icon('menu'));
 
+const showLink = h('a', { class: 'show-link', href: '#discovery', title: 'Back to the show' }, '◂ Show');
+
 const topbar = h(
   'header',
   { class: 'topbar' },
   menuBtn,
+  showLink,
   h(
     'a',
     { class: 'brand', href: '#/overview', 'aria-label': 'Q-CHAS overview' },
@@ -124,6 +128,7 @@ const main = h(
 );
 
 app.append(topbar, sidebar, main);
+app.hidden = true;
 document.body.append(app);
 
 // --- theme and clock -----------------------------------------------------------------------
@@ -205,7 +210,7 @@ function teardown(): void {
 
 async function route(): Promise<void> {
   const { id, rest } = parseHash(location.hash);
-  if (!location.hash || location.hash === '#' || location.hash === '#/') history.replaceState(null, '', `#/${id}`);
+  if (location.hash === '#/') history.replaceState(null, '', `#/${id}`);
   const info = ROUTES.find((r) => r.id === id)!;
   const my = ++token;
   teardown();
@@ -270,10 +275,38 @@ async function route(): Promise<void> {
   if (my === token && rest[0]) document.getElementById(rest[0])?.scrollIntoView({ block: 'start' });
 }
 
-window.addEventListener('hashchange', () => void route());
+// --- show (landing, plain anchors) vs console (`#/route`) ------------------------------------------
+
+let show: ShowController | null = null;
+let showLoading: Promise<ShowController> | null = null;
+let manifestReady = false;
+
+async function dispatch(): Promise<void> {
+  const view = viewForHash(location.hash);
+  if (view.mode === 'show') {
+    if (!app.hidden) {
+      token++;
+      teardown();
+      app.hidden = true;
+    }
+    document.documentElement.classList.add('show-mode');
+    showLoading ??= import('./show/show').then((m) => m.mountShow(document.body));
+    show = await showLoading;
+    if (viewForHash(location.hash).mode === 'show') show.go(view.anchor, view.at);
+    return;
+  }
+  show?.suspend();
+  document.documentElement.classList.remove('show-mode');
+  app.hidden = false;
+  if (manifestReady) await route();
+}
+
+window.addEventListener('hashchange', () => void dispatch());
+void dispatch();
 
 void loadBundle('manifest.json').then((r) => {
   manifest = r.ok ? r.data : null;
+  manifestReady = true;
   paintStatus(manifest);
-  void route();
+  if (!app.hidden) void route();
 });

@@ -26,7 +26,7 @@ closed-form physics; nothing is decorative fiction, and every claim carries an h
 All copy lives in `web/src/show/script.ts` (single source; the science reviewer owns it).
 Durations are for the guided tour; every act is also freely explorable.
 
-### Act 1 · Discovery — "Space may be a crystal" (tour ≈ 18 s)
+### Act 1 · Discovery — "Space may be a crystal" (tour ≈ 19 s)
 1. *Inside the oldest light.* Camera at the centre of a sphere textured with the real WMAP 9-yr
    CMB map (`sky_map_lowl.bin`, 2 ≤ ℓ ≤ 30, diverging CMB colormap, gentle rotation, faint
    starfield beyond). Caption: the sky NASA's WMAP measured; the light is 13.8 Gyr old.
@@ -48,7 +48,7 @@ Durations are for the guided tour; every act is also freely explorable.
    into an exact map of where its seams would lie on NASA's sky — and shows what the data can
    and cannot prove."* Reality chip: no seams in the data; d ≥ 0.985 D.
 
-### Act 2 · Experiment — "Hunt for the seams" (tour ≈ 12 s, then free play)
+### Act 2 · Experiment — "Hunt for the seams" (tour ≈ 13 s, then free play)
 * Left: the real-sky globe with live circles. Right: the **k-space crystal**: the dual-lattice
   wavevectors inside |κ|χ* ≤ ~14 as glowing points (size ∝ primordial power); a slow rotation.
 * Controls (judge-sized, keyboard accessible): universe size d/D 0.6 → 1.5 (excluded range
@@ -67,7 +67,7 @@ Durations are for the guided tour; every act is also freely explorable.
   we knew its orientation. Neither Planck nor WMAP shows one."*
 
 ### Act 3 · Breakthrough (the visual climax)
-**A. "A black hole gives its information back"** (tour ≈ 18 s, then scrubbable)
+**A. "A black hole gives its information back"** (tour ≈ 19 s, then scrubbable)
 * Scene: an evaporating Schwarzschild black hole against a procedural deep starfield and galactic
   band, with **screen-space gravitational lensing** (ray-deflection shader: Einstein ring,
   secondary images) and a bright photon ring; no accretion disk (an evaporating hole has none).
@@ -95,7 +95,7 @@ Durations are for the guided tour; every act is also freely explorable.
   capacity A/4G and no independent interior (H*); the capacity is derived from the crossed
   product ([BH] Theorem G) and H* is proved for eternal black holes ([BH] Theorem K).
 
-**B. "The Big Bang bounces"** (tour ≈ 8 s)
+**B. "The Big Bang bounces"** (tour ≈ 9 s)
 * A luminous 3D surface of |Ψ(a, T)|² over (a, T) for a_max = 2, computed live from the exact
   solution (odd combination of two coherent states of the half-line oscillator; see
   qchas/horizon/bounce.py), glowing ridge, interference fringes at the bounce.

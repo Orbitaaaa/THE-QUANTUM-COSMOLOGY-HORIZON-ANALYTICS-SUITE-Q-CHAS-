@@ -10,10 +10,37 @@ spectral images, and **LIGO-Virgo** strain.
 | **1 · Global Topology & All-Sky Survey Analyst** | Selects the shape of flat space from four principles, relaxes the torus shape under Standard-Model Casimir stress, draws the predicted circles-in-the-sky and ghost images, quantifies how much any survey can ever learn about topology, and runs the topological-resonance (rank-N Woodbury) test | Planck PR3 Commander / WMAP 9-yr ILC maps and spectra; SPHEREx QR3 footprints |
 | **2 · Dressed Horizon & Evaporation Simulator** | Turns the type III₁ → II algebra ladder into a horizon capacity A/4G, plots Hawking's curve against the Page transfer law, locates the quantum extremal surface and the quantum atmosphere, simulates exactly unitary evaporation and Hayden-Preskill recovery, and evolves the unitary quantum Big Bang | LIGO strain of GW150914, LVT151012, GW151226, GW170104; GWOSC catalogue |
 
+## The show: the judges' 60 seconds
+
+The dashboard opens on a cinematic, interactive **show** in four acts; the full mission console
+sits behind it as the evidence layer (`#/overview`). Every frame is computed from the real bundles
+or from exact formulas, and every claim carries an honesty tag (ESTABLISHED, PROVED, COMPUTED,
+HYPOTHESIS, ILLUSTRATIVE, DATA). A "Watch the 60-second tour" button plays all acts with captions.
+
+| Act | What you see | Computed from |
+|---|---|---|
+| **I · Discovery** — *space may be a crystal* | Inside the real WMAP sky; pull back as copies of it ignite at FCC translations and their exact intersection circles light up; the rhombic-dodecahedron cell; back on one globe the matched circles shrink and vanish as d grows past D | WMAP 9-yr low-ℓ map, lattice and circle geometry ([TOP] Thm F), the paper's best-fit axes |
+| **II · Experiment** — *hunt for the seams* | The real sky beside the wave-space crystal; judges change size and shape and switch the standard search for a resonance shell; a live meter shows the information K, the ×65 gain and why orientation search eats it | `cmb.json` KL table, `resonance.json` (cubic, \|m\|² = 16, f = 0.5), WMAP search p = 0.79 |
+| **III · Breakthrough** — *a black hole gives its information back* | A lensed evaporating hole with a photon ring and Planck-cell horizon; Hawking pairs tied by threads that re-route after the Page time exactly as min{S_H, A/4G}; the island; a diary that returns at steps 13 / 17; the Page curve drawn live | `lib/physics/page.ts`, the exact 20-qubit run in `horizon.json` |
+| **III·B** — *the Big Bang bounces* | The exact \|Ψ(a, T)\|² landscape, the universe bubble bouncing at 0.165 ℓ while the classical ghost crashes | closed-form coherent-state solution, `bounce.json` |
+| **IV · Evidence** | Data, methods, 169 / 173 reproduced numbers, limits, and doors into every console tool | `validation.json`, `manifest.json` |
+
+![Act I: copies of the real WMAP sky on an FCC lattice with their exact seam circles](docs/img/show-crystal.jpg)
+
+![Act III: the evaporating black hole, its Planck-cell horizon, the island and the live Page curve](docs/img/show-blackhole.jpg)
+
+![Act II: the real sky and the wave-space crystal with a resonance shell and the information meter](docs/img/show-experiment.jpg)
+
+Plain anchors open an act (`#discovery`, `#experiment`, `#breakthrough`, `#bounce`, `#evidence`;
+`#breakthrough-9` opens it paused at 9 s); keyboard: Space pause, ←/→ acts, Esc exit the tour.
+The design and the binding facts the copy may never contradict are in `docs/SHOW.md`.
+
+## The mission console
+
 ![Ghost-Twin Tracker: the real WMAP sky with a torus overlaid](docs/img/ghost-twin.png)
 
 The repository ships with a complete build from real data in `web/public/data/`, so the
-dashboard runs immediately: `cd web && npm install && npm run dev`. Views: Overview;
+dashboard runs immediately: `cd web && npm install && npm run dev`. Console views: Overview;
 Module 1 — Manifold Selector, Lattice Shape Optimizer, Ghost-Twin Tracker, Resonance Shell
 Inspector, Sky Statistics, Quantum Big Bang; Module 2 — Crossed-Product Capacity, Page Curve,
 QES & Atmosphere, Hayden-Preskill Recovery, GW Horizons (LIGO); Claims Ledger (with the
