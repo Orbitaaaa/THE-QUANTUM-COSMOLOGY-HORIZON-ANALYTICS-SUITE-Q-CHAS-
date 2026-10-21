@@ -38,13 +38,18 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Phase V — the full quantum system
 
-* **P-Q5.** Physical Hilbert space with sectors; is the daughter a superselection sector or a mixed state for the exterior
-  algebra (crossed-product construction, NEW_APPROACHES N2)?
+* **P-Q5 (partly done, Phase V).** Reduced model: the daughter is not superselected, but it is invisible to the abelian exterior algebra
+  (Theorem V-2) and needs its own clock after the edge (Theorem V-1). Open: the von Neumann-algebraic version with matter fields
+  (crossed products, NEW_APPROACHES N2).
+* **P-Q10.** The boundary condition at the daughter edge (interior horizon at finite $t_\infty$) and a daughter clock: derive them, rather than
+  postulating an outgoing condition.
 * **P-Q6.** Information: what the exterior observer's reduced state looks like after a transition (entropy bookkeeping:
   the Morse/endpoint areas of T1/T2 are suggestive).
 
 ## Phase VI — observability
 
+* **P-O2.** Derive the mass function of daughter-hosting PBHs from bubble nucleation during inflation (FRW embedding of the thin-wall and
+  Phase IV dynamics); Phase VI supplies only the characteristic mass $M_*\simeq1/(2GL)$.
 * **P-O1.** Rates of daughter production by vacuum transitions in the early universe (bubbles nucleated during inflation,
   Garriga–Vilenkin–Zhang; Deng–Garriga–Vilenkin) versus laboratory rates. Translate T5 into a statement about
   primordial-black-hole populations.

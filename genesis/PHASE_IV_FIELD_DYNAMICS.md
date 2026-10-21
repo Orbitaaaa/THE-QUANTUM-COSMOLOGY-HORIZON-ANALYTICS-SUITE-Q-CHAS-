@@ -99,6 +99,10 @@ convergence of the tilt contribution to the tension already found in Stage One (
 > anti-trapped sphere), one has $r_u=-(1-2Gm/r)\alpha^2/4r_v<0$ on the cone. Hence an inflating (anti-trapped) false-vacuum region can never
 > develop from laboratory data, for any potential and any wall thickness. $\square$
 
+**Generality.** The proof uses only $T_{uu}\ge0$, i.e. the NEC for the null vector $\partial_u$. It therefore holds for any spherically symmetric NEC
+matter: several scalars, gauge fields (spherical 't Hooft–Polyakov monopoles, so laboratory "topological inflation" is excluded too), and
+dust or fluids satisfying the NEC.
+
 **Numerical confirmation.** The scan over $\kappa\in\{0.5,1,2\}$ × initial wall radius $r_w\in[0.15,0.85]$ (18 runs) found:
 * **10 laboratory configurations:** 0 anti-trapped points, and **10/10 form black holes**. Even the smallest bubble ($M=0.013$, $2GM/r_w=0.17$)
   collapses to a black hole rather than dispersing.

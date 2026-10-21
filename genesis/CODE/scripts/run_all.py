@@ -1,4 +1,4 @@
-"""Reproduce every data file and figure (Deliverable 1, Phases II-IV)."""
+"""Reproduce every data file and figure (Deliverable 1, Phases II-VI)."""
 import os
 import subprocess
 import sys
@@ -7,7 +7,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCRIPTS = ["derivation_log.py", "branch_atlas.py", "tunnelling_analysis.py", "singularity_audit.py",
            "thickwall_study.py", "quantum_checks.py", "physical_scales.py",
-           "phase2_verification.py", "phase2_regimeB_scan.py", "phase3_analysis.py", "phase4_dynamics.py"]
+           "phase2_verification.py", "phase2_regimeB_scan.py", "phase3_analysis.py", "phase4_dynamics.py", "phase5_6_analysis.py"]
 for s in SCRIPTS:
     t0 = time.time()
     print(f"=== {s}", flush=True)

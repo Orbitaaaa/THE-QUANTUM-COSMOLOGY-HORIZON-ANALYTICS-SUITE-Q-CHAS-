@@ -59,6 +59,19 @@ def euclidean_momentum(model: ThinWallModel, R, prescription="analytic"):
     return R / model.G * (theta(model.A_out(R), y, prescription) - theta(model.A_in(R), y, prescription))
 
 
+def theta_stable(model: ThinWallModel, R):
+    """Analytic-branch angle theta = Theta_out - Theta_in in (0, pi), cancellation-free:
+    sin theta = kappa R sqrt(V / (f_in f_out))  (proof of Theorem III-4),  cos theta = C,
+    theta = atan2(sin theta, C).  Keeps full relative precision when theta -> 0 or pi (thin
+    barriers, kappa/chi -> 0), where arccos C and angle differences lose all digits."""
+    R = np.asarray(R, dtype=float)
+    fi, fo = model.f_in(R), model.f_out(R)
+    V = np.maximum(model.V(R), 0.0)
+    s = model.kappa * R * np.sqrt(V / (fi * fo))
+    c = (fi + fo - model.kappa**2 * R**2) / (2 * np.sqrt(fi * fo))
+    return np.arctan2(s, c)
+
+
 def B_arccos(model: ThinWallModel) -> float:
     """Independent formula (Phase II): on the analytic branch
     0 < Theta_out - Theta_in < pi in the barrier (cot Theta = A/sqrt V and
@@ -75,7 +88,7 @@ def B_arccos(model: ThinWallModel) -> float:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         val = quad(lambda R: R * np.arccos(np.clip(C(R), -1.0, 1.0)), lo, Rb, limit=800,
-                   epsabs=1e-13, epsrel=1e-12)[0]
+                   epsabs=0.0, epsrel=1e-11)[0]
     return 2.0 * val / model.G
 
 
@@ -98,16 +111,24 @@ def barrier(model: ThinWallModel):
 
 
 def B_canonical(model: ThinWallModel, prescription="analytic") -> float:
+    """B = 2 int P_E dR.  Analytic branch: P_E = (R/G) theta_stable; principal branch: the same
+    minus pi R/G times (n_out - n_in), n = [A < 0] (the principal arctan offsets), which is
+    algebraically identical to the angle formula of euclidean_momentum but cancellation-free."""
     Ra, Rb = barrier(model)
     pts = [x for x in (model.flip_radius_out(), model.flip_radius_in()) if x and Ra < x < Rb]
 
     def f(R):
-        return float(euclidean_momentum(model, R, prescription))
+        th = float(theta_stable(model, R))
+        if prescription == "principal":
+            th -= np.pi * (float(model.A_out(R) < 0) - float(model.A_in(R) < 0))
+        elif prescription != "analytic":
+            raise ValueError(prescription)
+        return R / model.G * th
 
     lo = Ra if Ra > 0 else 1e-14 * Rb
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        val, err = quad(f, lo, Rb, points=pts or None, limit=800, epsabs=1e-13, epsrel=1e-12)
+        val, err = quad(f, lo, Rb, points=pts or None, limit=800, epsabs=0.0, epsrel=1e-11)
     return 2.0 * val
 
 
@@ -183,7 +204,7 @@ def _quad_s(model, fun, Ra, Rb, s0=0.0, s1=np.pi):
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        return quad(g, s0, s1, limit=800, epsabs=1e-13, epsrel=1e-12)[0]
+        return quad(g, s0, s1, limit=800, epsabs=0.0, epsrel=1e-11)[0]
 
 
 def euclidean_wall(model: ThinWallModel, n: int = 1500) -> EuclideanWall:

@@ -226,6 +226,11 @@ masses; for milligram-to-gram laboratory masses $B\sim10^5$–$10^7$. At $M=0.5M
 $R_1\approx6.6\times10^{-30}$ m, about $1.6$ Schwarzschild radii of the bubble. The last row is near the Planck scale, where
 the semiclassical treatment is not trustworthy.
 
+**Phase V correction.** "Picogram masses" should read nanogram: $10^{-9}M_{\rm cr}=5.6\times10^{-12}$ kg. More importantly, these masses are
+**below the Planck mass** ($2.2\times10^{-8}$ kg). The tunnelling barrier is still semiclassical ($R_{1,2}\sim10^2$–$10^3\,\ell_P$, WKB parameter about $10^{-11}$).
+But the black hole the parent would form has $2GM\ll\ell_P$ and is not semiclassical. For semiclassical black holes ($M\gtrsim10\,m_{\rm Pl}$) the GUT
+exponent is $B\gtrsim7\times10^4$ (PHASE_V_QUANTUM_SYSTEM.md Sec. 6).
+
 The exponent depends steeply on $\sigma^4/\rho^3$ (flat-space CdL scaling) and is **not** generically of order
 $(M_{\rm Pl}/H)^2$. That scaling holds only for $\kappa\sim\chi$. The thin-wall approximation needs the wall
 thickness $\ll R_1$; the GUT-scale numbers are indicative only.

@@ -251,8 +251,8 @@ def B_sector_switch(model: ThinWallModel) -> float:
 
     Rq = brentq(C, R1 * (1 + 1e-12), R2 * (1 - 1e-12), xtol=1e-15)
     th = lambda R: np.arccos(np.clip(C(R), -1.0, 1.0))
-    a = quad(lambda R: R * th(R), R1, Rq, limit=400, epsabs=1e-13, epsrel=1e-12)[0]
-    b = quad(lambda R: R * (np.pi - th(R)), Rq, R2, limit=400, epsabs=1e-13, epsrel=1e-12)[0]
+    a = quad(lambda R: R * th(R), R1, Rq, limit=400, epsabs=0.0, epsrel=1e-11)[0]
+    b = quad(lambda R: R * (np.pi - th(R)), Rq, R2, limit=400, epsabs=0.0, epsrel=1e-11)[0]
     return 2 * (a + b) / model.G
 
 
@@ -287,8 +287,11 @@ def B_sector_blind(model: ThinWallModel) -> float:
         return (fi + fo - model.kappa**2 * R**2) / (2 * np.sqrt(fi * fo))
 
     pts = coalescence_points(model) or None
-    v = quad(lambda R: R * np.arccos(min(1.0, abs(C(R)))), R1, R2, points=pts, limit=400,
-             epsabs=1e-13, epsrel=1e-12)[0]
+    from .tunnelling import theta_stable
+    # arccos|C| = min(theta, pi - theta), with theta from the cancellation-free form
+    v = quad(lambda R: R * min(float(theta_stable(model, R)), np.pi - float(theta_stable(model, R))), R1, R2,
+             points=pts, limit=400,
+             epsabs=0.0, epsrel=1e-11)[0]
     return 2 * v / model.G
 
 

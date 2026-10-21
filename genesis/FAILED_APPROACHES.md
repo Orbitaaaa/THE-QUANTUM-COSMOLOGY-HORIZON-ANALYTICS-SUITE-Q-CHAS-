@@ -110,3 +110,12 @@ That produced 171 spurious "anti-trapped" points in a laboratory bubble, contrad
 *Fix:* also excise where $r$ would increase along an already trapped outgoing ray (forbidden by Raychaudhuri under the NEC). The
 spurious points disappear. At $h\le w/24$ they never occurred.
 *Lesson:* Proposition IV-1 doubles as a numerical diagnostic. **Type:** numerical, resolved.
+
+
+### F13. Absolute quadrature tolerances for the exponent (Phase VI)
+*Tried:* `quad(..., epsabs=1e-13)` and angle differences $\Theta_{\rm out}-\Theta_{\rm in}$ (or $\arccos C$) for $B$.
+*Failure:* at low vacuum scales and Planckian masses the dimensionless exponent is about $10^{-15}$ and $\theta\sim10^{-8}$. Then $1-C\sim10^{-16}$, so the angles lose
+every digit and the absolute tolerance swamps the integral. One scenario showed $B_{\rm sq}>B_{\rm an}$, which violates $\arccos|C|\le\arccos C$.
+*Fix:* relative tolerances, and the cancellation-free angle $\theta={\rm atan2}(\kappa R\sqrt{V/f_{\rm in}f_{\rm out}},\,C)$ (`tunnelling.theta_stable`, from the proof of
+Theorem III-4). Stage One and Phase II–III results are unchanged (all tests pass). Their exponents were about 5000× above the old tolerance.
+**Type:** numerical, resolved.

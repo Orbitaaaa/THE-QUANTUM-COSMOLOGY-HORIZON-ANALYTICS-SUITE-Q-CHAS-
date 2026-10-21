@@ -13,6 +13,10 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
 * **[PHASE_II_VERIFICATION.md](PHASE_II_VERIFICATION.md)**: independent verification (40-digit re-implementation, positivity
   lemma, NG4 critical-limit theorem, SdS Smarr identity, the Euclidean winding question).
+* **[PHASE_V_QUANTUM_SYSTEM.md](PHASE_V_QUANTUM_SYSTEM.md)**: the reduced quantum system: two inequivalent channel ends (the daughter
+  needs its own clock), sectors, information, topology (preserved; a throat is created), semiclassical validity.
+* **[PHASE_VI_OBSERVABILITY.md](PHASE_VI_OBSERVABILITY.md)**: individually inaccessible; laboratory "no free lunch"; characteristic
+  daughter-hosting black-hole mass $M_*\approx5.6\,{\rm g}\,(10^{16}{\rm GeV}/E_{\rm vac})^2$ mapped onto PBH windows.
 * **[PHASE_IV_FIELD_DYNAMICS.md](PHASE_IV_FIELD_DYNAMICS.md)**: Einstein–scalar evolution of laboratory bubbles (collapse to black holes,
   no anti-trapping: Prop. IV-1) and of both inflating daughter branches, with thin-to-thick and stability studies.
 * **[PHASE_III_QUANTUM_TRANSITION.md](PHASE_III_QUANTUM_TRANSITION.md)**: the quantum transition. Why the FGG slicing construction
@@ -61,11 +65,22 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 5. **Single-flip transitions:** two consistent answers remain, $B_{\rm an}$ if the wall's exterior orientation is superselected and
    $B_{\rm sq}=\frac2G\int R\arccos|C|\,dR<B_{\rm an}$ if not. The universal Stokes multiplier is $\sqrt2$.
 
+## Phases IV–VI in brief
+
+* **IV (fields).** The full Einstein–scalar evolution reproduces the thin-wall picture. Laboratory bubbles collapse to black holes and never
+  develop an anti-trapped region (Prop. IV-1, valid for any NEC matter). Both inflating daughter branches exist as field-theory solutions,
+  but only from data that already lie beyond a bridge, in a white hole, or beyond a cosmological horizon.
+* **V (quantum system).** The reduced quantum theory is a scattering problem. The parent channel ends at $t=\infty$; the daughter channel at
+  finite $t$, where it needs its own clock. The daughter is invisible to every exterior observable. The transition preserves spatial topology
+  and creates a throat.
+* **VI (observability).** Individually undetectable. Laboratory creation: best conceivable case $P\le10^{-46}$, at the edge of validity near the
+  Planck scale. The only unsuppressed route is cosmological, with a characteristic black-hole mass $M_*\approx5.6\,{\rm g}\,(10^{16}\,{\rm GeV}/E_{\rm vac})^2$.
+
 ## Code, data, figures
 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
-                     doublenull, stability
+                     doublenull, stability, quantum_system, observability
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -76,8 +91,8 @@ Reproduce (Python ≥ 3.10):
 
 ```bash
 pip install -r genesis/CODE/requirements.txt
-cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-III)
-cd .. && python -m pytest tests -q                # 99 tests
+cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI)
+cd .. && python -m pytest tests -q                # 106 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

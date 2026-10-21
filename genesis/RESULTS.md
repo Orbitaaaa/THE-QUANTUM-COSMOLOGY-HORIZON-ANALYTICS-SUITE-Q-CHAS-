@@ -27,7 +27,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R8 | **NG4**: regime-B transitions are also non-manifold (horizon-angle overshoot $\lvert\theta_D\rvert>\pi$) | Proposition-N | NO_GO_THEOREMS.md §3 |
 | R9 | **Interior counter-example**: $\varepsilon_{\rm in}$ flips do not obstruct embedding; the obstruction needs a flip while the wall recedes from a Euclidean horizon | Proposition-N | NO_GO_THEOREMS.md §3 |
 | R10 | **T5**: over laboratory transitions, $B\ge0.56\,B(0)$ for all γ, and $B\ge B(0)=B_{\rm CdL}$ for γ ≳ 0.2. Creating a daughter from laboratory data is not exponentially easier than vacuum decay | Proposition-N | TUNNELLING.md §4 |
-| R11 | **Physical scale of the exponent**: $B(M\to0)$ follows the flat CdL scaling $\sigma^4/\rho^3$ at small κ/χ, not $(M_{\rm Pl}/H)^2$, but $B$ rises steeply with $M$. GUT example (σ^{1/3} = ρ^{1/4} = 10^{16} GeV): $B=133$ only for picogram masses, $B\sim10^5$–$10^7$ for milligram–gram masses | computation | TUNNELLING.md §4 T6 |
+| R11 | **Physical scale of the exponent**: $B(M\to0)$ follows the flat CdL scaling $\sigma^4/\rho^3$ at small κ/χ, not $(M_{\rm Pl}/H)^2$, but $B$ rises steeply with $M$. GUT example (σ^{1/3} = ρ^{1/4} = 10^{16} GeV): $B=133$ only for nanogram (sub-Planckian) masses, whose black holes are not semiclassical (Phase V); $B\gtrsim7\times10^4$ for $M\gtrsim10\,m_{\rm Pl}$, $B\sim10^5$–$10^7$ for milligram–gram masses | computation | TUNNELLING.md §4 T6 |
 | R12 | **Unification**: the classical (FG), initial-data (NG2) and Euclidean (NG3) obstructions all stem from creating a marginally trapped surface (the bridge) in an asymptotically flat exterior | Theorem (each part) + Conjecture NG5 (general matter) | NO_GO_THEOREMS.md §4 |
 | R13 | **Sector structure**: the four orientation sectors are sheets of one squared constraint, which communicate only under the barrier; the Hamiltonian generates imaginary shifts of the wall area by $8\pi\ell_P^2$ | derivation | QUANTIZATION.md §2–3 |
 
@@ -63,6 +63,24 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R29 | **Daughters exist as field-theory solutions**: the bounce branch ($\varepsilon_{\rm out}=-1$ throughout) from regular-centre data with a reversed-normal exterior, and the white-hole branch (regime C). Both inflate and converge to the thin-wall trajectories ($\dot R$ within 0.14–0.4%) | numerics |
 | R30 | Thin-wall predictions accurate to about 1% for $w/R\lesssim0.05$; at $w/R=0.4$, $r_{AH}=0.79\cdot2GM$, but collapse with no anti-trapping persists | numerics |
 | R31 | Aspherical growth before horizon formation is at most about 2 ($\ell=2$), in the probe Jacobi analysis (zero modes reproduced to $5\times10^{-6}$) | estimate (probe) |
+
+## Phase V results (PHASE_V_QUANTUM_SYSTEM.md)
+
+| # | result | label |
+|---|---|---|
+| R32 | **Theorem V-1**: the reduced theory with the asymptotic clock is a scattering problem. The parent channel ends at the black-hole horizon at $t_\infty=\infty$ ($t\simeq-2GM\ln(R-2GM)$, verified to $2\times10^{-4}$); the daughter channel ends at the interior de Sitter horizon at **finite** $t_\infty$ with $P\to-\infty$, an edge of the reduced phase space needing a boundary condition. The daughter needs its own clock | Theorem (WKB-level for self-adjointness) + numerics |
+| R33 | **Theorem V-2**: the daughter is not superselected in the reduced theory, but it is invisible to every exterior observable (functions of $\hat H$) | Theorem |
+| R34 | **Prop. V-3**: the transition preserves spatial topology ($\mathbb R^3\to\mathbb R^3$) and creates an Einstein–Rosen throat. Pinch-off needs a singularity (Geroch/Tipler) | Proposition |
+| R35 | Semiclassical validity: WKB parameter $10^{-11}$ (GUT), $10^{-2}$ ($10^{18}$ GeV). Correction: Stage One's $B=133$ samples are sub-Planckian black holes. Total daughter probability, even with repeated attempts until evaporation, $\le10^{-184}$ | computation |
+
+## Phase VI results (PHASE_VI_OBSERVABILITY.md)
+
+| # | result | label |
+|---|---|---|
+| R36 | **Prop. VI-1**: a black hole hosting a daughter is indistinguishable from an ordinary one by any exterior measurement (spherical symmetry) | Proposition |
+| R37 | **Prop. VI-2**: laboratory daughter probability $\le e^{-0.56B_{\rm CdL}}$. It is small only where the false vacuum is not metastable ("no free lunch") | Proposition (conditional on T5) |
+| R39 | **Loophole search**: minimise $B$ over vacuum and wall scales under metastability, semiclassical black hole and WKB validity. Best laboratory case $B=107$, $P\le10^{-46.5}$ ($M=10\,m_{\rm Pl}$, $\rho^{1/4}\approx9\times10^{17}$ GeV), $10^{-656}$ for $M=100\,m_{\rm Pl}$. The optimum always sits at the edge of validity. Prop. IV-1 extends to any NEC matter | computation + Theorem |
+| R38 | $M_{\rm cr}\to1/(2GL)$ as $\kappa/\chi\to0$ (analytic + $2\times10^{-6}$). Characteristic daughter-hosting black-hole mass $M_*\approx5.6\,{\rm g}\,(10^{16}{\rm GeV}/E_{\rm vac})^2$, which maps vacuum scales to PBH windows (asteroid window: $E_{\rm vac}\approx2\times10^5$–$7\times10^7$ GeV) | Theorem (limit) + scale estimate |
 
 ## Statement for a general audience
 
