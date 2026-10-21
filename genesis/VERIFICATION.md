@@ -61,6 +61,20 @@ Verification types: **S** symbolic (sympy, exact), **A** analytic proof (by hand
 | V-E4 | interpretation | $\lvert\Delta t^W_E\rvert/\beta$ = number of thermal periods of the black hole spanned by the wall's Euclidean history. With a horizon monodromy (T0) each half-turn is a shift $i\beta/2$ of Lorentzian time. |
 | V-E5 | conclusion | **meaningful but representation-specific**: real and invariant, irrelevant to $B$, and it disappears from any formulation that does not build the exterior as a region (canonical, Smarr). |
 
+## V-Q. Quantum transition (Phase III)
+
+| id | check | method | result |
+|---|---|---|---|
+| V-Q1 | horizon monodromy | complex-contour integration with branch tracking (`contours.continue_P`), 4 models × all horizons × $n=-1,1,2$ | ratio $=n$ to $1.1\times10^{-4}$, $\Delta{\rm Re}\le4\times10^{-15}$ |
+| V-Q2 | zero-net periods | two-loop contours | $\Delta B=(A_{\rm dS}-A_{\rm BH})/4G$ to $10^{-6}$, endpoint $P$ unchanged to $10^{-15}$ |
+| V-Q3 | conventions (III-2) | analytic vs sign-free, principal vs sign-dressed constraint | $\le8\times10^{-16}$ |
+| V-Q4 | branch locus (III-4) | radicand at $R_f$; identity radicand $=\kappa^2R^2A_{\rm out}^2/f_{\rm out}$ along the barrier; sheets of $H$ at both turning points in both conventions | $\le10^{-12}$; table of III-4 holds to $10^{-15}$ |
+| V-Q5 | Lorentzian saddle | finite-difference ${\rm Im}\,T^*$ vs Euclidean pieces | $5\times10^{-6}$ |
+| V-Q6 | covariant action rule | Smarr pieces + bolt/fold terms | $\le1.2\times10^{-9}$ |
+| V-Q7 | competitor exponents | $B_{\rm princ}$, $B_{\rm sw}$ on a 9×4 grid | $B_{\rm princ}<0$ in 33/36; $0<B_{\rm sw}<B_{\rm an}$ in 24/24 single-flip models |
+
+Analytic proofs (III-1, III-2, III-4, III-5, III-6, III-7) are in PHASE_III_QUANTUM_TRANSITION.md. Tests: `tests/test_contours.py`.
+
 ## Unproven or unverified items (proof gaps)
 
 1. NG4 (regime B non-embeddability): numerical only.
@@ -70,3 +84,6 @@ Verification types: **S** symbolic (sympy, exact), **A** analytic proof (by hand
 5. SdS exterior: no explicit conformal diagrams; tunnelling formulas are coded for SdS but the Euclidean pieces
    (two horizons, conical defects) are not.
 6. All statements are leading-order WKB; prefactors are not computed.
+7. Phase III: assumptions (C2) complex angles and (C3) Lebesgue measure are motivated (covariance, analyticity from laboratory data,
+   growth bound) but not derived from a gravitational path integral. The Stokes multiplier at the coalescence point $R_q$ of the
+   squared constraint is not computed (P-Q2).

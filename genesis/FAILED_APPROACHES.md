@@ -76,3 +76,19 @@ pole the Hubble term becomes anti-friction and amplifies residual errors.
 *Fix:* start from the linearised Bessel solution at the radius where the deviation is $10^{-6}v$; cut the numerical
 solution at closest approach to the false vacuum and complete it with the exact de Sitter cap.
 **Type:** numerical, resolved.
+
+### F10. "The principal prescription is a negative-tension amplitude" (Phase III, first draft)
+*Claimed:* beyond the flip radius the principal-branch momentum satisfies $\cos(GP_E/R)=-C$. This is the "other sheet" of the
+squared constraint, which the first draft identified via Lemma J1 with the negative-tension sector. On that basis the FGG
+ambiguity was called "eliminated, not hidden".
+*Why it is wrong:* the constraint $2\sqrt{f_{\rm in}f_{\rm out}}\cosh(GP_u)=\pm(f_{\rm in}+f_{\rm out}-2\kappa^2u)$ is even in $\kappa$. Also $P$ and
+$\varepsilon_{\rm in}\varepsilon_{\rm out}$ are invariant under $\kappa\to-\kappa$ ($A_{\rm in}\to-A_{\rm out}$, $A_{\rm out}\to-A_{\rm in}$). So the sign of the right-hand side
+does not encode the tension. In fact the principal momentum satisfies the constraint with the *actual local* $\varepsilon_{\rm in}\varepsilon_{\rm out}$: it is
+the real-angle (artanh) momentum. The analytic momentum satisfies the sign-free constraint: it is the complex-angle (Sorkin)
+momentum (Theorem III-2).
+*Lesson:* the two FGG prescriptions are two conventions for the boost angle of a flipped normal. Neither is a different
+physical sector. What excludes the principal prescription is Theorem III-5 (no analytic solution across the flip) together
+with $B<0$. The ambiguity is relocated to the convention and the sector normalisation, not eliminated (PHASE_III Sec. 9).
+*Related slip, caught by the numerics:* a zero-net double winding was first assumed to need opposite orientations around the
+black-hole and de Sitter horizons. The cancelling orientation is model dependent ($\sigma_h$ in Theorem III-1).
+**Type:** interpretational error in a draft, corrected before release.

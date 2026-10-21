@@ -11,6 +11,11 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[DELIVERABLE_1_FOUNDATIONS.md](DELIVERABLE_1_FOUNDATIONS.md)**: the Stage One report (all 14 required items).
 * **[RESULTS.md](RESULTS.md)**: verified results, labelled theorem / numerical proposition / reproduction.
 * **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
+* **[PHASE_II_VERIFICATION.md](PHASE_II_VERIFICATION.md)**: independent verification (40-digit re-implementation, positivity
+  lemma, NG4 critical-limit theorem, SdS Smarr identity, the Euclidean winding question).
+* **[PHASE_III_QUANTUM_TRANSITION.md](PHASE_III_QUANTUM_TRANSITION.md)**: the quantum transition. Why the FGG slicing construction
+  fails (III-5); why every formulation hides the FGG ambiguity in one datum (III-2, III-4, III-6); the defensible construction and its
+  assumptions; the surviving competitor.
 
 ## Stage One in five lines
 
@@ -44,10 +49,19 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 | [VERIFICATION.md](VERIFICATION.md) | verification dossier and proof gaps |
 | [OPEN_PROBLEMS.md](OPEN_PROBLEMS.md) | open problems by phase |
 
+## Phase III in four lines
+
+1. The two FGG prescriptions are two conventions for the boost angle of a flipped wall normal: complex (Sorkin, $i\pi$) or real.
+2. The true Hamiltonian is two-sheeted. The tunnelling trajectory touches its branch locus exactly where the Euclidean wall
+   folds in Killing time.
+3. The FGG slicing (principal) prescription solves no analytic quantum constraint, and $B<0$ in 33/36 models.
+4. The complex-angle construction gives $e^{-B_{\rm an}/\hbar}$ under explicit assumptions. The ambiguity is relocated to the
+   normalisation of the daughter sector, not eliminated. A sector-switching exponent $B_{\rm sw}<B_{\rm an}$ remains open (ordering).
+
 ## Code, data, figures
 
 ```
-CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum
+CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -58,8 +72,8 @@ Reproduce (Python ≥ 3.10):
 
 ```bash
 pip install -r genesis/CODE/requirements.txt
-cd genesis/CODE/scripts && python run_all.py      # ~8 minutes, regenerates DATA/ and FIGURES/
-cd .. && python -m pytest tests -q                # 67 tests
+cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-III)
+cd .. && python -m pytest tests -q                # 85 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

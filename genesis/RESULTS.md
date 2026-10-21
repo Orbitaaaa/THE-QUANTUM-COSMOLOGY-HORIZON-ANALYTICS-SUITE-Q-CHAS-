@@ -19,7 +19,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 |---|---|---|---|
 | R1 | **Lemma J1**: with σ > 0, squaring the Israel condition creates no spurious branch; the only spurious solutions of the squared equation are the negative-tension ones | Theorem (elementary) | JUNCTION_CONDITIONS.md §4 |
 | R2 | **Chart-free itinerary** (Proposition G2): causal regions from (sgn f, ε, sgn Ṙ), valid for any number of horizons | Theorem + cross-validation | GLOBAL_GEOMETRY.md §3 |
-| R3 | **Branch selection T0**: the canonical WKB phase is the analytic continuation along the barrier. The FGG slicing jump is a horizon monodromy ($P\to P\pm i\pi R/G$, $t\to t\pm i\beta/2$) | Proposition (analytic argument + two numerical criteria) | TUNNELLING.md §3 |
+| R3 | **Branch selection T0**: the canonical WKB phase is the analytic continuation along the barrier. The FGG slicing jump is a horizon monodromy ($P\to P\pm i\pi R/G$, $t\to t\pm i\beta/2$). *Refined in Phase III (R19–R23): the selection holds given the complex-angle convention; the sector normalisation remains a datum* | Proposition (analytic argument + two numerical criteria) | TUNNELLING.md §3 |
 | R4 | **T1**: closed form at $M=0$, $B=S_E[\text{instanton}]+\frac1{4G}(\sum A_{\max}-\sum A_{\min})$; equals the CdL decay exponent of the false vacuum when the false vacuum is the larger cap | Theorem | TUNNELLING.md §4 |
 | R5 | **T2 first law** $d\tilde B=\frac{{\rm Vol}^{\rm in}_E}{8\pi G}d\Lambda_{\rm in}+A^W_Ed\sigma-\Delta t^W_EdM$ | Theorem | TUNNELLING.md §4 |
 | R6 | **T3 Smarr identity** $B=-\frac{\Lambda_{\rm in}}{8\pi G}{\rm Vol}^{\rm in}_E-\frac\sigma2A^W_E-\frac M2\Delta t^W_E+\frac{\mathcal A}{4G}$: a covariant expression for the FGG exponent that never uses the exterior pseudomanifold; integral representation from the $M=0$ instanton | Theorem | TUNNELLING.md §4 |
@@ -30,6 +30,27 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R11 | **Physical scale of the exponent**: $B(M\to0)$ follows the flat CdL scaling $\sigma^4/\rho^3$ at small κ/χ, not $(M_{\rm Pl}/H)^2$, but $B$ rises steeply with $M$. GUT example (σ^{1/3} = ρ^{1/4} = 10^{16} GeV): $B=133$ only for picogram masses, $B\sim10^5$–$10^7$ for milligram–gram masses | computation | TUNNELLING.md §4 T6 |
 | R12 | **Unification**: the classical (FG), initial-data (NG2) and Euclidean (NG3) obstructions all stem from creating a marginally trapped surface (the bridge) in an asymptotically flat exterior | Theorem (each part) + Conjecture NG5 (general matter) | NO_GO_THEOREMS.md §4 |
 | R13 | **Sector structure**: the four orientation sectors are sheets of one squared constraint, which communicate only under the barrier; the Hamiltonian generates imaginary shifts of the wall area by $8\pi\ell_P^2$ | derivation | QUANTIZATION.md §2–3 |
+
+## Phase II results (PHASE_II_VERIFICATION.md)
+
+| # | result | label |
+|---|---|---|
+| R14 | **Lemma P** (positivity, $0<\Theta_{\rm out}-\Theta_{\rm in}<\pi$) and the arccos formula $B=\frac2G\int R\arccos C\,dR$ | Theorem |
+| R15 | **NG4 critical limit**: $\lvert\theta_D\rvert/\pi\to F(t)=\frac{3\sqrt3(t+1)^2}{4(t+2)\sqrt{t^2+2}}>1$ as $M\to M_{\rm cr}$ | Theorem |
+| R16 | **T3′**: Smarr identity and first law for Schwarzschild–de Sitter exteriors ($\Lambda_{\rm out}$ term = excised exterior volume) | Theorem, verified to $10^{-21}$ |
+| R17 | **Exact form of the FGG difference**: $B_{\rm an}-B_{\rm princ}$ = flip-radius area terms over $4G$ | numerical identity, 10 digits |
+
+## Phase III results (PHASE_III_QUANTUM_TRANSITION.md)
+
+| # | result | label |
+|---|---|---|
+| R18 | **III-1 horizon monodromy**: contour windings change $B$ by $\sum n_h\sigma_h(A(R_2)-A_h)/4G$; zero-net windings by $\pm(A_{h_2}-A_{h_1})/4G$ | Theorem + numerics ($10^{-4}$, $10^{-6}$) |
+| R19 | **III-2 conventions**: analytic branch = complex (Sorkin) boost angles, satisfying a sign-free analytic constraint; principal branch = real angles, satisfying the sign-dressed constraint; related by a non-unitary anti-periodic intertwiner | Theorem |
+| R20 | **III-4 branch point = flip = fold**: the true Hamiltonian is two-sheeted. The barrier trajectory touches its branch locus tangentially, exactly at the exterior flip radius, where the Euclidean wall folds in Killing time. Sector-diagonal true-Hamiltonian quantizations give zero transition amplitude | Theorem + numerics ($10^{-15}$) |
+| R21 | **III-5 failure of the FGG principal construction**: the sign-dressed shift constraint has no non-zero analytic solution across a flip radius; $B_{\rm princ}<0$ in 33/36 models | Theorem + numerics |
+| R22 | **III-6 no conserved current**: Casoratians of the area-shift constraint are $i\hbar G$-periodic; symmetric measures are functions of $e^{A/4\hbar G}$; Lebesgue is unique below that growth | Lemma |
+| R23 | **Verdict**: the FGG ambiguity is hidden, never eliminated. All formulations place it in one datum (flipped-normal angle ⇔ sheet of $H$ ⇔ sector normalisation ⇔ fold action). Defensible construction under (C1)–(C4) gives $e^{-B_{\rm an}/\hbar}$. Open competitor: $B_{\rm sw}\in(0,B_{\rm an})$ in sector-blind orderings | Theorem-level classification |
+| R24 | **Covariant action rule** for the laboratory pseudomanifold (GHY at ∞, background, bolt, folds as Hayward joints of angle π) equals $B_{\rm an}$; Lorentzian complex saddle ${\rm Im}\,T^*$ | Proposition, verified to $10^{-9}$ |
 
 ## Statement for a general audience
 

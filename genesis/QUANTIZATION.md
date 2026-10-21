@@ -43,6 +43,14 @@ contains all of them. Under the barrier $\cosh\to\cos(GP_E/R)$, and the $\vareps
 analytically where $\Theta_{\rm out}-\Theta_{\rm in}$ crosses $\pi/2$. The Euclidean regime is where the sectors communicate.
 This is the starting point of the "branch-aware" quantization of NEW_APPROACHES.md (N1).
 
+**Phase III.** The sign in the boxed constraint is an artefact of the real-angle (artanh) convention. With Sorkin's complex boost
+angles ($\zeta=\log((A+\dot R)/\sqrt f)$, so $i\pi$ for a flipped normal) the constraint is sign-free and analytic on the whole static
+domain. The sectors are then distinguished by the branch of $P$, i.e. by anti-periodic factors $e^{\pm\pi u/\hbar G}$, not by the
+sign of $W$. Solving for $M$ gives a two-sheeted true Hamiltonian $H_\pm$. The laboratory sector is on $H_-$. The daughter is on $H_+$
+(complex convention) or on $H_-$ (real convention, single flip). The sheets meet on the barrier trajectory only at the exterior
+flip radius, tangentially (PHASE_III Theorems III-2, III-4). The point where "$\Theta_{\rm out}-\Theta_{\rm in}$ crosses $\pi/2$" noted above is the
+coalescence point $R_q$ of the squared constraint. It is the origin of the sector-switching exponent $B_{\rm sw}$ (PHASE_III Sec. 7).
+
 **Verification.** $dR/dt_\infty=\partial H/\partial P$ holds to $6\times10^{-10}$ in sectors $(+,+)$, $(+,-)$, $(-,-)$ at 22 phase-space
 points (`DATA/quantum_checks.json`). $H$ is inverted by a damped Newton iteration in $M$ using the exact
 derivative $\partial P/\partial M=A_{\rm out}/\dot Rf_{\rm out}$. An earlier bracket search could not stay inside a sector on

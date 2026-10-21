@@ -13,8 +13,13 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Phase III — the quantum transition
 
-* **P-Q2.** Solve the $M=0$ squared constraint exactly (momentum-representation ODE, QUANTIZATION.md Sec. 3) and
-  compare $\lvert\psi(u_0)/\psi(0)\rvert$ with $e^{-B/2\hbar}$ from T1, including orderings.
+* **P-Q2 (sharpened in Phase III).** Solve the $M=0$, $\kappa>\chi$ squared constraint exactly (momentum-representation ODE) and
+  compute the Stokes multiplier at the coalescence point $R_q$ ($C=0$) for each operator ordering. Zero multiplier gives $B_{\rm an}$;
+  a non-zero one makes $B_{\rm sw}<B_{\rm an}$ dominant (PHASE_III Sec. 7).
+* **P-Q7.** Pseudo-differential quantization of the single sheet $H_-$ (real-angle convention): is the tunnelling amplitude governed by
+  the branch locus, as with relativistic Schrödinger operators?
+* **P-Q8.** Derive the complex-angle convention (C2) and the Lebesgue measure (C3) from a covariant inner product
+  (group averaging, or the crossed-product construction).
 * **P-Q3.** Contour analysis (NEW_APPROACHES N3): show that Picard–Lefschetz contours of the fixed-energy minisuperspace path
   integral reduce to the real barrier class, or classify the Stokes phenomena that allow horizon-encircling contours.
 * **P-T3.** One-loop prefactor of $\Gamma$; probability interpretation per bounce of the bounded branch.

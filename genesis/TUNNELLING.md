@@ -83,6 +83,17 @@ The angle is defined only up to its branch. There are two candidate prescription
    gives $B>0$ in all.
 3. *$M\to0$ limit.* Only the analytic prescription tends to the action of a genuine manifold instanton (T1).
 
+**Phase III refinement of T0** (PHASE_III_QUANTUM_TRANSITION.md).
+* The analytic branch is the momentum written with Sorkin's complex boost angles: a flipped normal has angle $i\pi$ plus real.
+  The principal branch is the real-angle (artanh) momentum.
+* Analytic continuation of the *laboratory* momentum through the barrier lands on the complex-angle momentum of the daughter
+  sector. So argument 1 shows that analyticity plus laboratory initial data imply the complex convention on the daughter side.
+* What argument 1 does not fix is the normalisation of the daughter sector relative to the laboratory sector (Lemma III-6).
+  The FGG ambiguity survives there, as the anchor $u_*$ of an anti-periodic intertwiner $e^{\pm\pi(u-u_*)/\hbar G}$.
+* The principal prescription admits no analytic solution of its own quantum constraint across the flip (Theorem III-5).
+* The true Hamiltonian has a square-root branch point exactly at the flip radius, where the trajectory touches the branch
+  locus tangentially. That point is also the fold of the Euclidean wall in Killing time (Theorem III-4).
+
 **Definition.** $B\equiv2\int_{R_1}^{R_2}P_E\,dR$ (full bounce), and the transition probability per attempt
 is $\Gamma\propto e^{-B/\hbar}$. The prefactor is not computed here (OPEN_PROBLEMS.md P-T3).
 
