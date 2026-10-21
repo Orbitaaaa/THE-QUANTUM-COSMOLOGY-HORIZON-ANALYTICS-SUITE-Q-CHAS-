@@ -26,7 +26,8 @@ Results implemented and verified here (RESULTS.md):
       Bt = B_an - (endpoint area terms), dt_W = exterior Euclidean Killing time
       elapsed along the wall.
   R3  Smarr identity (Euler homogeneity + R2):
-      Bt = -(Lambda_in/8 pi G) Vol_in - (sigma/2) A_W - (M/2) dt_W.
+      Bt = -(Lambda_in/8 pi G) Vol_in - (sigma/2) A_W - (M/2) dt_W
+           + (Lambda_out/8 pi G) W_out       (W_out: exterior volume excised, eta > 0).
   R4  Embedding obstruction: if eps_out (eps_in) changes sign in the barrier,
       the exterior (interior) Euclidean region is not embedded (pseudomanifold).
 """
@@ -56,6 +57,34 @@ def euclidean_momentum(model: ThinWallModel, R, prescription="analytic"):
     R = np.asarray(R, dtype=float)
     y = np.sqrt(np.maximum(model.V(R), 0.0))
     return R / model.G * (theta(model.A_out(R), y, prescription) - theta(model.A_in(R), y, prescription))
+
+
+def B_arccos(model: ThinWallModel) -> float:
+    """Independent formula (Phase II): on the analytic branch
+    0 < Theta_out - Theta_in < pi in the barrier (cot Theta = A/sqrt V and
+    A_out < A_in), hence Theta_out - Theta_in = arccos C with
+    C = (f_in + f_out - kappa^2 R^2)/(2 sqrt(f_in f_out)), and
+    B = (2/G) int R arccos C dR.  Uses no angle or branch logic."""
+    Ra, Rb = barrier(model)
+
+    def C(R):
+        fi, fo = float(model.f_in(R)), float(model.f_out(R))
+        return (fi + fo - model.kappa**2 * R**2) / (2 * np.sqrt(fi * fo))
+
+    lo = Ra if Ra > 0 else 1e-14 * Rb
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        val = quad(lambda R: R * np.arccos(np.clip(C(R), -1.0, 1.0)), lo, Rb, limit=800,
+                   epsabs=1e-13, epsrel=1e-12)[0]
+    return 2.0 * val / model.G
+
+
+def theta_D_critical(gamma: float) -> float:
+    """|theta_D|/pi in the limit M -> M_cr (regime B, eta = 0), closed form:
+    F(t) = 3 sqrt3 (t+1)^2 / (4 (t+2) sqrt(t^2+2)),  t = z_*^3 in (1, 2].
+    F > 1 for t > 1 since 27(t+1)^4 - 16(t+2)^2(t^2+2) = (t-1)(11t^3+55t^2+121t+101)."""
+    t = 0.5 * (-gamma + np.sqrt(gamma**2 + 8))
+    return 3 * np.sqrt(3) * (t + 1) ** 2 / (4 * (t + 2) * np.sqrt(t**2 + 2))
 
 
 def barrier(model: ThinWallModel):
@@ -215,6 +244,16 @@ def euclidean_pieces(model: ThinWallModel) -> dict:
     out["S_in"] = -(model.Lambda_in / (8 * np.pi * G)) * out["Vol_in"] if out["Vol_in"] is not None else 0.0
     out["S_wall"] = -(model.sigma / 2) * out["A_W"]
     out["S_ext"] = -(model.M / 2) * out["dt_W"]
+    # exterior vacuum energy (eta > 0): 4-volume of the region r < R excised from the
+    # exterior static chart along the wall, W_out = 4 pi int (R^3/3) dt_E^out (full bounce);
+    # it enters with the opposite sign to the interior volume (Phase II extension).
+    if model.eta > 0:
+        Wh = 4 * np.pi * _quad_s(model, lambda r: r**3 / 3 * model.A_out(r) / model.f_out(r), Ra, Rb)
+        out["W_out"] = 2 * Wh
+        out["S_out_bulk"] = (model.Lambda_out / (8 * np.pi * G)) * out["W_out"]
+    else:
+        out["W_out"] = 0.0
+        out["S_out_bulk"] = 0.0
     del G
     return out
 
@@ -224,7 +263,7 @@ def smarr_check(model: ThinWallModel) -> dict:
     B = B_canonical(model, "analytic")
     Bt = B - endpoint_area_term(model)
     pcs = euclidean_pieces(model)
-    cov = pcs["S_in"] + pcs["S_wall"] + pcs["S_ext"]
+    cov = pcs["S_in"] + pcs["S_wall"] + pcs["S_ext"] + pcs["S_out_bulk"]
     return dict(B=B, B_tilde=Bt, covariant=cov, residual=Bt - cov, pieces=pcs,
                 endpoint=endpoint_area_term(model))
 
@@ -239,9 +278,14 @@ def first_law_check(model: ThinWallModel, h: float = 1e-5) -> dict:
     dc = (Bt(mk(c=c * (1 + h))) - Bt(mk(c=c * (1 - h)))) / (2 * h * c)
     dk = (Bt(mk(k=k * (1 + h))) - Bt(mk(k=k * (1 - h)))) / (2 * h * k)
     pcs = euclidean_pieces(model)
-    return dict(dBt_dM=dM, minus_dt_W=-pcs["dt_W"],
-                dBt_dLambda=dc / (6 * c), Vol_over_8piG=pcs["Vol_in"] / (8 * np.pi * G),
-                dBt_dsigma=dk * 4 * np.pi * G, A_W=pcs["A_W"])
+    out = dict(dBt_dM=dM, minus_dt_W=-pcs["dt_W"],
+               dBt_dLambda=dc / (6 * c), Vol_over_8piG=pcs["Vol_in"] / (8 * np.pi * G),
+               dBt_dsigma=dk * 4 * np.pi * G, A_W=pcs["A_W"])
+    if e > 0:
+        mke = lambda ee: ThinWallModel(c, k, M, ee, G)  # noqa: E731
+        de = (Bt(mke(e * (1 + h))) - Bt(mke(e * (1 - h)))) / (2 * h * e)
+        out.update(dBt_dLambda_out=de / (6 * e), minus_Wout_over_8piG=-pcs["W_out"] / (8 * np.pi * G))
+    return out
 
 
 # ------------------------------------------------------------- M = 0 closed form

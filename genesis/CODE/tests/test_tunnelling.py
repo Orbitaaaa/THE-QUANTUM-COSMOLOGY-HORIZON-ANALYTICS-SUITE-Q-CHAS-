@@ -91,3 +91,32 @@ def test_regime_B_non_embedded():
         assert not r["exterior_flip"]
         assert not r["exterior_embedded"]
         assert abs(r["theta_out_D"]) > np.pi
+
+
+def test_arccos_formula_and_positivity():
+    for gam, Ef in ((-0.5, 1.6), (0.6, 1.5), (0.9, 1.2)):
+        m = model_from_dimensionless(gam, Ef * (2 - 2 * gam))
+        assert abs(T.B_arccos(m) - T.B_canonical(m)) < 1e-10
+        R1, R2 = m.turning_points()
+        Rs = np.linspace(R1, R2, 501)[1:-1]
+        assert np.all(T.euclidean_momentum(m, Rs) > 0)       # Theta_out > Theta_in (A_out < A_in)
+
+
+def test_regime_B_critical_angle_closed_form():
+    for gam in (-0.8, 0.0, 0.6):
+        gmin = ThinWallModel.g_min(gam)
+        m = model_from_dimensionless(gam, gmin * (1 + 1e-6))
+        th = abs(T.euclidean_wall(m, n=300).theta_out[-1]) / np.pi
+        assert abs(th - T.theta_D_critical(gam)) < 1e-4
+        assert T.theta_D_critical(gam) > 1
+    t = np.linspace(1, 2, 1001)
+    assert np.all(27 * (t + 1) ** 4 - 16 * (t + 2) ** 2 * (t**2 + 2) >= -1e-12)
+
+
+@pytest.mark.parametrize("args", [(2.0, 1.0, 0.12, 0.3), (1.0, 1.0, 0.1, 0.4), (0.6, 1.0, 0.2, 0.2)])
+def test_smarr_and_first_law_sds(args):
+    m = ThinWallModel(*args)
+    s = T.smarr_check(m)
+    assert abs(s["residual"]) < 1e-8 * max(1.0, abs(s["B"]))
+    f = T.first_law_check(m)
+    assert abs(f["dBt_dLambda_out"] / f["minus_Wout_over_8piG"] - 1) < 1e-6
