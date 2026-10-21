@@ -1,0 +1,970 @@
+{
+ "summary": {
+  "n_branches": 42,
+  "n_inflating": 21,
+  "inflating_with_past_singular_exterior": 21,
+  "inflating_reaching_antitrapped_interior": 21,
+  "min_NEC_wall": -0.0
+ },
+ "rows": [
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.33441498742863607,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": -0.9,
+   "E": 11.399999999999999,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.8531652810602803,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       43.15570088130187
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.4421500771718971
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.9,
+   "E": 11.399999999999999,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.0637815675954634,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       14.220497353983692
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       13.970205084724372
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.9,
+   "E": 3.6060119297584965,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.475027257480036,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       27.34072053361025
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       13.970205084724372
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.9,
+   "E": 3.6060119297584965,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.9,
+   "E": 2.0472143157101956,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.9,
+   "E": 2.0472143157101956,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.31460323695859543,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": -0.6000000000000001,
+   "E": 9.600000000000001,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.565662651586955,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       30.803938488532214
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.3723369070921235
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.6000000000000001,
+   "E": 9.600000000000001,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.9632721677312533,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       11.66025071040246
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       11.484804897699236
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.6000000000000001,
+   "E": 3.0610849916414073,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.269693560241314,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       20.25851922157933
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       11.484804897699236
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.6000000000000001,
+   "E": 3.0610849916414073,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.6000000000000001,
+   "E": 1.7533019899696884,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.6000000000000001,
+   "E": 1.7533019899696884,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.2920821396030202,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": -0.30000000000000004,
+   "E": 7.800000000000001,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.280213472628693,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       20.595609582213186
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.30252373701235047
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.30000000000000004,
+   "E": 7.800000000000001,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.8565345376486924,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       9.219335572398178
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       9.10535667963749
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.30000000000000004,
+   "E": 2.507545183003299,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 1.0713162400284475,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       14.422655857895695
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       9.10535667963749
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -0.30000000000000004,
+   "E": 2.507545183003299,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.30000000000000004,
+   "E": 1.449054219603959,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -0.30000000000000004,
+   "E": 1.449054219603959,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.2656643453460243,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": -1.1102230246251565e-16,
+   "E": 6.0,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.9976606611132113,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       12.507645385015188
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.23271056693257725
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -1.1102230246251565e-16,
+   "E": 6.0,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.7409013404785971,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       6.898118093712361
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       6.832044765034784
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -1.1102230246251565e-16,
+   "E": 1.9449407874211548,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.8785539214174158,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       9.699441033286062
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       6.832044765034784
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": -1.1102230246251565e-16,
+   "E": 1.9449407874211548,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -1.1102230246251565e-16,
+   "E": 1.133928944905386,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": -1.1102230246251565e-16,
+   "E": 1.133928944905386,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.23305509565303184,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": 0.29999999999999993,
+   "E": 4.2,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.7192418302898942,
+     "eps_in": -1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "interior de Sitter equator",
+       6.76650725388571
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.16289739685280424
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.29999999999999993,
+   "E": 4.2,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.6112734783988032,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       4.695490546944876
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       4.663910464439447
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.29999999999999993,
+   "E": 1.372894832353451,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.6873288210158741,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       5.936616218401684
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       4.663910464439447
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.29999999999999993,
+   "E": 1.372894832353451,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.29999999999999993,
+   "E": 0.8074737988241409,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.29999999999999993,
+   "E": 0.8074737988241409,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.18865813557325614,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": 0.6,
+   "E": 2.4000000000000004,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.44590236706502157,
+     "eps_in": -1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "interior de Sitter equator",
+       3.141592653589793
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.09308422677303088
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.6,
+   "E": 2.4000000000000004,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.45563712332655876,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       2.6088437357981573
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       2.598826578625267
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.6,
+   "E": 0.7911232967129169,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.48645109160056005,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       2.9736388945550334
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       2.598826578625267
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.6,
+   "E": 0.7911232967129169,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.6,
+   "E": 0.4693479560555003,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.6,
+   "E": 0.4693479560555003,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.10776651039434208,
+     "eps_in": 1,
+     "eps_out": 1,
+     "extremal": [],
+     "regular_laboratory_data": true
+    }
+   ],
+   "gamma": 0.9,
+   "E": 0.5999999999999999,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.16500468821287528,
+     "eps_in": -1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "interior de Sitter equator",
+       0.6613879270715353
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.02327105669325774
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.9,
+   "E": 0.5999999999999999,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounded",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": false,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.22464900373265573,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       0.6341892233775642
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.6335833020036167
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.9,
+   "E": 0.19944449066843128,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "bounce",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": true,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [
+    {
+     "R_t": 0.22824612207705253,
+     "eps_in": 1,
+     "eps_out": -1,
+     "extremal": [
+      [
+       "max",
+       "wall",
+       0.6546613159621766
+      ],
+      [
+       "min",
+       "Einstein-Rosen bridge",
+       0.6335833020036167
+      ]
+     ],
+     "regular_laboratory_data": false
+    }
+   ],
+   "gamma": 0.9,
+   "E": 0.19944449066843128,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-expanding",
+   "interior_reaches_antitrapped": true,
+   "exterior_wall_in_antitrapped_region": true,
+   "future_inflating": true,
+   "emerges_from_singularity": true,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.9,
+   "E": 0.11933338880211757,
+   "nec_wall_min": -0.0
+  },
+  {
+   "kind": "monotonic-collapsing",
+   "interior_reaches_antitrapped": false,
+   "exterior_wall_in_antitrapped_region": false,
+   "future_inflating": false,
+   "emerges_from_singularity": false,
+   "exterior_contains_past_singularity": true,
+   "slices": [],
+   "gamma": 0.9,
+   "E": 0.11933338880211757,
+   "nec_wall_min": -0.0
+  }
+ ]
+}

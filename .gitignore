@@ -11,3 +11,5 @@ data/cache/
 web/node_modules/
 web/dist/
 .DS_Store
+# genesis scratch
+genesis/CODE/**/__pycache__/

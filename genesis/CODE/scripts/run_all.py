@@ -1,0 +1,16 @@
+"""Reproduce every data file and figure of Deliverable 1 (approx. 15-25 min)."""
+import os
+import subprocess
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SCRIPTS = ["derivation_log.py", "branch_atlas.py", "tunnelling_analysis.py", "singularity_audit.py",
+           "thickwall_study.py", "quantum_checks.py", "physical_scales.py"]
+for s in SCRIPTS:
+    t0 = time.time()
+    print(f"=== {s}", flush=True)
+    r = subprocess.run([sys.executable, os.path.join(HERE, s)], cwd=HERE)
+    if r.returncode != 0:
+        sys.exit(f"{s} failed")
+    print(f"=== {s} done in {time.time() - t0:.0f} s", flush=True)

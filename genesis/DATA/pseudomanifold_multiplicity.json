@@ -1,0 +1,70 @@
+{
+ "values": [
+  -0.0,
+  1.0,
+  2.0
+ ],
+ "counts": [
+  23526,
+  15785,
+  1090
+ ],
+ "params": {
+  "chi": 0.5773502691896257,
+  "kappa": 1.0,
+  "M": 0.2139541240254555,
+  "eta": 0.0,
+  "G": 1.0,
+  "sigma": 0.07957747154594767,
+  "rho_in": 0.039788735772973836,
+  "rho_out": 0.0,
+  "L4": 1.7777777777777777,
+  "gamma": -0.5000000000000001,
+  "beta_out": 1.0,
+  "turning_points": [
+   0.5243029464856444,
+   1.4131796446716207
+  ],
+  "horizons_out": [
+   0.427908248050911
+  ],
+  "horizon_in": 1.7320508075688774,
+  "flip_in": null,
+  "flip_out": 0.6846531968814576,
+  "E": 4.800000000000001,
+  "g_min": 2.7551046130236334,
+  "M_critical": 0.4920116397709206,
+  "z_star": 1.1902310267822966,
+  "R_unit": 0.6846531968814576
+ },
+ "report": {
+  "eps_out": [
+   1,
+   -1
+  ],
+  "eps_in": [
+   1,
+   1
+  ],
+  "exterior_flip": true,
+  "theta_out_D": -1.2745674208106617,
+  "theta_out_max": 0.5649268035662243,
+  "theta_out_min": -1.2745674208106617,
+  "exterior_multiplicity_range": [
+   0.0,
+   2.0
+  ],
+  "exterior_embedded": false,
+  "interior_flip": false,
+  "theta_in_D": 1.382612207336128,
+  "theta_in_max": 1.382612207336128,
+  "theta_in_min": 0.0,
+  "interior_multiplicity_range": [
+   0.0,
+   1.0
+  ],
+  "interior_embedded": true,
+  "theta_D": -1.2745674208106617,
+  "theta_max": 0.5649268035662243
+ }
+}
