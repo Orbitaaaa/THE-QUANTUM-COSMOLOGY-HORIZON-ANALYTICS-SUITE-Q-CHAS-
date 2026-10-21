@@ -31,9 +31,10 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 ## Phase IV — fields instead of walls
 
 * **P-T2.** Thick-wall versions of T2/T3 and of NG3 (Euclidean scalar-field FGG solutions).
-* **P-D1.** Full Lorentzian Einstein–scalar evolution in spherical symmetry (double-null code) of a laboratory false-vacuum
-  bubble: collapse, the A/B boundary, and backreaction. Test bag-of-gold initial data evolution.
-* **P-D2.** Aspherical stability of the bounded branch (Aguirre–Johnson) and of the bounce.
+* ~~P-D1~~ **done** (PHASE_IV): spherical Einstein–scalar evolution of laboratory bubbles and of both daughter branches; Prop. IV-1.
+* **P-D2 (partly done).** Aspherical stability. Probe-wall amplification to $2GM$ is at most about 2. Open: self-gravitating aspherical perturbations
+  of the bounded branch and of the inflating bounce branch; a 3+1 evolution.
+* **P-D3.** Evolve the white-hole branch into its past (the past singularity required by Cor. IV-2); scan the potential family.
 
 ## Phase V — the full quantum system
 

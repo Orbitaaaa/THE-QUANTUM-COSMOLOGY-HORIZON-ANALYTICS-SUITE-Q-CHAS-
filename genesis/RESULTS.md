@@ -53,6 +53,17 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R25 | **Lemma III-9 + Prop. III-8 (sector-blind quantization)**: $N=f_{\rm in}+f_{\rm out}-\kappa^2R^2$ is strictly concave, so $C=0$ occurs on the barrier iff the transition is single-flip. Every ordering of the squared constraint has Weber index $\nu=-\tfrac12$ there (Stokes multiplier $\sqrt2$), so its exponent is $B_{\rm sq}=\frac2G\int R\arccos\lvert C\rvert dR$. Hence **double flip: all consistent quantizations give $B_{\rm an}$ (ambiguity eliminated); single flip: $B_{\rm an}$ (orientation superselected) vs $B_{\rm sq}<B_{\rm an}$ (not)** | Theorem (lemma) + leading-order proposition + numerics ($10^{-15}$) |
 | R24 | **Covariant action rule** for the laboratory pseudomanifold (GHY at ∞, background, bolt, folds as Hayward joints of angle π) equals $B_{\rm an}$; Lorentzian complex saddle ${\rm Im}\,T^*$ | Proposition, verified to $10^{-9}$ |
 
+## Phase IV results (PHASE_IV_FIELD_DYNAMICS.md)
+
+| # | result | label |
+|---|---|---|
+| R26 | Double-null Einstein–scalar code with a regular centre and singularity excision; exact in flat space, second order, validated against exact de Sitter and critical collapse | verified code |
+| R27 | **Laboratory bubbles collapse to black holes** and converge to the Israel thin-wall dynamics as $w\to0$ ($R_{\max}\to R_1$, $r_{AH}\to2GM$, $A_{\rm in}-A_{\rm out}\to\kappa R$) | numerics |
+| R28 | **Prop. IV-1**: in spherical symmetry with NEC matter, $r_u/\alpha^2$ is non-increasing along ingoing rays, so laboratory data can never produce an anti-trapped (inflating) region. Confirmed: 0 anti-trapped points in 10/10 laboratory runs. **Cor. IV-2**: every anti-trapped point lies to the future of initial data with $r_u>0$ (beyond a bridge, a white hole, or beyond a cosmological horizon) | Theorem + numerics |
+| R29 | **Daughters exist as field-theory solutions**: the bounce branch ($\varepsilon_{\rm out}=-1$ throughout) from regular-centre data with a reversed-normal exterior, and the white-hole branch (regime C). Both inflate and converge to the thin-wall trajectories ($\dot R$ within 0.14–0.4%) | numerics |
+| R30 | Thin-wall predictions accurate to about 1% for $w/R\lesssim0.05$; at $w/R=0.4$, $r_{AH}=0.79\cdot2GM$, but collapse with no anti-trapping persists | numerics |
+| R31 | Aspherical growth before horizon formation is at most about 2 ($\ell=2$), in the probe Jacobi analysis (zero modes reproduced to $5\times10^{-6}$) | estimate (probe) |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

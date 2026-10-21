@@ -13,6 +13,8 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
 * **[PHASE_II_VERIFICATION.md](PHASE_II_VERIFICATION.md)**: independent verification (40-digit re-implementation, positivity
   lemma, NG4 critical-limit theorem, SdS Smarr identity, the Euclidean winding question).
+* **[PHASE_IV_FIELD_DYNAMICS.md](PHASE_IV_FIELD_DYNAMICS.md)**: Einstein–scalar evolution of laboratory bubbles (collapse to black holes,
+  no anti-trapping: Prop. IV-1) and of both inflating daughter branches, with thin-to-thick and stability studies.
 * **[PHASE_III_QUANTUM_TRANSITION.md](PHASE_III_QUANTUM_TRANSITION.md)**: the quantum transition. Why the FGG slicing construction
   fails (III-5); why every formulation hides the FGG ambiguity in one datum (III-2, III-4, III-6); the defensible construction and its
   assumptions; the surviving competitor.
@@ -62,7 +64,8 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 ## Code, data, figures
 
 ```
-CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours
+CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
+                     doublenull, stability
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -74,7 +77,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-III)
-cd .. && python -m pytest tests -q                # 91 tests
+cd .. && python -m pytest tests -q                # 99 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

@@ -23,3 +23,22 @@ Dependencies: numpy, scipy, sympy, mpmath, matplotlib (`CODE/requirements.txt`).
 
 Reproduction: `cd genesis/CODE/scripts && python run_all.py` (about 8 min on one core), then
 `cd .. && python -m pytest tests -q`.
+
+
+## Double-null Einstein–scalar evolution (Phase IV)
+
+`doublenull.py` provides the following:
+* a second-order diamond scheme with a three-pass predictor–corrector;
+* the scalar evolved as $\psi=r\phi$;
+* regular-centre conditions ($r=\psi=0$, $\alpha=2r_v$) and the regular limit of $r_ur_v+\alpha^2/4$ near the centre;
+* excision of the singularity (small $r$ in a trapped region, or Raychaudhuri violation along a trapped ray) and of points beyond the future infinity of
+  inflating regions.
+
+There are two characteristic problems: a regular centre (light-cone data in gauge $r=v/2$ or $\alpha=1$), and two null rays.
+Per-ray diagnostics record the following:
+* the wall ($\phi=0$) and the Misner–Sharp mass and $r_u,r_v,\alpha$ just inside and outside it;
+* counts of trapped and anti-trapped points;
+* the outermost apparent horizon and the Bondi-type mass at $v_{\max}$.
+
+Wall diagnostics normalise the normal vector with the *local* lapse; using the lapse at the wall centre halved the measured Israel jump.
+JIT-compiled with numba, with a pure-Python fallback. Accuracy and validation: PHASE_IV_FIELD_DYNAMICS.md Sec. 2.

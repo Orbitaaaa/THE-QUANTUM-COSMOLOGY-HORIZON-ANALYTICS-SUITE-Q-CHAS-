@@ -77,11 +77,25 @@ Verification types: **S** symbolic (sympy, exact), **A** analytic proof (by hand
 
 Analytic proofs (III-1, III-2, III-4, III-5, III-6, III-7) are in PHASE_III_QUANTUM_TRANSITION.md. Tests: `tests/test_contours.py`.
 
+## V-D. Field dynamics (Phase IV)
+
+| id | check | result |
+|---|---|---|
+| V-D1 | symbolic derivation of the double-null equations (sympy) | 5/5 confirmed |
+| V-D2 | flat-space pulse vs exact $r\phi=F(v)-F(u)$ | $1.9\times10^{-14}$ |
+| V-D3 | exact de Sitter | $r$: about second order; $\ln\alpha$: second order away from the centre, first order at it |
+| V-D4 | self-convergence (self-gravitating pulse) | ratios 3.1–4.5 |
+| V-D5 | critical collapse bracket, black-hole mass from $r_{AH}$ | $A\in(0.04,0.05)$; $r_{AH}=1.98M$ |
+| V-D6 | thin-wall limit of the parent ($R_{\max}$, $r_{AH}$, Israel, $R(\tau)$) | converges as $w\to0$ (Sec. 3 table) |
+| V-D7 | thin-wall limit of the daughters ($\dot R(R)$, Israel, signs) | converges as $w\to0$ (Sec. 4) |
+| V-D8 | Prop. IV-1 against numerics | 0 anti-trapped points in all laboratory runs (after fix F12) |
+| V-D9 | probe Jacobi zero modes | $5\times10^{-6}$ |
+
 ## Unproven or unverified items (proof gaps)
 
 1. NG4 (regime B non-embeddability): numerical only.
 2. T5 (laboratory bound): numerical only, over the scanned range.
-3. Thick-wall analogues of T2, T3, NG3: open.
+3. Thick-wall analogues of T2, T3, NG3: open (the Lorentzian thick-wall dynamics is done in Phase IV).
 4. Agreement of our analytic-branch exponent with FMP/FGG numbers: unverified (full texts inaccessible).
 5. SdS exterior: no explicit conformal diagrams; tunnelling formulas are coded for SdS but the Euclidean pieces
    (two horizons, conical defects) are not.

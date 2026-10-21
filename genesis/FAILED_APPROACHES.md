@@ -92,3 +92,21 @@ with $B<0$. The ambiguity is relocated to the convention and the sector normalis
 *Related slip, caught by the numerics:* a zero-net double winding was first assumed to need opposite orientations around the
 black-hole and de Sitter horizons. The cancelling orientation is model dependent ($\sigma_h$ in Theorem III-1).
 **Type:** interpretational error in a draft, corrected before release.
+
+### F11. Evolving phi and ln alpha with their raw equations at the centre (Phase IV)
+*Tried:* the diamond scheme for $\phi_{uv}=-(r_u\phi_v+r_v\phi_u)/r-\tfrac{\alpha^2}4U'$ and $(\ln\alpha)_{uv}=(r_ur_v+\alpha^2/4)/r^2-4\pi G\phi_u\phi_v$, with a
+reflection-symmetric extrapolation to the centre.
+*Failure:* (i) the $1/r^2$ term magnifies the even-parity truncation error of $\alpha$ by about $2/n^2$ per step at $n$ points from the centre.
+The run blew up within three rays ($\ln\alpha$ error 360 against exact de Sitter). (ii) Even with $\alpha$ regularised, a massless pulse blew up
+to $|\phi|\sim10^4$ through the $1/r$ term of the wave equation.
+*Fix:* evolve $\psi=r\phi$ ($\psi_{uv}=\phi r_{uv}-\tfrac{\alpha^2}4rU'$, $\psi=0$ at the centre, exact in flat space); impose regularity $\alpha=2r_v$ at the
+centre; replace $r_ur_v+\alpha^2/4$ by its regular limit $(\alpha^2/4)(8\pi G/3)\rho r^2$ within two points of the centre.
+**Type:** numerical, resolved.
+
+### F12. Excision by small r only (Phase IV)
+*Tried:* excising points only when $r<2h$ in a trapped region.
+*Failure:* at under-resolved settings ($h=w/16$, $w=0.005$) one ray next to the singularity jumped to $r=559$, $\phi=-14v$ instead of $r\to0$.
+That produced 171 spurious "anti-trapped" points in a laboratory bubble, contradicting Proposition IV-1.
+*Fix:* also excise where $r$ would increase along an already trapped outgoing ray (forbidden by Raychaudhuri under the NEC). The
+spurious points disappear. At $h\le w/24$ they never occurred.
+*Lesson:* Proposition IV-1 doubles as a numerical diagnostic. **Type:** numerical, resolved.
