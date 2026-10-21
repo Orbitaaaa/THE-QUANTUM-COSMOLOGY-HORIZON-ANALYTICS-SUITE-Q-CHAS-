@@ -5,22 +5,28 @@ theorem identifying why a proposed construction fails.* Status: **both, in the r
 
 * We prove precisely **why the FGG "slicing" (principal-branch) construction fails** (Theorem III-5). It is not the WKB
   limit of any solution of its own quantum constraint. It is also negative, i.e. "probability" > 1, in 33 of 36 models.
-* We prove that **no formulation removes the FGG ambiguity; every formulation hides it in one and the same datum**
+* We prove that **no single formulation removes the FGG ambiguity by itself; every formulation hides it in one and the same datum**
   (Theorems III-2, III-4, Lemma III-6). That datum is the convention for the boost angle of a flipped normal, which is
   equivalent to choosing which sheet of the two-valued true Hamiltonian carries the daughter. It is also equivalent to
   how the Hilbert spaces of the two sectors are identified.
 * We give a **defensible construction**: complex (Sorkin) angles, one analytic quantum constraint, Lebesgue measure and
   the real-barrier contour class. Its assumptions are explicit (C1–C4) and its exponent is $B_{\rm an}$. Canonical,
   covariant-Euclidean and Lorentzian complex-saddle formulations agree on it.
-* We identify the one competitor not excluded: sector switching in the squared constraint, with exponent
-  $0<B_{\rm sw}<B_{\rm an}$ (Sec. 7). It is decided by operator ordering, which is the sharpened open problem P-Q2.
+* We construct the **sector-blind alternative** and settle it at leading order (Sec. 7). Quantizing the squared constraint, in
+  any ordering, gives a universal Stokes multiplier $\sqrt2$ at the point where $C=0$ (Weber index $\nu=-\tfrac12$). Its exponent is
+  $B_{\rm sq}=\frac2G\int R\arccos|C|\,dR$.
+* **Classification.** The barrier contains a point with $C=0$ if and only if the transition is in the single-flip class
+  (Lemma III-9, by concavity). So **in the double-flip class every consistent quantization gives $B_{\rm an}$.** The FGG ambiguity is
+  fully resolved there. In the single-flip class exactly two consistent answers remain, $B_{\rm an}$ (sector-resolved) and
+  $B_{\rm sq}<B_{\rm an}$ (sector-blind). They are separated by one physical question: **is the exterior orientation of the wall (the
+  sign of its exterior extrinsic curvature) a superselected quantum number?**
 
 The first draft of this report (earlier in this session) said the principal prescription was a "negative-tension
 amplitude" and that the ambiguity was "eliminated, not hidden". **Both statements were wrong** and are corrected here.
 FAILED_APPROACHES.md F10 records the error.
 
 Code: `CODE/babyuniverse/contours.py`; script `CODE/scripts/phase3_analysis.py`; data
-`DATA/phase3_quantum_transition.json`; figure `FIGURES/phase3_monodromy.png`; tests `CODE/tests/test_contours.py` (13).
+`DATA/phase3_quantum_transition.json`; figure `FIGURES/phase3_monodromy.png`; tests `CODE/tests/test_contours.py` (19).
 
 ---
 
@@ -182,30 +188,65 @@ whose flux is conserved. Relating the two needs an intertwiner $e^{\pm\pi(u-u_*)
 constant $u_*$. Anchoring at the daughter's turning point ($u_*=u_2$) gives $B_{\rm an}$. Anchoring at the flip ($u_*=u_f$)
 reproduces the principal value $B_{\rm an}-(A_2-A_f)/4G$. **This anchor is the FGG ambiguity in its canonical form.**
 
-## 7. Sector switching in the squared constraint (the competitor that survives)
+## 7. The sector-blind quantization: universal Stokes multiplier and the classification
 
-A sector-blind quantization uses the squared constraint $\cosh^2(GP_u)=C^2$, with shifts $\pm2ih$. It has both families
-$\cos\theta=\pm C$. Its symbol degenerates where $C=0$ ($\theta=\pi/2$), and there the branches $\theta$ and $\pi-\theta$ coalesce. In the
-single-flip class the analytic $\theta$ runs from $0$ to $\pi$ and crosses $\pi/2$ at a point $R_q$, which is a genuine turning point
-of the squared operator. A continuous connection then exists that follows $\theta$ up to $R_q$ and $\pi-\theta$ beyond it. It matches
-the real-angle momentum at both ends, with
-$$B_{\rm sw}=\frac2G\Big[\int_{R_1}^{R_q}R\,\theta\,dR+\int_{R_q}^{R_2}R\,(\pi-\theta)\,dR\Big],\qquad 0<B_{\rm sw}<B_{\rm an}\ \text{(all 24 single-flip models)}.$$
-Beyond $R_q$ the branch $\pi-\theta$ decays more slowly than $\theta$. Any non-zero Stokes multiplier at $R_q$ therefore makes $B_{\rm sw}$
-the dominant exponent.
+A **sector-blind** quantization quantizes the squared constraint
+$$\sigma_0(u,P_u)=g(u)\big[\cosh^2(GP_u)-C(u)^2\big],\qquad g=4f_{\rm in}f_{\rm out},$$
+which contains both families $\cos\theta=\pm C$ and only the shifts $\pm2i\hbar G$. It is invariant under the intertwiner
+$e^{\pi u/\hbar G}$ of Theorem III-2(c), so it does not distinguish orientation sectors. Dirac (Wheeler–DeWitt) quantization of the full
+bulk-plus-shell system plausibly leads here: the bulk Hamiltonian constraint is quadratic in the gravitational momenta, and the sign of
+the extrinsic curvature $K_{\theta\theta}=A/R$ is exactly the sign that squaring removes. This motivation is **heuristic**.
 
-> **Lemma III-7 (factorisation).** With $Q_\pm=T\mp W_+$, the ordering $Q_-Q_+$ contains $\ker Q_+$, and analytic continuation of an exact
-> $\ker Q_+$ solution stays in $\ker Q_+$ (identity theorem). So in that ordering the laboratory solution can be taken in $\ker Q_+$ and does
-> **not** switch: the exponent is $B_{\rm an}$. In other orderings ($T^2-W_+^2$ plus symmetrisations) the multiplier at $R_q$ comes from
-> $O(\hbar)$ commutator terms and is not computed here.
+Its symbol has a **double point** wherever $C=0$, at $(u_q,\,P_q=i\pi/2G)$. There the branches $\theta$ and $\pi-\theta$ coalesce.
 
-| γ | E/E_AB | class | $B_{\rm an}$ | $B_{\rm princ}$ | $B_{\rm sw}$ | $A_2/4G$ |
+> **Lemma III-9 (where coalescence happens).** $N(R)\equiv f_{\rm in}+f_{\rm out}-\kappa^2R^2=2-(\chi^2+\eta^2+\kappa^2)R^2-2GM/R$ is strictly concave on
+> $R>0$, and $C=N/2\sqrt{f_{\rm in}f_{\rm out}}$. On the barrier $C(R_1)=+1$ and $C(R_2)=\varepsilon_{\rm in}\varepsilon_{\rm out}(R_2)$. Hence:
+> **double flip** ⇒ $C>0$ on the whole barrier (no coalescence point; $\theta<\pi/2$ throughout);
+> **single flip** ⇒ exactly one coalescence point $R_q$, where $C$ changes sign with slope $c=C'(u_q)<0$.
+>
+> *Proof.* $N''=-2(\chi^2+\eta^2+\kappa^2)-4GM/R^3<0$. The set $\{N>0\}$ is an interval containing $R_1$; it contains $R_2$ iff $C(R_2)>0$. $\square$
+
+Numerically: in all 12 double-flip grid models $\theta_{\max}\le0.30\pi$, and in all 24 single-flip models there is exactly one crossing.
+
+> **Proposition III-8 (Weber index at the coalescence point; leading order).** Let $L$ be a quantization with Weyl symbol
+> $\sigma_0+\hbar\sigma_1+O(\hbar^2)$. Conjugate by $e^{-\pi u/2\hbar G}$, which shifts $P_u$ by $P_q$, and put $x=u-u_q$, $p=P_u-P_q$. Then near the
+> double point $\sigma_0=-g_q\,(G^2p^2+c^2x^2)+O(3)$, and $L\psi=0$ reduces to the Weber equation
+> $-(\hbar G)^2\psi''+c^2x^2\psi=E\psi$ with $E=\hbar\sigma_1(u_q,P_q)/g_q$, i.e.
+> $$\nu=-\tfrac12+\frac{\sigma_1(u_q,P_q)}{2G|c|\,g_q}.$$
+> Locally the analytic branch $\theta$ is the Gaussian $e^{-|c|x^2/2\hbar G}$, recessive on the left. The solution carrying the laboratory
+> state is therefore $D_\nu(-z)$, $z=x\sqrt{2|c|/\hbar G}$. To the right it contains the branch $\pi-\theta$ ($e^{+|c|x^2/2\hbar G}$) with
+> multiplier
+> $$s=\frac{\sqrt{2\pi}}{\Gamma(-\nu)}\,e^{i\pi\nu},$$
+> which vanishes iff $\nu\in\{0,1,2,\dots\}$.
+> (a) **Every ordering of the squared constraint** has $\nu=-\tfrac12$ and $|s|=\sqrt2$. "Ordering" means any operator obtained by ordering
+> the factors $a(u)$ and $\cosh^2(G\hat P_u)$ of $\sigma_0$, including division by $g$ and symmetrisations. Each such reordering, and the
+> standard-to-Weyl correction, contributes to $\sigma_1$ a multiple of $a'(u)\,\partial_P\cosh^2(GP)=G\,a'(u)\sinh(2GP)$, and
+> $\sinh(2GP_q)=\sinh(i\pi)=0$.
+> (b) The **sector-resolving** product $Q_-Q_+$, with $Q_\pm=T/2\mp C$, has $\sigma_1(u_q,P_q)=-cG\,g_q$ (from
+> $[T,u]=-2i\hbar G\sinh GP_u$ and $\sinh GP_q=i$). Since $c<0$, $\nu=0$: **no switching**, consistent with $\ker Q_+\subset\ker Q_-Q_+$ (identity
+> theorem). The other product $Q_+Q_-$ has $\nu=-1$ and $|s|=\sqrt{2\pi}$.
+>
+> *Status.* (a) and (b) are exact statements about the $O(\hbar)$ symbol. The reduction to the Weber equation is the standard normal form
+> at a non-degenerate double point. Cubic and higher terms change the multiplier only at relative order $\hbar^{1/2}$ and higher. The
+> connection coefficient $\sqrt{2\pi}/\Gamma(-\nu)$ is checked against mpmath's parabolic-cylinder function to $4\times10^{-4}$
+> ($z=30$, finite-$z$ correction) for $\nu=-1,-\tfrac12,-\tfrac14,0,1$ (`contours.weber_multiplier`).
+
+**Corollary (sector-blind exponent).** Beyond $R_q$ the branch $\pi-\theta$ decays more slowly than $\theta$. With $|s|=\sqrt2\ne0$ it dominates,
+and the transmitted amplitude follows $\min(\theta,\pi-\theta)=\arccos|C|$:
+$$B_{\rm sq}=\frac2G\int_{R_1}^{R_2}R\,\arccos|C|\,dR\ \le\ B_{\rm an}=\frac2G\int_{R_1}^{R_2}R\,\arccos C\,dR,$$
+with probability prefactor enhanced by $|s|^2=2$. Equality holds iff there is no coalescence point, i.e. exactly in the double-flip class
+(Lemma III-9). In the single-flip class $B_{\rm sq}=B_{\rm sw}$, where $B_{\rm sw}$ follows $\theta$ to $R_q$ and $\pi-\theta$ beyond. Its endpoint momentum is the
+real-angle one. Numerically, $|B_{\rm sq}-B_{\rm sw}|/B_{\rm sw}\le5\times10^{-15}$ (single flip), $|B_{\rm sq}-B_{\rm an}|/B_{\rm an}\le4\times10^{-15}$ (double flip), and
+$0<B_{\rm sq}<B_{\rm an}$ in all 24 single-flip models.
+
+| γ | E/E_AB | class | $B_{\rm an}$ | $B_{\rm princ}$ | $B_{\rm sq}$ | $A_2/4G$ |
 |---|---|---|---|---|---|---|
 | −0.90 | 1.5 | single | 4.6467 | −2.9917 | 2.8602 | 9.6281 |
 | −0.45 | 1.5 | single | 2.4034 | −1.8803 | 1.6891 | 5.8021 |
 | 0.00 | 1.5 | single | 0.9357 | −1.0324 | 0.8032 | 3.0153 |
 | 0.00 | 8.0 | single | 0.8128 | −2.1317 | 0.8083 | 3.1408 |
-| 0.45 | 1.5 | double | 0.1828 | −0.2221 | — | 1.1749 |
-| 0.68 | 8.0 | double | 0.0206 | +0.0015 | — | 0.3659 |
+| 0.45 | 1.5 | double | 0.1828 | −0.2221 | 0.1828 | 1.1749 |
+| 0.68 | 8.0 | double | 0.0206 | +0.0015 | 0.0206 | 0.3659 |
 
 (units $G=\kappa=1$; full grid in the data file.)
 
@@ -227,7 +268,8 @@ ${\rm Im}\,T^*=\tfrac12(-\Delta t^W_E+\partial_M\mathcal A/4G)$, verified to $5\
 
 ## 9. Verdict: does any resolution eliminate the FGG ambiguity, or merely hide it?
 
-**It is hidden, never eliminated. All formulations hide it in the same place, and that place is now explicit:**
+**No formulation eliminates it by its own rules. All formulations hide it in the same place, and that place is now explicit.**
+The classification below then shows that this datum matters only in the single-flip class.
 
 | formulation | where the FGG datum sits |
 |---|---|
@@ -235,12 +277,20 @@ ${\rm Im}\,T^*=\tfrac12(-\Delta t^W_E+\partial_M\mathcal A/4G)$, verified to $5\
 | canonical, shift constraint | which analytic constraint ($W_+$ vs sign-dressed); the intertwiner anchor $u_*$ (III-2, III-6) |
 | covariant Euclidean | the action assigned to folds of the pseudomanifold (joint angle $\pi$ or $0$) (III-3) |
 | Lorentzian | the boost angle of a flipped normal ($i\pi$ or $0$), i.e. Sorkin's convention (III-2) |
-| sector-blind | operator ordering of the squared constraint (Sec. 7) |
+| sector-blind vs sector-resolved | whether the constraint distinguishes orientation sectors; not the ordering within the squared form (Prop. III-8) |
 
 **Failure theorem.** The principal (FGG slicing) prescription solves no analytic quantum constraint (III-5). It is a splice at a
 regular point and gives $e^{-B}>1$ in most of parameter space.
 
-**Defensible construction (adopted).**
+**Classification theorem (leading order, given C1, C3, C4).** Two consistent quantizations are constructed.
+* **Double-flip class:** both give $B_{\rm an}$. Both conventions for flipped normals agree at the endpoints there. The FGG ambiguity is
+  **eliminated** in this class: the only dissenting prescription is the principal splice, excluded by III-5.
+* **Single-flip class:** sector-resolved gives $B_{\rm an}$, sector-blind gives $B_{\rm sq}<B_{\rm an}$ (Prop. III-8, Lemma III-9). The residual ambiguity is the
+  single physical question whether the exterior orientation of the wall is superselected.
+
+A third candidate, the single-sheet pseudo-differential quantization of $H_-$ (P-Q7), is not analysed.
+
+**Defensible construction (sector-resolved, adopted as primary).**
 * (C1) The reduced theory, with constraints solved classically and the boundary clock $t_\infty$, is the leading-order quantum theory.
 * (C2) Boost angles are Sorkin's complex angles, equivalently Euclidean angles under continuation. The quantum constraint is then the single
   analytic equation $T\psi=W_+\psi$ on the static domain.
@@ -253,16 +303,24 @@ $$P_{\rm daughter}=e^{-B_{\rm an}/\hbar}\,(1+O(\hbar))\quad\text{(daughter norma
 $B_{\rm an}$ is positive in every regime (Lemma P). It agrees with the covariant pseudomanifold action with joint terms and with the Lorentzian
 complex saddle (Sec. 8). As $M\to0$ it tends to the closed form T1, which is the CdL exponent when the false vacuum is the larger cap (T1/T5).
 
-**What would overturn it.** A sector-blind quantization whose ordering gives a non-zero Stokes multiplier at $R_q$: then
-$B_{\rm sw}<B_{\rm an}$ dominates (Sec. 7). Or a full-gravity inner product that anchors the daughter elsewhere (Sec. 6). Neither (C2) nor
-(C3) is derived here from a gravitational path integral.
+**The sector-blind alternative (equally consistent).** Replace (C2) by the squared constraint. Then
+$P_{\rm daughter}\simeq2\,e^{-B_{\rm sq}/\hbar}$ (single flip) or $e^{-B_{\rm an}/\hbar}$ (double flip).
+
+**What decides between them.** Whether the full theory superselects the exterior orientation (Sorkin angles and the covariant joint terms
+favour resolving it; Wheeler–DeWitt quantization of a constraint quadratic in the momenta favours blindness). Equivalently, whether
+the inner product of the full theory anchors the daughter as in Sec. 6. Neither (C2) nor the squared alternative is derived here from a
+gravitational path integral.
+
+**For observational bounds (Phase VI)** we use the smaller exponent, $B_{\rm sq}=\min(B_{\rm an},B_{\rm sq})$. That is the optimistic choice, so any
+inaccessibility conclusion holds under either quantization.
 
 ## 10. Open problems sharpened by Phase III
 
-* **P-Q2 (sharpened).** At $M=0$ with $\kappa>\chi$ the squared constraint is polynomial in $u$, so the momentum representation turns it into an ODE
-  ($L^4\hbar^2\phi''+2i\hbar(L^2-\chi^2\mathcal C)\phi'+(\mathcal C-1-2i\hbar\chi^2\mathcal C')\phi=0$, $\mathcal C=\cosh^2Gk$). The analytic $\theta$ runs from $0$ to $\pi$ there,
-  so the coalescence point $R_q$ is present. **Compute the Stokes multiplier at $R_q$ for each ordering.** This decides between
-  $B_{\rm an}$ and $B_{\rm sw}$.
+* **P-Q2 (reduced to a global check).** Prop. III-8 settles the multiplier at leading local order. Remaining: confirm it with an exact
+  solution of the $M=0$, $\kappa>\chi$ squared constraint (a polynomial in $u$, hence an ODE in the momentum representation:
+  $L^4\hbar^2\phi''+2i\hbar(L^2-\chi^2\mathcal C)\phi'+(\mathcal C-1-2i\hbar\chi^2\mathcal C')\phi=0$, $\mathcal C=\cosh^2Gk$), and compute the prefactors.
+* **P-Q9.** Decide superselection of the exterior orientation in a full (field-theoretic or Wheeler–DeWitt) treatment of the wall. This is
+  the one physical question left between $B_{\rm an}$ and $B_{\rm sq}$ in the single-flip class.
 * **P-Q7.** A pseudo-differential quantization of the single sheet $H_-$ in the real-angle convention. Its tunnelling amplitude may be
   governed by the branch locus rather than by a saddle, as with eigenfunction decay of relativistic Schrödinger operators
   (Carmona–Masters–Simon 1990, J. Funct. Anal. 91, 117; used here only as an analogy).

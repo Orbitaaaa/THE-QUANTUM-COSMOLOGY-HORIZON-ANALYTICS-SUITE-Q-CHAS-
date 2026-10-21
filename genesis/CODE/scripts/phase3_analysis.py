@@ -65,6 +65,8 @@ for gam in np.linspace(-0.9, 0.9, 9):
         out["prescriptions"].append(dict(gamma=float(gam), E_over_EAB=fac, flip_class=C.flip_class(m),
                                          B_analytic=T.B_canonical(m), B_principal=T.B_canonical(m, "principal"),
                                          B_switch=C.B_sector_switch(m),
+                                         B_sector_blind=C.B_sector_blind(m),
+                                         n_coalescence=len(C.coalescence_points(m)),
                                          A2_over_4G=float(np.pi * m.turning_points()[-1] ** 2 / m.G)))
 pr = out["prescriptions"]
 print("prescriptions: single-flip models", sum(p["flip_class"] == "single" for p in pr),
@@ -72,6 +74,18 @@ print("prescriptions: single-flip models", sum(p["flip_class"] == "single" for p
       " B_principal<0 in", sum(p["B_principal"] < 0 for p in pr), "of", len(pr),
       " 0<B_switch<B_analytic in all single:",
       all(0 < p["B_switch"] < p["B_analytic"] for p in pr if p["flip_class"] == "single"))
+# Lemma III-9 + Prop. III-8: coalescence points and the sector-blind exponent
+single = [p for p in pr if p["flip_class"] == "single"]
+double = [p for p in pr if p["flip_class"] == "double"]
+out["sector_blind_summary"] = dict(
+    single_all_one_coalescence=all(p["n_coalescence"] == 1 for p in single),
+    double_all_no_coalescence=all(p["n_coalescence"] == 0 for p in double),
+    max_rel_Bsq_minus_Bsw_single=max(abs(p["B_sector_blind"] - p["B_switch"]) / p["B_switch"] for p in single),
+    max_rel_Bsq_minus_Ban_double=max(abs(p["B_sector_blind"] - p["B_analytic"]) / p["B_analytic"] for p in double))
+out["weber"] = [C.weber_multiplier(nu) for nu in (-1.0, -0.5, -0.25, 0.0, 1.0)]
+print("sector-blind:", out["sector_blind_summary"])
+for w in out["weber"]:
+    print(f"   Weber nu={w['nu']:+.2f}: |multiplier| measured {w['measured_abs']:.6g}, sqrt(2pi)/|Gamma(-nu)| = {w['predicted_abs']:.6g}")
 
 # 3. Lorentzian complex-time saddle: T* = dS/dM, S = int P dR along the barrier.
 #    Under the barrier P is purely imaginary, so T*_barrier = i dImS/dM and
@@ -136,13 +150,13 @@ for fac, ls in ((1.5, "-"), (8.0, "--")):
                label=f"analytic (sign-free constraint), E/E_AB={fac}")
     ax[1].plot(g, [p["B_principal"] for p in rows], color="#888888", ls=ls, marker="s", ms=3,
                label=f"principal (splice at flip), E/E_AB={fac}")
-    ax[1].plot(g, [p["B_switch"] for p in rows], color="#c0392b", ls=ls, marker="^", ms=3,
-               label=f"sector switch at C=0 (single flip), E/E_AB={fac}")
+    ax[1].plot(g, [p["B_sector_blind"] for p in rows], color="#c0392b", ls=ls, marker="^", ms=3,
+               label=f"sector-blind (squared constraint), E/E_AB={fac}")
 ax[1].axhline(0, color="k", lw=0.6)
 ax[1].set_xlabel("gamma")
 ax[1].set_ylabel("B (units G = 1, kappa = 1)")
 ax[1].legend(fontsize=6)
-ax[1].set_title("exponents of the three connection rules", fontsize=9)
+ax[1].set_title("exponents: sector-resolved, sector-blind, principal splice", fontsize=9)
 fig.tight_layout()
 fig.savefig(os.path.join(FIG, "phase3_monodromy.png"), dpi=150)
 plt.close(fig)

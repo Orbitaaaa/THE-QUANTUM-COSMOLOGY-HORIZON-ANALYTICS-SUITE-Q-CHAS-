@@ -49,14 +49,15 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 | [VERIFICATION.md](VERIFICATION.md) | verification dossier and proof gaps |
 | [OPEN_PROBLEMS.md](OPEN_PROBLEMS.md) | open problems by phase |
 
-## Phase III in four lines
+## Phase III in five lines
 
 1. The two FGG prescriptions are two conventions for the boost angle of a flipped wall normal: complex (Sorkin, $i\pi$) or real.
 2. The true Hamiltonian is two-sheeted. The tunnelling trajectory touches its branch locus exactly where the Euclidean wall
    folds in Killing time.
 3. The FGG slicing (principal) prescription solves no analytic quantum constraint, and $B<0$ in 33/36 models.
-4. The complex-angle construction gives $e^{-B_{\rm an}/\hbar}$ under explicit assumptions. The ambiguity is relocated to the
-   normalisation of the daughter sector, not eliminated. A sector-switching exponent $B_{\rm sw}<B_{\rm an}$ remains open (ordering).
+4. **Double-flip transitions:** every consistent quantization gives the same exponent $B_{\rm an}$, so the ambiguity is eliminated there.
+5. **Single-flip transitions:** two consistent answers remain, $B_{\rm an}$ if the wall's exterior orientation is superselected and
+   $B_{\rm sq}=\frac2G\int R\arccos|C|\,dR<B_{\rm an}$ if not. The universal Stokes multiplier is $\sqrt2$.
 
 ## Code, data, figures
 
@@ -73,7 +74,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-III)
-cd .. && python -m pytest tests -q                # 85 tests
+cd .. && python -m pytest tests -q                # 91 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

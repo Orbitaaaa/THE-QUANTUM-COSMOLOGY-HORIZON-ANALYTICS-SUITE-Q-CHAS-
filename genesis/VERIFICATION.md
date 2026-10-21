@@ -72,6 +72,8 @@ Verification types: **S** symbolic (sympy, exact), **A** analytic proof (by hand
 | V-Q5 | Lorentzian saddle | finite-difference ${\rm Im}\,T^*$ vs Euclidean pieces | $5\times10^{-6}$ |
 | V-Q6 | covariant action rule | Smarr pieces + bolt/fold terms | $\le1.2\times10^{-9}$ |
 | V-Q7 | competitor exponents | $B_{\rm princ}$, $B_{\rm sw}$ on a 9×4 grid | $B_{\rm princ}<0$ in 33/36; $0<B_{\rm sw}<B_{\rm an}$ in 24/24 single-flip models |
+| V-Q8 | coalescence lemma and sector-blind exponent | zeros of $N$ on the barrier; $B_{\rm sq}$ vs $B_{\rm sw}$, $B_{\rm an}$ | one zero in 24/24 single-flip, none in 12/12 double-flip; $B_{\rm sq}=B_{\rm sw}$ resp. $B_{\rm an}$ to $5\times10^{-15}$ |
+| V-Q9 | Weber connection coefficient | mpmath `pcfd` at $z=30$ vs $\sqrt{2\pi}/\Gamma(-\nu)$ | $\le4\times10^{-4}$ (finite-$z$), exact zeros at $\nu=0,1$ |
 
 Analytic proofs (III-1, III-2, III-4, III-5, III-6, III-7) are in PHASE_III_QUANTUM_TRANSITION.md. Tests: `tests/test_contours.py`.
 
@@ -86,4 +88,5 @@ Analytic proofs (III-1, III-2, III-4, III-5, III-6, III-7) are in PHASE_III_QUAN
 6. All statements are leading-order WKB; prefactors are not computed.
 7. Phase III: assumptions (C2) complex angles and (C3) Lebesgue measure are motivated (covariance, analyticity from laboratory data,
    growth bound) but not derived from a gravitational path integral. The Stokes multiplier at the coalescence point $R_q$ of the
-   squared constraint is not computed (P-Q2).
+   squared constraint is derived at leading local order (Prop. III-8); an exact global confirmation is open (P-Q2). Superselection of the
+   exterior orientation (P-Q9) is open.

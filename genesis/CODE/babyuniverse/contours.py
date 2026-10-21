@@ -254,3 +254,53 @@ def B_sector_switch(model: ThinWallModel) -> float:
     a = quad(lambda R: R * th(R), R1, Rq, limit=400, epsabs=1e-13, epsrel=1e-12)[0]
     b = quad(lambda R: R * (np.pi - th(R)), Rq, R2, limit=400, epsabs=1e-13, epsrel=1e-12)[0]
     return 2 * (a + b) / model.G
+
+
+# --------------------------------------- sector-blind quantization (Prop. III-8)
+def coalescence_numerator(model: ThinWallModel, R):
+    """N(R) = f_in + f_out - kappa^2 R^2 = 2 - (chi^2 + eta^2 + kappa^2) R^2 - 2GM/R,
+    strictly concave on R > 0 (Lemma III-9); C = N / (2 sqrt(f_in f_out))."""
+    R = np.asarray(R, dtype=float)
+    return 2 - (model.chi**2 + model.eta**2 + model.kappa**2) * R**2 - 2 * model.G * model.M / R
+
+
+def coalescence_points(model: ThinWallModel, n: int = 4001) -> list:
+    """Zeros of C (theta = pi/2) inside the barrier: points where the squared
+    constraint's branches theta and pi - theta coalesce."""
+    from scipy.optimize import brentq
+    R1, R2 = model.turning_points()[0], model.turning_points()[-1]
+    Rs = np.linspace(R1, R2, n)[1:-1]
+    N = coalescence_numerator(model, Rs)
+    idx = np.nonzero(np.diff(np.sign(N)) != 0)[0]
+    return [brentq(lambda r: float(coalescence_numerator(model, r)), Rs[i], Rs[i + 1], xtol=1e-15) for i in idx]
+
+
+def B_sector_blind(model: ThinWallModel) -> float:
+    """Exponent of the sector-blind (squared-constraint) quantization:
+    B_sq = (2/G) int R arccos|C| dR  (min(theta, pi - theta) on the barrier).
+    Equals B_sector_switch in the single-flip class and B_an in the double-flip class."""
+    from scipy.integrate import quad
+    R1, R2 = model.turning_points()[0], model.turning_points()[-1]
+
+    def C(R):
+        fi, fo = model.f_in(R), model.f_out(R)
+        return (fi + fo - model.kappa**2 * R**2) / (2 * np.sqrt(fi * fo))
+
+    pts = coalescence_points(model) or None
+    v = quad(lambda R: R * np.arccos(min(1.0, abs(C(R)))), R1, R2, points=pts, limit=400,
+             epsabs=1e-13, epsrel=1e-12)[0]
+    return 2 * v / model.G
+
+
+def weber_multiplier(nu: float, z: float = 30.0) -> dict:
+    """Stokes multiplier of the local normal form at a coalescence point.
+    The solution recessive on the left, D_nu(-z), contains the dominant branch
+    e^{z^2/4} z^{-nu-1} on the right with coefficient sqrt(2 pi)/Gamma(-nu)
+    (up to the phase e^{i pi nu}); it vanishes iff nu = 0, 1, 2, ...  Checked
+    against mpmath's parabolic-cylinder function at large z."""
+    import mpmath as mp
+    mp.mp.dps = 50
+    nu_m, zz = mp.mpf(nu), mp.mpf(z)
+    measured = mp.pcfd(nu_m, -zz) / (mp.e ** (zz**2 / 4) * zz ** (-nu_m - 1))
+    predicted = mp.mpf(0) if (mp.isint(nu_m) and nu_m >= 0) else mp.sqrt(2 * mp.pi) / mp.gamma(-nu_m)
+    return dict(nu=float(nu), measured_abs=float(abs(measured)), predicted_abs=float(abs(predicted)))

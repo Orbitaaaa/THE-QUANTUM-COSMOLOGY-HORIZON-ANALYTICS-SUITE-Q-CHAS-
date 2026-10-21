@@ -89,3 +89,30 @@ def test_sector_switch_exponent():
         assert C.flip_class(m) == "single"
         Bq, Ban = C.B_sector_switch(m), T.B_canonical(m)
         assert 0 < Bq < Ban
+
+
+def test_coalescence_lemma_and_sector_blind_exponent():
+    """Lemma III-9: one coalescence point in the single-flip class, none in the
+    double-flip class; B_sq = B_sw (single) and B_sq = B_an (double)."""
+    for gam, fac in ((-0.5, 1.5), (0.0, 3.0)):
+        m = model_from_dimensionless(gam, fac * (2 - 2 * gam))
+        assert C.flip_class(m) == "single" and len(C.coalescence_points(m)) == 1
+        assert abs(C.B_sector_blind(m) - C.B_sector_switch(m)) < 1e-8 * C.B_sector_switch(m)
+    for gam, fac in ((0.45, 1.5), (0.9, 3.0)):
+        m = model_from_dimensionless(gam, fac * (2 - 2 * gam))
+        assert C.flip_class(m) == "double" and len(C.coalescence_points(m)) == 0
+        assert abs(C.B_sector_blind(m) - T.B_canonical(m)) < 1e-8 * T.B_canonical(m)
+
+
+def test_coalescence_numerator_concave():
+    m = model_from_dimensionless(-0.5, 4.8)
+    R = np.linspace(0.05, 3.0, 2000)
+    N = C.coalescence_numerator(m, R)
+    assert np.all(np.diff(N, 2) < 0)
+
+
+@pytest.mark.parametrize("nu,expected", [(-0.5, np.sqrt(2.0)), (-1.0, np.sqrt(2 * np.pi)), (0.0, 0.0), (1.0, 0.0)])
+def test_weber_multiplier(nu, expected):
+    w = C.weber_multiplier(nu)
+    assert abs(w["predicted_abs"] - expected) < 1e-12
+    assert abs(w["measured_abs"] - expected) < 2e-3 * max(1.0, expected)

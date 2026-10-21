@@ -13,9 +13,11 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Phase III — the quantum transition
 
-* **P-Q2 (sharpened in Phase III).** Solve the $M=0$, $\kappa>\chi$ squared constraint exactly (momentum-representation ODE) and
-  compute the Stokes multiplier at the coalescence point $R_q$ ($C=0$) for each operator ordering. Zero multiplier gives $B_{\rm an}$;
-  a non-zero one makes $B_{\rm sw}<B_{\rm an}$ dominant (PHASE_III Sec. 7).
+* **P-Q2 (reduced to a global check).** The Stokes multiplier at the coalescence point is $\sqrt2$ for every ordering of the squared
+  constraint, at leading local order (PHASE_III Prop. III-8). Confirm it with an exact solution of the $M=0$, $\kappa>\chi$ squared constraint
+  (momentum-representation ODE), and compute prefactors.
+* **P-Q9.** Is the exterior orientation of the wall superselected in a full theory? This decides between $B_{\rm an}$ and $B_{\rm sq}$ in the
+  single-flip class (the double-flip class is unambiguous).
 * **P-Q7.** Pseudo-differential quantization of the single sheet $H_-$ (real-angle convention): is the tunnelling amplitude governed by
   the branch locus, as with relativistic Schrödinger operators?
 * **P-Q8.** Derive the complex-angle convention (C2) and the Lebesgue measure (C3) from a covariant inner product
