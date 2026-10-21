@@ -1,0 +1,72 @@
+# Project Baby Universe — Genesis Branch
+
+A research programme on the quantum creation of new spacetime regions. It asks whether an independently
+expanding daughter universe can originate from a physically admissible parent spacetime through a consistent
+gravitational process.
+
+This directory is self-contained and independent of the Q-CHAS dashboard in the rest of the repository.
+
+## Where to start
+
+* **[DELIVERABLE_1_FOUNDATIONS.md](DELIVERABLE_1_FOUNDATIONS.md)**: the Stage One report (all 14 required items).
+* **[RESULTS.md](RESULTS.md)**: verified results, labelled theorem / numerical proposition / reproduction.
+* **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
+
+## Stage One in five lines
+
+1. **Classical picture reproduced and sharpened.** Every inflating thin-wall branch lies beyond the Einstein–Rosen
+   bridge, is invisible to the parent and has a singular past. Two independent constructions agree on all 15 branches.
+2. **Farhi–Guth obstruction stated precisely**, with a map of which assumptions matter and which escape routes exist.
+3. **Theorem (NG3):** the Farhi–Guth–Guven transition from laboratory data has **no manifold Euclidean
+   instanton**; the "pseudomanifold" is forced.
+4. **Theorems (T1–T3):** the canonical exponent is fixed uniquely, has a closed form at $M=0$ (instanton
+   action + a Morse sum of horizon areas), and obeys a **first law and a Smarr identity** that express it
+   covariantly without the pseudomanifold.
+5. **Physics:** laboratory creation is not exponentially easier than the decay of the same false vacuum; for
+   GUT-scale parameters and gram-scale bubbles $B\sim10^6$ or more.
+
+## Documents
+
+| file | content |
+|---|---|
+| [RESEARCH_QUESTIONS.md](RESEARCH_QUESTIONS.md) | problem tree with status; the selected Stage Two problem P\* |
+| [LITERATURE.md](LITERATURE.md) | primary sources, verification status, novelty comparison |
+| [ASSUMPTIONS.md](ASSUMPTIONS.md) | assumptions register |
+| [CLASSICAL_MODEL.md](CLASSICAL_MODEL.md) | action, boundary terms, field equations, admissible data, energy conditions, thick-wall model |
+| [JUNCTION_CONDITIONS.md](JUNCTION_CONDITIONS.md) | complete derivation of the Israel conditions, signs, potential |
+| [GLOBAL_GEOMETRY.md](GLOBAL_GEOMETRY.md) | branch classification, chart-free itinerary, Penrose diagrams, daughter-universe criteria |
+| [NO_GO_THEOREMS.md](NO_GO_THEOREMS.md) | Farhi–Guth, bag-of-gold theorem, exterior embedding obstruction (proof) |
+| [TUNNELLING.md](TUNNELLING.md) | FGG reconstruction, branch selection, closed form, first law, Smarr identity, scales |
+| [QUANTIZATION.md](QUANTIZATION.md) | reduced phase space, sectors, imaginary area shifts, quantization routes |
+| [NEW_APPROACHES.md](NEW_APPROACHES.md) | ranked new approaches |
+| [FAILED_APPROACHES.md](FAILED_APPROACHES.md) | dead ends, with reasons |
+| [NUMERICAL_METHODS.md](NUMERICAL_METHODS.md) | algorithms and accuracy control |
+| [VERIFICATION.md](VERIFICATION.md) | verification dossier and proof gaps |
+| [OPEN_PROBLEMS.md](OPEN_PROBLEMS.md) | open problems by phase |
+
+## Code, data, figures
+
+```
+CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum
+CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
+CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
+DATA/                JSON results, derivation log
+FIGURES/             Penrose diagrams, phase diagram, exponents, Euclidean geometry, thick walls
+```
+
+Reproduce (Python ≥ 3.10):
+
+```bash
+pip install -r genesis/CODE/requirements.txt
+cd genesis/CODE/scripts && python run_all.py      # ~8 minutes, regenerates DATA/ and FIGURES/
+cd .. && python -m pytest tests -q                # 67 tests
+```
+
+Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.
+
+## Honesty statement
+
+No universe has been created, and nothing here suggests a practical way to create one. The results are
+mathematical statements about a specified gravitational model (thin or scalar-field walls, spherical symmetry,
+semiclassical quantum theory), with their assumptions listed in ASSUMPTIONS.md and their gaps in
+VERIFICATION.md.

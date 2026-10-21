@@ -26,7 +26,7 @@ for E_vac, E_wall in ((1e16, 1e16), (1e16, 3e16), (1e16, 1e17), (1e15, 1e16), (1
     B0 = T.B_canonical(ThinWallModel(1.0, k, 0.0)) / chi**2
     d0 = T.instanton_M0(ThinWallModel(1.0, k, 0.0))
     Bs = []
-    for frac in (1e-3, 0.1, 0.5, 0.9):
+    for frac in (1e-9, 1e-6, 1e-3, 0.1, 0.5, 0.9):
         mm = ThinWallModel(1.0, k, frac * Mcr_dimless)
         R1, R2 = mm.turning_points()
         Bs.append(dict(M_over_Mcr=frac, M_kg=frac * Mcr_kg, B=T.B_canonical(mm) / chi**2,

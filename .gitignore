@@ -13,3 +13,6 @@ web/dist/
 .DS_Store
 # genesis scratch
 genesis/CODE/**/__pycache__/
+genesis/PAPER/*.aux
+genesis/PAPER/*.log
+genesis/PAPER/*.out

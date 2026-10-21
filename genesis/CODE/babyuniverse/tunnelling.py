@@ -355,8 +355,10 @@ def boundary_loop(model: ThinWallModel, side: str = "out", n_wall: int = 800):
         phi_i = -np.pi
         seg(far, 0.0, -np.pi)
         seg(0.0, r1, 0.0)
+    i_wall0 = len(pts)
     for R, a in zip(ew.R, th):
         pts.append((float(rho(R)), float(a)))
+    i_wall1 = len(pts)
     thD = float(th[-1])
     if e2 > 0:
         phi_f = thD
@@ -369,7 +371,8 @@ def boundary_loop(model: ThinWallModel, side: str = "out", n_wall: int = 800):
         pts.append((far, a))
     L = np.array(pts)
     return dict(x=L[:, 0] * np.cos(L[:, 1]), y=L[:, 0] * np.sin(L[:, 1]), far=far,
-                phi_i=phi_i, phi_f=phi_f, eps=(e1, e2), theta=th)
+                phi_i=phi_i, phi_f=phi_f, eps=(e1, e2), theta=th,
+                rho_wall_max=float(L[i_wall0:i_wall1, 0].max()))
 
 
 def multiplicity_map(model: ThinWallModel, side: str = "out", ngrid: int = 161, extent: float = None):
@@ -377,7 +380,14 @@ def multiplicity_map(model: ThinWallModel, side: str = "out", ngrid: int = 161, 
     m(x) = -winding(loop, x) since the loop has the region on its right."""
     lp = boundary_loop(model, side)
     xs, ys = lp["x"], lp["y"]
-    ext = extent or (min(lp["far"], 2.5) if side == "out" else 1.0)
+    if extent is None:
+        if side == "out":
+            # the map must contain the whole wall: beyond the wall's largest radius
+            # the multiplicity can change only across the two radial rays
+            extent = min(lp["far"], 1.25 * lp["rho_wall_max"] + 0.2)
+        else:
+            extent = 1.0
+    ext = extent
     g = np.linspace(-ext, ext, ngrid)
     GX, GY = np.meshgrid(g, g)
     wind = np.zeros_like(GX)

@@ -40,4 +40,7 @@ Symbolic derivation log (sympy 1.14.0)
 [verified] flat_space_limit
     leading = sqrt(P**2 + 16*pi**2*R**4*sigma_w**2)
 
-total time 3.1 s
+[verified] wall_equation_of_motion
+    relation = sigma {K} = rho_out - rho_in
+
+total time 4.0 s

@@ -51,7 +51,7 @@
   "theta_out_max": 0.5649268035662243,
   "theta_out_min": -1.2745674208106617,
   "exterior_multiplicity_range": [
-   0.0,
+   -0.0,
    2.0
   ],
   "exterior_embedded": false,

@@ -126,7 +126,7 @@
    1,
    1
   ],
-  "exterior_embedded": true,
+  "exterior_embedded": false,
   "interior_embedded": true,
   "theta_D": -9.469752595537095,
   "theta_max": 1.042130597150176
@@ -1479,7 +1479,7 @@
    1,
    -1
   ],
-  "exterior_embedded": true,
+  "exterior_embedded": false,
   "interior_embedded": true,
   "theta_D": -17.122716238139553,
   "theta_max": 3.020880488612722

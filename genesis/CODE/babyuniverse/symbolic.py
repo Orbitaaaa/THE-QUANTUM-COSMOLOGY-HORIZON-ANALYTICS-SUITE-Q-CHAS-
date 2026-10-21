@@ -327,11 +327,35 @@ def flat_space_limit():
     return dict(leading=lead)
 
 
+def wall_equation_of_motion():
+    """Normal component of the wall's equation of motion,
+        S^{ab} {K_ab} = [T_ab n^a n^b]   ->   sigma {K} = rho_out - rho_in,
+    with {K} = (K_in + K_out)/2, K = K^tau_tau + 2 K^theta_theta, is implied by
+    the theta-theta Israel equation and Rddot = -V'(R)/2 (checked on shell at
+    random rational points, exact arithmetic)."""
+    R = sp.symbols("R", positive=True)
+    fin = 1 - chi**2 * R**2
+    fout = 1 - 2 * G * M / R - eta**2 * R**2
+    X = (fin - fout + kappa**2 * R**2) / (2 * kappa * R)
+    Y = (fin - fout - kappa**2 * R**2) / (2 * kappa * R)
+    V = fout - Y**2
+    Rdd = -sp.diff(V, R) / 2
+    K_in = (Rdd + sp.diff(fin, R) / 2) / X + 2 * X / R
+    K_out = (Rdd + sp.diff(fout, R) / 2) / Y + 2 * Y / R
+    sig = kappa / (4 * sp.pi * G)
+    rho_in = 3 * chi**2 / (8 * sp.pi * G)
+    rho_out = 3 * eta**2 / (8 * sp.pi * G)
+    expr = sig * (K_in + K_out) / 2 - (rho_out - rho_in)
+    assert _is_zero(expr), sp.simplify(expr)
+    return dict(relation="sigma {K} = rho_out - rho_in")
+
+
 def run_all():
     out = {}
     for fn in (extrinsic_curvature_static, israel_equations, squaring_and_signs,
                dimensionless_form, mass_formula, reduced_hamiltonian,
-               euclidean_angle_identity, closed_forms_M0, flat_space_limit):
+               euclidean_angle_identity, closed_forms_M0, flat_space_limit,
+               wall_equation_of_motion):
         out[fn.__name__] = fn()
     return out
 

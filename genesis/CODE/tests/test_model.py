@@ -66,3 +66,12 @@ def test_sign_flip_radii():
     # the eps_out flip lies inside the forbidden region (regime A) or inside the horizon
     R1, R2 = m.turning_points()
     assert R1 < m.flip_radius_out() < R2
+
+
+def test_ipser_sikivie_limit():
+    """chi = eta = M = 0: a wall between two flat balls, R = (2/kappa) cosh(kappa tau/2)."""
+    k = 0.8
+    m = ThinWallModel(0.0, k, 0.0, 0.0)
+    R = np.linspace(2 / k, 10 / k, 7)
+    assert np.allclose(m.V(R), 1 - k**2 * R**2 / 4)
+    assert np.all(np.sign(m.A_in(R)) > 0) and np.all(np.sign(m.A_out(R)) < 0)

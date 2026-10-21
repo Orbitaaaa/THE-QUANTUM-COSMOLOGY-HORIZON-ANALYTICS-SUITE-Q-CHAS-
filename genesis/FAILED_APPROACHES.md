@@ -1,0 +1,78 @@
+# Failed approaches and dead ends (kept, with reasons)
+
+Each entry records what was tried, why it failed, what the failure taught us, and whether the obstruction is
+fundamental, model-specific, approximation-dependent or methodological.
+
+### F1. Principal-branch canonical momentum
+*Tried:* $P_E=(R/G)[\arctan(\sqrt V/A_{\rm out})-\arctan(\sqrt V/A_{\rm in})]$, the formula one writes first.
+*Failure:* $B<0$ in 41/45 grid models (exponential enhancement, impossible for decay from a localised state). It
+jumps by $\pi R/G$ at the flip radius, and it does not tend to any manifold instanton at $M\to0$.
+*Lesson:* the jump is a horizon monodromy inserted at a regular point (T0). **Type:** methodological (wrong
+branch), now resolved.
+
+### F2. Bracketed inversion of $H(R,P)$ across sign sectors
+*Tried:* find $M$ with $P(R,\dot R(R,M);M)=P$ by bracketing over a global $M$ grid.
+*Failure:* "no root in bracket" in the $(+,-)$ sector. First cause: the branch sign of $\dot R$ was inferred from
+${\rm sgn}\,P$, which is wrong where $\varepsilon_{\rm out}=-1$ (there $P<0$ for $\dot R>0$). Second cause: the admissible $M$-interval
+at fixed $R$, which requires the same sector, a static region and $|\dot R|<|A|$, can be narrow, so global brackets miss it.
+*Fix:* damped Newton iteration in $M$ using the exact $\partial P/\partial M$, constrained to the sector.
+*Lesson:* at fixed $R$, $H$ is defined on a sector-dependent domain. The sectors are genuinely different sheets.
+**Type:** methodological, resolved (Phase II item).
+
+### F3. Quantizing the effective potential
+*Tried:* treat $\dot R^2+V=0$ as a particle in a potential, with mass $m(R)$.
+*Failure:* WKB exponents disagree with the gravitational one by factors between 1.06 and 13, and depend on the
+arbitrary $m(R)$.
+*Lesson:* orbits do not determine the symplectic structure; only the reduced gravitational $P$ is admissible.
+**Type:** fundamental for this approach.
+
+### F4. "An interior orientation flip also obstructs an embedding"
+*Tried:* extend NG3 to $\varepsilon_{\rm in}$ by symmetry.
+*Failure:* computed counter-examples ($\gamma=0.3,0.6$): the interior region with an $\varepsilon_{\rm in}$ flip has multiplicity in
+$\{0,1\}$.
+*Lesson:* the obstruction needs the wall to **recede** from the Euclidean horizon at the flip. In the de Sitter section
+it approaches it. **Type:** the conjecture was false; the theorem's hypotheses are now sharper.
+
+### F5. Multiplicity maps with a badly sized window (two successive errors)
+*Tried (1):* degree-theory multiplicity on a fixed window of radius 2.5 in the cigar chart.
+*Failure (1):* two small-$M$ regime-A models were reported "embedded" because the wall extended beyond the window
+($\rho$ up to 7).
+*Tried (2):* a window sized from the largest radius of the boundary loop.
+*Failure (2):* that radius is set by the radial rays, which run to the far boundary, so the window became huge and
+the grid too coarse to resolve the multiplicity-2 region near the wall. Seven regime-A and all nine regime-B
+models were then reported "embedded".
+*Fix:* size the window from the wall alone (1.25 × its largest $\rho$); beyond the wall the multiplicity can change
+only across the two rays. Result: all 36 regime-A and 9 regime-B grid models are non-embedded and all interiors
+embedded, with multiplicities $-3\ldots2$. A grid-refinement test is now part of the suite.
+*Lesson:* a numerical certificate must cover the whole object **and** resolve it. **Type:** methodological.
+
+### F6. Endpoint quadrature of the Euclidean trajectory
+*Tried:* $\int dR/\sqrt V$ with $V$ evaluated near the turning points.
+*Failure:* round-off made $V$ slightly negative within $10^{-17}$ of $R_1$, the integrand blew up ($\theta\sim10^{133}$),
+and a Smarr residual of $10^{284}$ appeared.
+*Fix:* parametrise $R=R_a+(R_b-R_a)\sin^2(s/2)$, compute the distances to the endpoints without cancellation,
+and use the exact endpoint limit $\sqrt{(R_b-R_a)/|V'|}$.
+**Type:** numerical, resolved; recorded because the error was silent in most runs.
+
+### F7. Closed-form CdL exponent by subtraction
+*Tried:* $B_{\rm CdL}=S_E-S_E[S^4]$ evaluated by subtracting two numbers of size $\pi/G\chi^2$.
+*Failure:* for $\kappa/\chi=3.6\times10^{-3}$ the subtraction lost all digits ($1.7\times10^4$ instead of 133).
+*Fix:* algebraically cancellation-free forms (`tunnelling._stable_cap_cosines`).
+**Type:** numerical, resolved.
+
+### F8. A naive thin-wall tension for the tilted potential
+*Tried:* $\sigma=\int\sqrt{2U}\,d\phi$ including the vacuum-energy tilt, as input to the thin-wall formula.
+*Outcome:* it converges to $\sigma_0$, but slowly. Excess $+18\%,+10\%,+5.6\%,+3.1\%$ at
+$w=0.04,0.02,0.01,0.005$, roughly $\propto w^{0.85}$. The CdL exponent built from it is off by 9 % at $w=0.005$,
+against 0.18 % with $\sigma_0$.
+*Lesson:* the thin-wall tension is that of the degenerate part; the tilt's contribution vanishes only as $w\to0$
+and is better treated as part of the volume term. **Type:** approximation-dependent (not a failure of the
+thin-wall limit itself).
+
+### F9. Shooting the CdL bounce from the centre
+*Tried:* shoot on $\phi(0)$ directly.
+*Failure:* for thin walls the required $|\phi(0)-v|\sim e^{-mR_0}$ is far below double precision. Also, near the far
+pole the Hubble term becomes anti-friction and amplifies residual errors.
+*Fix:* start from the linearised Bessel solution at the radius where the deviation is $10^{-6}v$; cut the numerical
+solution at closest approach to the false vacuum and complete it with the exact de Sitter cap.
+**Type:** numerical, resolved.

@@ -72,3 +72,22 @@ def test_interior_flip_can_be_embedded():
     m = model_from_dimensionless(0.6, 1.5 * 0.8)
     r = T.embedding_report(m, ngrid=81)
     assert r["interior_flip"] and r["interior_embedded"]
+
+
+def test_multiplicity_grid_converged():
+    for gam, Ef in ((-0.5, 1.6), (0.0, 5.0), (0.6, 1.5)):
+        m = model_from_dimensionless(gam, Ef * (2 - 2 * gam))
+        r1 = T.multiplicity_map(m, "out", ngrid=81)[2]
+        r2 = T.multiplicity_map(m, "out", ngrid=161)[2]
+        assert (r1.min(), r1.max()) == (r2.min(), r2.max())
+        assert r2.max() >= 2 or r2.min() < 0
+
+
+def test_regime_B_non_embedded():
+    for gam in (-0.6, 0.0, 0.6):
+        g1, gmin = 2 - 2 * gam, ThinWallModel.g_min(gam)
+        m = model_from_dimensionless(gam, 0.5 * (g1 + gmin))
+        r = T.embedding_report(m, ngrid=101)
+        assert not r["exterior_flip"]
+        assert not r["exterior_embedded"]
+        assert abs(r["theta_out_D"]) > np.pi

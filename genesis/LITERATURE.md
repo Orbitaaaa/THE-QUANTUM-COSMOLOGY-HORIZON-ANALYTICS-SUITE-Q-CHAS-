@@ -1,0 +1,75 @@
+# Literature: primary sources, what they establish, and novelty comparison
+
+Verification note. arXiv and journal sites are blocked by this environment's network policy. Bibliographic data
+marked ✓ were confirmed by web search during this session (title/authors/venue/abstract-level content).
+Entries marked (m) are cited from standard knowledge and must be re-checked against the originals. **No result
+of this programme relies on reading a paper we could not access.** Every quantitative statement was derived and
+computed here.
+
+Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N] numerical, [C] conjecture.
+
+## A. Classical false-vacuum bubbles and junctions
+
+* **Israel, W.** (1966) *Singular hypersurfaces and thin shells in general relativity*, Nuovo Cim. B 44, 1. (m) [T] Junction conditions. Reproduced in JUNCTION_CONDITIONS.md.
+* **Blau, Guendelman, Guth** (1987) *Dynamics of false-vacuum bubbles*, PRD 35, 1747, doi:10.1103/PhysRevD.35.1747. (m) [T/N] Thin-wall dS|Schwarzschild dynamics and global structure; inflating bubbles lie beyond the Einstein–Rosen bridge. **Reproduced independently** (GLOBAL_GEOMETRY.md), with a chart-free itinerary that BGG did not use.
+* **Berezin, Kuzmin, Tkachev** (1987) *Dynamics of bubbles in general relativity*, PRD 36, 2919. (m) [T] General thin-shell dynamics and classification.
+* **Sato, Sasaki, Kodama, Maeda** (1981) *Creation of wormholes by first-order phase transition of a vacuum in the early universe*, Prog. Theor. Phys. 65, 1443. (m) Child universes from bubbles.
+* **Aguirre, Johnson** (2005) *Dynamics and instability of false vacuum bubbles*, PRD 72, 103525, gr-qc/0508093 ✓. [T/N] General interior/exterior classification (dS, M, AdS / SdS); bound bubbles unstable to aspherical perturbations.
+* **Aguirre, Johnson** (2006) *Two tunnels to inflation*, PRD 73, 123529, gr-qc/0512034 ✓. [S] Comparison of FGG-type and CdL-type routes to inflation.
+* **Ipser, Sikivie** (1984) PRD 30, 712. (m) Gravitating domain walls; a spherical wall's worldvolume is de Sitter with $H=2\pi G\sigma$. Recovered as the $\chi=\eta=M=0$ limit.
+
+## B. Classical obstructions, energy conditions, topology change
+
+* **Penrose** (1965) PRL 14, 57. (m) [T] Trapped surfaces and incompleteness.
+* **Hawking, Penrose** (1970) Proc. R. Soc. A 314, 529. (m) [T]
+* **Farhi, Guth** (1987) *An obstacle to creating a universe in the laboratory*, PLB 183, 149, doi:10.1016/0370-2693(87)90429-1. (m) [T] NEC + non-compact Cauchy surface + inflation ⇒ initial singularity. **Restated precisely** in NO_GO_THEOREMS.md Sec. 1, with an explicit list of what it does not cover.
+* **Vachaspati, Trodden** (1999/2000) *Causality and cosmic inflation*, PRD 61, 023502, gr-qc/9811037 ✓. [T] With Einstein equations, WEC and trivial topology, super-Hubble homogeneity must be assumed.
+* **Geroch** (1967) J. Math. Phys. 8, 782; **Tipler** (1977) Ann. Phys. 108, 1; **Borde** (1994) gr-qc/9406053; **Gibbons, Hawking** (1992) CMP 148, 345; **Dowker, Surya** (1998) PRD 58, 124019; **Horowitz** (1991) CQG 8, 587. (m) [T] Topology change requires CTCs/singularities/degeneracies; selection rules.
+* **Fewster, Galloway** (2011) CQG 28, 125009; **Fewster, Kontou** (2020–22) semiclassical singularity theorems. (m) [T] Weakened energy conditions.
+* **Wall** (2013) *The generalized second law implies a quantum singularity theorem*, CQG 30, 165003, arXiv:1010.5513 ✓ (with erratum). [T, conditional on the GSL] Baby universes that become independent of the mother universe are excluded. Relation to tunnelling amplitudes: open (P-Q4).
+* **Bousso, Fisher, Leichenauer, Wall** (2016) Quantum focusing conjecture, PRD 93, 064044. (m) [C]
+
+## C. Quantum creation by tunnelling
+
+* **Farhi, Guth, Guven** (1990) *Is it possible to create a universe in the laboratory by quantum tunneling?*, NPB 339, 417, doi:10.1016/0550-3213(90)90357-J ✓ (abstract via NASA ADS record). [S/F] Canonical calculation flawed by slicing; Euclidean interpolation is a "pseudomanifold"; conjectured action rule. **Our results:** the slicing jump is a horizon monodromy (T0); the pseudomanifold is unavoidable (NG3, theorem); its action is fixed covariantly by the Smarr identity (T3).
+* **Fischler, Morgan, Polchinski** (1990) *Quantum nucleation of false-vacuum bubbles*, PRD 41, 2638; and *Quantization of false-vacuum bubbles: a Hamiltonian treatment of gravitational tunneling*, PRD 42, 4042 ✓ (abstract). [S] Dirac + WKB; consistency with Euclidean methods needs degenerate metrics; Hartle–Hawking inconsistency suggested.
+* **Coleman, De Luccia** (1980) PRD 21, 3305, doi:10.1103/PhysRevD.21.3305. (m) [S] Vacuum decay with gravity.
+* **Parke** (1983) PLB 121, 313. (m) [S] Thin-wall CdL exponent for general vacua. Our closed form (T1) gives the same instanton action in $p,q$ variables.
+* **Lee, Weinberg** (1987) PRD 36, 1088. (m) [S] Upward transitions in de Sitter; detailed balance.
+* **Brown, Weinberg** (2007) PRD 76, 064003. (m) [S] Thermal derivation of CdL.
+* **Hawking, Moss** (1982) PLB 110, 35; **Hartle, Hawking** (1983) PRD 28, 2960; **Vilenkin** (1984) PRD 30, 509; **Linde** (1984). (m) Boundary proposals.
+* **Kraus, Wilczek** (1995) NPB 433, 403; **Kuchař** (1994) PRD 50, 3961. (m) Shell actions; Schwarzschild geometrodynamics.
+* **Freivogel, Hubeny, Maloney, Myers, Rangamani, Shenker** (2006) *Inflation in AdS/CFT*, JHEP 03 (2006) 007, hep-th/0510046 ✓. [F/S] Large dS bubbles dual to mixed boundary states; no unitary process creates an inflating region.
+* **Chen, Hu, Yeom** (2016) *Two interpretations of thin-shell instantons*, PRD 94, 024044, arXiv:1512.03914 ✓. [S]
+* **Fu, Marolf** (2019) *Bag-of-gold spacetimes, Euclidean wormholes, and inflation from domain walls in AdS/CFT*, JHEP 11 (2019) 040, arXiv:1909.02505 ✓. [S/T] Smooth Euclidean saddles never produce inflating bubbles in AdS; bags of gold are produced.
+* **de Alwis, Muia, Pasquarella, Quevedo** (2020) *Quantum transitions between Minkowski and de Sitter spacetimes*, Fortschr. Phys., doi:10.1002/prop.202000069, arXiv:1909.01975 ✓. [S] Hamiltonian/WDW; Mink→dS allowed, as in FGG; CdL reproduced.
+* **Céspedes, de Alwis, Muia, Quevedo** (2023/2024) *Quantum transitions, detailed balance, black holes and nothingness*, PRD 109, 105027, arXiv:2307.13614 ✓. [S] Up-tunnelling from dS, AdS and Minkowski; transitions as $M\to0$ limits of black-hole transitions; detailed balance with HH sign; for $M\ne0$ only in a mass range.
+* **Pasmatsiou** (2019) *Tunneling between Schwarzschild–de Sitter vacua*, arXiv:1906.11440 ✓. [N] Rates for true/false bubble nucleation and FGG in SdS; enhancement needs both a black hole and a cosmological constant.
+* **Gregory, Moss, Withers** (2014) *Black holes as bubble nucleation sites*, JHEP 03 (2014) 081, arXiv:1401.0017 ✓. [S] Conical-singularity contributions; remnant entropy decreases.
+* **Ulvestad, Albrecht** (2012) *Creating universes with thick walls*, PRD 85, 103527, arXiv:1202.5936 ✓. [N] Thick-wall FGG; ADM-mass lower bound; zero-mass solutions are thin-wall artefacts.
+* **Wang, Wu, Li, Wang** (2023, rev. 2025) *Impacts of wormholes on false vacuum bubble tunneling*, arXiv:2310.00284 ✓. [S] Extra instantons with wormholes; reduces to FGG without them.
+* **Sakai, Nakao, Ishihara, Kobayashi** (2006) *Is it possible to create a universe out of a monopole in the laboratory?*, PRD 74, 024026, gr-qc/0602084 ✓. [S] Stable → inflating monopole via domain-wall collision or tunnelling.
+* **Borde, Trodden, Vachaspati** (1999) PRD 59, 043513. (m) Baby universes in monopole collisions.
+* **Hayashi, Kamada, Oshita, Yokoyama** (2021) *Vacuum decay in the Lorentzian path integral*, arXiv:2112.09284 ✓. [S] Picard–Lefschetz; same exponent as Euclidean for critical bubbles.
+* **Feldbrugge, Lehners, Turok** (2017) *Lorentzian quantum cosmology*, PRD 95, 103508. (m) [S]
+
+## D. Baby universes and quantum information
+
+* **Coleman** (1988) NPB 307, 867 and NPB 310, 643; **Giddings, Strominger** (1988) NPB 306, 890; **Hawking** (1988) PRD 37, 904. (m) Euclidean wormholes, α-parameters.
+* **Marolf, Maxfield** (2020) *Transcending the ensemble...*, JHEP 08 (2020) 044. (m) Baby-universe Hilbert spaces.
+* **Sahu, Simidzija, Van Raamsdonk** (2023) *Bubbles of cosmology in AdS/CFT*, JHEP 11 (2023) 010, arXiv:2306.13143 ✓. Cosmological bubbles in Schwarzschild-AdS and their CFT duals.
+* **Frolov, Markov, Mukhanov** (1989/1990) PLB 216, 272; PRD 41, 383. (m) Limiting curvature, a de Sitter core instead of a singularity.
+
+## E. Novelty comparison for the results of Stage One
+
+| result | closest literature | difference |
+|---|---|---|
+| Lemma J1 (no spurious branches; only negative tension) | standard folklore (BKT, BGG) | stated and proved explicitly with the $X^2-Y^2$ identity |
+| Proposition G2 (chart-free itinerary) | BGG, Aguirre–Johnson diagrams | algorithmic, coordinate-free, cross-validated |
+| T0 (branch selection; slicing jump = horizon monodromy) | FGG slicing problem; FMP | identification of the jump with a monodromy of $P$ around $f=0$ appears new |
+| T1 (closed form + Morse identity at $M=0$) | Parke; de Alwis et al. | Morse form $S_E+(\sum A_{\max}-\sum A_{\min})/4G$ appears new |
+| T2/T3 (first law, Smarr identity) | Euclidean BH thermodynamics; Gregory–Moss–Withers | not found for FGG in accessible sources |
+| NG3 (exterior embedding obstruction) | FGG (observation), Fu–Marolf (AdS, smooth saddles) | theorem with explicit hypotheses, asymptotically flat |
+| T5 (laboratory exponent ≥ vacuum-decay exponent for $\gamma\gtrsim0.2$) | — | numerical proposition, appears new |
+
+All novelty claims are provisional until checked against the full texts (OPEN_PROBLEMS.md P-L1).
