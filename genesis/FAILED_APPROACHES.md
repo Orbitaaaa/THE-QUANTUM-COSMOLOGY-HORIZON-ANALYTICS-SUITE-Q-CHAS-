@@ -119,3 +119,29 @@ every digit and the absolute tolerance swamps the integral. One scenario showed 
 *Fix:* relative tolerances, and the cancellation-free angle $\theta={\rm atan2}(\kappa R\sqrt{V/f_{\rm in}f_{\rm out}},\,C)$ (`tunnelling.theta_stable`, from the proof of
 Theorem III-4). Stage One and Phase II–III results are unchanged (all tests pass). Their exponents were about 5000× above the old tolerance.
 **Type:** numerical, resolved.
+
+
+### F14. "Squaring removes the sign of the extrinsic curvature" (Phase III heuristic, corrected in the roadmap round)
+*Claim:* Phase III motivated the sector-blind (squared) quantization by saying that a Wheeler–DeWitt constraint, quadratic in the momenta,
+removes exactly the sign of $K_{\theta\theta}=A/R$.
+*Failure:* on any slice through the wall in the static domain, $(R'/\Lambda,\ GP_\Lambda/R)$ is the boosted $(A,\dot R)$ with invariant $f>0$. So
+$\mathrm{sign}(R'/\Lambda)=\mathrm{sign}(A)$ is boost-invariant **configuration** data, while the sign of $P_\Lambda$ (time orientation) is what squaring removes
+(ROADMAP Prop. Q9.1). The squared reduced constraint is therefore not the image of the squared bulk constraint. The real content of
+$B_{\rm an}$ vs $B_{\rm sq}$ is which conserved Casoratian charge is probability (ROADMAP Theorem Q9.3).
+**Type:** heuristic error, corrected; no Phase III theorem is affected.
+
+### F15. A seed black hole as a catalyst for daughter creation (Stage 4)
+*Tried:* a false-vacuum bubble around a black hole of mass $m$ (interior Schwarzschild–de Sitter), by analogy with black-hole catalysis of vacuum decay.
+*Result:* $V_{\rm seed}=V_{M-m}-2Gm/R$. The exponent falls only to $0.78B$ at $m=0.8M$ ($\chi=\kappa=1$, $M=0.3M_{\rm cr}$), and for $m\ge0.9M$ the initial wall leaves
+regime A. More importantly, with an eternal seed the interior side of the wall continues through the seed's bridge into a static SdS patch whose
+time-symmetric slice reaches the cosmological bifurcation sphere. That is a de Sitter equator: **the initial data already contain the daughter.**
+A collapse-formed seed has no such patch and falls under Prop. IV-1.
+**Type:** dead end with an instructive reason (`alternatives.SeededModel`).
+
+### F16. The finite-time "daughter edge" (Phase V Theorem V-1(ii), corrected in the roadmap round)
+*Claim:* the daughter channel ends at the interior de Sitter horizon at finite $t_\infty$, where $P\to\mp\infty$, so a quantum boundary condition is required.
+*Failure:* the divergence is $P\simeq\pm(R/2G)\ln|f_{\rm in}|$, a property of the static-frame momentum coordinate. After the canonical transformation
+$\tilde P=P\mp(R/2G)\ln|f_{\rm in}|$, the constraint and the true Hamiltonian are analytic across $f_{\rm in}=0$. $\tilde P$ is continuous and the flow is complete
+($t_\infty\to-\infty$ as $R\to\infty$). No boundary condition is needed (ROADMAP Theorem Q10.1). The daughter still needs its own clock, but for a different
+reason: the asymptotic clock runs backwards along every daughter (Theorem Q10.2).
+**Type:** interpretational error, corrected.

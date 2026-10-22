@@ -15,7 +15,7 @@
 \title{Universe creation by tunnelling from laboratory data:\\
 no manifold instanton, a unique canonical exponent, and a Smarr identity}
 \author{Project Baby Universe --- Genesis Branch}
-\date{21 October 2026 (Stage One manuscript, draft)}
+\date{21 October 2026 (Stage One manuscript, draft); addendum 22 October 2026}
 
 \begin{document}
 \maketitle
@@ -50,8 +50,8 @@ Fischler, Morgan and Polchinski found agreement within a Hamiltonian treatment \
 extended these transitions to all signs of the cosmological constant \cite{dealwis,cespedes}. Holographic arguments
 suggest that smooth saddles do not produce inflating bubbles \cite{Freivogel,FuMarolf}.
 
-This paper makes the FGG difficulties precise and removes the ambiguity in the exponent within the reduced canonical
-theory. Section~\ref{sec:setup} fixes the model and conventions. Section~\ref{sec:global} summarises the global
+This paper makes the FGG difficulties precise and fixes the branch of the exponent within the reduced canonical
+theory (see the Addendum: a residual ambiguity survives in the single-flip class). Section~\ref{sec:setup} fixes the model and conventions. Section~\ref{sec:global} summarises the global
 structure. Section~\ref{sec:obstruction} proves the embedding obstruction. Section~\ref{sec:canonical} fixes the
 branch of the canonical exponent. Sections~\ref{sec:M0}--\ref{sec:smarr} give the closed form at $M=0$, the first law
 and the Smarr identity. Section~\ref{sec:num} collects numerical results and Section~\ref{sec:disc} the limitations.
@@ -182,7 +182,7 @@ Numerically the identity holds to $2.5\times10^{-8}$ over 45 models.
 \section{Numerical results}\label{sec:num}
 Over regime A (laboratory data) the ratio $B/B(M\to0)$ is bounded below by $0.56$ for all $\gamma\in[-0.95,0.95]$, and by $1$
 for $\gamma\gtrsim0.2$, where $B(M\to0)=B_{\rm CdL}$ (Fig.~\ref{fig:B}). For GUT-like parameters,
-$\sigma^{1/3}=\rho^{1/4}=10^{16}$\,GeV ($M_{\rm cr}\approx5.6$\,g), $B=133$ only for picogram masses, while $B\approx7\times10^4$ at
+$\sigma^{1/3}=\rho^{1/4}=10^{16}$\,GeV ($M_{\rm cr}\approx5.6$\,g), $B=133$ only for nanogram (sub-Planckian, see Addendum) masses, while $B\approx7\times10^4$ at
 $10^{-3}M_{\rm cr}$ and $4\times10^6$ at $0.5M_{\rm cr}$.
 
 \begin{figure}[t]\centering
@@ -194,11 +194,38 @@ terms of the Smarr identity.}\label{fig:B}
 \section{Discussion and limitations}\label{sec:disc}
 The three obstructions to universe creation in an asymptotically flat parent, classical (Farhi--Guth), initial-data
 (bag-of-gold minimal sphere) and semiclassical (Theorem~\ref{thm:NG3}), share one origin: the creation of a closed
-marginally trapped surface in the exterior. Within the reduced canonical theory, the exponent is nevertheless
-unambiguous and covariantly expressible. Open problems: the exact quantum amplitude (an exact solution is possible at
+marginally trapped surface in the exterior. Within the reduced canonical theory, the branch of the exponent is fixed and the exponent is covariantly
+expressible; the remaining ambiguity is located in the Addendum. Open problems: the exact quantum amplitude (an exact solution is possible at
 $M=0$, where the constraint becomes an ODE in the momentum representation); whether Lorentzian path integrals select the
 same contour; prefactors; thick-wall versions of Theorems~\ref{thm:NG3} and \ref{thm:smarr}; non-spherical perturbations.
 Our novelty claims are provisional pending comparison with the full texts of \cite{FGG,FMP,dealwis,cespedes}.
+
+
+\section*{Addendum (22 October 2026): corrections and later results}
+This manuscript reports Stage One only. Later work (Phases II--VI and the roadmap round; the documents named below are in the
+accompanying repository) corrects or sharpens the following points.
+\begin{enumerate}
+\item \emph{The ambiguity is located, not removed} (PHASE\_III). Analyticity fixes the branch of $P$ (Proposition above), but every formulation
+hides the FGG datum in one place: the boost-angle convention of a flipped normal, equivalently the relative normalisation of the orientation
+sectors. Exactly one ambiguity survives: in the single-flip class two consistent exponents remain, $B_{\rm an}$ and
+$B_{\rm sq}=\frac2G\int R\arccos|C|\,dR<B_{\rm an}$, with a universal Stokes multiplier $\sqrt2$. The multiplier is now confirmed by exact integration of the
+momentum-space squared constraint at $M=0$.
+\item \emph{Where the ambiguity lives} (ROADMAP Theorem S4). A laboratory transition is double-flip, hence unambiguous, iff $\kappa<\chi$ and
+$M<M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$; the boundary is $R_2=1/\chi$. In the single-flip class, a sector-independent probability current gives
+$2e^{-B_{\rm sq}}$, while $e^{-B_{\rm an}}$ requires an entropy-weighted daughter measure (ROADMAP Q9.3--Q9.4).
+\item \emph{T5 status} (ROADMAP Part A). For light walls, T5 is a theorem with an explicit universal law
+$B=B_{\rm CdL}\,\Phi\big((R_{\rm CdL}/R_M)^2\big)\ge4\pi^2\sigma^2R_M^2/\rho$. It implies the frontier
+$B\ge\frac43\sqrt{\pi/2}\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$, so in any semiclassically controlled regime $P\le10^{-23}$. Elsewhere $B\ge0.564\,B(0)$ remains
+numerical.
+\item \emph{Masses} (PHASE\_V). ``Picogram'' should read nanogram. These masses are below the Planck mass, so the black hole is not semiclassical. For
+$M\gtrsim10m_P$ the GUT exponent is $B\gtrsim7\times10^4$.
+\item \emph{The daughter needs no boundary condition, but the clock folds back} (ROADMAP Part D). The finite-time ``edge'' of the daughter channel is a
+coordinate singularity of the static-frame momentum. Along every daughter $dt_\infty/d\tau<0$ (region III), so unitary boundary-clock evolution produces the
+time-reversed daughter. The expanding daughter is a negative-flux (Klein-type) channel. This is consistent with the holographic and GSL obstructions
+\cite{Freivogel,Wall}.
+\item \emph{Literature.} The FMP abstract states that agreement with the Euclidean method requires degenerate metrics \cite{FMP}; Ansoldi and Tanaka resolve
+slicing discrepancies with a smooth time slice \cite{AT}. Both are consistent with the results above. A full-text comparison is still pending.
+\end{enumerate}
 
 \begin{thebibliography}{99}
 \bibitem{BGG} S.~K.~Blau, E.~I.~Guendelman, A.~H.~Guth, Phys.\ Rev.\ D \textbf{35}, 1747 (1987).
@@ -217,5 +244,6 @@ Our novelty claims are provisional pending comparison with the full texts of \ci
 \bibitem{Wall} A.~C.~Wall, Class.\ Quant.\ Grav.\ \textbf{30}, 165003 (2013).
 \bibitem{Penrose} R.~Penrose, Phys.\ Rev.\ Lett.\ \textbf{14}, 57 (1965).
 \bibitem{Parke} S.~Parke, Phys.\ Lett.\ B \textbf{121}, 313 (1983).
+\bibitem{AT} S.~Ansoldi, T.~Tanaka, J.\ Exp.\ Theor.\ Phys.\ \textbf{120}, 460 (2015), arXiv:1410.6202.
 \end{thebibliography}
 \end{document}

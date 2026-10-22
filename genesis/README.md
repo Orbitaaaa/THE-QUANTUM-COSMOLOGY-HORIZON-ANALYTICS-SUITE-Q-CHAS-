@@ -11,6 +11,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[DELIVERABLE_1_FOUNDATIONS.md](DELIVERABLE_1_FOUNDATIONS.md)**: the Stage One report (all 14 required items).
 * **[RESULTS.md](RESULTS.md)**: verified results, labelled theorem / numerical proposition / reproduction.
 * **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
+* **[ROADMAP_STAGE1_2_4.md](ROADMAP_STAGE1_2_4.md)**: the roadmap round (Stages 1, 2 and 4). The universal laboratory-exponent law
+  $B=B_{\rm CdL}\Phi$ and the semiclassical frontier ($P\le10^{-23}$). Exactly where the FGG ambiguity lives. P-Q2 closed. The daughter edge removed.
+  The asymptotic clock folds back (Klein-type creation). The alternative-mechanism ledger and the "five numbers".
 * **[PHASE_II_VERIFICATION.md](PHASE_II_VERIFICATION.md)**: independent verification (40-digit re-implementation, positivity
   lemma, NG4 critical-limit theorem, SdS Smarr identity, the Euclidean winding question).
 * **[PHASE_V_QUANTUM_SYSTEM.md](PHASE_V_QUANTUM_SYSTEM.md)**: the reduced quantum system: two inequivalent channel ends (the daughter
@@ -70,17 +73,25 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **IV (fields).** The full Einstein–scalar evolution reproduces the thin-wall picture. Laboratory bubbles collapse to black holes and never
   develop an anti-trapped region (Prop. IV-1, valid for any NEC matter). Both inflating daughter branches exist as field-theory solutions,
   but only from data that already lie beyond a bridge, in a white hole, or beyond a cosmological horizon.
-* **V (quantum system).** The reduced quantum theory is a scattering problem. The parent channel ends at $t=\infty$; the daughter channel at
-  finite $t$, where it needs its own clock. The daughter is invisible to every exterior observable. The transition preserves spatial topology
+* **V (quantum system).** The reduced quantum theory is a scattering problem. The parent channel ends at $t=\infty$. The daughter channel's finite-$t$ "edge"
+  was later shown to be a coordinate singularity (roadmap F16); the daughter needs its own clock because the boundary clock folds back. The daughter is invisible to every exterior observable. The transition preserves spatial topology
   and creates a throat.
 * **VI (observability).** Individually undetectable. Laboratory creation: best conceivable case $P\le10^{-46}$, at the edge of validity near the
   Planck scale. The only unsuppressed route is cosmological, with a characteristic black-hole mass $M_*\approx5.6\,{\rm g}\,(10^{16}\,{\rm GeV}/E_{\rm vac})^2$.
+
+## Roadmap round in brief
+
+* **Suppression is a theorem for light walls:** $B_{\rm lab}=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)\ge4\pi^2\sigma^2R_M^2/\rho$, and
+  $B_{\rm lab}\ge1.67\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$. No controlled laboratory transition has $P>10^{-23}$.
+* **The FGG ambiguity** exists only for $M>M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$ or $\kappa\ge\chi$. Where it exists, it is the choice of which conserved charge is probability.
+* **The daughter** needs no boundary condition, but the parent's clock runs backwards along it. Boundary-unitary evolution produces the time-reversed daughter.
+* **Stage 4:** no alternative mechanism escapes within GR plus quantum fields obeying energy inequalities.
 
 ## Code, data, figures
 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
-                     doublenull, stability, quantum_system, observability
+                     doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -91,8 +102,8 @@ Reproduce (Python ≥ 3.10):
 
 ```bash
 pip install -r genesis/CODE/requirements.txt
-cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI)
-cd .. && python -m pytest tests -q                # 106 tests
+cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap)
+cd .. && python -m pytest tests -q                # 126 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

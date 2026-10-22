@@ -82,6 +82,22 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R39 | **Loophole search**: minimise $B$ over vacuum and wall scales under metastability, semiclassical black hole and WKB validity. Best laboratory case $B=107$, $P\le10^{-46.5}$ ($M=10\,m_{\rm Pl}$, $\rho^{1/4}\approx9\times10^{17}$ GeV), $10^{-656}$ for $M=100\,m_{\rm Pl}$. The optimum always sits at the edge of validity. Prop. IV-1 extends to any NEC matter | computation + Theorem |
 | R38 | $M_{\rm cr}\to1/(2GL)$ as $\kappa/\chi\to0$ (analytic + $2\times10^{-6}$). Characteristic daughter-hosting black-hole mass $M_*\approx5.6\,{\rm g}\,(10^{16}{\rm GeV}/E_{\rm vac})^2$, which maps vacuum scales to PBH windows (asteroid window: $E_{\rm vac}\approx2\times10^5$–$7\times10^7$ GeV) | Theorem (limit) + scale estimate |
 
+## Roadmap round: Stages 1, 2 and 4 (ROADMAP_STAGE1_2_4.md)
+
+| # | result | label |
+|---|---|---|
+| R40 | **Lemma S1 / Theorem S2**: $B_{\rm an}\ge B_{\rm sq}\ge\frac{2\kappa}G\int R^2\sqrt{V/f_{\rm in}f_{\rm out}}\ge\frac{2\pi\kappa^2R_1^2f_{\rm out}(R_1)}{G(L^2+4GM/R_1^3)\sqrt{f_{\rm in}(R_1)f_{\rm out}(R_2)}}$, asymptotically sharp for light walls | Theorem |
+| R41 | **Theorem S3 (thin-barrier law)**: $B_{\rm lab}=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)(1+O(\kappa^2/\chi^2))$, $\Phi\ge\max(1,8/3E+2/3)$, so $B_{\rm lab}\ge4\pi^2\sigma^2R_M^2/\rho$ (no $G$). Checked to $6.5\times10^{-6}$ | Theorem (fixed $E$); Prop-N (uniform; even inequality) |
+| R42 | **Corollary S7 (frontier)**: $B_{\rm lab}\ge\frac43\sqrt{\pi/2}\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$. Controlled regime ($B_{\rm CdL}\ge10$, $M\ge m_P$, $R_M\ge100\ell_P$): $P\le10^{-23}$ | Theorem (given S3) |
+| R43 | **Theorem S4**: double flip ⇔ $\kappa<\chi$ and $M<M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$ (boundary $R_2=1/\chi$). The FGG ambiguity lives only in the single-flip class | Theorem |
+| R44 | **Theorem S5**: an explicit pointwise criterion for $\Delta t^W_E<0$ (sufficient: $E/E_{AB}\ge\max\omega(z_i)$, $\omega=z^2/12+7/6z$); hence $B\ge B_{\rm CdL}$ in the double-flip class where it holds | Theorem; thresholds Prop-N |
+| R45 | **P-Q2 closed**: exact momentum-space integration gives Stokes multiplier $\to\sqrt2$ for three orderings, four parameter sets; controls $\nu=0,-1$ | Proposition-N (exact numerics) |
+| R46 | **Q9.1–Q9.4**: orientation = boost-invariant configuration data; the squared families are two conventions for one daughter; Casoratian charges $q^{-n}$; sector-independent probability gives $2e^{-B_{\rm sq}}$, an entropy-weighted measure gives $e^{-B_{\rm an}}$ | Theorem (+ principle) |
+| R47 | **Q10.1**: the daughter edge is a coordinate singularity ($\tilde P=P\mp\frac R{2G}\ln|f_{\rm in}|$); no boundary condition (corrects R32) | Theorem + numerics |
+| R48 | **Q10.2–Q10.3**: $dt_\infty/d\tau<0$ on every daughter. The boundary clock folds back; unitary boundary evolution yields the time-reversed daughter; the expanding daughter is a negative-flux (Klein-type) channel, $|\beta|^2\simeq e^{-B}$ | Theorem (reduced model); interpretation flagged |
+| R49 | **Stage 4 ledger**: seed BH (F15), QEI species bound $N\ge\frac83S_{\rm dS}$ (cutoff $0.35H$), dS parent $e^{-3\times10^{122}}$, GVZ cosmological route, monopoles, FMM. No laboratory mechanism beats $B\gtrsim B_{\rm CdL}$ | Propositions + literature |
+| R50 | **Five numbers** (controlled optimum): $E_{\rm req}\approx3\times10^{17}$ GeV, $L_{\rm req}\approx100\ell_P$, $\tau_{\rm req}\lesssim5\times10^{-42}$ s, $P\le10^{-23}$, $S_{\rm verify}=0$ | computation |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

@@ -208,6 +208,12 @@ $B\ge B(0)=B_{\rm CdL}$: **creating a daughter universe from laboratory data is 
 the CdL decay of the same false vacuum**. For all $\gamma$, $B\ge0.56\,B(0)$. The minimum over regime A sits at the
 A/B boundary, where the initial wall touches the horizon ($R_1=2GM$, Proposition G1(iii)).
 
+**Roadmap update (ROADMAP_STAGE1_2_4.md Part A).**
+* For light walls, T5 is now a theorem with an explicit law, $B=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)\ge B_{\rm CdL}$, $B_{\rm lab}\ge4\pi^2\sigma^2R_M^2/\rho$ (Theorem S3).
+* In the double-flip class $B\ge B_{\rm CdL}$ holds wherever an explicit criterion for $\Delta t^W_E<0$ holds (Theorem S5).
+* Rigorous closed-form lower bounds: Lemma S1, Theorem S2.
+* The infimum 0.5640 sits at the A/B boundary as $\gamma\to-1$.
+
 ### T6. Physical scales
 
 Using $B(\chi,\kappa,M,G)=b(\kappa/\chi,GM\chi)/G\chi^2$ (`DATA/physical_scales.json`; Planck units, $\rho=E_{\rm vac}^4$, $\sigma=E_{\rm wall}^3$):

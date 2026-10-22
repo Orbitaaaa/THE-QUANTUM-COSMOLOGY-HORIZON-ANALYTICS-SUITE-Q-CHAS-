@@ -60,6 +60,20 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Sahu, Simidzija, Van Raamsdonk** (2023) *Bubbles of cosmology in AdS/CFT*, JHEP 11 (2023) 010, arXiv:2306.13143 ✓. Cosmological bubbles in Schwarzschild-AdS and their CFT duals.
 * **Frolov, Markov, Mukhanov** (1989/1990) PLB 216, 272; PRD 41, 383. (m) Limiting curvature, a de Sitter core instead of a singularity.
 
+## D′. Added in the roadmap round (abstract-level verification only; full texts unavailable here)
+
+* **Fischler, Morgan, Polchinski** (1990) PRD 42, 4042, *Quantization of false vacuum bubbles: a Hamiltonian treatment of gravitational tunneling*. Dirac + WKB;
+  agreement with the Euclidean method requires metrics with degeneracies; questions the Hartle–Hawking wave function. Consistent with NG3 and Prop. III-3.
+* **Ansoldi, Tanaka** (2015) JETP 120, 460, arXiv:1410.6202, *Tunnelling with wormhole creation*. The discrepancies come from the static-chart time and are removed by a
+  smooth slicing in a canonical treatment. Consistent with T0 and ROADMAP D1–D2.
+* **Sakai, Nakao, Ishihara, Kobayashi** (2006) PRD 74, 024026, arXiv:gr-qc/0602084. Thin-shell monopole: stable / collapse / inflate; a stable monopole can become
+  inflating by a domain-wall collision or by tunnelling.
+* **Garriga, Vilenkin, Zhang** (2016) JCAP 02 (2016) 064, arXiv:1512.01819, *Black holes and the multiverse*. Bubbles nucleated during inflation become black holes;
+  above a critical mass the interior inflates into a baby universe connected by a wormhole.
+* **Carroll, Chen** (2004) arXiv:hep-th/0410270, *Spontaneous inflation and the origin of the arrow of time*. Cited only as an analogy for the two-arrow reading of Q10.3.
+* **Ford, Roman** (1995–97); **Fewster, Eveson** (1998). Quantum inequality $\langle\rho\rangle\ge-3/32\pi^2t_0^4$ for Lorentzian sampling (massless scalar, 4D). Fewster–Eveson is
+  tighter (9/64). Used in ROADMAP E2.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |
@@ -70,6 +84,7 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 | T1 (closed form + Morse identity at $M=0$) | Parke; de Alwis et al. | Morse form $S_E+(\sum A_{\max}-\sum A_{\min})/4G$ appears new |
 | T2/T3 (first law, Smarr identity) | Euclidean BH thermodynamics; Gregory–Moss–Withers | not found for FGG in accessible sources |
 | NG3 (exterior embedding obstruction) | FGG (observation), Fu–Marolf (AdS, smooth saddles) | theorem with explicit hypotheses, asymptotically flat |
-| T5 (laboratory exponent ≥ vacuum-decay exponent for $\gamma\gtrsim0.2$) | — | numerical proposition, appears new |
+| T5 (laboratory exponent ≥ vacuum-decay exponent for $\gamma\gtrsim0.2$) | — | numerical proposition, appears new; roadmap: theorem for light walls with the universal law $\Phi$ (S3) |
+| S3/S7 (thin-barrier law, frontier), S4 (flip class), Q10.2–Q10.3 (clock fold, Klein-type creation) | Freivogel et al. 2006 (boundary unitarity) | not found in accessible sources |
 
 All novelty claims are provisional until checked against the full texts (OPEN_PROBLEMS.md P-L1).

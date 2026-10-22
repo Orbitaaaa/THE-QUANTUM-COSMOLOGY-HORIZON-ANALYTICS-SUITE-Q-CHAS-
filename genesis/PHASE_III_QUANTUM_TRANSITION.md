@@ -197,6 +197,11 @@ $e^{\pi u/\hbar G}$ of Theorem III-2(c), so it does not distinguish orientation 
 bulk-plus-shell system plausibly leads here: the bulk Hamiltonian constraint is quadratic in the gravitational momenta, and the sign of
 the extrinsic curvature $K_{\theta\theta}=A/R$ is exactly the sign that squaring removes. This motivation is **heuristic**.
 
+> **Roadmap note (F14).** The heuristic above is wrong in the full theory: the orientation is boost-invariant configuration data (sign of $R'/\Lambda$), and
+> Wheeler–DeWitt squaring removes the time orientation instead (ROADMAP Prop. Q9.1). The two families of the squared constraint are two phase conventions
+> for the same daughter, distinguished by their conserved Casoratian charge (Theorem Q9.3). The Stokes multiplier $\sqrt2$ below is confirmed by exact
+> integration (ROADMAP Part B).
+
 Its symbol has a **double point** wherever $C=0$, at $(u_q,\,P_q=i\pi/2G)$. There the branches $\theta$ and $\pi-\theta$ coalesce.
 
 > **Lemma III-9 (where coalescence happens).** $N(R)\equiv f_{\rm in}+f_{\rm out}-\kappa^2R^2=2-(\chi^2+\eta^2+\kappa^2)R^2-2GM/R$ is strictly concave on
@@ -310,6 +315,10 @@ $P_{\rm daughter}\simeq2\,e^{-B_{\rm sq}/\hbar}$ (single flip) or $e^{-B_{\rm an
 favour resolving it; Wheeler–DeWitt quantization of a constraint quadratic in the momenta favours blindness). Equivalently, whether
 the inner product of the full theory anchors the daughter as in Sec. 6. Neither (C2) nor the squared alternative is derived here from a
 gravitational path integral.
+
+**Roadmap update.** (1) Theorem S4: the double-flip class is exactly $\kappa<\chi$, $M<M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$, which covers all but a sliver
+$\simeq\kappa^2/2\chi^2$ of the physically relevant (light-wall) range. (2) Corollary Q9.4: if probability is one sector-independent current (the laboratory's),
+the canonical answer is $2e^{-B_{\rm sq}}$. The primary choice $B_{\rm an}$ corresponds to an entropy-weighted daughter measure.
 
 **For observational bounds (Phase VI)** we use the smaller exponent, $B_{\rm sq}=\min(B_{\rm an},B_{\rm sq})$. That is the optimistic choice, so any
 inaccessibility conclusion holds under either quantization.

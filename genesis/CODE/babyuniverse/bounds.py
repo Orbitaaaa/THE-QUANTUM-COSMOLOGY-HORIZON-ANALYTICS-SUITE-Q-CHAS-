@@ -196,3 +196,35 @@ def minimum_exponent(B_survive: float, M_planck: float, rho_planck: float) -> fl
     B_min = 4 pi sqrt(2 B_survive / 27) (3 M / 4 pi)^(2/3) rho^(-1/6)."""
     return float(4 * np.pi * np.sqrt(2 * B_survive / 27) * (3 * M_planck / (4 * np.pi)) ** (2 / 3)
                  * rho_planck ** (-1 / 6))
+
+
+# ------------------------------------------------------------------ Corollary S7: the semiclassical frontier
+def h_even_defect(s: float) -> float:
+    """(h(s) + h(-s))/2 - 1/3 - s^2/3 with h(s) = z^5/(z^3+2), z^3 - s z^2 - 1 = 0.  Non-negative (checked on
+    s in [1e-3, 1e4]; ~ 0.48 s^4 at 0 and ~ s^2/6 at infinity), which gives Phi(E) >= 8/(3E) + 2/3."""
+    def z(x):
+        return brentq(lambda zz: zz**3 - x * zz**2 - 1, 1e-12, abs(x) + 3, xtol=1e-15)
+
+    def h(x):
+        zz = z(x)
+        return zz**5 / (zz**3 + 2)
+    return float(0.5 * (h(s) + h(-s)) - 1 / 3 - s * s / 3)
+
+
+FRONTIER_CONST = 4 * np.pi * np.sqrt(2 / 27) * np.sqrt(3 / (4 * np.pi))     # = (4/3) sqrt(pi/2) = 1.6711
+
+
+def frontier_bound(B_CdL: float, M_planck: float, R_lP: float) -> float:
+    """B_lab >= (4/3) sqrt(pi/2) sqrt(B_CdL * M/m_P * R_M/l_P) for every thin-barrier laboratory transition
+    (from B_lab >= 4 pi^2 sigma^2 R_M^2 / rho, B_CdL = 27 pi^2 sigma^4 / (2 rho^3), M = (4 pi/3) rho R_M^3)."""
+    return float(FRONTIER_CONST * np.sqrt(B_CdL * M_planck * R_lP))
+
+
+def frontier_optimum(B_survive: float, M_min: float, R_min: float) -> dict:
+    """Vacuum scale at which the frontier bound is attained: rho* = 3 M_min / (4 pi R_min^3)."""
+    rho = 3 * M_min / (4 * np.pi * R_min**3)
+    B = frontier_bound(B_survive, M_min, R_min)
+    sigma = (2 * B_survive * rho**3 / (27 * np.pi**2)) ** 0.25
+    return dict(B_min=B, log10_P_max=float(-B / np.log(10)), E_vac_GeV=float(rho**0.25 * 1.22e19),
+                E_wall_GeV=float(sigma ** (1 / 3) * 1.22e19), R_CdL_lP=float(3 * sigma / rho),
+                kappa_over_chi=float(np.sqrt(6 * np.pi * sigma**2 / rho)))

@@ -52,6 +52,12 @@ The reduced Hamiltonian is a real function only on the static–static domain $f
 > statement). A boundary condition at the edge is required: a reflecting self-adjoint extension, or an outgoing (absorbing) condition with a
 > daughter Hilbert space adjoined.
 
+> **Correction (roadmap round, ROADMAP_STAGE1_2_4.md Part D, FAILED_APPROACHES F16).** Part (ii) is wrong as an obstruction. The divergence of $P$ at
+> $f_{\rm in}=0$ is a coordinate singularity of the static-frame momentum. $\tilde P=P\mp(R/2G)\ln|f_{\rm in}|$ is continuous, the constraint and $H(u,\tilde P)$ are
+> analytic across the interior horizon, and the daughter flow is complete: **no boundary condition is needed.** What survives, in sharper form, is the
+> need for a daughter clock. Along every daughter $dt_\infty/d\tau<0$ (region III), so the boundary clock folds back (Theorem Q10.2), and the physically
+> expanding daughter is a negative-flux channel of the $t_\infty$-evolution (Corollary Q10.3).
+
 **Numerical verification** (six masses, $\chi=\kappa=1$):
 * the parent time grows by $2GM$ per e-fold of the distance to the horizon (measured slope / $2GM$ = 1.0000–1.0002);
 * the daughter time converges to 0.0204, 0.0888, 0.1989, 0.4385, 0.6869, 1.5209 for $M=0.02\dots0.36$;

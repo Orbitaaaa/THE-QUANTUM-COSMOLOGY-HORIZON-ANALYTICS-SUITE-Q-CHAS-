@@ -82,3 +82,15 @@ def test_laboratory_law_reproduces_phase_vi_optimum():
     gut = Bd.laboratory_law(1e16, 1e16, 0.5 * 5.59 / 2.176e-5)
     assert abs(gut["B_law"] / 4.4e6 - 1) < 0.02                      # TUNNELLING T6 table
     assert abs(Bd.minimum_exponent(1.0, 1.0, 1.0) - 1.3165) < 1e-3
+
+
+def test_phi_lower_bound_and_frontier():
+    for s in (1e-2, 0.3, 1.0, 3.0, 30.0, 3e3):
+        assert Bd.h_even_defect(s) >= -1e-12
+    for E in (1e-3, 0.1, 1.0, 5.0):
+        assert Bd.Phi(E) >= 8 / (3 * E) + 2 / 3 - 1e-9
+    assert abs(Bd.FRONTIER_CONST - 4 / 3 * np.sqrt(np.pi / 2)) < 1e-12
+    lab = Bd.laboratory_law(9e17, 0.8 * 9e17, 10.0)
+    assert lab["B_law"] >= Bd.frontier_bound(lab["B_flat"], 10.0, lab["R_M_lP"]) * (1 - 1e-9)
+    opt = Bd.frontier_optimum(10.0, 1.0, 100.0)
+    assert 52 < opt["B_min"] < 54 and opt["kappa_over_chi"] < 0.1
