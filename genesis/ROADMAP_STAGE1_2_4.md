@@ -149,7 +149,17 @@ All optima have $\kappa/\chi\le0.16$, inside the validity of S3. **Check against
 | $(10, m_P, 1000\ell_P)$ | 167.1 | 173.8 | 10.0 | $883\ell_P$ | $1.2\times10^{-8}$ |
 | $(10, 10m_P, 100\ell_P)$ | 167.1 | 171.9 | 9.84 | $89\ell_P$ | $1.4\times10^{-4}$ |
 
-The excess over the bound is almost exactly $\tfrac23B_{\rm CdL}$, the next term of $\Phi$. All three are double-flip, so there is no FGG ambiguity. **There is no semiclassically controlled laboratory transition with
+The excess over the bound is almost exactly $\tfrac23B_{\rm CdL}$, the next term of $\Phi$. All three are double-flip, so there is no FGG ambiguity.
+
+**What sets the frontier (validity remarks).**
+* *Quantum backreaction* is negligible there. The conformal-anomaly energy density in the false vacuum is $N H^4/960\pi^2$; relative to $\rho$ it is $NH^2/360\pi\approx2\times10^{-9}N$ at the
+  first optimum.
+* *Semiclassical geometry* is the binding constraint. That is why $R_{\min}$ is a parameter; the bound scales as $\sqrt{R_{\min}}$.
+* *The thin-wall EFT* must also hold. A scalar wall has thickness $\delta\sim v^2/\sigma$ (vev $v$, mass $m\sim\sigma/v^2$), and $\delta\ll R_{\rm CdL}=3\sigma/\rho$ requires
+  $v\ll\sqrt3\,\sigma/\sqrt\rho=m_P(\kappa/\chi)/\sqrt{2\pi}$. At the first optimum this is $v\ll0.02\,m_P$, with scalar mass $m\gtrsim0.014\,m_P$. Light walls
+  ($\kappa\ll\chi$) are thin only for small vevs and near-Planckian scalar masses at these scales.
+* So the controlled region ends close to where Corollary S7 puts it. Pushing $R_{\min}$ to a few $\ell_P$ would allow $P\sim e^{-10}$, but only in a regime where none of
+  these approximations hold. **There is no semiclassically controlled laboratory transition with
 $P\gtrsim10^{-23}$.** Higher probabilities require $R_M\lesssim20\,\ell_P$ or sub-Planckian black holes, where the theory used here is not trustworthy.
 
 ### A5. Theorem S4 (flip class; where the FGG ambiguity lives) — [Theorem]
