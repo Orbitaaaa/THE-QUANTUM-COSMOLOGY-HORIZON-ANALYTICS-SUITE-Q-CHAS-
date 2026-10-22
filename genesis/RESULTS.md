@@ -98,6 +98,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R49 | **Stage 4 ledger**: seed BH (F15), QEI species bound $N\ge\frac83S_{\rm dS}$ (cutoff $0.35H$), dS parent $e^{-3\times10^{122}}$, GVZ cosmological route, monopoles, FMM. No laboratory mechanism beats $B\gtrsim B_{\rm CdL}$ | Propositions + literature |
 | R51 | **SdS non-flip window**: near-side daughters ($\varepsilon_{\rm out}(R_2)=+1$, no NG3 obstruction) exist only for $\eta\gtrsim0.76$–$0.86\chi$; closed for our universe | Proposition-N |
 | R52 | **SdS conformal atlas**: eight Kruskal-glued blocks; wall worldlines timelike, future-directed and continuous across all horizons (84/84 branches) | construction + numerical check |
+| R53 | **Cosmological route (scaling)**: $f(M)\simeq\frac{4\pi}3\lambda(M_{\rm eq}/M)^{1/2}$; all dark matter in $10^{20}$ g daughter hosts needs $\lambda\approx10^{-16}$ ($B_{\rm inf}\approx37$) | Proposition (scaling) |
 | R50 | **Five numbers** (controlled optimum): $E_{\rm req}\approx3\times10^{17}$ GeV, $L_{\rm req}\approx100\ell_P$, $\tau_{\rm req}\lesssim5\times10^{-42}$ s, $P\le10^{-23}$, $S_{\rm verify}=0$ | computation |
 
 ## Statement for a general audience

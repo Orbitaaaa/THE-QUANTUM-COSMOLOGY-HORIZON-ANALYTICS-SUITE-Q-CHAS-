@@ -54,7 +54,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Phase VI — observability
 
-* **P-O2.** Derive the mass function of daughter-hosting PBHs from bubble nucleation during inflation (FRW embedding of the thin-wall and
+* **P-O2 (scaling done, roadmap E4).** $f(M)\simeq\frac{4\pi}3\lambda(M_{\rm eq}/M)^{1/2}$. Open: GVZ formation efficiencies and the supercritical fraction. Original text: Derive the mass function of daughter-hosting PBHs from bubble nucleation during inflation (FRW embedding of the thin-wall and
   Phase IV dynamics); Phase VI supplies only the characteristic mass $M_*\simeq1/(2GL)$.
 * **P-O1.** Rates of daughter production by vacuum transitions in the early universe (bubbles nucleated during inflation,
   Garriga–Vilenkin–Zhang; Deng–Garriga–Vilenkin) versus laboratory rates. Translate T5 into a statement about

@@ -189,3 +189,21 @@ def sds_nonflip_threshold(kappa: float, chi: float = 1.0, iters: int = 25) -> fl
         else:
             lo = mid
     return float(hi / chi)
+
+
+# ------------------------------------------------------------------ cosmological route: mass function (P-O2, scaling)
+M_EQ_G = 6e50          # horizon mass at matter-radiation equality, ~3e17 solar masses (order of magnitude)
+
+
+def gvz_fraction(lam: float, M_g: float) -> float:
+    """Bubbles nucleated during inflation at rate lam H^4: comoving number per log radius dn/dln r = lam / r^3, so a fraction
+    (4 pi/3) lam of space per e-fold; horizon re-entry in radiation gives M ~ r^2 and the energy fraction grows ~ a ~ M^(1/2)
+    until equality:  f(M) = (1/rho_DM) d rho / d ln M ~ (4 pi/3) lam (M_eq / M)^(1/2)   (O(1) formation efficiencies omitted)."""
+    return float(4 * np.pi / 3 * lam * np.sqrt(M_EQ_G / M_g))
+
+
+def gvz_lambda_for(f: float, M_g: float) -> dict:
+    """Nucleation rate needed for a dark-matter fraction f per log mass at M, and the corresponding inflationary
+    tunnelling exponent B_inf = -ln(lam)."""
+    lam = f / (4 * np.pi / 3 * np.sqrt(M_EQ_G / M_g))
+    return dict(lam=float(lam), B_inf=float(-np.log(lam)))

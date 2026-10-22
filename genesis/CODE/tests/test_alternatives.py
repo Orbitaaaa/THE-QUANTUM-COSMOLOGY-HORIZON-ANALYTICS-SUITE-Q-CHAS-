@@ -57,3 +57,9 @@ def test_sds_atlas_worldlines_are_timelike_and_continuous():
                 assert [p["block"] for p in w] == expect
             else:
                 assert [p["block"] for p in w] == ["WH", "I", "I", "BH"]
+
+
+def test_gvz_scaling():
+    assert abs(Al.gvz_fraction(1e-16, 1e20) / Al.gvz_fraction(1e-16, 4e20) - 2) < 1e-12
+    r = Al.gvz_lambda_for(1.0, 1e20)
+    assert 30 < r["B_inf"] < 45

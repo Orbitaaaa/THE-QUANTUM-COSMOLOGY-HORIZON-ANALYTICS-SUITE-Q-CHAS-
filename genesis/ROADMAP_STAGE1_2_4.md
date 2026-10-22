@@ -10,7 +10,7 @@ stated coverage; **[Conjecture]**; **[Interpretation]**.
 
 Code: `CODE/babyuniverse/bounds.py`, `stokes_exact.py`, `daughter.py`, `alternatives.py`; script
 `CODE/scripts/roadmap_analysis.py`; data `DATA/roadmap_stage1_2_4.json`; figure `FIGURES/roadmap_stage1_2_4.png`;
-tests `CODE/tests/test_bounds.py` (11), `test_stokes_exact.py` (4), `test_daughter.py` (4), `test_alternatives.py` (5); full suite 130.
+tests `CODE/tests/test_bounds.py` (11), `test_stokes_exact.py` (4), `test_daughter.py` (4), `test_alternatives.py` (6); full suite 131.
 
 ---
 
@@ -415,6 +415,17 @@ $-C_{FR}N/2r^2$. Hence $r\le\sqrt{4\pi C_{FR}N}\,\ell_P$. An inflating daughter 
 $N\ge1/(4\pi C_{FR}\chi^2)=\tfrac83S_{\rm dS}$ for every vacuum scale. The species scale $m_P/\sqrt N$ then lies at $0.35H$, below the daughter's own Hubble rate.
 The semiclassical description of the daughter fails exactly where the NEC violation becomes strong enough. [Proposition, scaling with O(1) constants.]
 The Fewster–Eveson bound is tighter by 9/64, so the estimate is conservative.
+
+**E4. The cosmological route quantified (P-O2, scaling level) [Proposition].** Take bubbles nucleated during inflation at rate $\lambda H_i^4$
+(Garriga–Vilenkin–Zhang).
+* Each bubble grows to the comoving horizon at nucleation, so $dn/d\ln r=\lambda/r^3$. A fraction $\frac{4\pi}3\lambda$ of space is filled per e-fold.
+* Bubbles re-enter in the radiation era with $M\propto r^2$, and their energy fraction grows $\propto a\propto M^{1/2}$ until equality. Hence
+  $$f(M)\equiv\frac1{\rho_{\rm DM}}\frac{d\rho}{d\ln M}\simeq\frac{4\pi}3\,\lambda\,\Big(\frac{M_{\rm eq}}M\Big)^{1/2},\qquad M_{\rm eq}\approx3\times10^{17}M_\odot ,$$
+  with $O(1)$ formation efficiencies omitted.
+* All of the dark matter in asteroid-mass ($10^{20}$ g) daughter-hosting black holes needs $\lambda\approx10^{-16}$, i.e. an inflationary tunnelling exponent
+  $B_{\rm inf}\approx37$. The daughter interpretation also needs $M>M_{\rm cr}$, i.e. $E_{\rm vac}\approx2\times10^6$ GeV (Phase VI).
+* Contrast: the laboratory frontier is $B\ge53$ per bubble, at $E_{\rm vac}\approx3\times10^{17}$ GeV and $R\approx100\,\ell_P$. The cosmological route is not
+  exponentially harder, but it cannot be run on demand (`alternatives.gvz_fraction`).
 
 **E3. The de Sitter parent: a non-flip window [Proposition-N].** In a Schwarzschild–de Sitter parent ($\eta>0$), Prop. G1 ($\varepsilon_{\rm out}(R_2)=-1$) can fail.
 A laboratory-type transition ($\varepsilon_{\rm out}(R_1)=+1$, wall in the static region) can then land on a daughter born on the *near* side of the
