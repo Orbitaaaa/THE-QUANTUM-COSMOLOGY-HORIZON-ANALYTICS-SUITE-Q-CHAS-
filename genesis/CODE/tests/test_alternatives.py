@@ -35,3 +35,11 @@ def test_ds_parent_and_fmm_numbers():
     f = Al.fmm_junction(1.0)
     assert f["inside_horizon"] and abs(f["M_min"] - 0.9306) < 1e-3
     assert len(Al.mechanism_ledger()) >= 9
+
+
+def test_sds_nonflip_window_needs_comparable_parent_vacuum():
+    assert Al.sds_nonflip_masses(0.3, 1e-3) == []
+    assert Al.sds_nonflip_masses(0.3, 0.5) == []
+    assert len(Al.sds_nonflip_masses(0.3, 0.95)) > 0
+    t = Al.sds_nonflip_threshold(0.3, iters=14)
+    assert 0.7 < t < 0.9

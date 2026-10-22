@@ -21,7 +21,7 @@ tests `CODE/tests/test_bounds.py` (9), `test_stokes_exact.py` (4), `test_daughte
    $$B_{\rm lab}=B_{\rm CdL}\,\Phi\!\big((R_{\rm CdL}/R_M)^2\big)\,\big(1+O(\kappa^2/\chi^2)\big),\qquad
    \Phi(E)=\frac{16}{\pi E^2}\int z^2\sqrt{E-\frac{(z^3-1)^2}{z^4}}\,dz\ \ge\ \max\Big(1,\ \frac{8}{3E}+\frac23\Big),$$
    with $R_M=(3M/4\pi\rho)^{1/3}$ the radius of a false-vacuum ball of mass $M$. For bubbles larger than the CdL bubble,
-   $B_{\rm lab}\simeq4\pi^2\sigma^2R_M^2/\rho$, a formula from which **Newton's constant drops out**. Checked to $6.5\times10^{-6}$.
+   $B_{\rm lab}\simeq4\pi^2\sigma^2R_M^2/\rho$, a formula from which **Newton's constant drops out**. Checked to $6.5\times10^{-6}$; the lower bound on $\Phi$ is proved.
 2. **A parameter-free frontier [Corollary].** Every thin-barrier laboratory transition obeys
    $B_{\rm lab}\ge\tfrac43\sqrt{\pi/2}\,\sqrt{B_{\rm CdL}\,(M/m_P)\,(R_M/\ell_P)}$. With metastability $B_{\rm CdL}\ge10$, a black hole of at
    least one Planck mass and a bubble of at least $100\,\ell_P$ (the least one can ask of a semiclassical description), $P\le10^{-23}$.
@@ -84,7 +84,7 @@ Change variables to $w=A_{\rm out}$: $\int\sqrt{f_1-w^2}\,dR\ge(\pi f_1/2)/\max|
 On the 54-model grid $B_{\rm sq}/B_{\rm S2}\ge1.95$. S2 is weak for heavy walls but **asymptotically sharp for light walls**:
 $B_{\rm S2}/B=0.98$ at $\kappa/\chi=0.003$.
 
-### A3. Theorem S3 (thin-barrier law) — [Theorem at fixed $E$; Proposition-N uniformly up to $M_{\rm cr}$]
+### A3. Theorem S3 (thin-barrier law) — [Theorem at fixed $E$, including the bound on $\Phi$; Proposition-N uniformly up to $M_{\rm cr}$]
 Let $\epsilon=\kappa/\chi\to0$ at fixed $E$. Then
 $$\frac{B_{\rm an}(M)}{B(0)}=\Phi(E)\,\big(1+O(\epsilon^2)\big),\qquad\Phi(E)=\frac{16}{\pi E^2}\int_{\{g_1<E\}}z^2\sqrt{E-g_1(z)}\,dz,\quad g_1=\frac{(z^3-1)^2}{z^4},$$
 and $B(0)=B_{\rm CdL}=\pi\kappa R_0^3/8G\,(1+O(\epsilon^2))$ (T1, $q<0$).
@@ -103,9 +103,17 @@ relative error of $B=B(0)\Phi(E)$ is at most $6.5\times10^{-6}$ for $\kappa/\chi
 * $\Phi(E)=\dfrac{8}{3E}+\dfrac23+O(E)$ as $E\to0$;
 * $\Phi(E)=1+\dfrac{16}{\pi}E^{-3/2}+o(E^{-3/2})$ as $E\to\infty$. The $-2/z$ term of $g$ contributes $\int z\,dz/\sqrt{E-z^2}=\sqrt E$. Hence
   $dB/dM|_0=2R_0=-\Delta t^W_E$, as the first law T2 requires.
-* $\Phi(E)\ge\dfrac{8}{3E}+\dfrac23$ for all $E$. This follows from $\tfrac12[h(s)+h(-s)]\ge\tfrac13+\tfrac13s^2$, which is $\approx0.48s^4$ near 0 and
-  $\approx s^2/6$ at infinity. It was checked on $s\in[10^{-3},10^4]$ (Proposition-N for the elementary inequality; the rest is exact).
-  Also $\Phi>1$ and $\Phi$ decreases (checked).
+* **$\Phi(E)\ge\max\big(1,\ \frac{8}{3E}+\frac23\big)$ for all $E$ [Theorem].** *Proof.* Write $h=\tfrac13\,d(z^3)/ds$ and let $x=z(s)>1$, $y=z(-s)<1$. Then
+  $G(s)=z(s)^3-z(-s)^3=s(x^2+y^2)$. Integration by parts with the even weight $\sqrt{E-s^2}$ gives
+  $\int(h-\tfrac13-\tfrac{s^2}3)\sqrt{E-s^2}\,ds=\tfrac13\int_0^{\sqrt E}K(s)\,s\,ds/\sqrt{E-s^2}$ with $K=G-2s-\tfrac23s^3$, so it suffices that
+  $Q\equiv x^2+y^2\ge2+\tfrac23s^2$.
+  From $x-1/x^2=s=1/y^2-y$ one finds, with $P=xy$:
+  * $Q^2=P^4Q+2P^5$;
+  * $Q\ge2P$, which forces $P\ge1$;
+  * $s^2=(Q-2P)(Q+P)^2/Q^2$.
+  The claim becomes $f=Q^3-6Q^2+6P^2Q+4P^3=c_1Q+c_0\ge0$, with $c_1=P^8+2P^5-6P^4+6P^2>0$ on $P\ge1$. Where $c_0<0$, squaring reduces it to
+  $2c_1^2P^5-c_0^2-c_0c_1P^4=8P^6(P-1)^2(2P^7+7P^6+12P^5+20P^4+22P^3+6P^2-4P-2)\ge0$. The cofactor's only positive root is $0.428$. For $\Phi>1$ the
+  same argument works with $K_2=G-s^3=s(x^2+y^2-s^2)>0$, since $0<s<x$. $\square$ (Symbolic certificate: `bounds.phi_bound_certificate`.)
 
 **Physical form.** In the thin-barrier limit $R_f^3=2GM/L^2\to3M/4\pi\rho$, the radius $R_M$ of a ball of false vacuum of mass $M$. Also
 $E=(R_0/R_f)^2=(R_{\rm CdL}/R_M)^2$ with $R_{\rm CdL}=3\sigma/\rho$. So
@@ -133,7 +141,15 @@ $\rho_*=3M_{\min}/4\pi R_{\min}^3$:
 | 100 | $m_P$ | $100\,\ell_P$ | 167 | $10^{-72.6}$ | $2.7\times10^{17}$ GeV | 0.089 |
 | 100 | $10m_P$ | $1000\,\ell_P$ | 1671 | $10^{-726}$ | $8.5\times10^{16}$ GeV | 0.028 |
 
-All optima have $\kappa/\chi\le0.16$, inside the validity of S3. **There is no semiclassically controlled laboratory transition with
+All optima have $\kappa/\chi\le0.16$, inside the validity of S3. **Check against the exact thin-wall exponent** (`observability.laboratory_case` at the optimum):
+
+| case | frontier bound | exact $B_{\rm an}=B_{\rm sq}$ | gravitational $B_{\rm CdL}$ | $R_1$ | WKB $\epsilon$ |
+|---|---|---|---|---|---|
+| $(10, m_P, 100\ell_P)$ | 52.8 | 59.5 | 9.95 | $81\ell_P$ | $1.3\times10^{-5}$ |
+| $(10, m_P, 1000\ell_P)$ | 167.1 | 173.8 | 10.0 | $883\ell_P$ | $1.2\times10^{-8}$ |
+| $(10, 10m_P, 100\ell_P)$ | 167.1 | 171.9 | 9.84 | $89\ell_P$ | $1.4\times10^{-4}$ |
+
+The excess over the bound is almost exactly $\tfrac23B_{\rm CdL}$, the next term of $\Phi$. All three are double-flip, so there is no FGG ambiguity. **There is no semiclassically controlled laboratory transition with
 $P\gtrsim10^{-23}$.** Higher probabilities require $R_M\lesssim20\,\ell_P$ or sub-Planckian black holes, where the theory used here is not trustworthy.
 
 ### A5. Theorem S4 (flip class; where the FGG ambiguity lives) — [Theorem]
@@ -390,6 +406,19 @@ $N\ge1/(4\pi C_{FR}\chi^2)=\tfrac83S_{\rm dS}$ for every vacuum scale. The speci
 The semiclassical description of the daughter fails exactly where the NEC violation becomes strong enough. [Proposition, scaling with O(1) constants.]
 The Fewster–Eveson bound is tighter by 9/64, so the estimate is conservative.
 
+**E3. The de Sitter parent: a non-flip window [Proposition-N].** In a Schwarzschild–de Sitter parent ($\eta>0$), Prop. G1 ($\varepsilon_{\rm out}(R_2)=-1$) can fail.
+A laboratory-type transition ($\varepsilon_{\rm out}(R_1)=+1$, wall in the static region) can then land on a daughter born on the *near* side of the
+bridge, $\varepsilon_{\rm out}(R_2)=+1$. There the exterior orientation does not flip, so the embedding obstruction NG3 does not apply and a manifold
+instanton is not excluded. Bisection over $M$ shows the window opens only for
+
+| $\kappa/\chi$ | 0.1 | 0.3 | 0.5 | 0.7 |
+|---|---|---|---|---|
+| $\eta_*/\chi$ | 0.863 | 0.799 | 0.764 | 0.813 |
+
+i.e. for parents whose vacuum energy is at least about 58–75% of the false vacuum's. Inside the window $B_{\rm an}=0.07$–$0.24/G\chi^2$ (at $\kappa=0.3\chi$,
+$\eta=0.95\chi$), still of order the de Sitter entropy scale $(m_P/H)^2$. For our universe $\eta/\chi\lesssim10^{-50}$, so the window is closed. It belongs to the
+cosmological route, an inflating parent (`alternatives.sds_nonflip_threshold`).
+
 ---
 
 ## Part F — Theoretical requirements: the five numbers (Stages 3, 5–10, theory only)
@@ -421,7 +450,8 @@ None of these is supported by known physics.
 
 * **NG4 (P-N1).** Reformulated: $|\theta_D|=\frac{E^2}{2b}\int_{s_1}^{s_2}\frac{s\,q(z)}{W\sqrt{W-s^2}}ds$ (all $s>0$ in regime B). NG4 is equivalent to monotonicity
   of this integral in $E$ on $(g_{\min},E_{AB})$, given the critical-end theorem. This is still Proposition-N (Phase II: monotone on a 39×10 grid).
-* **SdS atlas, Euclidean SdS (P-G1).** Not attempted in this round.
+* **SdS (P-G1).** The explicit Kruskal atlas is still not implemented. New: the SdS non-flip window (E3), where laboratory-type transitions land on
+  near-side daughters without an exterior flip. It opens only for $\eta\gtrsim0.76$–$0.86\chi$.
 * **Literature (P-L1)**, from accessible abstracts only:
   * FMP (1990), PRD 42, 4042: Dirac + WKB; agreement with the Euclidean method requires degenerate metrics. This matches NG3 + Prop. III-3.
   * Ansoldi–Tanaka (2014/15), JETP 120, 460: the discrepancies come from the static-chart time and are removed by a smooth slicing. This is consistent
@@ -451,6 +481,6 @@ None of these is supported by known physics.
 * **P-T3′.** The field-theoretic one-loop prefactor.
 * **P-N1.** NG4 monotonicity.
 * **P-G1.** SdS atlas.
-* **P-T5′.** Close the strip $E_{AB}<E<1.6E_{AB}$ analytically; prove the even inequality $h_{\rm even}\ge\frac13+\frac{s^2}3$.
+* **P-T5′.** Close the strip $E_{AB}<E<1.6E_{AB}$ analytically. (The $\Phi$ bound is now proved.)
 * **P-L1.** Full-text comparison.
 * **P-O1/O2.** GVZ mass function.

@@ -94,3 +94,17 @@ def test_phi_lower_bound_and_frontier():
     assert lab["B_law"] >= Bd.frontier_bound(lab["B_flat"], 10.0, lab["R_M_lP"]) * (1 - 1e-9)
     opt = Bd.frontier_optimum(10.0, 1.0, 100.0)
     assert 52 < opt["B_min"] < 54 and opt["kappa_over_chi"] < 0.1
+
+
+def test_phi_bound_certificate():
+    c = Bd.phi_bound_certificate()
+    assert c["identity"] and c["cofactor_positive_on_P_ge_1"] and c["c1_roots_ge_1"] == [] and c["f_reduced_matches"]
+
+
+def test_frontier_against_exact_exponent():
+    from babyuniverse import observability as O
+    o = Bd.frontier_optimum(10.0, 1.0, 100.0)
+    lab = O.laboratory_case(o["E_vac_GeV"], o["E_wall_GeV"], 1.0)
+    assert lab["B_an"] >= o["B_min"]
+    assert abs(lab["B_an"] - o["B_min"] - 2 / 3 * lab["B_CdL"]) < 0.05 * lab["B_an"]
+    assert abs(lab["B_an"] - lab["B_sq"]) < 1e-9 * lab["B_an"]

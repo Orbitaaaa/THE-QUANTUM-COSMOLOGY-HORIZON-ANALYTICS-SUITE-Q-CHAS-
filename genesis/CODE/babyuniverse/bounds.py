@@ -200,8 +200,8 @@ def minimum_exponent(B_survive: float, M_planck: float, rho_planck: float) -> fl
 
 # ------------------------------------------------------------------ Corollary S7: the semiclassical frontier
 def h_even_defect(s: float) -> float:
-    """(h(s) + h(-s))/2 - 1/3 - s^2/3 with h(s) = z^5/(z^3+2), z^3 - s z^2 - 1 = 0.  Non-negative (checked on
-    s in [1e-3, 1e4]; ~ 0.48 s^4 at 0 and ~ s^2/6 at infinity), which gives Phi(E) >= 8/(3E) + 2/3."""
+    """(h(s) + h(-s))/2 - 1/3 - s^2/3 with h(s) = z^5/(z^3+2), z^3 - s z^2 - 1 = 0 (numerically non-negative; ~0.48 s^4 at 0).
+    The theorem Phi(E) >= 8/(3E) + 2/3 needs only the integrated form, proved in ``phi_bound_certificate``."""
     def z(x):
         return brentq(lambda zz: zz**3 - x * zz**2 - 1, 1e-12, abs(x) + 3, xtol=1e-15)
 
@@ -228,3 +228,28 @@ def frontier_optimum(B_survive: float, M_min: float, R_min: float) -> dict:
     return dict(B_min=B, log10_P_max=float(-B / np.log(10)), E_vac_GeV=float(rho**0.25 * 1.22e19),
                 E_wall_GeV=float(sigma ** (1 / 3) * 1.22e19), R_CdL_lP=float(3 * sigma / rho),
                 kappa_over_chi=float(np.sqrt(6 * np.pi * sigma**2 / rho)))
+
+
+def phi_bound_certificate() -> dict:
+    """Proof of Phi(E) >= max(1, 8/(3E) + 2/3) (ROADMAP A3).  With x = z(s) > 1, y = z(-s) < 1, F = z^3 and
+    G(s) = F(s) - F(-s) = s (x^2 + y^2), integration by parts gives
+        int (h - 1/3 - s^2/3) sqrt(E - s^2) ds = (1/3) int_0^sqrt(E) K(s) s / sqrt(E - s^2) ds,  K = G - 2s - 2s^3/3,
+    so it suffices that Q = x^2 + y^2 >= 2 + 2 s^2/3.  From x - 1/x^2 = s = 1/y^2 - y one gets, with P = xy,
+    Q^2 = P^4 Q + 2 P^5 (P >= 1 forced by Q >= 2P) and s^2 = (Q - 2P)(Q + P)^2 / Q^2, so the claim is
+    f = Q^3 - 6 Q^2 + 6 P^2 Q + 4 P^3 = c1 Q + c0 >= 0.  The squared form reduces to
+    2 c1^2 P^5 - c0^2 - c0 c1 P^4 = 8 P^6 (P-1)^2 (2P^7 + 7P^6 + 12P^5 + 20P^4 + 22P^3 + 6P^2 - 4P - 2) >= 0 for P >= 1.
+    Phi > 1: the same argument with K2 = G - s^3 = s(x^2 + y^2 - s^2) > 0 since 0 < s < x.  Returns the sympy checks."""
+    import sympy as sp
+    P = sp.symbols("P", positive=True)
+    c1 = P**8 + 2 * P**5 - 6 * P**4 + 6 * P**2
+    c0 = 2 * P**9 - 12 * P**5 + 4 * P**3
+    key = sp.expand(2 * c1**2 * P**5 - c0**2 - c0 * c1 * P**4)
+    cof = 2 * P**7 + 7 * P**6 + 12 * P**5 + 20 * P**4 + 22 * P**3 + 6 * P**2 - 4 * P - 2
+    identity = sp.simplify(key - 8 * P**6 * (P - 1) ** 2 * cof) == 0
+    cof_roots = [float(r) for r in sp.Poly(cof, P).real_roots()]
+    c1_roots = [float(r) for r in sp.Poly(c1, P).real_roots() if r >= 1]
+    # f = c1 Q + c0 with c1 Q from the root of Q^2 - P^4 Q - 2P^5 = 0: check f(Q) and the relation symbolically
+    Q = sp.symbols("Q", positive=True)
+    f_reduced = sp.expand(sp.rem(sp.expand(Q**3 - 6 * Q**2 + 6 * P**2 * Q + 4 * P**3), Q**2 - P**4 * Q - 2 * P**5, Q))
+    return dict(identity=bool(identity), cofactor_real_roots=cof_roots, cofactor_positive_on_P_ge_1=bool(max(cof_roots) < 1),
+                c1_roots_ge_1=c1_roots, f_reduced_matches=bool(sp.simplify(f_reduced - (c1 * Q + c0)) == 0))

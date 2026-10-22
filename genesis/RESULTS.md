@@ -87,7 +87,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | # | result | label |
 |---|---|---|
 | R40 | **Lemma S1 / Theorem S2**: $B_{\rm an}\ge B_{\rm sq}\ge\frac{2\kappa}G\int R^2\sqrt{V/f_{\rm in}f_{\rm out}}\ge\frac{2\pi\kappa^2R_1^2f_{\rm out}(R_1)}{G(L^2+4GM/R_1^3)\sqrt{f_{\rm in}(R_1)f_{\rm out}(R_2)}}$, asymptotically sharp for light walls | Theorem |
-| R41 | **Theorem S3 (thin-barrier law)**: $B_{\rm lab}=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)(1+O(\kappa^2/\chi^2))$, $\Phi\ge\max(1,8/3E+2/3)$, so $B_{\rm lab}\ge4\pi^2\sigma^2R_M^2/\rho$ (no $G$). Checked to $6.5\times10^{-6}$ | Theorem (fixed $E$); Prop-N (uniform; even inequality) |
+| R41 | **Theorem S3 (thin-barrier law)**: $B_{\rm lab}=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)(1+O(\kappa^2/\chi^2))$, $\Phi\ge\max(1,8/3E+2/3)$, so $B_{\rm lab}\ge4\pi^2\sigma^2R_M^2/\rho$ (no $G$). Checked to $6.5\times10^{-6}$ | Theorem (fixed $E$, $\Phi$ bound proved); Prop-N (uniform to $M_{\rm cr}$) |
 | R42 | **Corollary S7 (frontier)**: $B_{\rm lab}\ge\frac43\sqrt{\pi/2}\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$. Controlled regime ($B_{\rm CdL}\ge10$, $M\ge m_P$, $R_M\ge100\ell_P$): $P\le10^{-23}$ | Theorem (given S3) |
 | R43 | **Theorem S4**: double flip ⇔ $\kappa<\chi$ and $M<M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$ (boundary $R_2=1/\chi$). The FGG ambiguity lives only in the single-flip class | Theorem |
 | R44 | **Theorem S5**: an explicit pointwise criterion for $\Delta t^W_E<0$ (sufficient: $E/E_{AB}\ge\max\omega(z_i)$, $\omega=z^2/12+7/6z$); hence $B\ge B_{\rm CdL}$ in the double-flip class where it holds | Theorem; thresholds Prop-N |
@@ -96,6 +96,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R47 | **Q10.1**: the daughter edge is a coordinate singularity ($\tilde P=P\mp\frac R{2G}\ln|f_{\rm in}|$); no boundary condition (corrects R32) | Theorem + numerics |
 | R48 | **Q10.2–Q10.3**: $dt_\infty/d\tau<0$ on every daughter. The boundary clock folds back; unitary boundary evolution yields the time-reversed daughter; the expanding daughter is a negative-flux (Klein-type) channel, $|\beta|^2\simeq e^{-B}$ | Theorem (reduced model); interpretation flagged |
 | R49 | **Stage 4 ledger**: seed BH (F15), QEI species bound $N\ge\frac83S_{\rm dS}$ (cutoff $0.35H$), dS parent $e^{-3\times10^{122}}$, GVZ cosmological route, monopoles, FMM. No laboratory mechanism beats $B\gtrsim B_{\rm CdL}$ | Propositions + literature |
+| R51 | **SdS non-flip window**: near-side daughters ($\varepsilon_{\rm out}(R_2)=+1$, no NG3 obstruction) exist only for $\eta\gtrsim0.76$–$0.86\chi$; closed for our universe | Proposition-N |
 | R50 | **Five numbers** (controlled optimum): $E_{\rm req}\approx3\times10^{17}$ GeV, $L_{\rm req}\approx100\ell_P$, $\tau_{\rm req}\lesssim5\times10^{-42}$ s, $P\le10^{-23}$, $S_{\rm verify}=0$ | computation |
 
 ## Statement for a general audience

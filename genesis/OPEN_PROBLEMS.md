@@ -6,7 +6,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 * **P-N1.** Prove NG4: in regime B, $\lvert\theta_D\rvert>\pi$. *Criterion:* analytic inequality for $\Delta t^W_E$ in terms of $(\gamma,E)$.
 * **P-T5 (mostly done, roadmap Part A).** A theorem for light walls (S3: $B=B_{\rm CdL}\Phi$), and in the double-flip class wherever the $\Delta t^W_E<0$ criterion holds (S5).
-  Rigorous closed-form bounds S1 and S2. Open (P-T5′): close the strip $E_{AB}<E<1.6E_{AB}$ analytically; prove $h_{\rm even}\ge\frac13+\frac{s^2}3$.
+  Rigorous closed-form bounds S1 and S2. Open (P-T5′): close the strip $E_{AB}<E<1.6E_{AB}$ analytically.
 * **P-L1.** Compare T0–T3 with FGG's pseudomanifold rule and FMP's Hamiltonian formulae, and with
   de Alwis et al. / Céspedes et al., term by term (full texts required; arXiv is blocked in this environment).
 * **P-G1.** Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
@@ -64,5 +64,5 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 * **P-Q9′.** Klein–Gordon current of the spherically symmetric Wheeler–DeWitt equation through the Einstein–Rosen bridge (imaginary part of the Kuchař phase).
 * **P-T3′.** One-loop prefactor (wall and bulk fluctuations) of the laboratory transition.
-* **P-T5′.** Analytic control of $\Delta t^W_E$ in the strip $E_{AB}<E<1.6E_{AB}$, and a proof of the even inequality behind $\Phi\ge8/3E+2/3$.
+* **P-T5′.** Analytic control of $\Delta t^W_E$ in the strip $E_{AB}<E<1.6E_{AB}$. (The bound $\Phi\ge\max(1,8/3E+2/3)$ is proved.)
 * **P-A1.** The QEI species bound with curved-space, interacting QEIs and exact constants (currently a scaling argument with Ford–Roman constants).

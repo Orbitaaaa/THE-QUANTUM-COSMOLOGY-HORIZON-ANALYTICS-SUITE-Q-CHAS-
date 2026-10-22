@@ -88,6 +88,7 @@ out["qei"] = {f"{E:.0e}": Al.species_required(E) for E in (1e15, 1e16, 1e17, 1e1
 out["ds_parent"] = Al.ds_parent_upward_exponent()
 out["fmm"] = [Al.fmm_junction(m) for m in (1.0, 10.0, 1e3)]
 out["ledger"] = Al.mechanism_ledger()
+out["sds_nonflip_threshold"] = {str(k): Al.sds_nonflip_threshold(k) for k in (0.1, 0.3, 0.5, 0.7)}
 
 # ---------------------------------------------------------------- Part F: requirements
 def E_req(log10P, B_survive, M_planck):

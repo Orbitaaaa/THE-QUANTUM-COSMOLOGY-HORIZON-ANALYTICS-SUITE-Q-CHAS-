@@ -157,3 +157,35 @@ def mechanism_ledger() -> list:
              cost=f"any black hole with M > {fmm_junction(1.0)['M_min']:.2f} m_P; daughter at Planck curvature",
              verdict="hypothesis-dependent; daughter invisible from outside"),
     ]
+
+
+# ------------------------------------------------------------------ de Sitter parent: the non-flip window
+def sds_nonflip_masses(kappa: float, eta: float, chi: float = 1.0, n: int = 300) -> list:
+    """Masses for which a laboratory-type transition (wall at R1 in the static region, eps_out(R1) = +1) in a
+    Schwarzschild-de Sitter parent lands on a daughter with eps_out(R2) = +1: no exterior flip, so the embedding
+    obstruction NG3 does not apply.  Empty for eta = 0 (Prop. G1)."""
+    from .model import ThinWallModel
+    out = []
+    for M in np.geomspace(1e-5, 1.0, n) / chi:
+        m = ThinWallModel(chi, kappa, M, eta)
+        tps, hz = m.turning_points(), m.horizons_out()
+        if len(tps) < 2 or len(hz) < 2:
+            continue
+        R1, R2 = tps[0], tps[-1]
+        if not (m.A_out(R1) > 0 and R1 > hz[0] and m.f_out(R1) > 0):
+            continue
+        if m.A_out(R2) > 0:
+            out.append(float(M))
+    return out
+
+
+def sds_nonflip_threshold(kappa: float, chi: float = 1.0, iters: int = 25) -> float:
+    """Smallest eta/chi at which the non-flip window is non-empty (bisection; Proposition-N)."""
+    lo, hi = 0.0, 0.999 * np.sqrt(chi**2 + kappa**2)
+    for _ in range(iters):
+        mid = 0.5 * (lo + hi)
+        if sds_nonflip_masses(kappa, mid, chi, 250):
+            hi = mid
+        else:
+            lo = mid
+    return float(hi / chi)

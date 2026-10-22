@@ -1223,6 +1223,12 @@
    "verdict": "hypothesis-dependent; daughter invisible from outside"
   }
  ],
+ "sds_nonflip_threshold": {
+  "0.1": 0.8628748408998206,
+  "0.3": 0.7992565542931159,
+  "0.5": 0.7637663495468507,
+  "0.7": 0.8133891342850291
+ },
  "requirements": [
   {
    "log10_P_target": -10,
