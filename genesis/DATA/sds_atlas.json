@@ -1,0 +1,82 @@
+[
+ {
+  "case": "usual: daughter beyond the bridge (eps_out(R2) = -1)",
+  "branch": "bounded",
+  "blocks": [
+   "WH",
+   "I",
+   "I",
+   "BH"
+  ],
+  "matched": [
+   "u",
+   null,
+   "t",
+   "v"
+  ],
+  "min_normalized_increment": -9.162685235593528e-09,
+  "most_negative_increment": -5.551115123125783e-17,
+  "timelike_future": true,
+  "max_join_gap": 2.046292888103427e-08
+ },
+ {
+  "case": "usual: daughter beyond the bridge (eps_out(R2) = -1)",
+  "branch": "bounce",
+  "blocks": [
+   "CP3",
+   "III",
+   "III",
+   "CF3"
+  ],
+  "matched": [
+   "u",
+   null,
+   "t",
+   "v"
+  ],
+  "min_normalized_increment": 0.026402644479528656,
+  "most_negative_increment": 6.104180094723688e-08,
+  "timelike_future": true,
+  "max_join_gap": 2.7088712796451453e-07
+ },
+ {
+  "case": "non-flip window: near-side daughter (eps_out(R2) = +1)",
+  "branch": "bounded",
+  "blocks": [
+   "WH",
+   "I",
+   "I",
+   "BH"
+  ],
+  "matched": [
+   "u",
+   null,
+   "t",
+   "v"
+  ],
+  "min_normalized_increment": 0.0,
+  "most_negative_increment": 0.0,
+  "timelike_future": true,
+  "max_join_gap": 1.683444372360781e-08
+ },
+ {
+  "case": "non-flip window: near-side daughter (eps_out(R2) = +1)",
+  "branch": "bounce",
+  "blocks": [
+   "CP",
+   "I",
+   "I",
+   "CF"
+  ],
+  "matched": [
+   "v",
+   null,
+   "t",
+   "u"
+  ],
+  "min_normalized_increment": 0.12147313786877256,
+  "most_negative_increment": 5.080851375183215e-07,
+  "timelike_future": true,
+  "max_join_gap": 2.48517941987004e-06
+ }
+]

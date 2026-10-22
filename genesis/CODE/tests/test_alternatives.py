@@ -43,3 +43,17 @@ def test_sds_nonflip_window_needs_comparable_parent_vacuum():
     assert len(Al.sds_nonflip_masses(0.3, 0.95)) > 0
     t = Al.sds_nonflip_threshold(0.3, iters=14)
     assert 0.7 < t < 0.9
+
+
+def test_sds_atlas_worldlines_are_timelike_and_continuous():
+    from babyuniverse import sds_atlas as S, branches as Br
+    for m, expect in ((ThinWallModel(1.0, 0.3, 0.05, 0.5), ["CP3", "III", "III", "CF3"]),
+                      (ThinWallModel(1.0, 0.3, 0.1, 0.95), ["CP", "I", "I", "CF"])):
+        for b in Br.classify(m):
+            w = S.wall_worldline(m, b, n=150)
+            c = S.causal_check(w)
+            assert c["timelike_future"] and c["max_join_gap"] < 1e-4
+            if b.kind == "bounce":
+                assert [p["block"] for p in w] == expect
+            else:
+                assert [p["block"] for p in w] == ["WH", "I", "I", "BH"]

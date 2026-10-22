@@ -9,7 +9,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   Rigorous closed-form bounds S1 and S2. Open (P-T5′): close the strip $E_{AB}<E<1.6E_{AB}$ analytically.
 * **P-L1.** Compare T0–T3 with FGG's pseudomanifold rule and FMP's Hamiltonian formulae, and with
   de Alwis et al. / Céspedes et al., term by term (full texts required; arXiv is blocked in this environment).
-* **P-G1.** Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
+* ~~P-G1~~ **atlas done (roadmap Part G, `sds_atlas.py`).** Remaining: a fresh look at the conical defects of Euclidean SdS. Original text: Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
   pieces with two horizons (conical defects).
 
 ## Phase III — the quantum transition

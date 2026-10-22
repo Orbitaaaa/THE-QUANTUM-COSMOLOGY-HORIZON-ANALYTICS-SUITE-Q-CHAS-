@@ -165,6 +165,19 @@ de Sitter pole, the false-vacuum region simply disappears into the exterior sing
 ## 7. Schwarzschild–de Sitter exterior
 
 The potential, signs, turning points and chart-free itinerary are implemented for general
-$(\chi,\eta,\kappa,M)$ (labels BH/WH, SdS-static(±), cosmo-future/past). Explicit conformal diagrams for
-SdS need a patched Kruskal atlas around both horizons, which is not yet implemented. The atlas here is
-restricted to $\eta=0$ and $M=0$ (OPEN_PROBLEMS.md P-G1).
+$(\chi,\eta,\kappa,M)$ (labels BH/WH, SdS-static(±), cosmo-future/past).
+
+**Roadmap round: explicit SdS atlas** (`CODE/babyuniverse/sds_atlas.py`, `FIGURES/sds_atlas.png`).
+* Construction: the tortoise coordinate is $r^*=\sum_iA_i\ln|r-r_i|$ ($A_i=1/f'(r_i)$, three roots). Each null coordinate is compactified by a
+  logistic map that is Kruskal-regular at the black-hole horizon on one side and at the cosmological horizon on the other.
+* There are eight blocks: static I and III, BH, WH, and the cosmological future and past regions beside I and III. They are glued so that every
+  horizon is crossed continuously; III is the point reflection of I through the black-hole bifurcation sphere, i.e. $(U,V)\to(-U,-V)$.
+* Integration constants of $t$ along a wall are fixed at each horizon crossing by continuity of the null coordinate that stays finite there.
+* Checks:
+  * the finite coordinate is detected numerically and agrees with the Kruskal prediction at every crossing ($v$ into BH, $u$ out of WH, $u$ into
+    cosmo-future of I, $v$ into cosmo-future of III, ...);
+  * joins are continuous to $\le3\times10^{-6}$;
+  * every worldline is timelike and future-directed in the diagram ($d\sigma,d\delta>0$ in proper-time order). This holds for **84/84 branches** on a grid
+    $\kappa\in\{0.3,1,2\}$, $\eta\in\{0.2,0.5,0.8\}$, $M\in[0.01,0.3]$.
+* The figure shows the usual case, where the daughter is beyond the bridge in III, and the non-flip window (ROADMAP E3), where the near-side daughter
+  is in I and expands through the parent's cosmological horizon.

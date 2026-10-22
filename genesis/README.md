@@ -91,7 +91,7 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
-                     doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives
+                     doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -103,7 +103,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap)
-cd .. && python -m pytest tests -q                # 126 tests
+cd .. && python -m pytest tests -q                # 130 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

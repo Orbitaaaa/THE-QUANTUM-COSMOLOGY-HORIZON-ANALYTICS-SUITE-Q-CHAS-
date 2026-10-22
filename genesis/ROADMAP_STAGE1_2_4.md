@@ -10,7 +10,7 @@ stated coverage; **[Conjecture]**; **[Interpretation]**.
 
 Code: `CODE/babyuniverse/bounds.py`, `stokes_exact.py`, `daughter.py`, `alternatives.py`; script
 `CODE/scripts/roadmap_analysis.py`; data `DATA/roadmap_stage1_2_4.json`; figure `FIGURES/roadmap_stage1_2_4.png`;
-tests `CODE/tests/test_bounds.py` (9), `test_stokes_exact.py` (4), `test_daughter.py` (4), `test_alternatives.py` (3).
+tests `CODE/tests/test_bounds.py` (11), `test_stokes_exact.py` (4), `test_daughter.py` (4), `test_alternatives.py` (5); full suite 130.
 
 ---
 
@@ -450,8 +450,11 @@ None of these is supported by known physics.
 
 * **NG4 (P-N1).** Reformulated: $|\theta_D|=\frac{E^2}{2b}\int_{s_1}^{s_2}\frac{s\,q(z)}{W\sqrt{W-s^2}}ds$ (all $s>0$ in regime B). NG4 is equivalent to monotonicity
   of this integral in $E$ on $(g_{\min},E_{AB})$, given the critical-end theorem. This is still Proposition-N (Phase II: monotone on a 39×10 grid).
-* **SdS (P-G1).** The explicit Kruskal atlas is still not implemented. New: the SdS non-flip window (E3), where laboratory-type transitions land on
-  near-side daughters without an exterior flip. It opens only for $\eta\gtrsim0.76$–$0.86\chi$.
+* **SdS (P-G1), done.** An explicit conformal atlas with eight Kruskal-glued blocks (`sds_atlas.py`, `FIGURES/sds_atlas.png`). Every wall worldline is
+  timelike and future-directed and continuous across all horizons (84/84 branches). The finite null coordinate at each crossing matches the Kruskal
+  prediction. Also new: the SdS non-flip window (E3), where laboratory-type transitions land on near-side daughters without an exterior flip; it
+  opens only for $\eta\gtrsim0.76$–$0.86\chi$. Euclidean SdS with two horizons was treated in Phase II (SdS Smarr identity).
+  Conical defects in the Euclidean SdS sections are not revisited here.
 * **Literature (P-L1)**, from accessible abstracts only:
   * FMP (1990), PRD 42, 4042: Dirac + WKB; agreement with the Euclidean method requires degenerate metrics. This matches NG3 + Prop. III-3.
   * Ansoldi–Tanaka (2014/15), JETP 120, 460: the discrepancies come from the static-chart time and are removed by a smooth slicing. This is consistent
@@ -480,7 +483,6 @@ None of these is supported by known physics.
 * **P-Q9′.** The Klein–Gordon current of the full spherically symmetric WDW equation through the bridge (C5).
 * **P-T3′.** The field-theoretic one-loop prefactor.
 * **P-N1.** NG4 monotonicity.
-* **P-G1.** SdS atlas.
 * **P-T5′.** Close the strip $E_{AB}<E<1.6E_{AB}$ analytically. (The $\Phi$ bound is now proved.)
 * **P-L1.** Full-text comparison.
 * **P-O1/O2.** GVZ mass function.

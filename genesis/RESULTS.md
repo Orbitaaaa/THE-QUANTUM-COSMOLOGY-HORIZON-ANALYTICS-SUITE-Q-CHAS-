@@ -97,6 +97,7 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R48 | **Q10.2–Q10.3**: $dt_\infty/d\tau<0$ on every daughter. The boundary clock folds back; unitary boundary evolution yields the time-reversed daughter; the expanding daughter is a negative-flux (Klein-type) channel, $|\beta|^2\simeq e^{-B}$ | Theorem (reduced model); interpretation flagged |
 | R49 | **Stage 4 ledger**: seed BH (F15), QEI species bound $N\ge\frac83S_{\rm dS}$ (cutoff $0.35H$), dS parent $e^{-3\times10^{122}}$, GVZ cosmological route, monopoles, FMM. No laboratory mechanism beats $B\gtrsim B_{\rm CdL}$ | Propositions + literature |
 | R51 | **SdS non-flip window**: near-side daughters ($\varepsilon_{\rm out}(R_2)=+1$, no NG3 obstruction) exist only for $\eta\gtrsim0.76$–$0.86\chi$; closed for our universe | Proposition-N |
+| R52 | **SdS conformal atlas**: eight Kruskal-glued blocks; wall worldlines timelike, future-directed and continuous across all horizons (84/84 branches) | construction + numerical check |
 | R50 | **Five numbers** (controlled optimum): $E_{\rm req}\approx3\times10^{17}$ GeV, $L_{\rm req}\approx100\ell_P$, $\tau_{\rm req}\lesssim5\times10^{-42}$ s, $P\le10^{-23}$, $S_{\rm verify}=0$ | computation |
 
 ## Statement for a general audience
