@@ -74,6 +74,37 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Ford, Roman** (1995–97); **Fewster, Eveson** (1998). Quantum inequality $\langle\rho\rangle\ge-3/32\pi^2t_0^4$ for Lorentzian sampling (massless scalar, 4D). Fewster–Eveson is
   tighter (9/64). Used in ROADMAP E2.
 
+## D″. Added in Round 6 (verified from abstracts / search snippets; full texts unavailable here)
+
+* **Rubakov** (2013) PRD 88, 044015, arXiv:1305.2614, *Consistent NEC violation: towards creating a universe in the laboratory*. Kinetic braiding.
+  The simplest model has a healthy Minkowski vacuum and a NEC-violating phase but an obstruction to interpolating them in a laboratory. A more
+  complicated model gives a laboratory scenario. Review: **Rubakov** (2014) Phys. Usp. 57, 128, arXiv:1401.4024.
+* **Elder, Joyce, Khoury** (2014) arXiv:1311.5889. A solution interpolating from NEC-satisfying to NEC-violating, with stable, subluminal,
+  weakly coupled perturbations; dilatation broken explicitly.
+* **Creminelli, Nicolis, Trincherini** (2010), Galilean genesis; **Creminelli, Hinterbichler, Khoury, Nicolis, Trincherini** (2013), subluminal
+  Galilean genesis; **Pirtskhalava, Santoni, Trincherini, Uttayarat** (2014) JHEP 12, 151, arXiv:1410.0882, *Inflation from Minkowski space*.
+* **Libanov, Mironov, Rubakov** (2016) arXiv:1605.05992; **Kobayashi** (2016) arXiv:1606.05831. No-go for complete non-singular genesis or bounce
+  in Horndeski theory; evaded beyond Horndeski.
+* **Wall** (2010/13) arXiv:1010.5513, *The generalized second law implies a quantum singularity theorem*. Under the GSL: no baby universes that
+  become independent, no restarting inflation, no traversable wormholes or negative masses.
+* **Dubovsky, Grégoire, Nicolis, Rattazzi** (2006) JHEP 03, 025, arXiv:hep-th/0512260. Stable NEC violation requires anisotropic backgrounds with
+  superluminal modes, for a large class of systems.
+* **Adams, Arkani-Hamed, Dubovsky, Nicolis, Rattazzi** (2006) JHEP 10, 014, arXiv:hep-th/0602178. Positivity bounds; wrong-sign operators imply
+  superluminality and no standard UV completion.
+* **Dubovsky, Sibiryakov** (2006) PLB 638, 509, arXiv:hep-th/0603158; **Eling, Foster, Jacobson, Wall** (2007) arXiv:hep-th/0702124. Several
+  propagation speeds conflict with the GSL.
+* **Guendelman, Sakai** (2008) arXiv:0803.0268, *The universe out of a breathing bubble*. Wall-plus-dust surface energy of opposite signs;
+  stably oscillating bubbles decay into a child universe or a bubble that "eats up" the original universe.
+* **Borde, Trodden, Vachaspati** (1999) PRD 59, arXiv:gr-qc/9808069. Baby universes from monopole collisions.
+* **Ansoldi, Guendelman** (2006) arXiv:gr-qc/0611034; **Ansoldi, Merali, Guendelman** (2018) arXiv:1801.04539. Reviews of laboratory creation.
+* **Copeland, Padilla, Saffin** (2008) arXiv:0709.0261, no resonant tunnelling of the homogeneous false vacuum in scalar QFT;
+  **Saffin, Padilla, Copeland** (2008) arXiv:0804.3801, resonance possible for inhomogeneous (bubble) initial states.
+* **Lavrelashvili, Lehners** (2026) arXiv:2603.11003 and 2605.10548, wineglass wormholes nucleating inflationary universes from flat or AdS
+  regions; disconnected no-boundary instantons dominate.
+* **Dafermos** (2003) arXiv:gr-qc/0209052, Reissner–Nordström Cauchy horizon: $C^0$-extendible, generically not $C^1$ (mass inflation);
+  **Burko** (1999), **Burko, Ori** (1997): the singularity is weak (finite tidal deformation).
+* **Gibbons** (2002), maximum force $c^4/4G$ (conjecture); Hod (2025) arXiv:2501.01497.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

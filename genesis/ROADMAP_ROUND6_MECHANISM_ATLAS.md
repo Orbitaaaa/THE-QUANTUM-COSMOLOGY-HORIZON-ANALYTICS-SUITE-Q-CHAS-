@@ -32,7 +32,8 @@ Labels:
 **Within established physics: no, and that is now a closure result, not a failure to find one.** Five results (G1, G2, S7, Wall's GSL theorem,
 strong cosmic censorship) leave every route either Planck-limited, astronomically massive, unpredictable, or exponentially suppressed. The best
 known-physics options are:
-* (a) tunnelling at the frontier, $P\le10^{-23}$ per prepared bubble at $3\times10^{17}$ GeV;
+* (a) tunnelling at the frontier, $P\le10^{-23}$ per prepared bubble at $3\times10^{17}$ GeV. Round 5 shows this needs a quartic coupling
+  $\lambda\sim10^4$; with a perturbative field theory the frontier is $P\le10^{-476}$ ([ROADMAP_ROUNDS5_7_12.md](ROADMAP_ROUNDS5_7_12.md), Proposition F1);
 * (b) the same with a stabilised seed, which would convert in $\sim0.1$ s, but needs a Planck-density seed and a stabiliser that has not been found;
 * (c) a charged or rotating collapse, which crosses a Cauchy horizon classically but needs $M\ge0.16\,m_P^3/\sqrt\rho$ (5 g at GUT density) and
   has an outcome the initial data do not fix.

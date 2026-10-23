@@ -164,3 +164,18 @@ integration-by-parts certificate at $1.0001E_{AB}$ (margin at the LP cap, from u
 *Cause:* $E-g$ and $f_{\rm out}$ were evaluated as differences of $O(1)$ numbers where both are $O(\epsilon^2)$.
 *Fix:* integrate in $y=z-z_1$ with cancellation-free expressions and geometric breakpoints on the spike width. Cross-checked against 30-digit mpmath.
 **Type:** numerical pitfall, fixed before any conclusion was drawn from it.
+
+### F19. A ghost-sign scalar pulse as a universe seed (Round 6)
+*Tried:* the Phase IV double-null solver with $G\to-G$ in the matter couplings (massless ghost scalar, zero potential). Gaussian pulses of amplitude up
+to 2 (Planck units), widths 0.15–0.3, imploded from flat data.
+*Result:* no anti-trapped point before the evolution ended near the centre ($\max r_u<0$).
+*Lesson:* the budget G1 is necessary, not sufficient. NEC violation must be coherent and focused on the ingoing rays through one sphere. Ghost
+matter destabilises the vacuum in any case, so the line was not pursued.
+**Type:** inconclusive numerical experiment.
+
+### F20. Breathing seeds in a coarse scan (Round 6)
+*Tried:* wall-plus-dust surface energies of opposite signs and negative-tension walls (96 parameter sets), looking for a stably oscillating orbit in
+our region that could later reach a daughter.
+*Result:* none found. Orbits either reach $\sigma=0$ (the wall becomes null) or are separated from the daughter by a barrier.
+*Consistency:* Theorem G2 forbids a classical bridge crossing for any wall matter. The Guendelman–Sakai breathing orbits may lie outside the scanned range.
+**Type:** negative scan, not a theorem.

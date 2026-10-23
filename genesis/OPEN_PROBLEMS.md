@@ -76,3 +76,19 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   daughter branch rather than the collapse branch. Needs P-T3′.
 * **P-C2.** Event-level discrimination (Prop. C1): a model of the wall's emission rate $\Gamma$ in a scalar-field wall, to turn $\Gamma\tau_{\rm collapse}$ into a number.
 * **P-A2.** Extend Theorem A1 to the SdS exterior and to the non-flip window (E3), where $n_D$ can differ.
+
+## Round 6 additions (ROADMAP_ROUND6_MECHANISM_ATLAS.md)
+
+* **P-R6a.** The GSL and the area theorem in beyond-Horndeski genesis: is GSL violation unavoidable for self-amplifying NEC violation?
+* **P-R6b.** A finite genesis seed whose boundary layer opens a throat with the G1 budget (otherwise Proposition G7 gives a parent-consuming
+  visible bubble), and the hand-over to the daughter's vacuum energy. This is the first calculation Route G needs.
+* **P-R6c.** A stabiliser compatible with a bridge, for Planck-density seeds (G5).
+* **P-R6d.** The Kerr (rotating) route through the inner horizon in 3+1.
+* **P-R6e.** Rates of flux-supported topology change (wineglass wormholes) seeded by laboratory fields.
+
+## Rounds 5 and 7 additions (ROADMAP_ROUNDS5_7_12.md)
+
+* **P-T2 (now central).** The thick-wall laboratory exponent. Perturbative theories reach small $B_{\rm CdL}$ only with thick walls, where S3 and S7 are not established.
+* **P-C4 (sharpened).** The field's state after the transition on the daughter branch, from a full treatment. Round 7 shows the branch difference is set entirely by it
+  (about 0.1 quanta per event under D1).
+* **P-R7.** 3+1 greybody factors and higher multipoles for the Round 7 flux.

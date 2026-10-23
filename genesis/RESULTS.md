@@ -117,6 +117,27 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R62 | **S3, independent 25–35-digit check**: $B_{\rm an}=B(0)\Phi(E)[1+c(E)\kappa^2/\chi^2]$, $-0.73<c<0$ on all of regime A, $c(0^+)=-0.722221$ ($-13/18$?), $c\simeq-5E^{-3/2}$; S7 carries $1-0.73\kappa^2/\chi^2$ | Prop-N (+ conjecture) |
 | R63 | **Euclidean SdS with conical defects**: $I(\beta)=-(A_b+A_c)/4G$ for every period $\beta$ (SdS Smarr cancels the $\beta$-terms) | Theorem + numerics |
 
+## Round 6: the mechanism atlas (ROADMAP_ROUND6_MECHANISM_ATLAS.md)
+
+| ID | result | status |
+|---|---|---|
+| R64 | **Theorem G1 (classical budget)**: anti-trapping from laboratory data needs $2Gm/r\vert_0+8\pi G\int r(-T_{uu})du/\alpha^2\ge1$; NEC-violating null force $c^4/8\pi G=4.8\times10^{42}$ N, independent of size; Casimir short by $\ge50$ orders | Theorem |
+| R65 | **Theorem G2**: thin walls of any surface matter cannot cross the bridge classically (at $A_{\rm out}=0$, $V=f_{\rm out}$); the past of the flip is a singularity, a Cauchy horizon or a cosmological region | Theorem |
+| R66 | **Proposition G3**: visible inflating bubbles need negative asymptotic tension; at $M=0$ their nucleation exponent equals the CdL exponent, so Minkowski would decay upward (survival needs $B\gtrsim560$); the parent is consumed | Theorem + Proposition |
+| R67 | **Proposition G4**: Reissner–Nordström exteriors change the laboratory exponent by $<3\%$ but give a classical route through the Cauchy horizon above $M_{\rm cr}\approx0.16\,m_P^3/\sqrt\rho$ (continuous with FGG as $Q\to0$, rising with $Q$) | Proposition-N |
+| R68 | **Proposition G5**: stabilised seeds at the frontier convert in $e^B/\omega$: $5\times10^{-19}$ s, 3 ns, 0.09 s at $R=100,200,300\,\ell_P$ | Proposition |
+| R69 | **Proposition G6/G7 (Route G)**: self-amplifying NEC violation meets G1 automatically (budget ratio $6(L^2/h)^{1/3}$); a thin-edged seed in vacuum becomes a visible, parent-consuming bubble (interface energy turns negative at $HR=\sqrt{2GM/R}$); a hidden daughter needs a throat-opening NEC-violating boundary layer | Proposition (+ numerics) |
+| R70 | **Problem B answer**: no more accessible route within GR + QFT + GSL (closure by G1, G2, S7, Wall, SCC); the only laboratory-scale class is self-amplifying NEC violation, which requires GSL and positivity violation; safety floor $\ge m_Pc^2\approx2$ GJ per hidden daughter | Assessment built on the theorems above |
+
+## Rounds 5 and 7 (ROADMAP_ROUNDS5_7_12.md)
+
+| ID | result | status |
+|---|---|---|
+| R71 | **Theory F1**: a tilted-quartic scalar derives $\rho,\sigma,w,m$ and the CdL exponent; the chain couplings → $B_{\rm lab}$ closes (gravitational bounce agrees with thin wall to 3–17%) | computation |
+| R72 | **Proposition F1**: $B_{\rm CdL}\simeq6745/\epsilon^3\lambda$; the Round 2 frontier ($B_{\rm CdL}=10$) needs $\lambda\sim10^4$ (one loop ≫ tree); with $\lambda\le4\pi$, $\epsilon\le\frac12$: $B_{\rm lab}\ge1095$, $P\le10^{-476}$ | Proposition |
+| R73 | **Round 7 radiation**: explicit 1+1 field, laboratory state: collapse branch has a negative precursor ($\approx-0.44F_H$), switch-on over $\approx3.5\times4GM$, deficit $\approx2F_H/\kappa$; late flux Hawking to 0.02% (check); the daughter branch (state D1, assumed) differs by $\approx0.1$ quanta per event | Proposition-N |
+| R74 | **Inaccessibility**: the daughter's inflation and, at late times, which branch occurred cannot be established by exterior observers; only event-level statistics carry the branch | Theorem (Birkhoff, G1, G2) + numerics |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
