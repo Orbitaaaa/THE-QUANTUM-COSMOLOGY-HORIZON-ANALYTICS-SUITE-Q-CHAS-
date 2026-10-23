@@ -9,11 +9,14 @@
 * ``regularized_hamiltonian``            the true Hamiltonian H(u, P~), analytic across f_in = 0.
 * ``clock_orientation``                  Theorem Q10.2: d t_inf / d tau = A_out / f_out > 0 on the parent, < 0 on every
   daughter (eps_out = -1, region III): the asymptotic clock folds back at the transition.
-* ``flux_balance``                       Corollary Q10.3: in the stationary problem with the boundary clock, the physically
-  expanding daughter is an incoming wave (negative t-flux): |R|^2 = |I|^2 + |D|^2 (Klein-type); ordinary transmission
-  |I|^2 = |R|^2 + |T|^2 describes laboratory -> time-reversed daughter.
+* ``flux_balance``                       Corollary Q10.3: bookkeeping of t_inf-fluxes (H = M as the generator).  In that clock the
+  expanding daughter is an incoming wave, |R|^2 = |I|^2 + |D|^2.  Round 3 (F17) withdraws the physical reading
+  ("Klein-type", "time-reversed daughter"): the conserved charge of the constraint is positive on the expanding
+  double-flip daughter (selection.charge_signs), and every global time function increases along it.
+* ``global_time_orientation``            Proposition A5 (round 3): along the parent and along the daughter, on both sides of
+  the wall, both Kruskal null coordinates increase with the wall's proper time.  Only the Killing time t_inf folds back.
 
-See ROADMAP_STAGE1_2_4.md, Parts C and D.
+See ROADMAP_STAGE1_2_4.md, Parts C and D, and ROADMAP_ROUND3_PROBLEMS_ABC.md, Part A.
 """
 
 from __future__ import annotations
@@ -152,8 +155,9 @@ def group_velocity(model: ThinWallModel, R: float, expanding: bool = True) -> fl
 def flux_balance(model: ThinWallModel, B: float) -> dict:
     """Stationary scattering at fixed M with the boundary clock.  Laboratory incident wave (expanding bounded branch)
     has v > 0; the physically expanding daughter has v < 0 (incoming in t_inf).  With transmission factor
-    tau = exp(-B):  (i) physical daughter:  |R|^2 = |I|^2 + |D|^2, |D|^2 = tau |I|^2 (Klein-type, reflected > incident);
-    (ii) t-outgoing daughter (time-reversed, contracting in its proper time): |I|^2 = |R|^2 + |T|^2."""
+    tau = exp(-B):  (i) physical daughter:  |R|^2 = |I|^2 + |D|^2, |D|^2 = tau |I|^2 (reflected > incident in t_inf-flux);
+    (ii) t-outgoing daughter (contracting in its proper time): |I|^2 = |R|^2 + |T|^2.
+    These are statements about the t_inf clock only (F17); the clock-independent conserved charge is selection.charge_signs."""
     R1, R2 = model.turning_points()[0], model.turning_points()[-1]
     v_lab = group_velocity(model, 0.5 * (R1 + model.horizons_out()[0]) if R1 > model.horizons_out()[0] else R1, True)
     v_dau = group_velocity(model, 1.5 * R2, True)
@@ -161,3 +165,29 @@ def flux_balance(model: ThinWallModel, B: float) -> dict:
     return dict(v_lab_incident=v_lab, v_daughter_expanding=v_dau, klein=bool(v_lab > 0 > v_dau),
                 physical_daughter=dict(I2=1.0, D2=tau, R2=1.0 + tau),
                 t_outgoing_daughter=dict(I2=1.0, T2=tau, R2=1.0 - tau))
+
+
+def global_time_orientation(model: ThinWallModel, R: float, expanding: bool = True) -> dict:
+    """Proposition A5.  At a static point of the wall (f_in, f_out > 0) with proper-time velocity Rdot = +-sqrt(-V):
+    on each side, with A the side's A_in / A_out and f its metric function,
+        du/dtau = (A - Rdot)/f,  dv/dtau = (A + Rdot)/f,  dt/dtau = A/f   (u, v, t the side's static null and Killing times).
+    The wall sits in the static patch whose Killing field has orientation sign(A) (exterior: region I for A_out > 0,
+    region III for A_out < 0, Prop. G1; interior: the de Sitter patch containing the centre for A_in > 0, the antipodal
+    patch for A_in < 0).  Kruskal coordinates there are U = -sign(A) e^{-k u}, V = sign(A) e^{k v} (black-hole type) or
+    U = sign(A) e^{k u}, V = -sign(A) e^{-k v} (cosmological type), so
+        dU/dtau = k |U| |A - Rdot| / f > 0,  dV/dtau = k |V| |A + Rdot| / f > 0,
+    because the constraint Rdot^2 = A^2 - f with f > 0 gives |Rdot| < |A|, hence sign(A -+ Rdot) = sign(A).
+    Returns the signs computed from the junction data (no patch assignment is used beyond sign(A))."""
+    f_in, f_out = float(model.f_in(R)), float(model.f_out(R))
+    if f_in <= 0 or f_out <= 0:
+        raise ValueError("static point required (f_in, f_out > 0)")
+    rd = np.sqrt(max(-float(model.V(R)), 0.0)) * (1 if expanding else -1)
+    out = {}
+    for side, A, f in (("out", float(model.A_out(R)), f_out), ("in", float(model.A_in(R)), f_in)):
+        s = np.sign(A)
+        du, dv = (A - rd) / f, (A + rd) / f
+        out[side] = dict(A=A, dt_dtau=A / f, du_dtau=du, dv_dtau=dv,
+                         dU_sign=float(np.sign(s * du)), dV_sign=float(np.sign(s * dv)), Rdot_below_A=bool(abs(rd) < abs(A)))
+    out["killing_clock_reversed"] = bool(out["out"]["dt_dtau"] < 0)
+    out["global_future_directed"] = all(out[k]["dU_sign"] > 0 and out[k]["dV_sign"] > 0 for k in ("out", "in"))
+    return out

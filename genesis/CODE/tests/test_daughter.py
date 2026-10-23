@@ -40,3 +40,16 @@ def test_clock_folds_back_on_every_daughter():
         c = D.clock_orientation(m)
         assert c["parent_future_directed"] and c["daughter_past_directed"]
         assert D.flux_balance(m, 5.0)["klein"]
+
+
+def test_global_time_increases_along_parent_and_daughter():
+    from babyuniverse.model import model_from_dimensionless
+    for m in (model_from_dimensionless(0.6, 2.4), model_from_dimensionless(0.3, 5.0), ThinWallModel(1.0, 1.0, 0.1545)):
+        tp = m.turning_points()
+        R1, R2, rh = tp[0], tp[-1], m.horizons_out()[0]
+        for expanding in (True, False):
+            p = D.global_time_orientation(m, 0.5 * (R1 + rh), expanding)
+            assert p["global_future_directed"] and not p["killing_clock_reversed"]
+        d = D.global_time_orientation(m, 0.5 * (R2 + 1 / m.chi), True)
+        assert d["global_future_directed"] and d["killing_clock_reversed"]
+        assert d["out"]["Rdot_below_A"] and d["in"]["Rdot_below_A"]

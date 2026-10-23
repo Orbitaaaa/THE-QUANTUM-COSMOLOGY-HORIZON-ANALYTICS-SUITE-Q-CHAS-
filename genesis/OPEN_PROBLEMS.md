@@ -4,12 +4,14 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Phase II — verification gaps
 
-* **P-N1.** Prove NG4: in regime B, $\lvert\theta_D\rvert>\pi$. *Criterion:* analytic inequality for $\Delta t^W_E$ in terms of $(\gamma,E)$.
+* **P-N1 (both ends proved, round 3 D2).** Prove NG4: in regime B, $\lvert\theta_D\rvert>\pi$. Both boundary values are now theorems: $F(t)>1$ at $M_{\rm cr}$, and $(\lvert J_0\rvert+\pi)/2\pi>1$ at $E_{AB}^-$. The interior is strictly monotone on 4800 points. Remaining (**P-N1′**): monotonicity of $EJ(E)$ on regime B.
 * **P-T5 (mostly done, roadmap Part A).** A theorem for light walls (S3: $B=B_{\rm CdL}\Phi$), and in the double-flip class wherever the $\Delta t^W_E<0$ criterion holds (S5).
-  Rigorous closed-form bounds S1 and S2. Open (P-T5′): close the strip $E_{AB}<E<1.6E_{AB}$ analytically.
+  Rigorous closed-form bounds S1 and S2. Round 3: the A/B end of the strip is a theorem (Prop. S5-b); certificates hold from $1.02E_{AB}$ (sampled);
+  $J<0$ on 2100 points down to $10^{-7}$. Open (**P-T5″**): interval-verified certificates on $(E_{AB},E_\omega)$ and a quantitative remainder at the end.
+* **P-S3 (new, round 3 D3).** Derive the correction coefficient $c(E)$ of S3 analytically: $-0.73<c<0$, $c(0^+)=-0.722221$ (conjecture $-13/18$), tail $-5E^{-3/2}$.
 * **P-L1.** Compare T0–T3 with FGG's pseudomanifold rule and FMP's Hamiltonian formulae, and with
   de Alwis et al. / Céspedes et al., term by term (full texts required; arXiv is blocked in this environment).
-* ~~P-G1~~ **atlas done (roadmap Part G, `sds_atlas.py`).** Remaining: a fresh look at the conical defects of Euclidean SdS. Original text: Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
+* ~~P-G1~~ **done**: the atlas (roadmap Part G) and, in round 3, the Euclidean sections with conical defects, $I(\beta)=-(A_b+A_c)/4G$ for every $\beta$ (`sds_atlas.euclidean_section`). Original text: Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
   pieces with two horizons (conical defects).
 
 ## Phase III — the quantum transition
@@ -19,7 +21,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   (momentum-representation ODE), and compute prefactors.
 * **P-Q9 (reformulated, roadmap Part C).** The orientation is configuration data, so it is not removed by squaring (Q9.1). The two squared families are two
   conventions for one daughter (Q9.2). The question is which Casoratian charge is probability (Q9.3/Q9.4), and it is moot outside the sliver $M_{\rm sd}<M$
-  (Theorem S4). Remaining **P-Q9′**: the Klein–Gordon current of the full WDW equation through the bridge. Original text: Is the exterior orientation of the wall superselected in a full theory? This decides between $B_{\rm an}$ and $B_{\rm sq}$ in the
+  (Theorem S4). **Round 3:** under P2–P3 the question is settled in the reduced theory (Theorem A1: $e^{-B_{\rm an}}$ for double flip, no flux for single flip). Remaining **P-Q9′**: derive P3, i.e. show the Casoratian charge is the reduction of the full WDW Klein–Gordon current through the bridge. Original text: Is the exterior orientation of the wall superselected in a full theory? This decides between $B_{\rm an}$ and $B_{\rm sq}$ in the
   single-flip class (the double-flip class is unambiguous).
 * **P-Q7.** Pseudo-differential quantization of the single sheet $H_-$ (real-angle convention): is the tunnelling amplitude governed by
   the branch locus, as with relativistic Schrödinger operators?
@@ -30,8 +32,9 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-T3 (partly done, roadmap D5).** There is one attempt per bubble (the bounded branch is not periodic in $t_\infty$), and the Kemble connection gives $P\simeq e^{-B}$. Open
   (P-T3′): the field-theoretic one-loop prefactor.
 * **P-Q1.** Dirac (quantize-then-reduce) quantization with Kuchař variables; compare with Route A beyond WKB.
-* **P-Q4 (partly addressed, roadmap D3).** In the reduced model, boundary-clock unitarity never produces the future-expanding daughter as an independent positive-norm
-  subsystem. This is consistent with Wall's theorem and with Freivogel et al. Open: a QFT-level statement.
+* **P-Q4 (revised, round 3 F17).** The roadmap-round claim (boundary-clock unitarity never produces the future-expanding daughter as a positive-norm subsystem) was a
+  $t_\infty$-clock artefact. In the constraint's own charge the expanding double-flip daughter has positive flux. Open: a QFT-level statement of what the
+  exterior can and cannot know (Wall, Freivogel et al.).
 
 ## Phase IV — fields instead of walls
 
@@ -66,3 +69,10 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-T3′.** One-loop prefactor (wall and bulk fluctuations) of the laboratory transition.
 * **P-T5′.** Analytic control of $\Delta t^W_E$ in the strip $E_{AB}<E<1.6E_{AB}$. (The bound $\Phi\ge\max(1,8/3E+2/3)$ is proved.)
 * **P-A1.** The QEI species bound with curved-space, interacting QEIs and exact constants (currently a scaling argument with Ford–Roman constants).
+
+## Round 3 additions
+
+* **P-C4.** The field-theoretic burst at the transition (Bogoliubov coefficients of fields coupled to the wall), the only candidate signal present on the
+  daughter branch rather than the collapse branch. Needs P-T3′.
+* **P-C2.** Event-level discrimination (Prop. C1): a model of the wall's emission rate $\Gamma$ in a scalar-field wall, to turn $\Gamma\tau_{\rm collapse}$ into a number.
+* **P-A2.** Extend Theorem A1 to the SdS exterior and to the non-flip window (E3), where $n_D$ can differ.

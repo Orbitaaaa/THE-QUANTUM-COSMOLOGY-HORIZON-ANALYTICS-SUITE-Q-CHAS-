@@ -235,6 +235,18 @@ def boundary_certificate() -> dict:
     return dict(factorization=bool(sp.simplify(lhs - rhs) == 0), h_definition=bool(h_ok), barrier_split=bool(split_ok))
 
 
+def theta_D_over_pi(gamma: float, E: float) -> float:
+    """Regime B (g_min < E < E_AB): |theta_D| / pi = -E J(gamma, E) / (2 pi E_AB)  (ROADMAP G, NG4 reformulated)."""
+    return -E * delta_tE_dimless(gamma, E) / (2 * np.pi * (2 - 2 * gamma))
+
+
+def ng4_ab_limit(gamma: float) -> float:
+    """lim_{E -> E_AB-} |theta_D| / pi = (|J0| + pi) / (2 pi) > 1: from below the pinch contributes -pi to J (it adds to the
+    negative bulk), so the A/B end of NG4 follows from |J0| > pi, the same certificate as the strip end (boundary_certificate).
+    The other end, M -> M_cr, is Theorem NG4-crit (tunnelling.theta_D_critical)."""
+    return (abs(boundary_J0(gamma)) + np.pi) / (2 * np.pi)
+
+
 def strip_lp_certificate(gamma: float, E: float, deg: int = 5, n: int = 800, verify_n: int = 20000) -> dict:
     """Generalised integration by parts for -J/E = int s k (W - s^2)^(-1/2) ds, k = q/W: for any smooth phi,
     int [s k + phi'(W - s^2) + phi (W'/2 - s)] (W - s^2)^(-1/2) ds = int s k (W - s^2)^(-1/2) ds (it adds d(phi sqrt(W - s^2))/ds).

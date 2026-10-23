@@ -38,9 +38,9 @@ Verification types: **S** symbolic (sympy, exact), **A** analytic proof (by hand
 | V-T4 | T2 first law | A + N | proof; finite differences to 8 digits in 4 models |
 | V-T5 | T3 Smarr identity | A + N | Euler + T2; 45 models, residual $\le2.5\times10^{-8}$ |
 | V-T6 | NG3 exterior embedding obstruction | A + N | proof; degree-theory multiplicity outside $\{0,1\}$ in every regime-A model (grid-converged) |
-| V-T7 | NG4 regime-B overshoot | N only | $\min\lvert\theta_D\rvert=3.159>\pi$ over 100 models; **no proof** |
+| V-T7 | NG4 regime-B overshoot | A (both ends) + N | ends proved (Phase II critical limit; round 3 A/B limit); strictly monotone on 4800 points; interior unproved |
 | V-T8 | interior flip embeddable (counter-example) | N | `test_interior_flip_can_be_embedded` |
-| V-T9 | T5 laboratory bound | N only | 39 values of $\gamma$, 50 masses each; **no proof** |
+| V-T9 | T5 laboratory bound | A + N | light walls (S3), $E\ge E_\omega$ (S5), A/B end (S5-b) proved; strip interior sampled (certificates from $1.02E_{AB}$, 2100 quadrature points); S3 re-implemented independently (`crosscheck.py`) |
 | V-T10 | continuity $B(M\to0^+)=B(0)$ | N | $10^{-3}$ relative at $M=10^{-6}M_{\rm cr}$ |
 
 ## V-W. Thick walls
@@ -93,14 +93,14 @@ Analytic proofs (III-1, III-2, III-4, III-5, III-6, III-7) are in PHASE_III_QUAN
 
 ## Unproven or unverified items (proof gaps)
 
-1. NG4 (regime B non-embeddability): numerical only.
-2. T5 (laboratory bound): numerical only, over the scanned range.
+1. NG4 (regime B non-embeddability): both ends proved (round 3); the interior is numerical (monotone on 4800 points).
+2. T5 (laboratory bound): theorem for light walls, for $E\ge E_\omega$ and at the A/B end; numerical in the strip interior $E_{AB}<E<E_\omega$.
 3. Thick-wall analogues of T2, T3, NG3: open (the Lorentzian thick-wall dynamics is done in Phase IV).
 4. Agreement of our analytic-branch exponent with FMP/FGG numbers: unverified (full texts inaccessible).
-5. SdS exterior: no explicit conformal diagrams; tunnelling formulas are coded for SdS but the Euclidean pieces
-   (two horizons, conical defects) are not.
+5. SdS exterior: done. Conformal atlas (roadmap round) and Euclidean sections with conical defects, $I(\beta)=-(A_b+A_c)/4G$ for every $\beta$ (round 3).
 6. All statements are leading-order WKB; prefactors are not computed.
 7. Phase III: assumptions (C2) complex angles and (C3) Lebesgue measure are motivated (covariance, analyticity from laboratory data,
    growth bound) but not derived from a gravitational path integral. The Stokes multiplier at the coalescence point $R_q$ of the
-   squared constraint is derived at leading local order (Prop. III-8); an exact global confirmation is open (P-Q2). Superselection of the
-   exterior orientation (P-Q9) is open.
+   squared constraint is derived at leading local order (Prop. III-8), and confirmed by exact integration (roadmap Part B). Round 3: under the
+   principles P2–P3 the analytic constraint is selected and the amplitude fixed (Theorem A1, exact toy Theorem A2). P2 and P3 themselves are
+   not derived from the full WDW theory (P-Q9′).

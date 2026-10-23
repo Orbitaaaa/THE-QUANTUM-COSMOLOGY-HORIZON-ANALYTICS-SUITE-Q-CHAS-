@@ -122,3 +122,28 @@ def test_strip_boundary_limit_and_certificates():
     for g in (-0.9, 0.0, 0.9):
         cert = Bd.strip_lp_certificate(g, (2 - 2 * g) * 1.05)
         assert cert["margin"] > 0 and cert["verified_margin"] > 0
+
+
+def test_ng4_both_ends_and_monotone_interior():
+    from babyuniverse import tunnelling as T
+    from babyuniverse.model import ThinWallModel
+    for g in (-0.9, 0.0, 0.9):
+        b = 2 - 2 * g
+        gmin = ThinWallModel.g_min(g)
+        assert Bd.ng4_ab_limit(g) > 1 and T.theta_D_critical(g) > 1
+        x = (1 - np.cos(np.linspace(0, np.pi, 24)[1:-1])) / 2
+        th = [Bd.theta_D_over_pi(g, gmin + (b - gmin) * xi) for xi in x]
+        assert np.all(np.diff(th) > 0)
+        assert abs(Bd.theta_D_over_pi(g, gmin * (1 + 1e-7) + 1e-12) - T.theta_D_critical(g)) < 1e-5
+        assert abs(Bd.theta_D_over_pi(g, b * (1 - 1e-7)) - Bd.ng4_ab_limit(g)) < 1e-5
+
+
+def test_independent_s3_crosscheck():
+    from babyuniverse import crosscheck as X
+    for eps, E in ((0.03, 1.0), (0.01, 0.3), (0.01, 30.0)):
+        r = X.s3_check(eps, E, dps=25)
+        assert r["double_flip"] and -0.73 < r["rel_dev_over_eps2"] < 0
+    r1, r2 = X.s3_check(0.03, 3.0, dps=25), X.s3_check(0.01, 3.0, dps=25)
+    assert abs(r1["rel_dev_over_eps2"] / r2["rel_dev_over_eps2"] - 1) < 0.01          # O(eps^2) scaling
+    r = X.s3_check(0.003, 1.5 * 4 * 0.003**2 / (1 + 0.003**2), dps=30)             # E -> 0 end of regime A
+    assert abs(r["rel_dev_over_eps2"] + 13 / 18) < 1e-4

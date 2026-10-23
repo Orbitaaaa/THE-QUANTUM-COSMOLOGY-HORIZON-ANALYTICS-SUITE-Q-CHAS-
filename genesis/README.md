@@ -13,7 +13,14 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[PAPER/genesis_foundations.tex](PAPER/genesis_foundations.tex)**: manuscript of the original results.
 * **[ROADMAP_STAGE1_2_4.md](ROADMAP_STAGE1_2_4.md)**: the roadmap round (Stages 1, 2 and 4). The universal laboratory-exponent law
   $B=B_{\rm CdL}\Phi$ and the semiclassical frontier ($P\le10^{-23}$). Exactly where the FGG ambiguity lives. P-Q2 closed. The daughter edge removed.
-  The asymptotic clock folds back (Klein-type creation). The alternative-mechanism ledger and the "five numbers".
+  The asymptotic clock folds back (its "Klein-type" reading is withdrawn in round 3, F17). The alternative-mechanism ledger and the "five numbers".
+* **[ROADMAP_ROUND3_PROBLEMS_ABC.md](ROADMAP_ROUND3_PROBLEMS_ABC.md)**: round 3, answers to the three fundamental problems.
+  * (A) A charge selection rule fixes the transition amplitude uniquely under stated principles: $e^{-B_{\rm an}}$ for double flip, no flux for single flip.
+    It is confirmed by an exact Bessel toy.
+  * The daughter's clock is corrected: global time increases along it.
+  * (B) No accessible mechanism: assistance needs vacuum-scale driving.
+  * (C) An event-level light-curve signature, with state-level invisibility unchanged.
+  * Stage 1 closure: the T5-strip end, NG4 at both ends, an independent S3 check, and Euclidean SdS with conical defects.
 * **[PHASE_II_VERIFICATION.md](PHASE_II_VERIFICATION.md)**: independent verification (40-digit re-implementation, positivity
   lemma, NG4 critical-limit theorem, SdS Smarr identity, the Euclidean winding question).
 * **[PHASE_V_QUANTUM_SYSTEM.md](PHASE_V_QUANTUM_SYSTEM.md)**: the reduced quantum system: two inequivalent channel ends (the daughter
@@ -84,14 +91,25 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **Suppression is a theorem for light walls:** $B_{\rm lab}=B_{\rm CdL}\Phi((R_{\rm CdL}/R_M)^2)\ge4\pi^2\sigma^2R_M^2/\rho$, and
   $B_{\rm lab}\ge1.67\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$. No controlled laboratory transition has $P>10^{-23}$.
 * **The FGG ambiguity** exists only for $M>M_{\rm sd}=(\chi^2-\kappa^2)/2G\chi^3$ or $\kappa\ge\chi$. Where it exists, it is the choice of which conserved charge is probability.
-* **The daughter** needs no boundary condition, but the parent's clock runs backwards along it. Boundary-unitary evolution produces the time-reversed daughter.
+* **The daughter** needs no boundary condition. The parent's *Killing* clock runs backwards along it, but every global time function runs forwards
+  and the conserved charge is positive (round 3 corrects the earlier "time-reversed daughter" reading, F17).
+
+## Round 3 in brief
+
+* **A.** Assume (P1) the reduced thin-wall theory, (P2) geometric states analytic in the shift strip, each configuration once, and (P3) probability is
+  the conserved Casoratian charge. Then double-flip creation has $P=e^{-B_{\rm an}}$, and single-flip daughters receive no flux (Theorems A1, A2).
+  The remaining step is deriving P3 from the full WDW current.
+* **B.** Nothing more accessible than the frontier $P\le10^{-23}$. Driving the wall would need frequencies $\sim0.3$–$0.6\,E_{\rm vac}$. The only
+  unsuppressed route is cosmological.
+* **C.** A daughter is invisible after the fact. During the event, a radiating wall's light curve is truncated (no late tail) on the daughter branch.
 * **Stage 4:** no alternative mechanism escapes within GR plus quantum fields obeying energy inequalities.
 
 ## Code, data, figures
 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
-                     doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas
+                     doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas,
+                     selection, signatures, crosscheck
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -102,8 +120,8 @@ Reproduce (Python ≥ 3.10):
 
 ```bash
 pip install -r genesis/CODE/requirements.txt
-cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap)
-cd .. && python -m pytest tests -q                # 131 tests
+cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
+cd .. && python -m pytest tests -q                # 143 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

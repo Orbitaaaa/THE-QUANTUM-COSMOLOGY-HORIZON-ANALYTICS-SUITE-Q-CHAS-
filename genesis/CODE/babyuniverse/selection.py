@@ -83,3 +83,17 @@ def charge_signs(model: ThinWallModel) -> dict:
     nD = (1 if model.A_out(Rd) < 0 else 0) - (1 if model.A_in(Rd) < 0 else 0)
     return dict(P_lab=float(D.lorentzian_momentum(model, Rl)), P_daughter=float(D.lorentzian_momentum(model, Rd)),
                 n_daughter=nD, dRdt_daughter=float(D.group_velocity(model, Rd)))
+
+
+def current_uniqueness_certificate() -> dict:
+    """Lemma A6(i): a conserved nearest-shift off-diagonal current Q = a psi(u) phi(u+ih) + b psi(u+ih) phi(u) for
+    psi(u+ih) + psi(u-ih) = W psi must have b = -a and a(u+ih) = a(u), i.e. Q = Phi(q) K.  Eliminating psi(u+2ih) and phi(u+2ih)
+    and equating the coefficients of the four data products; a1, b1 stand for a(u+ih), b(u+ih)."""
+    import sympy as sp
+    a, b, a1, b1, W, x1, y1, x2, y2 = sp.symbols("a b a1 b1 W x1 y1 x2 y2")
+    Qu = a * x1 * y2 + b * y1 * x2
+    Qs = a1 * y1 * (W * y2 - x2) + b1 * (W * y1 - x1) * y2
+    eqs = sp.Poly(sp.expand(Qs - Qu), x1, y1, x2, y2).coeffs()
+    sol = sp.solve(eqs, [a1, b1, b], dict=True)
+    return dict(solutions=[{str(k): str(v) for k, v in s.items()} for s in sol],
+                periodic_casoratian=bool(sol == [{a1: a, b1: -a, b: -a}]))

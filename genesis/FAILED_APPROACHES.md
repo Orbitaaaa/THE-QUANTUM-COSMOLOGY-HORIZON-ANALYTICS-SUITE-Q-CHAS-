@@ -145,3 +145,22 @@ $\tilde P=P\mp(R/2G)\ln|f_{\rm in}|$, the constraint and the true Hamiltonian ar
 ($t_\infty\to-\infty$ as $R\to\infty$). No boundary condition is needed (ROADMAP Theorem Q10.1). The daughter still needs its own clock, but for a different
 reason: the asymptotic clock runs backwards along every daughter (Theorem Q10.2).
 **Type:** interpretational error, corrected.
+
+### F17. "Time-reversed daughter", "Klein-type channel" (roadmap round, Corollary Q10.3 and D7; corrected in round 3)
+*Claim:* because $dt_\infty/d\tau=A_{\rm out}/f_{\rm out}<0$ on every daughter, unitary boundary-clock evolution produces the time-reversed daughter. The physically
+expanding daughter would then be a negative-flux, Klein-type channel, created as in a Bogoliubov process with $|\beta|^2\simeq e^{-B}$.
+*Failure* (raised by the user: "reversing exterior Killing-time orientation is not by itself proof of backwards physical time"): $t_\infty$ is not a global
+time function. Its Killing field is past-directed in region III, where every daughter wall lies.
+* Both Kruskal null coordinates increase along the whole history on both sides of the wall (ROADMAP_ROUND3 Proposition A5, `daughter.global_time_orientation`).
+* The clock-free conserved charge of the expanding double-flip daughter is positive, the same sign as the incident laboratory wave (A5,
+  `selection.charge_signs`).
+
+The $t_\infty$-flux relations remain correct as bookkeeping.
+**Type:** interpretational error (a clock artefact read as physics), corrected.
+
+### F18. Double-precision quadrature at the A/B pinch (round 3)
+*Symptom:* spurious non-monotone steps of $|\theta_D|$ near $E_{AB}$, $10^{-3}$-level errors in $J$ for $E/E_{AB}-1\lesssim10^{-5}$, and a spurious
+integration-by-parts certificate at $1.0001E_{AB}$ (margin at the LP cap, from undersampling a spike of width $O(\epsilon^2)$).
+*Cause:* $E-g$ and $f_{\rm out}$ were evaluated as differences of $O(1)$ numbers where both are $O(\epsilon^2)$.
+*Fix:* integrate in $y=z-z_1$ with cancellation-free expressions and geometric breakpoints on the spike width. Cross-checked against 30-digit mpmath.
+**Type:** numerical pitfall, fixed before any conclusion was drawn from it.

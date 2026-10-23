@@ -41,7 +41,10 @@ tests `CODE/tests/test_bounds.py` (11), `test_stokes_exact.py` (4), `test_daught
 7. **P-Q10 solved: no boundary condition is needed at the daughter edge [Theorem].** The finite-time edge of Theorem V-1 is a
    coordinate singularity of the static-frame momentum. $\tilde P=P\mp(R/2G)\ln|f_{\rm in}|$ is continuous, and the constraint and the true
    Hamiltonian are analytic across the interior horizon (F16 corrects V-1(ii)).
-8. **The parent's clock folds back [Theorem].** Along every daughter, $dt_\infty/d\tau=A_{\rm out}/f_{\rm out}<0$, because the daughter wall lies
+8. **The parent's clock folds back [Theorem; the interpretation below is withdrawn in round 3, F17].** *Round-3 correction: only the exterior
+   Killing time folds back. The clock-free conserved charge of the expanding double-flip daughter is positive and every global time function increases
+   along it (ROADMAP_ROUND3_PROBLEMS_ABC.md, A5–A6). The "time-reversed daughter / Klein-type channel" sentences below are $t_\infty$-bookkeeping, not physics.*
+    Along every daughter, $dt_\infty/d\tau=A_{\rm out}/f_{\rm out}<0$, because the daughter wall lies
    in region III, where the Killing field is past-directed. Unitary evolution in the boundary clock therefore takes laboratory
    data to the *time-reversed* daughter. In that clock the physically expanding daughter is a negative-flux (Klein-type)
    channel. This is the minisuperspace face of Freivogel et al. (no unitary boundary process creates an inflating region) and of Wall's
@@ -287,6 +290,8 @@ anchor $u_*$ of Lemma III-6. For the squared constraint (step $2ih$) the Casorat
 share the $Q^0$ charge ($Q=e^{\pi u/h}$), and the unitarity relation $|I|^2=|R|^2+|T_{\rm real}|^2$ is canonical.
 
 ### C4. Corollary Q9.4 (two principles, two answers) — [Theorem, conditional on the principle]
+*Round-3 note: under P2 (geometric states, each configuration once) the squared constraint is excluded and Theorem A1 gives zero flux in the single-flip
+class, so the value $2e^{-B_{\rm sq}}$ in (i) is superseded (ROADMAP_ROUND3_PROBLEMS_ABC.md, A2–A4).*
 * **(i) Probability is one sector-independent current, the one that is probability in the laboratory.** Then probability reaches the daughter only
   through the real copy. The sector-blind theory is the one in which this is canonical:
   $$P_{\rm daughter}=2e^{-B_{\rm sq}}(1+O(\hbar))\quad\text{(single flip)},\qquad e^{-B_{\rm an}}\quad\text{(double flip)} .$$
@@ -340,7 +345,10 @@ transition. This is the Lorentzian face of the Euclidean fold of Theorem III-4(b
 
 Checked on single- and double-flip models (`daughter.clock_orientation`): $dt/d\tau=+4.5$ and $+2.2$ on the parent, $-1.2$ to $-1.3$ on the daughter.
 
-### D3. Corollary Q10.3 (Klein-type structure of creation in the parent's clock) — [Theorem in the reduced model; Interpretation flagged]
+### D3. Corollary Q10.3 (Klein-type structure of creation in the parent's clock) — [kinematics correct; physical interpretation WITHDRAWN, round 3 F17]
+*Round-3 correction (prompted by the critique "reversing exterior Killing-time orientation is not by itself proof of backwards physical time"): $t_\infty$ is not a
+global time function. Both Kruskal null coordinates increase along the daughter (Proposition A5), and the conserved charge of the expanding double-flip daughter
+has the same sign as the incident laboratory wave (A5). What follows is correct as bookkeeping of $t_\infty$-fluxes only.*
 With $H=M$ generating $t_\infty$, the group velocity is $dR/dt_\infty=\dot Rf_{\rm out}/A_{\rm out}$.
 * **Stationary picture.** The physically expanding daughter has $dR/dt_\infty<0$: it is an *incoming* wave, with negative $t_\infty$-flux. Flux conservation for a
   stationary state with a purely expanding daughter reads $|R|^2=|I|^2+|D|^2$ (reflected exceeds incident, as in the Klein paradox). Ordinary
@@ -376,6 +384,7 @@ The physical amplitude for laboratory → expanding daughter is the crossed elem
 global geometry (Prop. V-3) keeps spatial topology $\mathbb R^3$ and creates an Einstein–Rosen throat. Pinch-off still requires a singularity.
 
 ### D7. Backreaction, unitarity, information (Stage 2 tasks 18–19)
+*Round-3 correction: the third bullet (negative boundary-clock norm) is withdrawn with D3 (F17).*
 * Hawking evaporation competes only after the transition (Phase V Sec. 6).
 * The which-branch entropy is $h(e^{-B})$.
 * By D3, the daughter carries negative boundary-clock norm. In a unitary parent description its creation is accompanied by an equal

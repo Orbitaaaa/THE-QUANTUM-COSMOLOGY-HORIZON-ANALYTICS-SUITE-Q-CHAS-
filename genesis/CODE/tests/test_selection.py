@@ -37,3 +37,7 @@ def test_charge_signs_of_physical_daughters():
     for m in (model_from_dimensionless(0.6, 2.4), model_from_dimensionless(0.3, 5.0)):
         s = S.charge_signs(m)
         assert s["n_daughter"] == 0 and s["P_lab"] > 0 and s["P_daughter"] > 0 and s["dRdt_daughter"] < 0
+
+
+def test_conserved_current_is_periodic_multiple_of_casoratian():
+    assert S.current_uniqueness_certificate()["periodic_casoratian"]

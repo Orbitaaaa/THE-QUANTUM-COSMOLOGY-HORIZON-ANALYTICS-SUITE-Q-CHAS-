@@ -15,7 +15,7 @@
 \title{Universe creation by tunnelling from laboratory data:\\
 no manifold instanton, a unique canonical exponent, and a Smarr identity}
 \author{Project Baby Universe --- Genesis Branch}
-\date{21 October 2026 (Stage One manuscript, draft); addendum 22 October 2026}
+\date{21 October 2026 (Stage One manuscript, draft); addenda 22 and 23 October 2026}
 
 \begin{document}
 \maketitle
@@ -219,12 +219,36 @@ $B\ge\frac43\sqrt{\pi/2}\sqrt{B_{\rm CdL}(M/m_P)(R_M/\ell_P)}$, so in any semicl
 numerical.
 \item \emph{Masses} (PHASE\_V). ``Picogram'' should read nanogram. These masses are below the Planck mass, so the black hole is not semiclassical. For
 $M\gtrsim10m_P$ the GUT exponent is $B\gtrsim7\times10^4$.
-\item \emph{The daughter needs no boundary condition, but the clock folds back} (ROADMAP Part D). The finite-time ``edge'' of the daughter channel is a
-coordinate singularity of the static-frame momentum. Along every daughter $dt_\infty/d\tau<0$ (region III), so unitary boundary-clock evolution produces the
-time-reversed daughter. The expanding daughter is a negative-flux (Klein-type) channel. This is consistent with the holographic and GSL obstructions
-\cite{Freivogel,Wall}.
+\item \emph{The daughter needs no boundary condition, and only the Killing clock folds back} (ROADMAP Part D, corrected in Addendum 2). The finite-time
+``edge'' of the daughter channel is a coordinate singularity of the static-frame momentum. Along every daughter $dt_\infty/d\tau<0$ (region III). The
+roadmap round read this as ``time-reversed daughter, Klein-type channel''; that reading is withdrawn (Addendum 2, item 2).
 \item \emph{Literature.} The FMP abstract states that agreement with the Euclidean method requires degenerate metrics \cite{FMP}; Ansoldi and Tanaka resolve
 slicing discrepancies with a smooth time slice \cite{AT}. Both are consistent with the results above. A full-text comparison is still pending.
+\end{enumerate}
+
+
+\section*{Addendum 2 (23 October 2026): the transition amplitude, the daughter's clock, verification}
+\begin{enumerate}
+\item \emph{A charge selection rule} (ROADMAP\_ROUND3, Theorems A1--A2). Assume (P1) the reduced theory, with the analytic shift constraint
+$\psi(u+ih)+\psi(u-ih)=2C\psi$, $u=R^2/2$, $h=\hbar G$; (P2) physical states are geometric and analytic in $|{\rm Im}\,u|\le2h$, with each configuration
+represented once; (P3) probability is the conserved Casoratian charge $K[\psi,\psi^\sharp]$, with no entropy weights. Then $K=\Phi(e^{2\pi u/h})$ has a
+unique Laurent series, and a geometric wave with net flip number $n$ contributes only to $q^{-n}$. Hence $K$ is constant with ordinary flux balance for
+double-flip transitions, and $K\equiv0$ (total reflection) for single-flip ones. For double flip, $P=e^{-B_{\rm an}}(1+O(\hbar))$. The single-flip daughter
+receives no flux, and $2e^{-B_{\rm sq}}$ (item 2 above) is superseded under P2. The toy $C=-\lambda u$ is solved exactly by $Z_{-iu/h}(i/\lambda h)$. The
+Hankel function is the unique solution geometric in both regions, its Casoratian vanishes, and $|H^{(1)}(-u)|=e^{\pi u/h}|H^{(1)}(u)|$, so the decay is the
+analytic-angle exponent exactly, for every $h$.
+\item \emph{The daughter's clock.} Along every branch, on both sides of the wall, both Kruskal null coordinates increase with proper time, because
+$|\dot R|<|A|$ and ${\rm sign}(dt/d\tau)={\rm sign}(A)$. The conserved charge of the expanding double-flip daughter is positive, like that of the incident
+laboratory wave. Only the exterior Killing time folds back. Reversing its orientation is not a reversal of physical time.
+\item \emph{Mechanisms.} Dynamical assistance requires driving frequencies $\omega\gtrsim1/\Delta\tau_E\approx0.3$--$0.6\,E_{\rm vac}$. No laboratory mechanism
+beats the frontier; bubbles nucleated during inflation remain a cosmological route only.
+\item \emph{Verification.} State level: invisible (Birkhoff). Event level: on the collapse branch a radiating wall's signal has a late tail
+$\propto e^{-u/4GM}$ carrying $\Gamma\tau_{\rm collapse}$ photons; on the daughter branch it stops at the turning point, with redshift factor $\sqrt{f(R_1)}$.
+\item \emph{Proof gaps narrowed.} T5 strip: $\lim_{E\to E_{AB}^+}\Delta t^W_E\propto J_0+\pi<0$ for all $\gamma$, from
+$(z^2+z+1)^2-z^2h'(z)=(z-1)(z+1)(z^2-z+3)(z^2+z+1)/z^2$. NG4: both boundary values ($F(t)$ and $(|J_0|+\pi)/2\pi$) exceed 1, with the interior monotone
+numerically. An independent high-precision check gives $B_{\rm an}=B(0)\Phi(E)[1+c(E)\kappa^2/\chi^2]$ with $-0.73<c<0$, so the frontier carries the factor
+$1-0.73\kappa^2/\chi^2$ ($P\le10^{-23}$ unchanged). Euclidean Schwarzschild--de Sitter with conical defects at both horizons has
+$I(\beta)=-(A_b+A_c)/4G$ for every period.
 \end{enumerate}
 
 \begin{thebibliography}{99}

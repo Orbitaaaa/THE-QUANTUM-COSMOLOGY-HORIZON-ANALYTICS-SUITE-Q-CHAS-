@@ -101,6 +101,22 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R53 | **Cosmological route (scaling)**: $f(M)\simeq\frac{4\pi}3\lambda(M_{\rm eq}/M)^{1/2}$; all dark matter in $10^{20}$ g daughter hosts needs $\lambda\approx10^{-16}$ ($B_{\rm inf}\approx37$) | Proposition (scaling) |
 | R50 | **Five numbers** (controlled optimum): $E_{\rm req}\approx3\times10^{17}$ GeV, $L_{\rm req}\approx100\ell_P$, $\tau_{\rm req}\lesssim5\times10^{-42}$ s, $P\le10^{-23}$, $S_{\rm verify}=0$ | computation |
 
+## Round 3: the three fundamental problems (ROADMAP_ROUND3_PROBLEMS_ABC.md)
+
+| ID | result | status |
+|---|---|---|
+| R54 | **Theorem A1 (charge selection rule)**: under P1–P3 (reduced theory; geometric states analytic in the strip, each configuration once; probability = Casoratian charge) the net flip number is superselected in the flux. Double flip: $K$ constant, ordinary flux balance; single flip: $K\equiv0$, total reflection | Theorem (conditional on stated principles) |
+| R55 | **Theorem A2 (exact toy)**: $\psi(u+ih)+\psi(u-ih)=-2\lambda u\psi$ is solved by $Z_{-iu/h}(i/\lambda h)$; $H^{(1)}$ is the unique solution geometric in both regions, $K\equiv0$, and $\lvert H^{(1)}(-u)\rvert=e^{\pi u/h}\lvert H^{(1)}(u)\rvert$: the decay is the analytic-angle exponent exactly, for every $h$ | Theorem + numerics |
+| R56a | **Lemma A6**: every conserved nearest-shift current is $\Phi(q)K$ with $\Phi$ periodic, $q=e^{A/4\hbar G}$; P3 is equivalent to the absence of a current weight $\propto e^{\pm A/4\hbar G}$ | Theorem |
+| R56 | **Corollary A3 (Problem A)**: $P=e^{-B_{\rm an}}(1+O(\hbar))$ for double flip (anchor-free); no flux into single-flip daughters. Supersedes $2e^{-B_{\rm sq}}$ (R46) | Theorem under P1–P3 |
+| R57 | **Proposition A4/A5 (daughter clock)**: the expanding double-flip daughter carries positive conserved charge; both Kruskal null coordinates increase along parent and daughter on both sides of the wall; only $t_\infty$ folds back. Withdraws the physical reading of R48 (F17) | Theorem + numerics |
+| R58 | **Proposition B1 (Problem B)**: dynamical assistance needs $\omega\gtrsim1/\Delta\tau_E=0.3$–$0.6\,E_{\rm vac}$ ($1.6\times10^{17}$ GeV at the frontier) | Proposition |
+| R59 | **Proposition C1 (Problem C)**: event-level signature: collapse branch has a late tail $\propto e^{-u/4GM}$ with $\Gamma\tau_{\rm collapse}$ photons; daughter branch stops at the turning point (last redshift $\sqrt{f(R_1)}\approx0.74$). State-level no-go unchanged | Proposition + numerics |
+| R60 | **Proposition S5-b (T5 strip, A/B end)**: $\lim_{E\to E_{AB}^+}J=J_0+\pi<0$ for all $\gamma$, via $(z^2+z+1)^2-z^2h'=(z-1)(z+1)(z^2-z+3)(z^2+z+1)/z^2$; interior of the strip: certificates from $1.02E_{AB}$, $J<0$ on 2100 points | Theorem (end); Prop-N (interior) |
+| R61 | **NG4 at both ends**: $\lvert\theta_D\rvert/\pi\to(\lvert J_0\rvert+\pi)/2\pi>1$ at $E_{AB}^-$ (new) and $F(t)>1$ at $M_{\rm cr}$; strictly monotone on 4800 points | Theorem (ends); Prop-N (interior) |
+| R62 | **S3, independent 25–35-digit check**: $B_{\rm an}=B(0)\Phi(E)[1+c(E)\kappa^2/\chi^2]$, $-0.73<c<0$ on all of regime A, $c(0^+)=-0.722221$ ($-13/18$?), $c\simeq-5E^{-3/2}$; S7 carries $1-0.73\kappa^2/\chi^2$ | Prop-N (+ conjecture) |
+| R63 | **Euclidean SdS with conical defects**: $I(\beta)=-(A_b+A_c)/4G$ for every period $\beta$ (SdS Smarr cancels the $\beta$-terms) | Theorem + numerics |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
