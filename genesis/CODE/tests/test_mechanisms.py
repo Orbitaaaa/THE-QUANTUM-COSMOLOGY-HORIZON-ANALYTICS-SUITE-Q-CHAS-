@@ -59,3 +59,11 @@ def test_seeds_and_genesis_scaling():
     g = Mc.genesis_timeline(1e-2, 1e-8, 1e11)
     assert g["budget_ratio"] > 1 and g["validity_H_t"] < 0.1           # G1 met automatically, flat-space genesis still valid
     assert abs(g["budget_ratio"] - 6 * (1e-4 / 1e-8) ** (1 / 3)) < 1e-6 * g["budget_ratio"]
+
+
+def test_sharp_edged_genesis_seed_gives_a_visible_bubble():
+    for h, rc, M in ((1e-4, 1.0, 1e-3), (1e-2, 0.3, 1e-2), (1e-6, 1.0, 0.1)):
+        g = Mc.genesis_interface(h, rc, M)
+        assert not g["branches_meet"] and g["antitrapped_reached"]
+        assert g["tension_negative_before_antitrapping"] and g["final_kappaR"] < 0
+        assert abs(g["HR_when_tension_turns_negative"] / g["HR_predicted"] - 1) < 0.05

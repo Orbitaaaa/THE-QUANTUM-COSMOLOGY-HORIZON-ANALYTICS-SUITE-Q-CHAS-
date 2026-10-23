@@ -20,6 +20,10 @@ Four results organise the search (ROADMAP_ROUND6_MECHANISM_ATLAS.md):
 * ``seed_lifetime``        Proposition G5 (stabilised seeds).  A quasi-stable seed attempts the transition at frequency omega, so
                            its lifetime is e^B / omega; at the semiclassical frontier B >= 5.28 sqrt(R/l_P) this is ~1e-18 s at
                            R = 100 l_P and ~0.1 s at R = 300 l_P.
+* ``genesis_interface``    Proposition G7 (the edge of a genesis seed).  A seed bounded by a thin interface in vacuum keeps its exterior
+                           orientation (Theorem G2); the interface energy must turn negative at H^2 R^2 = 2M/R and the seed becomes a
+                           *visible* inflating bubble that grows into the parent.  A hidden daughter needs the throat to open inside a
+                           NEC-violating boundary layer.
 * ``genesis_timeline``     Proposition G6 (self-amplifying NEC violation).  In a Galilean-genesis phase H = h/(-t)^3 and
                            |p| = 3hc^4/(4 pi G (ct)^4) grow without external input; a seed of size L produces anti-trapped spheres when
                            H = 1/L, and the budget of G1 is then met automatically.
@@ -277,3 +281,28 @@ def genesis_timeline(L_m: float, h_m2: float, p0_Pa: float) -> dict:
     return dict(t_star_s=float(t_star / C_SI), p_star_Pa=float(p_star), elapsed_s=float((t0 - t_star) / C_SI),
                 amplification=float(p_star / p0_Pa), validity_H_t=float((h_m2 / L_m**2) ** (1 / 3)),
                 budget_ratio=float(p_star * L_m**2 / nec_force_SI()))
+
+
+# ------------------------------------------------------------------ Proposition G7: the edge of a genesis seed
+def genesis_interface(h: float, r_c: float, M: float, n: int = 4000) -> dict:
+    """Interior: flat FRW genesis patch H = h/(-t)^3, a = exp(h/2t^2) (a -> 1 as t -> -inf); comoving thin interface at r_c,
+    R = a r_c; exterior Schwarzschild of mass M (G = c = 1).  For a comoving wall in flat FRW, A_in^2 = 1 - 2 m_in/R + Rdot^2 = 1
+    exactly (m_in = R^3 H^2 / 2, Rdot = H R), so the junction A_in - A_out = kappa R gives
+        visible branch (exterior orientation +1):  kappa R = 1 - sqrt(1 - 2M/R + H^2 R^2),
+        hidden branch  (exterior orientation -1):  kappa R = 1 + sqrt(1 - 2M/R + H^2 R^2).
+    The branches meet only where 1 - 2M/R + H^2 R^2 = 0, i.e. R < 2M (inside the horizon; Theorem G2).  Starting from regular data
+    (visible branch), the interface energy must turn negative at H^2 R^2 = 2M/R, before the interior anti-traps (H R = 1), and the
+    seed ends as a visible inflating bubble that grows into the parent."""
+    t_end = -(h ** 0.5) * 0.999                              # stay where the genesis scaling holds roughly (H|t| < 1)
+    t = -np.geomspace(1e4 * h ** (1 / 3) + 1.0, -t_end, n)
+    H = h / (-t) ** 3
+    R = np.exp(h / (2 * t**2)) * r_c
+    disc = 1 - 2 * M / R + H**2 * R**2
+    kR_vis = 1 - np.sqrt(disc)
+    i_neg = int(np.argmax(kR_vis < 0)) if np.any(kR_vis < 0) else None
+    i_at = int(np.argmax(H * R > 1)) if np.any(H * R > 1) else None
+    return dict(min_discriminant=float(disc.min()), branches_meet=bool(disc.min() <= 0),
+                HR_when_tension_turns_negative=None if i_neg is None else float(H[i_neg] * R[i_neg]),
+                HR_predicted=float(np.sqrt(2 * M / r_c)), antitrapped_reached=i_at is not None,
+                tension_negative_before_antitrapping=bool(i_neg is not None and (i_at is None or i_neg <= i_at)),
+                final_kappaR=float(kR_vis[-1]), final_HR=float(H[-1] * R[-1]))
