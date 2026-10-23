@@ -9,6 +9,7 @@ model.py; gamma, E are the dimensionless parameters, E_AB = 2 - 2 gamma is the A
 * ``M_sd``            Theorem S4: the transition is double-flip (FGG-unambiguous) iff kappa < chi and M < M_sd.
 * ``omega_condition`` Theorem S5: a pointwise sufficient condition for Delta t_E^W < 0 (hence dB/dM > 0 in the
                       double-flip class, B >= B_CdL).
+* ``boundary_limit``  Proposition S5-b: lim_{E -> E_AB+} Delta t_E^W < 0 for every gamma (the A/B end of the strip).
 * ``laboratory_law``  Corollary S6: B_lab = 4 pi^2 sigma^2 R_M^2 / rho  (R_M >> R_CdL, kappa << chi).
 
 See ROADMAP_STAGE1_2_4.md, Part A.
@@ -155,20 +156,128 @@ def pointwise_D_min(gamma: float, E: float, n: int = 4001) -> float:
 
 def delta_tE_dimless(gamma: float, E: float) -> float:
     """J(gamma, E) = int (1 - z^3) / (z^2 f_out sqrt(E - g)) dz, proportional (positive factor) to Delta t_E^W.
-    Computed in s = sqrt(E) sin-type variables to remove the turning-point singularities."""
+
+    Near E_AB the outer horizon pinches the turning point z1 (W(z1) = E f_out(z1) = s(z1)^2 -> 0) and the integrand has a
+    spike of width w = W(z1) z1^2 / b at z1 (it carries +pi in regime A).  The integrand is therefore written in y = z - z1
+    without cancellations, with E taken as g(z1) (an O(1e-16) shift):
+        E - g = -y [2 z1 + y + 2 gamma/(z1 z) - (z1 + z)(z1^2 + z^2)/(z1^4 z^4)],   W = s(z1)^2 + b y/(z1 z),
+    and the range is broken geometrically from z1 on the scale w, and at s = 0; cos-substitution on each piece."""
     z1, z2 = _dimless_barrier(gamma, E)
     b = 2 - 2 * gamma
-    g = lambda z: z**2 - 2 * gamma / z + 1 / z**4
+    W1 = ((z1**3 - 1) / z1**2) ** 2
 
-    def f(t):
-        z = z1 + (z2 - z1) * (1 - np.cos(t)) / 2
-        dz = (z2 - z1) * np.sin(t) / 2
-        r = E - g(z)
-        return (1 - z**3) / (z**2 * (1 - b / (E * z))) * dz / np.sqrt(max(r, 1e-300))
+    def integrand(y):
+        z = z1 + y
+        r = -y * (2 * z1 + y + 2 * gamma / (z1 * z) - (z1 + z) * (z1**2 + z**2) / (z1**4 * z**4))
+        if r <= 0:           # rounding at the far turning point; the true contribution there is O(sqrt(r)) -> 0
+            return 0.0
+        W = W1 + b * y / (z1 * z)
+        return (1 - z**3) * E / (z**2 * W * np.sqrt(r))
+
+    def piece(a, c):
+        return quad(lambda t: integrand(a + (c - a) * (1 - np.cos(t)) / 2) * (c - a) * np.sin(t) / 2, 0, np.pi, limit=800)[0]
+
+    L = z2 - z1
+    w = max(W1 * z1**2 / b, 1e-300)
+    pts = {0.0, L, *((1.0 - z1,) if z1 < 1 < z2 else ())}
+    p = w
+    while p < 0.5 * L:
+        pts.add(p)
+        p *= 10
+    pts = sorted(pts)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return sum(piece(a, c) for a, c in zip(pts[:-1], pts[1:]))
+
+
+# ------------------------------------------------------------------ Proposition S5-b: the A/B end of the strip
+def _h_ab(z):
+    """h(z) = (z^3 - 1)(z^2 + z + 1)/z^3, so that E_AB - g(z) = (z - 1)(E_AB - h(z))/z."""
+    return z**2 + z + 1 - 1 / z - 1 / z**2 - 1 / z**3
+
+
+def _F_ab(z):
+    """F(z) = 2 (z^2 + z + 1)^2 / (z^2 h'(z)); F(1) = 2 and F > 2 for z > 1 (boundary_certificate)."""
+    hp = 2 * z + 1 + z**-2 + 2 * z**-3 + 3 * z**-4
+    return 2 * (z * z + z + 1) ** 2 / (z * z * hp)
+
+
+def boundary_J0(gamma: float) -> float:
+    """J0(gamma) = J evaluated at E = E_AB (barrier [1, z2]):
+        J0 = -int_1^{z2} (z^2 + z + 1) dz / (z sqrt(E_AB - g)) = -int_0^{pi/2} F(z(phi)) dphi,   h(z(phi)) = E_AB sin^2 phi."""
+    b = 2 - 2 * gamma
+
+    def z_of(ph):
+        t = b * np.sin(ph) ** 2
+        return 1.0 if t <= 0 else brentq(lambda z: _h_ab(z) - t, 1.0, 10 + 2 * np.sqrt(b), xtol=1e-15)
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        return quad(f, 0, np.pi, limit=800)[0]
+        return -quad(lambda ph: _F_ab(z_of(ph)), 0, np.pi / 2, limit=200)[0]
+
+
+def boundary_limit(gamma: float) -> float:
+    """lim_{E -> E_AB+} J(gamma, E) = J0(gamma) + pi  (the pinch of the outer horizon with s = 0 at z = 1 contributes +pi).
+    Negative for every gamma in (-1, 1): |J0| = int F dphi > (pi/2) * 2 because F > 2 on z > 1."""
+    return boundary_J0(gamma) + np.pi
+
+
+def boundary_certificate() -> dict:
+    """(z^2 + z + 1)^2 - z^2 h'(z) = (z - 1)(z + 1)(z^2 - z + 3)(z^2 + z + 1)/z^2 > 0 for z > 1  =>  F(z) > 2."""
+    import sympy as sp
+    z = sp.symbols("z", positive=True)
+    h = z**2 + z + 1 - 1 / z - 1 / z**2 - 1 / z**3
+    lhs = (z**2 + z + 1) ** 2 - z**2 * sp.diff(h, z)
+    rhs = (z - 1) * (z + 1) * (z**2 - z + 3) * (z**2 + z + 1) / z**2
+    h_ok = sp.simplify(h - (z**3 - 1) * (z**2 + z + 1) / z**3) == 0
+    g = z**2 - 2 * sp.Symbol("gamma") / z + 1 / z**4
+    split_ok = sp.simplify((2 - 2 * sp.Symbol("gamma")) - g - (z - 1) * ((2 - 2 * sp.Symbol("gamma")) - h) / z) == 0
+    return dict(factorization=bool(sp.simplify(lhs - rhs) == 0), h_definition=bool(h_ok), barrier_split=bool(split_ok))
+
+
+def strip_lp_certificate(gamma: float, E: float, deg: int = 5, n: int = 800, verify_n: int = 20000) -> dict:
+    """Generalised integration by parts for -J/E = int s k (W - s^2)^(-1/2) ds, k = q/W: for any smooth phi,
+    int [s k + phi'(W - s^2) + phi (W'/2 - s)] (W - s^2)^(-1/2) ds = int s k (W - s^2)^(-1/2) ds (it adds d(phi sqrt(W - s^2))/ds).
+    phi = sum_j (a_j k + b_j q + c_j q sqrt(W)) x^j, x the rescaled s.  A linear programme maximises the minimum of the
+    modified integrand on n Chebyshev-clustered points (relative to max|s k|); the solution is then re-checked on verify_n
+    points.  Positive margins certify J < 0 on the samples (sampling-based, not interval-verified).
+    Theorem S5 is the single choice phi = k."""
+    from scipy.optimize import linprog
+    b = 2 - 2 * gamma
+    z1, z2 = _dimless_barrier(gamma, E)
+    s1, s2 = (z1**3 - 1) / z1**2, (z2**3 - 1) / z2**2
+    sm, hw = (s1 + s2) / 2, (s2 - s1) / 2
+
+    def columns(t):
+        S = s1 + (s2 - s1) * (1 - np.cos(t)) / 2
+        Z = np.array([brentq(lambda z: z**3 - si * z**2 - 1, 1e-12, abs(si) + 3, xtol=1e-15) for si in S])
+        W = E - b / Z
+        dzds = Z**3 / (Z**3 + 2)
+        q, dq = Z**3 / (Z**3 + 2), 6 * Z**2 / (Z**3 + 2) ** 2 * dzds
+        dW = b / Z**2 * dzds
+        k, dk = q / W, dq / W - q * dW / W**2
+        r, dr = q * np.sqrt(W), dq * np.sqrt(W) + q * dW / (2 * np.sqrt(W))
+        u = W - S**2
+        x = (S - sm) / hw
+        cols = []
+        for base, dbase in ((k, dk), (q, dq), (r, dr)):
+            for j in range(deg + 1):
+                m = x**j
+                dm = j * x ** (j - 1) / hw if j > 0 else 0 * x
+                cols.append((dbase * m + base * dm) * u + base * m * (dW / 2 - S))
+        return S * k, np.array(cols).T
+
+    sk, A = columns(np.linspace(0, np.pi, n)[1:-1])
+    scale = np.abs(sk).max()
+    nv = A.shape[1]
+    c = np.zeros(nv + 1)
+    c[-1] = -1
+    res = linprog(c, A_ub=np.hstack([-A, scale * np.ones((len(sk), 1))]), b_ub=sk,
+                  bounds=[(-50, 50)] * nv + [(None, 1)], method="highs")
+    if res.status != 0:
+        return dict(margin=float("nan"), verified_margin=float("nan"))
+    sk2, A2 = columns(np.linspace(0, np.pi, verify_n)[1:-1])
+    return dict(margin=float(-res.fun), verified_margin=float((sk2 + A2 @ res.x[:-1]).min() / scale))
 
 
 # ------------------------------------------------------------------ Corollary S6: laboratory law

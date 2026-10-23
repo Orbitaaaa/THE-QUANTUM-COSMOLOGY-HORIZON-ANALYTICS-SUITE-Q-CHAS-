@@ -108,3 +108,17 @@ def test_frontier_against_exact_exponent():
     assert lab["B_an"] >= o["B_min"]
     assert abs(lab["B_an"] - o["B_min"] - 2 / 3 * lab["B_CdL"]) < 0.05 * lab["B_an"]
     assert abs(lab["B_an"] - lab["B_sq"]) < 1e-9 * lab["B_an"]
+
+
+def test_strip_boundary_limit_and_certificates():
+    c = Bd.boundary_certificate()
+    assert c["factorization"] and c["h_definition"] and c["barrier_split"]
+    for g in (-0.95, -0.5, 0.0, 0.5, 0.9, 0.99):
+        lim = Bd.boundary_limit(g)
+        assert lim < 0
+        J = Bd.delta_tE_dimless(g, (2 - 2 * g) * (1 + 1e-4))
+        assert abs(J - lim) < 2e-3 * max(1.0, abs(lim)) + 1e-4
+    assert abs(Bd.boundary_limit(0.999)) < 1e-3                     # -> 0- as gamma -> 1
+    for g in (-0.9, 0.0, 0.9):
+        cert = Bd.strip_lp_certificate(g, (2 - 2 * g) * 1.05)
+        assert cert["margin"] > 0 and cert["verified_margin"] > 0

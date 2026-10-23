@@ -230,3 +230,34 @@ def branch_worldlines(model: ThinWallModel) -> dict:
             continue
         out[b.kind] = wall_worldline(model, b)
     return out
+
+
+def euclidean_section(sds: SdSExterior, beta: float) -> dict:
+    """Euclidean SdS section r_b <= r <= r_c with Euclidean-time period beta (Stage 1 task 5).
+
+    Smoothness at a horizon requires beta = 2 pi / kappa_h.  Since kappa_b > kappa_c for every sub-Nariai SdS, no beta is smooth
+    at both horizons: there is a conical deficit delta_h = 2 pi - kappa_h beta at each horizon (an excess if negative).  With
+    R = 4 Lambda = 12 eta^2 in the bulk and int sqrt(g) R = 2 delta_h A_h on a defect, the Einstein-Hilbert action (no boundary:
+    the section is compact) is
+        I(beta) = -(1/16 pi G) [2 Lambda beta 4 pi int_{r_b}^{r_c} r^2 dr + sum_h 2 delta_h A_h].
+    The beta-linear terms cancel by the SdS Smarr identity kappa_b A_b + kappa_c A_c = 4 pi eta^2 (r_c^3 - r_b^3), so
+        I(beta) = -(A_b + A_c) / 4G   for every beta.
+    The bulk volume integral is done by quadrature and R from the metric function, independently of the identity."""
+    G, eta = sds.G, sds.eta
+    rb, rc = sds.r_b, sds.r_c
+    Lam = 3 * eta**2
+    M = sds.M
+    ricci = lambda r: (4 * G * M / r**3 + 2 * eta**2) - 4 * (2 * G * M / r**2 - 2 * eta**2 * r) / r + 2 * (1 - sds.f(r)) / r**2
+    vol = quad(lambda r: ricci(r) * r * r, rb, rc)[0]            # int R r^2 dr (with R from the metric)
+    bulk = -(1 / (16 * np.pi * G)) * ((vol - 2 * Lam * (rc**3 - rb**3) / 3) * beta * 4 * np.pi)
+    A = {"b": 4 * np.pi * rb**2, "c": 4 * np.pi * rc**2}
+    kap = {"b": sds.kb, "c": sds.kc}
+    deficits = {h: 2 * np.pi - kap[h] * beta for h in "bc"}
+    defects = -(1 / (16 * np.pi * G)) * sum(2 * deficits[h] * A[h] for h in "bc")
+    smarr_lhs = sds.kb * A["b"] + sds.kc * A["c"]
+    smarr_rhs = 4 * np.pi * eta**2 * (rc**3 - rb**3)
+    return dict(beta=float(beta), beta_b=float(2 * np.pi / sds.kb), beta_c=float(2 * np.pi / sds.kc),
+                deficit_b=float(deficits["b"]), deficit_c=float(deficits["c"]), I_bulk=float(bulk), I_defects=float(defects),
+                I_total=float(bulk + defects), minus_area_over_4G=float(-(A["b"] + A["c"]) / (4 * G)),
+                ricci_max_dev=float(max(abs(ricci(r) - 4 * Lam) for r in np.linspace(rb, rc, 50))),
+                smarr_lhs=float(smarr_lhs), smarr_rhs=float(smarr_rhs))

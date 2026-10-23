@@ -63,3 +63,18 @@ def test_gvz_scaling():
     assert abs(Al.gvz_fraction(1e-16, 1e20) / Al.gvz_fraction(1e-16, 4e20) - 2) < 1e-12
     r = Al.gvz_lambda_for(1.0, 1e20)
     assert 30 < r["B_inf"] < 45
+
+
+def test_sds_euclidean_action_is_period_independent():
+    from babyuniverse.sds_atlas import SdSExterior, euclidean_section
+    for M, eta in ((0.05, 0.5), (0.1, 0.95), (0.01, 1.0)):
+        s = SdSExterior(M, eta)
+        assert s.kb > s.kc                                               # no period is smooth at both horizons
+        ref = -(4 * np.pi * s.r_b**2 + 4 * np.pi * s.r_c**2) / 4
+        for beta in (2 * np.pi / s.kb, 2 * np.pi / s.kc, 1.0, 0.0):
+            r = euclidean_section(s, beta)
+            assert abs(r["I_total"] - ref) < 1e-9 * abs(ref)
+            assert r["ricci_max_dev"] < 1e-9 * 12 * eta**2 * 1e3
+        assert abs(r["smarr_lhs"] - r["smarr_rhs"]) < 1e-10 * r["smarr_rhs"]
+    tiny = euclidean_section(SdSExterior(1e-8, 0.3), 1.0)
+    assert abs(tiny["I_total"] + np.pi / 0.3**2) < 1e-5                 # de Sitter limit -3 pi / (G Lambda)
