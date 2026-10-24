@@ -1,0 +1,327 @@
+{
+ "dichotomy": {
+  "eternal dS daughter, globally hyperbolic": {
+   "allowed": false,
+   "verdict": "excluded: dependent (non-compact past) observers cannot end in a compact-horizon phase (Lemma GSL-1)",
+   "premise": "global hyperbolicity + GSL"
+  },
+  "disconnected daughter (neck closes)": {
+   "allowed": false,
+   "verdict": "excluded: a complete observer with a compact past on Sigma_0 violates the GSL there (Proposition GSL-2; Wall's disconnected baby)",
+   "premise": "GSL on Sigma_0"
+  },
+  "transient connected daughter": {
+   "allowed": true,
+   "verdict": "allowed by the GSL: transient, dependent daughter (neck never closes, Lambda_final <= Lambda_parent)",
+   "premise": "none violated"
+  },
+  "crunching daughter": {
+   "allowed": true,
+   "verdict": "the GSL (causal horizons of complete observers) does not constrain this daughter; its formation still needs NEC violation along ingoing rays (Farhi-Guth), priced by Theorem GSL-4",
+   "premise": "observer completeness"
+  },
+  "daughter beyond a Cauchy horizon": {
+   "allowed": true,
+   "verdict": "not excluded by the GSL; the daughter lies beyond the Cauchy horizon of Sigma_0 and is not determined by the laboratory data (escape E2)",
+   "premise": "global hyperbolicity"
+  },
+  "dS parent, Lambda_d < Lambda_p": {
+   "allowed": true,
+   "verdict": "allowed by the GSL: transient, dependent daughter (neck never closes, Lambda_final <= Lambda_parent)",
+   "premise": "none violated"
+  },
+  "dS parent, Lambda_d > Lambda_p": {
+   "allowed": false,
+   "verdict": "excluded: the GSL on the observer's horizon needs A_daughter >= A_parent (Corollary GSL-3b)",
+   "premise": "global hyperbolicity + GSL"
+  }
+ },
+ "qnec_cost_1m_flat": {
+  "S_BH": 1.202624673836333e+70,
+  "cost_per_planck_length": 3.887496284422685e+35,
+  "cost_over_S_BH_times_2_over_r": 1.0
+ },
+ "antitrapped_floor": {
+  "R=1e-13 m": {
+   "misner_sharp_kg": 67329546075005.445,
+   "rho_J_m3": 1.4446361660167269e+69,
+   "rho_quarter_GeV": 91235342.33225131
+  },
+  "R=0.001 m": {
+   "misner_sharp_kg": 6.732954607500545e+23,
+   "rho_J_m3": 1.444636166016727e+49,
+   "rho_quarter_GeV": 912.3534233225131
+  },
+  "R=1 m": {
+   "misner_sharp_kg": 6.732954607500545e+26,
+   "rho_J_m3": 1.4446361660167268e+43,
+   "rho_quarter_GeV": 28.851148487509274
+  },
+  "R=1000 m": {
+   "misner_sharp_kg": 6.732954607500544e+29,
+   "rho_J_m3": 1.4446361660167268e+37,
+   "rho_quarter_GeV": 0.9123534233225131
+  }
+ },
+ "throat_model": {
+  "Q": 1000.0,
+  "T": 1e-10,
+  "T_over_Tbrk": 1.9739208802178716,
+  "sqrt_f_at_rho_Q": 7.384001832663659e-07,
+  "checks": [
+   {
+    "c": 5.0,
+    "predicted": false,
+    "cft": false,
+    "vaidya": false,
+    "kick_over_need": 0.17961668165696903,
+    "dm_over_budget": 0.17848575039323772,
+    "duration": 0.0,
+    "duration_bound": 253.90358246005388,
+    "max_dTheta": -9.679586877985806e-19
+   },
+   {
+    "c": 20.0,
+    "predicted": false,
+    "cft": false,
+    "vaidya": false,
+    "kick_over_need": 0.7184667266278761,
+    "dm_over_budget": 0.7139430015729509,
+    "duration": 0.0,
+    "duration_bound": 1014.2635522809371,
+    "max_dTheta": -3.055846926304903e-18
+   },
+   {
+    "c": 40.0,
+    "predicted": true,
+    "cft": true,
+    "vaidya": true,
+    "kick_over_need": 1.4369334532557523,
+    "dm_over_budget": 1.4278860031459017,
+    "duration": 427.0,
+    "duration_bound": 2024.9361898037907,
+    "max_dTheta": -5.840366203983224e-18
+   },
+   {
+    "c": 100.0,
+    "predicted": true,
+    "cft": true,
+    "vaidya": true,
+    "kick_over_need": 3.592333633139381,
+    "dm_over_budget": 3.5697150078647533,
+    "duration": 1019.0,
+    "duration_bound": 5035.598306410853,
+    "max_dTheta": -1.419431880896553e-17
+   }
+  ]
+ },
+ "throat_examples_SI": {
+  "Q=1e-13 m, c=1e+21": {
+   "Q_planck": 6.187142499172469e+21,
+   "T_brk_K": 3.0304250467641294e-35,
+   "T_flip_K": 2.148869673801743e-15,
+   "window_ratio": 7.0909844019943465e+19,
+   "mass_kg": 134659092150010.89
+  },
+  "Q=1e-13 m, c=1000": {
+   "Q_planck": 6.187142499172469e+21,
+   "T_brk_K": 3.0304250467641294e-35,
+   "T_flip_K": 2.148869673801743e-33,
+   "window_ratio": 70.90984401994346,
+   "mass_kg": 134659092150010.89
+  },
+  "Q=0.001 m, c=1000": {
+   "Q_planck": 6.187142499172469e+31,
+   "T_brk_K": 3.0304250467641297e-65,
+   "T_flip_K": 2.1488696738017433e-63,
+   "window_ratio": 70.90984401994346,
+   "mass_kg": 1.346590921500109e+24
+  }
+ },
+ "magnetic_charge": {
+  "q=1e+20": 9.460132534804227e-15,
+  "q=1.06e+22": 1.0027740486892482e-12
+ },
+ "growth": {
+  "bud_threshold": 0.18749999999999997,
+  "switch_on_conserved": 0.22121195569676808,
+  "decompactification": 0.25,
+  "nariai_M_sqrtLambda": 0.33333333333333337,
+  "bud_density": {
+   "Q=1e-13 m": {
+    "rho_J_m3": 9.028976037604543e+67,
+    "rho_quarter_GeV": 45617671.166125655
+   },
+   "Q=0.001 m": {
+    "rho_J_m3": 9.028976037604543e+47,
+    "rho_quarter_GeV": 456.17671166125655
+   },
+   "Q=1 m": {
+    "rho_J_m3": 9.028976037604542e+41,
+    "rho_quarter_GeV": 14.425574243754637
+   }
+  }
+ },
+ "electroweak_corona": {
+  "higgs": {
+   "K": 0.08885778773786546,
+   "x_max": 0.07494681359151924,
+   "decompactification": 0.25,
+   "reaches_decompactification": false
+  },
+  "W": {
+   "K": 0.5236782156919677,
+   "x_max": 0.22556826100117647,
+   "decompactification": 0.25,
+   "reaches_decompactification": false
+  }
+ },
+ "hiding_depth": {
+  "dM/Q=0.03125": {
+   "depth_exact": 1.9784220595641182,
+   "depth_approx": 2.386294361119891,
+   "horizon_shift": 0.28319555463432966
+  },
+  "dM/Q=0.01": {
+   "depth_exact": 2.7335851491836705,
+   "depth_approx": 2.956011502714073,
+   "horizon_shift": 0.15177446878757825
+  },
+  "dM/Q=0.0001": {
+   "depth_exact": 5.23728309764779,
+   "depth_approx": 5.258596595708119,
+   "horizon_shift": 0.014242489172702237
+  },
+  "dM/Q=1e-08": {
+   "depth_exact": 9.86355463966156,
+   "depth_approx": 9.86376678169621,
+   "horizon_shift": 0.0001414313565908629
+  }
+ },
+ "cauchy_route": {
+  "kappa/chi=0.3": [
+   {
+    "q": 0.9,
+    "exists": true,
+    "M_a": 0.6735356734667284,
+    "M_b": 1.6979414718825507,
+    "width": 1.0244057984158224,
+    "M_centre": 1.1857385726746394,
+    "horizon_gap_centre": 1.033702922349382,
+    "kappa_minus_rm": 0.772703573276626,
+    "kappa_minus": 1.1552077473041362,
+    "M_extremal_limit": 0.9578262852211513
+   },
+   {
+    "q": 0.97,
+    "exists": true,
+    "M_a": 0.7757689046331704,
+    "M_b": 1.265467413388499,
+    "width": 0.4896985087553287,
+    "M_centre": 1.0206181590108347,
+    "horizon_gap_centre": 0.4962345828589845,
+    "kappa_minus_rm": 0.3211870715515618,
+    "kappa_minus": 0.41577567745286914,
+    "M_extremal_limit": 0.9578262852211513
+   },
+   {
+    "q": 0.99,
+    "exists": true,
+    "M_a": 0.8432732862815925,
+    "M_b": 1.1151353233212298,
+    "width": 0.2718620370396373,
+    "M_centre": 0.9792043048014112,
+    "horizon_gap_centre": 0.276267531959716,
+    "kappa_minus_rm": 0.16423564921605857,
+    "kappa_minus": 0.19526976827196157,
+    "M_extremal_limit": 0.9578262852211513
+   },
+   {
+    "q": 0.997,
+    "exists": true,
+    "M_a": 0.8915125091802257,
+    "M_b": 1.038183158571209,
+    "width": 0.14667064939098318,
+    "M_centre": 0.9648478338757174,
+    "horizon_gap_centre": 0.14936143643022648,
+    "kappa_minus_rm": 0.0838951663134531,
+    "kappa_minus": 0.09424653510278624,
+    "M_extremal_limit": 0.9578262852211513
+   },
+   {
+    "q": 0.999,
+    "exists": true,
+    "M_a": 0.9184148223513319,
+    "M_b": 1.002655088364513,
+    "width": 0.08424026601318102,
+    "M_centre": 0.9605349553579223,
+    "horizon_gap_centre": 0.08589137729780338,
+    "kappa_minus_rm": 0.046802736482444436,
+    "kappa_minus": 0.05100619436221693,
+    "M_extremal_limit": 0.9578262852211513
+   }
+  ],
+  "kappa/chi=1.0": [
+   {
+    "q": 0.9,
+    "exists": true,
+    "M_a": 0.5227478092975124,
+    "M_b": 1.253489615908477,
+    "width": 0.7307418066109646,
+    "M_centre": 0.8881187126029947,
+    "horizon_gap_centre": 0.774243943620779,
+    "kappa_minus_rm": 0.7727035732766259,
+    "kappa_minus": 1.542332535046366,
+    "M_extremal_limit": 0.7071067811865475
+   },
+   {
+    "q": 0.97,
+    "exists": true,
+    "M_a": 0.5935979281361785,
+    "M_b": 0.934219808001312,
+    "width": 0.3406218798651335,
+    "M_centre": 0.7639088680687453,
+    "horizon_gap_centre": 0.37142000183082025,
+    "kappa_minus_rm": 0.3211870715515616,
+    "kappa_minus": 0.5554958506454227,
+    "M_extremal_limit": 0.7071067811865475
+   },
+   {
+    "q": 0.99,
+    "exists": true,
+    "M_a": 0.6381285084555326,
+    "M_b": 0.8232385888627812,
+    "width": 0.18511008040724863,
+    "M_centre": 0.730683548659157,
+    "horizon_gap_centre": 0.2061511981124018,
+    "kappa_minus_rm": 0.16423564921605857,
+    "kappa_minus": 0.2616851002603761,
+    "M_extremal_limit": 0.7071067811865475
+   },
+   {
+    "q": 0.997,
+    "exists": true,
+    "M_a": 0.6684564687421198,
+    "M_b": 0.7664294001471118,
+    "width": 0.09797293140499197,
+    "M_centre": 0.7174429344446158,
+    "horizon_gap_centre": 0.11106239085900016,
+    "kappa_minus_rm": 0.08389516631345316,
+    "kappa_minus": 0.12674675695929483,
+    "M_extremal_limit": 0.7071067811865475
+   },
+   {
+    "q": 0.999,
+    "exists": true,
+    "M_a": 0.6846548532876814,
+    "M_b": 0.7402011534790863,
+    "width": 0.05554630019140494,
+    "M_centre": 0.7124280033833839,
+    "horizon_gap_centre": 0.06370556541934624,
+    "kappa_minus_rm": 0.04680273648244443,
+    "kappa_minus": 0.06876938075428858,
+    "M_extremal_limit": 0.7071067811865475
+   }
+  ]
+ }
+}

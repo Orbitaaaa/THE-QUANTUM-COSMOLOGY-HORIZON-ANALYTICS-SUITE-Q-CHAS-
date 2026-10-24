@@ -105,6 +105,36 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   **Burko** (1999), **Burko, Ori** (1997): the singularity is weak (finite tidal deformation).
 * **Gibbons** (2002), maximum force $c^4/4G$ (conjecture); Hod (2025) arXiv:2501.01497.
 
+## D‴. Round 6b (genesis and the GSL)
+
+* **Wall** (2013) CQG 30, 165003, arXiv:1010.5513 (+ erratum). GSL implies a quantum singularity theorem; dependent babies permitted (the black
+  hole cannot evaporate completely), disconnected babies forbidden by the GSL, transcendental ones by global hyperbolicity; GSL assumed on
+  causal horizons only.
+* **Wall** (2011) arXiv:1105.3520. GSL in 1+1 conformal vacua; strong 2D QNEC $T\ge\frac\hbar{2\pi}(S''+\frac6cS'^2)$.
+* **Bousso** (2025) PRL, arXiv:2501.17910. Robust singularity theorem in full semiclassical gravity: no bounces inside black holes or in
+  cosmologies with non-compact Cauchy slices.
+* **Gao, Jafferis, Wall** (2017) JHEP 12, 151, arXiv:1608.05687. Traversable wormholes from ANEC violation consistent with the GSL.
+* **Maldacena, Milekhin, Popov** (2018/2023) arXiv:1807.04726. 4D traversable wormholes in Einstein–Maxwell with charged massless fermions;
+  Landau-level degeneracy $q$; AdS$_2\times S^2$ throats.
+* **Maldacena** (2020) arXiv:2004.06084. Magnetic black holes; electroweak corona.
+* **Visser** (1990) PRD 41, 1116. Laboratory baby universes allowed if the umbilical cord is never severed.
+* **Bousso** (1998/99) arXiv:hep-th/9805081, hep-th/9902183. Charged Nariai decay into a necklace of de Sitter beads joined by near-extremal throats.
+* **Anninos, Hofman** (2017) arXiv:1703.04622. Centaur geometries (dS$_2$ inside AdS$_2$).
+* **Carroll, Johnson, Randall** (2009) arXiv:0904.3115. Dynamical compactification / decompactification of dS$_p\times S^q$ with flux.
+* **Gajic, Luk** (2019) PAA 1, arXiv:1709.09137. Extremal RN Cauchy horizon: extendible in $C^{0,1/2}\cap W^{1,2}_{\rm loc}$, non-uniquely.
+* **Carballo-Rubio, Di Filippo, Liberati, Pacilio, Visser** (2022) JHEP, arXiv:2203.14516. Inner-extremal regular black holes without mass inflation.
+* **Hollands, Wald, Zahn** (2020) CQG 37, 115009, arXiv:1912.06047. Quantum stress tensor $\sim C/V^2$ at RNdS Cauchy horizons.
+* **Hollands, Kovács, Reall** (2022) JHEP 08, arXiv:2205.15341; **Davies, Reall** (2023) arXiv:2312.07659. Dynamical black-hole entropy and
+  second law in EFT.
+* **Franciolini, Hui, Penco, Santoni, Trincherini** (2019) JHEP 01, 221, arXiv:1811.05481; **Mironov, Rubakov, Volkova** arXiv:1812.07022,
+  2212.05969. Stable static wormholes beyond Horndeski (forbidden in Horndeski).
+* **Mironov, Rubakov, Volkova** (2019) PRD 100, 083521, arXiv:1905.06249. Genesis with GR asymptotics beyond Horndeski.
+* **Ageeva, Petrov, Rubakov** (2020) JHEP 12, arXiv:2009.05071. Horndeski genesis strong coupling. **Cai, Xu, Zhao, Zhou** (2022)
+  arXiv:2207.11772. Perturbative unitarity in beyond-Horndeski genesis requires new physics below the cutoff.
+* **Benkel, Bhattacharyya, Louko, Mattingly, Sotiriou** (2018) PRD, arXiv:1803.01624. Penrose-splitting energy extraction from
+  Lorentz-violating black holes fails when gravity is attractive.
+* **Sasieta, Swingle, Vilar López** arXiv:2512.00149. Baby universes in SYK (quantum states of closed universes).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

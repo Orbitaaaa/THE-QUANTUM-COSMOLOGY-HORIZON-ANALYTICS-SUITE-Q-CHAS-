@@ -138,6 +138,22 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R73 | **Round 7 radiation**: explicit 1+1 field, laboratory state: collapse branch has a negative precursor ($\approx-0.44F_H$), switch-on over $\approx3.5\times4GM$, deficit $\approx2F_H/\kappa$; late flux Hawking to 0.02% (check); the daughter branch (state D1, assumed) differs by $\approx0.1$ quanta per event | Proposition-N |
 | R74 | **Inaccessibility**: the daughter's inflation and, at late times, which branch occurred cannot be established by exterior observers; only event-level statistics carry the branch | Theorem (Birkhoff, G1, G2) + numerics |
 
+## Round 6b (ROADMAP_ROUND6B_GSL.md)
+
+| ID | result | status |
+|---|---|---|
+| R75 | **Correction F21**: NEC violation does not imply GSL violation; "Route G must violate the GSL" withdrawn (a minimally coupled classical NEC-violating sector conflicts with black-hole thermodynamics as a theory, but genesis need not) | correction |
+| R76 | **Lemma GSL-1**: in a globally hyperbolic spacetime, a relatively compact past slice of an observer forces relatively compact past slices on every earlier Cauchy surface | Theorem |
+| R77 | **Proposition GSL-2 / Theorem GSL-3 (genesis dichotomy)**: with the GSL on causal horizons of complete observers and normal, weakly gravitating laboratory data, a complete daughter observer keeps a non-compact past (the neck never closes) and cannot end in a de Sitter phase; an eternal daughter and a laboratory-determined daughter exclude each other. de Sitter parent: $\Lambda_d\le\Lambda_p$ up to $O(\hbar)$ | Theorem (spherical symmetry); Corollary 3b Proposition |
+| R78 | **Theorem GSL-4 (QNEC cost)**: flipping $\theta_-$ needs $-\int(r_0/r)S''_{\rm out}d\lambda\ge A_0\lvert\theta_0\rvert/4G\hbar$; $\sim S_{\rm BH}=10^{70}$ for a 1 m sphere in flat space; discounted by $\sqrt f$ near horizons; anti-trapped floor $m>Rc^2/2G$ | Theorem |
+| R79 | **Proposition GSL-5**: in 2D with the strong QNEC, $\Theta'\le-\frac6cS'^2$ (exact quantum focusing) and an anti-trapped episode lasts $<c/6\lvert\Theta_0\rvert$; the 4D s-wave model focuses for $S_{\rm BH}\ge c/12$ | Theorem |
+| R80 | **Propositions GSL-6/7**: in a near-extremal throat QNEC-saturating matter anti-traps spheres at depth $\rho$ iff $T\sinh(\rho/Q)<(c\eta/12)T_{\rm brk}$; verified analytically, by 4D s-wave integration and in the exact outgoing Bonnor–Vaidya–RN metric (flip iff $\delta m>rf/2$, the G1 budget) | Proposition + Proposition-N + exact metric |
+| R81 | **Proposition GSL-8**: product solutions exist iff $\Lambda Q^2\le1/4$; a T-region grows iff $C>C_N$; extremal-throat bud $3/16$ (injected) or $0.2212$ (converted); a static throat in a fixed vacuum never grows; universal $M\simeq(0.07\text{–}0.16)m_P^3/\sqrt\rho$ | Theorem (criterion), exact values |
+| R82 | **Proposition GSL-9**: the Cauchy-horizon route survives near extremality inside $[1/\sqrt L(1+s),1/\sqrt L(1-s)]$ (upper edge exact); width $\le r_+-r_-=2\kappa_-r_-^2$ | Proposition-N + exact edge |
+| R83 | **Proposition GSL-10**: energy $\delta M$ kept in an extremal throat hides every region deeper than $\approx Q(1-\frac12\ln(2\delta M/Q))$; a growing bud deeper than $\approx2Q$ is hidden | Proposition (quasi-static) |
+| R84 | **Remark GSL-11**: the Standard-Model electroweak corona stays below decompactification ($\Lambda Q^2\le0.075$; $\le0.226$ in an overestimate) | Assessment |
+| R85 | **Problem B, GSL form**: the GSL forbids exactly eternal, data-determined (and disconnected) daughters; transient connected daughters and Cauchy-horizon daughters are GSL-compatible; the remaining obstacle is $\rho\gtrsim m_P^6/M^2$, common to all routes | Assessment built on R76–R83 |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

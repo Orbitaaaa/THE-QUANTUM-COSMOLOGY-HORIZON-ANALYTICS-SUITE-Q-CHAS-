@@ -16,8 +16,10 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   The asymptotic clock folds back (its "Klein-type" reading is withdrawn in round 3, F17). The alternative-mechanism ledger and the "five numbers".
 * **[ROADMAP_ROUNDS5_7_12.md](ROADMAP_ROUNDS5_7_12.md)**: Round 5 (field theory), Round 7 (observables from an explicit quantum field), Rounds 8–12
   (theory-only requirements).
+* **[ROADMAP_ROUND6B_GSL.md](ROADMAP_ROUND6B_GSL.md)**: Round 6b, "GENESIS — a serious attempt to get around the GSL": the genesis dichotomy
+  (what the GSL forbids), the QNEC cost of genesis, exact 2D results, near-extremal throats, and the GSL form of Problem B.
 * **[ROADMAP_ROUND6_MECHANISM_ATLAS.md](ROADMAP_ROUND6_MECHANISM_ATLAS.md)**: Round 6, the systematic search for a controllable creation
-  pathway, and the answer to Problem B.
+  pathway, and the answer to Problem B (its GSL claim is corrected in Round 6b, F21).
 * **[ROADMAP_ROUND3_PROBLEMS_ABC.md](ROADMAP_ROUND3_PROBLEMS_ABC.md)**: round 3, answers to the three fundamental problems.
   * (A) A charge selection rule fixes the transition amplitude uniquely under stated principles: $e^{-B_{\rm an}}$ for double flip, no flux for single flip.
     It is confirmed by an exact Bessel toy.
@@ -121,8 +123,19 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Charged collapse is classical, but beyond a Cauchy horizon and at $M\ge0.16\,m_P^3/\sqrt\rho$.
 * **The one laboratory-scale class:** self-amplifying NEC violation (Route G).
   * Deterministic, with $P\approx1$ per seed.
-  * Requires a sector that violates the GSL and positivity.
+  * Requires a sector that violates positivity (the claimed GSL violation is withdrawn in Round 6b, F21).
   * A seed's edge must open a throat (G7), or the result is a visible bubble that consumes the parent.
+
+## Round 6b in brief (getting around the GSL)
+
+* **Correction F21:** NEC violation is not GSL violation; Round 6's "Route G must violate the GSL" is withdrawn.
+* **Theorem GSL-3 (dichotomy):** the GSL forbids exactly the eternal (de Sitter-ending) daughter determined by laboratory data, and the
+  disconnected one. Transient daughters whose neck persists, and daughters beyond a Cauchy horizon, are GSL-compatible.
+* **Theorem GSL-4 (QNEC cost):** anti-trapping costs an entropy-gradient change $S_{\rm BH}\lvert\theta_-\rvert$, about $10^{70}$ for a 1 m sphere,
+  discounted by $\sqrt f$ in near-extremal throats. There it is payable when $T\sinh(\rho/Q)<(c/12)T_{\rm brk}$ (verified three ways,
+  including an exact Einstein–Maxwell–null-fluid metric).
+* **What remains:** growth needs $\Lambda_{\rm loc}Q^2>3/16$ in the throat, the same $M\sim m_P^3/\sqrt\rho$ law as every other route.
+  The obstacle is vacuum energy, not the second law.
 
 ## Rounds 5, 7 and 8–12 in brief
 
@@ -138,7 +151,7 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
                      doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas,
-                     selection, signatures, crosscheck, mechanisms, field_theory, radiation
+                     selection, signatures, crosscheck, mechanisms, field_theory, radiation, gsl
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -150,7 +163,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 154 tests
+cd .. && python -m pytest tests -q                # 159 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

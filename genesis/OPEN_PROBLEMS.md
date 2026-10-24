@@ -92,3 +92,12 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-C4 (sharpened).** The field's state after the transition on the daughter branch, from a full treatment. Round 7 shows the branch difference is set entirely by it
   (about 0.1 quanta per event under D1).
 * **P-R7.** 3+1 greybody factors and higher multipoles for the Round 7 flux.
+
+## Round 6b additions (ROADMAP_ROUND6B_GSL.md)
+
+* **P-R6f.** 1+1 Einstein–Maxwell–scalar evolution of a bud in an extremal magnetic throat: its edges, hiding (GSL-10), persistence of the neck.
+* **P-R6g.** The QNEC and its strong 2D form for Landau-level fermions in a curved magnetic throat at large $q$, with massive-mode corrections.
+* **P-R6h.** The sub-$T_{\rm brk}$ (Schwarzian) regime: anti-trapping and the bud as a quantum state in an SYK/JT model (escape E3; Route Q).
+* **P-R6i.** Theorem GSL-3 without spherical symmetry (needs a mean-convexity comparison for horizon cross-sections on normal data).
+* **P-R6a (updated).** Beyond-Horndeski: the dynamical-entropy second law around time-dependent scalar backgrounds with $c_s\neq1$, and stability
+  of a time-dependent inhomogeneous throat.

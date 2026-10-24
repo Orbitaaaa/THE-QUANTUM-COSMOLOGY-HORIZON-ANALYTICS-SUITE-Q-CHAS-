@@ -179,3 +179,32 @@ our region that could later reach a daughter.
 *Result:* none found. Orbits either reach $\sigma=0$ (the wall becomes null) or are separated from the daughter by a barrier.
 *Consistency:* Theorem G2 forbids a classical bridge crossing for any wall matter. The Guendelman–Sakai breathing orbits may lie outside the scanned range.
 **Type:** negative scan, not a theorem.
+
+### F21. "Route G must violate the GSL" (Round 6)
+*Claim:* a sector that creates a daughter classically must violate the GSL, because laboratory creation is "restarting inflation".
+*Error:* NEC violation is not GSL violation (Gao–Jafferis–Wall). Properly defined, the GSL forbids only eternal (de Sitter-ending)
+daughters determined by the data, and disconnected ones (Theorem GSL-3). A transient daughter is not "restarting inflation" in Wall's sense.
+*What survives:* a minimally coupled *classical* NEC-violating sector conflicts with black-hole thermodynamics as a theory, because its stress
+can be dropped into a black hole.
+**Type:** overstated conclusion, corrected (user feedback).
+
+### F22. Vacuum energy switched on in a throat at rest (Round 6b)
+*Tried:* KS dynamics of a homogeneous throat segment with $r=Q$, $\dot r=0$ and $\Lambda$ switched on, using only the $xx$ equation.
+*Error:* the radial null constraint $\ddot r=(\dot a/a)\dot r$ ($T_{uu}=0$ for vacuum energy and radial magnetic field) forbids acceleration
+from marginal homogeneous data; such data are not valid. Replaced by the RN–dS T-region criterion $C>C_N$ (Proposition GSL-8).
+**Type:** incomplete use of the constraints, caught before any conclusion.
+
+### F23. A cheap QNEC flip of a static throat as a daughter seed (Round 6b)
+*Result:* a static throat in a fixed vacuum has $C=g(a)<C_N$ (local minimum vs maximum of $g$), so the flipped region recollapses. Growth
+needs energy injection or a change of vacuum (GSL-8).
+**Type:** structural negative result.
+
+### F24. The electroweak corona as a natural false vacuum in a throat (Round 6b)
+*Result:* self-consistently $\Lambda Q^2\le0.075$ (full restoration at $eB=m_H^2$), $\le0.226$ even with the overestimate $eB=m_W^2$ and full
+$\rho_{\rm EW}$: below $1/4$, and a corona that is part of the static solution never buds anyway.
+**Type:** near miss.
+
+### F25. Extremality as a cure for the Cauchy-horizon route (Round 6b)
+*Result:* the classical window survives as $Q/M\to1$ but its width is $\le r_+-r_-=2\kappa_-r_-^2$: weakening the blueshift closes the window,
+and even the extremal Cauchy horizon is extendible only non-uniquely (Gajic–Luk).
+**Type:** trade-off, not a cure.
