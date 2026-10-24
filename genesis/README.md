@@ -16,6 +16,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   The asymptotic clock folds back (its "Klein-type" reading is withdrawn in round 3, F17). The alternative-mechanism ledger and the "five numbers".
 * **[ROADMAP_ROUNDS5_7_12.md](ROADMAP_ROUNDS5_7_12.md)**: Round 5 (field theory), Round 7 (observables from an explicit quantum field), Rounds 8–12
   (theory-only requirements).
+* **[ROADMAP_ROUND6D.md](ROADMAP_ROUND6D.md)**: Round 6d, one complete route audited: an independent solver, bridge-free data, the route
+  from data with no black hole to a hidden daughter, ghost-condensate stability in the Nariai geometry, the solution's generalised entropy, and
+  why quantum fields cannot supply the push.
 * **[ROADMAP_ROUND6C.md](ROADMAP_ROUND6C.md)**: Round 6c, making the throat work: a hidden, inflating daughter from a near-Nariai throat, the
   universal tipping law, why quantum fields cannot supply the tip and what classical field can (the ghost condensate), what the initial geometry
   needs, P-S3 solved, 3+1 greybody factors, and the status of every remaining open problem.
@@ -129,6 +132,17 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Requires a sector that violates positivity (the claimed GSL violation is withdrawn in Round 6b, F21).
   * A seed's edge must open a throat (G7), or the result is a visible bubble that consumes the parent.
 
+## Round 6d in brief (one complete route)
+
+* **Verified independently:** a second solver (different method, own data) reproduces the Nariai daughter and its hiding.
+* **Correction F32:** the Round 6c exterior was already trapped (beyond a bridge); light walls give normal, asymptotically connected data, and the
+  daughter still grows inside the parent's black hole.
+* **Complete route (simulated):** a false-vacuum ball with an imploding shell of ordinary radiation forms a black hole inside the false vacuum;
+  a classical push then gives a hidden, inflating daughter. The data contain no black hole, no bridge and no anti-trapped sphere.
+* **Ghost condensate:** its NEC phase switches itself off on the dS₂ Hubble time, and it is stable while tipping the throat (window 86× wide).
+* **Generalised entropy:** the parent's horizon area never decreases; daughter-observer horizons need a deficit ≤ 3.3√δ S_N.
+* **Quantum fields:** no for any central charge (strong-QNEC bound plus their own back-reaction); not needed for the route.
+
 ## Round 6c in brief (making the throat work)
 
 * **The extremal throat cannot both hide and grow** a daughter (Theorem 6c-1: normal false vacuum is always sub-horizon).
@@ -171,7 +185,8 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
                      doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas,
                      selection, signatures, crosscheck, mechanisms, field_theory, radiation, gsl, throat_evolution,
-                     obstructions, quantum_throat, nariai, greybody
+                     obstructions, quantum_throat, nariai, greybody, throat_mol, preparation,
+                     collapse, ghost_condensate, gsl_solution
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -183,7 +198,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 172 tests
+cd .. && python -m pytest tests -q                # 178 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

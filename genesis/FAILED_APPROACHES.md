@@ -243,3 +243,30 @@ the horizon.
 *Result:* $\xi\phi^2R$ is conformally equivalent to GR with NEC-satisfying matter; Farhi–Guth holds in the Einstein frame, so a Jordan-frame
 daughter with $\phi\to$ const is impossible unless $\Omega^2=1-8\pi G\xi\phi^2\to0$ (strong coupling).
 **Type:** structural negative result.
+
+### F32. Hiding with an exterior already trapped on the data (Round 6c)
+*Problem:* the heavy wall (vphi = 0.005, ε = 2) focused the outgoing data ray (Δr_v = −0.017 against r_v = +4e-5), so the true vacuum beyond
+the wall was trapped on the data surface, with r decreasing outward into the parent's singularity: a configuration beyond the Einstein–Rosen
+bridge, with no asymptotic parent on the data.
+*Fix:* light walls (ε = 4, vphi = 1.5e-3 at δ = 1e-4) keep the data normal and bridge-free; the daughter still grows and hides (Round 6d).
+**Type:** defect in the Round 6c set-up, corrected.
+
+### F33. Re-tuning the corner radius against Bunch–Davies back-reaction (Round 6d)
+*Tried:* moving the corner to the semiclassical static point r_N(1 + k/2r_N²) and around it (η from −0.026 to +0.02) at c = 300.
+*Result:* the threshold stays between W = 0.07 and 0.14. The back-reaction is not a shift of the Nariai point.
+**Type:** negative.
+
+### F34. Method of lines without u-substeps (Round 6d)
+*Result:* explicit u-steps of the Volterra operator (norm ~m²L_v/4 ≈ 10³ for the scalar's mass m² = 21 on L_v = 200) are unstable; 64
+substeps per output line fix it.
+**Type:** numerical.
+
+### F35. Regular-centre collapse in the r = v/2 cone gauge (Round 6d)
+*Result:* the lapse jumps by e³ across a massive shell and the stiff scalar becomes unstable; the α = 1 gauge (profiles in areal radius,
+the same physical data) fixes it, but the near-horizon band is then too compressed to follow.
+**Type:** numerical.
+
+### F36. Emitting the push inside the false-vacuum ball (Round 6d)
+*Result:* the complete route closes (hidden daughter), but the push sits where f ≈ 0.75 and its invariant energy is ~1.5 M_N: the Nariai
+discount needs the NEC source in the band.
+**Type:** partial success.

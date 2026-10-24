@@ -104,7 +104,15 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 
 ## Round 6c additions (ROADMAP_ROUND6C.md)
 
-* **P-R6j.** Simulate the in-situ lift of a false vacuum around a black hole across its horizon (Proposition 6c-15) through to the tipping.
+* **P-R6j (largely done, Round 6d):** the complete route from data without a black hole is simulated (Prop. 6d-5); open: the creation of the false-vacuum ball itself (P-R6m) and a band-localised push (P-R6l). Original text: Simulate the in-situ lift of a false vacuum around a black hole across its horizon (Proposition 6c-15) through to the tipping.
 * **P-R6k.** The ghost condensate in the Nariai throat as an EFT simulation (gradient and Jeans dynamics included), not through its flux.
 * **P-D2′.** Non-spherical stability of Nariai tipping (the $l\ge1$ modes on the Nariai $S^2$).
 * **P-N1′ (attempted).** Reformulated as $-EJ=E^2\int sk(W-s^2)^{-1/2}ds$; the interval certificate is still open.
+
+## Round 6d additions (ROADMAP_ROUND6D.md)
+
+* **P-R6k.** Nonlinear ghost-condensate EFT simulation in the throat (Proposition 6d-2 is linear).
+* **P-R6l.** A bulk NEC source located in the band, so the single-evolution route keeps the Nariai discount.
+* **P-R6m.** The creation ("lift") of the false-vacuum ball by NEC-respecting dynamics.
+* **P-R6n.** GSL accounting for the ghost condensate: S_out of the condensate and its quanta across daughter-observer horizons versus the
+  required ~3√δ S_N (Proposition 6d-6); decides between the Mukohyama and Feldstein readings for this route.

@@ -153,6 +153,11 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Maldacena** (2021) JHEP 04, 079, arXiv:2004.06084. Magnetic black holes: electroweak restoration near the horizon; $\sim Q$ massless 2D fermions.
 * **Jacobson, Kang, Myers** (1995) PRD 52, 3518, gr-qc/9503020. Black-hole entropy in scalar–tensor theories and the Einstein frame.
 
+* **Mukohyama** (2009) arXiv:0901.3595. The original ghost condensate and the GSL: speed differences suppressed by M²/M_Pl², violations too slow.
+* **Feldstein** (2009) PRD 80, 044020, arXiv:0904.1212. Negative energy flowing into black holes in a ghost-condensate background; NEC
+  violation as the source of GSL violation.
+* arXiv:0908.4123, "Can ghost condensate decrease entropy?" (2009). Argues the proposed violations do not occur.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

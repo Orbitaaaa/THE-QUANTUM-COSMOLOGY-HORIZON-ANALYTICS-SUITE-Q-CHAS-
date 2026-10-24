@@ -136,7 +136,7 @@ class Potential:
 
 
 def characteristic_data(Q: float, c: float, r0: float, ru0: float, rv0: float, h: float, Nv: int, Nu: int,
-                        phi_v=None, phi_u=None, t_u=None, N_u=None, G: float = 1.0, s0: float = 0.0):
+                        phi_v=None, phi_u=None, t_u=None, N_u=None, G: float = 1.0, s0: float = 0.0, N_v=None):
     """Constraint-satisfying data in the gauge s = s0 on both rays.  phi_v(v), phi_u(u): scalar profiles on u = u0 and v = v0 (must
     agree at the corner); t_u(u): CFT state flux; N_u(u): classical null-fluid flux.  Returns (ra, sa, pa), (rb, sb, pb)."""
     v = np.arange(Nv + 1) * h
@@ -145,13 +145,14 @@ def characteristic_data(Q: float, c: float, r0: float, ru0: float, rv0: float, h
     phi_u = phi_u or (lambda x: np.zeros_like(np.asarray(x, float)))
     t_u = t_u or (lambda x: np.zeros_like(np.asarray(x, float)))
     N_u = N_u or (lambda x: np.zeros_like(np.asarray(x, float)))
+    N_v = N_v or (lambda x: np.zeros_like(np.asarray(x, float)))
     eps = 1e-6 * h
 
     def dphi(f, x):
         return (f(x + eps) - f(x - eps)) / (2 * eps)
 
     def rhs_v(x, y):
-        return [y[1], -4 * np.pi * G * y[0] * dphi(phi_v, x) ** 2]
+        return [y[1], -4 * np.pi * G * y[0] * dphi(phi_v, x) ** 2 - G / y[0] * N_v(x)]
 
     def rhs_u(x, y):
         return [y[1], -4 * np.pi * G * y[0] * dphi(phi_u, x) ** 2 - G / y[0] * (t_u(x) + N_u(x))]
@@ -270,7 +271,7 @@ def conformal_pulse(c: float, A: float, up: float, w: float, L: float, W2: float
 def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.005, eps: float = 2.0, wall_frac: float = 0.95,
                         h: float = 0.08, Lu: float = 200.0, Lv: float = 200.0, Nflux: float = 0.0, up: float = 2.0, width: float = 1.0,
                         c: float = 0.0, Y: float = 0.0, wp: float = 1.0, tu_func=None, u_inner: float = None,
-                        w_inner: float = 2.0) -> dict:
+                        w_inner: float = 2.0, r0_factor: float = 1.0, Q: float = 0.0, Nv_func=None, r_inf: float = 1e4) -> dict:
     """Near-Nariai configuration (Proposition 6c-9): a Schwarzschild-de Sitter black hole of mass M = M_N (1 - delta), M_N = 1/(3 sqrt Lambda),
     Lambda = 3/l_H^2, inside a false-vacuum region (tilted quartic, light thin walls) whose outer wall sits at wall_frac of the way from
     r_N = 1/sqrt Lambda to the cosmological horizon r_c (so the data are normal).  Corner at r_N with symmetric expansions; false vacuum
@@ -284,14 +285,25 @@ def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.
     lam = 4 * rho_f / (eps * vphi**4)
     w = np.sqrt(2) / (np.sqrt(lam) * vphi)
     pot = Potential(lam, vphi, rho_f)
-    MN = 1 / (3 * np.sqrt(Lam))
+    if Q == 0:
+        rN = 1 / np.sqrt(Lam)
+        MN = 1 / (3 * np.sqrt(Lam))
+    else:                                   # Nariai branch of Reissner-Nordstrom-de Sitter (Lambda Q^2 < 1/12)
+        rN = np.sqrt((1 + np.sqrt(1 - 12 * Lam * Q * Q)) / (2 * Lam))
+        MN = 0.5 * (rN + Q * Q / rN - Lam * rN**3 / 3)
     M = MN * (1 - delta)
-    rN = 1 / np.sqrt(Lam)
-    f = lambda r: 1 - 2 * M / r - Lam * r**2 / 3
-    rc = brentq(f, rN, 3 * rN)
+    f = lambda r: 1 - 2 * M / r + Q * Q / r**2 - Lam * r**2 / 3
     f0 = f(rN)
+    r0 = rN * r0_factor
+    if r0_factor != 1.0:                    # corner moved (semiclassical re-tuning): same corner expansions, mass fixed by the corner
+        M = 0.5 * r0 * (1 - f0 + Q * Q / r0**2 - Lam * r0**2 / 3)
+        f = lambda r: 1 - 2 * M / r + Q * Q / r**2 - Lam * r**2 / 3
+    rc = brentq(f, r0, 3 * rN)
     rv0 = np.sqrt(f0) / 2
-    v2 = wall_frac * (rc - rN) / rv0
+    rgrid = np.linspace(0.3 * rN, r0, 4001)
+    sgn = np.where(np.diff(np.sign(f(rgrid))) != 0)[0]
+    rb = brentq(f, rgrid[sgn[-1]], rgrid[sgn[-1] + 1]) if len(sgn) else np.nan
+    v2 = wall_frac * (rc - r0) / rv0
     phi_v = lambda vv: vphi * np.tanh((np.asarray(vv, float) - v2) / w)
     if u_inner is None:
         phi_u = lambda uu: -vphi + 0 * np.asarray(uu, float)
@@ -301,8 +313,9 @@ def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.
     if tu is None and c > 0 and Y != 0:
         tu = lambda u: c / (24 * np.pi) * (0.5 * (0.5 * Y * (1 + np.tanh((u - up) / wp))) ** 2 - 0.5 * Y / wp / np.cosh((u - up) / wp) ** 2)
     Nu = (lambda u: -Nflux * np.exp(-((u - up) / width) ** 2)) if Nflux else None
-    a, b, _ = characteristic_data(0.0, c, rN, -rv0, rv0, h, int(Lv / h), int(Lu / h), phi_v=phi_v, phi_u=phi_u, t_u=tu, N_u=Nu)
-    res = evolve(a, b, 0.0, c, pot, h, r_inf=1e4, phi_max=10 * vphi)
+    a, b, info = characteristic_data(Q, c, r0, -rv0, rv0, h, int(Lv / h), int(Lu / h), phi_v=phi_v, phi_u=phi_u, t_u=tu, N_u=Nu,
+                                     N_v=Nv_func)
+    res = evolve(a, b, Q, c, pot, h, r_inf=r_inf, phi_max=10 * vphi)
     cl = classify(res)
     g = inflated(res, cl, rN)
     P, R, C, S = res["phi"], res["r"], cl["cls"], res["s"]
@@ -314,8 +327,8 @@ def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.
     flux = (tu(uu) if tu is not None else 0 * uu) + (Nu(uu) if Nu is not None else 0 * uu)
     return dict(res=res, cls=C, grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN),
                 neg_energy=float(-np.trapezoid(np.minimum(flux, 0), uu)), net_energy=float(np.trapezoid(flux, uu)),
-                dm_misner_sharp=float(np.sqrt(f0) * -np.trapezoid(np.minimum(flux, 0), uu)), r_b=float(brentq(f, 1e-3 * rN, rN)),
-                r_c=float(rc), u_hole=float((rN - brentq(f, 1e-3 * rN, rN)) / rv0),
+                dm_misner_sharp=float(np.sqrt(f0) * -np.trapezoid(np.minimum(flux, 0), uu)), r_c=float(rc), M=float(M),
+                r_b=float(rb), u_hole=float((r0 - rb) / rv0), rv_data=info["rv_a"], v_wall=float(v2),
                 f0=float(f0), delta_m=float(Nflux * np.sqrt(np.pi) * width) if Nflux else (float(c * Y / (24 * np.pi)) if c else 0.0),
                 u_growth=float(k[0] * h) if len(k) else None, true_vacuum_trapped=int(np.sum(tv & (C == -1))),
                 true_vacuum_untrapped_large_r=int(np.sum(tv & (C >= 0) & (R > 5 * rN))), n_anti=cl["n_anti"])

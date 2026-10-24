@@ -18,6 +18,14 @@
                             f^2 = e^{-(u-u_0)/tau} (switched on adiabatically inside the vacuum region) gives
                                 int T_uu e^{-(u-u_0)/tau} du >= -c/(48 pi tau),
                             and the conformal-map states of ``throat_evolution.conformal_pulse`` with A = 1/tau, L -> infinity saturate it.
+* ``strong_qnec_weighted_bound``  Proposition 6d-3 [Theorem].  The weighted bound needs only the strong QNEC, for every state of a 2D CFT:
+                            with w = e^{-(u-u0)/tau} and S' -> 0 before u0, int S'' w = (1/tau) int S' w, so
+                                int T w >= (1/2 pi) int w [S'/tau + (6/c) S'^2] >= (1/2 pi) int w (-c / 24 tau^2) = -c/(48 pi tau),
+                            with equality for S' = -c/(12 tau).  It does not rely on the conformal-map form of the state.
+* ``threshold_vs_c``        Proposition-N 6d-4.  In the Bunch-Davies-type background of the same c fields the classical threshold rises with
+                            x = c/r_N^2: W_th / r_N = 1.85e-3, 5.1e-3, 7.8e-3, 1.14e-2, 1.55e-2 at x = 0, 1, 2, 3.3, 5, while the capacity is
+                            2.07e-3 x.  The gap W_th - capacity grows (0.053, 0.064, 0.077, 0.088 at l_H = 30), so no central charge works,
+                            with or without the species bound (lowest-Landau-level multiplicity included: the polarisation scales with c_eff).
 * ``quantum_tipping_c``     Corollary 6c-11 (a QFT cannot tip a Nariai throat inside the effective theory).  The throat responds to a
                             source through W = int (-T) e^{-u/tau} (Proposition 6c-12: tau = 3.2 r_N, W_th = 1.85e-3 r_N/G); a CFT supplies
                             at most c/(48 pi tau).  Tipping needs c >= 48 pi tau W_th = 0.89 (r_N/l_P)^2: the species length sqrt(c) l_P
@@ -133,3 +141,18 @@ def nariai_fluctuation(r_N: float, f_th: float = 0.006, c: float = 0.0) -> dict:
 def monopole_charge(Q_over_lP: float, alpha: float = 1 / 137.036) -> float:
     """Number of Dirac flux quanta q = 2 sqrt(alpha) Q / l_P carried by a geometric magnetic charge Q."""
     return float(2 * np.sqrt(alpha) * Q_over_lP)
+
+
+def strong_qnec_weighted_bound(c: float = 1.0, tau: float = 1.0) -> dict:
+    """Proposition 6d-3: the pointwise minimum of S'/tau + (6/c) S'^2 is -c/(24 tau^2) at S' = -c/(12 tau); hence the weighted bound
+    -c/(48 pi tau) for every state obeying the strong QNEC (checked symbolically)."""
+    x, cc, tt = sp.Symbol("x", real=True), sp.Symbol("c", positive=True), sp.Symbol("tau", positive=True)
+    g = x / tt + 6 * x**2 / cc
+    xs = sp.solve(sp.diff(g, x), x)[0]
+    gmin = sp.simplify(g.subs(x, xs))
+    bound = sp.simplify(gmin * tt / (2 * sp.pi))            # times int w du = tau
+    return dict(S_prime_opt=sp.simplify(xs), g_min=gmin, bound=bound, numeric=float(bound.subs({cc: c, tt: tau})),
+                matches=bool(sp.simplify(bound + cc / (48 * sp.pi * tt)) == 0))
+
+
+THRESHOLD_VS_X = {0.0: 0.032, 1.0: 0.0891, 2.0: 0.1362, 3.33: 0.1972, 5.0: 0.268}    # W_th at l_H = 30 (r_N = 17.32), local frame

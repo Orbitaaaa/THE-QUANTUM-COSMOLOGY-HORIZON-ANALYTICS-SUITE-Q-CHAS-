@@ -172,6 +172,19 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R97 | **Proposition 6c-16 (P-R7)**: Regge–Wheeler greybody factors; the 3+1 branch difference is IR-finite (0.005–0.006 quanta per event per scalar) | Proposition-N |
 | R98 | **Proposition 6c-17**: near threshold no exterior measurement distinguishes daughter from no daughter | Theorem + Proposition-N |
 
+## Round 6d (ROADMAP_ROUND6D.md)
+
+| ID | result | status |
+|---|---|---|
+| R99 | **Independent verification**: a method-of-lines solver with its own data integrator (second order; Reissner–Nordström mass to 1.3e-6) reproduces the Nariai daughter and its hiding; threshold W 0.053–0.071 vs 0.031–0.035 (agreement to a factor of 2) | Proposition-N |
+| R100 | **Correction F32 / bridge-free data**: the Round 6c data had a trapped exterior (beyond a bridge); a light wall gives normal, asymptotically connected data, the exterior collapses into a parent black hole, and the daughter grows inside it (W = 0.142, δ = 1e-4) | Proposition-N |
+| R101 | **Proposition 6d-1**: a displaced ghost condensate in the Nariai region relaxes as P′ = ε₀e^{−t/r_N}: its NEC phase switches itself off on the dS₂ Hubble time | Theorem (EFT) |
+| R102 | **Proposition 6d-2**: ghost-condensate stability window 1.9e-4/√(αP″) ≤ M³r_N ≤ 1.7e-2/√α (86× wide); mode integration on dS₂×S² gives growth ≤ 3.3× over 3τ | Proposition + Proposition-N |
+| R103 | **Proposition 6d-3**: the strong QNEC alone gives ∫T e^{−u/τ} ≥ −c/48πτ for every 2D CFT state | Theorem |
+| R104 | **Proposition-N 6d-4**: the same fields' back-reaction raises the threshold faster than c/48πτ (no crossing to c = 5r_N²); quantum fields cannot push, with or without the species bound | Proposition-N |
+| R105 | **Proposition 6d-5 (complete route)**: from data with no black hole (false-vacuum ball, light wall, imploding ordinary-radiation shell; normal, bridge-free, NEC except the push), a push gives a hidden daughter inflating to r ≈ 4,500 inside the parent's black hole; push injected inside the ball (no discount in this realisation) | Proposition-N |
+| R106 | **Proposition 6d-6 (generalised entropy of the solution)**: the parent's event-horizon area never decreases; daughter-observer horizons carry a deficit ≤ 3.3√δ S_N (0.6–2.4 nats in the runs), the quantity the ghost-condensate GSL dispute must accommodate | Proposition-N + bound |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
