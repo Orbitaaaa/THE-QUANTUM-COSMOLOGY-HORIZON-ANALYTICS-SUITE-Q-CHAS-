@@ -135,6 +135,24 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   Lorentz-violating black holes fails when gravity is attractive.
 * **Sasieta, Swingle, Vilar López** arXiv:2512.00149. Baby universes in SYK (quantum states of closed universes).
 
+* **Bousso, Hawking** (1998) PRD 57, 2436, hep-th/9709224; **Bousso** (1998) PRD 58, 083511, hep-th/9805081. Nariai (anti-)evaporation and the
+  proliferation of de Sitter space through near-Nariai perturbations.
+* **Ginsparg, Perry** (1983) NPB 222, 245. The Nariai limit of Schwarzschild–de Sitter as dS$_2\times S^2$.
+* **Fewster, Hollands** (2005) RMP 17, 577, math-ph/0412028. Quantum energy inequalities in 2D CFT: $\int Tf^2\ge-\frac c{12\pi}\int f'^2$ on null lines.
+* **Fewster, Roman** (2003) PRD 67, 044003, gr-qc/0209036. No quantum inequality along null geodesics in 4D (free scalar).
+* **Ceyhan, Faulkner** (2020) CMP 377, arXiv:1812.04683. QNEC from ANEC for general QFT (half-sided modular inclusions).
+* **Galloway** (2000) Ann. Henri Poincaré 1, 543, math/9909158. Maximum principle for $C^0$ null hypersurfaces; support-sense mean curvature.
+* **Arkani-Hamed, Cheng, Luty, Mukohyama** (2004) JHEP 05, 074, hep-th/0312099. Ghost condensation.
+* **Creminelli, Luty, Nicolis, Senatore** (2006) JHEP 12, 080, hep-th/0606090. Stable NEC violation by a softly broken ghost condensate,
+  bounded by $\lvert\dot H\rvert\lesssim H^2$ (gradient and Jeans instabilities).
+* **Dubovsky, Grégoire, Nicolis, Rattazzi** (2006) JHEP 03, 025, hep-th/0512260. NEC violation implies instabilities in broad classes;
+  stable counterexamples need anisotropy and superluminal modes.
+* **Dubovsky, Sibiryakov** (2006) PLB 638, 509, hep-th/0603158; **Eling, Foster, Jacobson, Wall** (2007) PRD 75, 101502, hep-th/0702124.
+  Multiple propagation speeds conflict with the GSL (perpetuum mobile of the second kind).
+* **Kobayashi** (2016) PRD 94, 043511, arXiv:1606.05831. No-go for stable flat non-singular cosmologies in Horndeski theory.
+* **Maldacena** (2021) JHEP 04, 079, arXiv:2004.06084. Magnetic black holes: electroweak restoration near the horizon; $\sim Q$ massless 2D fermions.
+* **Jacobson, Kang, Myers** (1995) PRD 52, 3518, gr-qc/9503020. Black-hole entropy in scalar–tensor theories and the Einstein frame.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

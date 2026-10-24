@@ -208,3 +208,38 @@ $\rho_{\rm EW}$: below $1/4$, and a corona that is part of the static solution n
 *Result:* the classical window survives as $Q/M\to1$ but its width is $\le r_+-r_-=2\kappa_-r_-^2$: weakening the blueshift closes the window,
 and even the extremal Cauchy horizon is extendible only non-uniquely (Gajic–Luk).
 **Type:** trade-off, not a cure.
+
+### F26. "0.6–0.9% of the hole mass" and "about 400× cheaper" (Round 6c checkpoint)
+*Claim:* the Nariai-throat tipping pulse is 0.6–0.9% of $M_N$, about 400 times cheaper than flat-space genesis.
+*Error:* the quoted number was $\int\lvert N\rvert du$, the energy measured by the geodesic observer at the corner (a local, frame-dependent
+energy), not a mass. The gauge-invariant Misner–Sharp jump is $\sqrt{f_0}$ times it ($f_0=2\delta/3$): $5\times10^{-7}M_N$ at $\delta=10^{-8}$,
+scaling as $\sim10^{-2}\sqrt\delta M_N$. In local energy the threshold is $0.55\%M_N$ and the flat-space flip is 270 times larger.
+**Type:** mislabelled quantity, corrected (ROADMAP_ROUND6C Part I.5).
+
+### F27. QNEC-saturating CFT pulses as the tipping source (Round 6c)
+*Tried:* conformal-map states of $c$ fields, first a step in $y'$ (which leaves a permanent positive flux $(c/48\pi)Y^2$), then optimal rise/slow-fall
+profiles with the positive energy spread over up to $150\gg\tau$, $c$ up to $500=1.7r_N^2$.
+*Result:* no tip. The weighted deficit of any CFT state is $\le c/48\pi\tau$ (Proposition 6c-10), so tipping needs $c\ge0.89r_N^2$ (Corollary 6c-11),
+and the Bunch–Davies back-reaction of the same fields raises the threshold.
+**Type:** theorem-backed negative result.
+
+### F28. Vacuum polarisation (one-loop anti-evaporation) as the source (Round 6c)
+*Tried:* Bunch–Davies back-reaction of $c=30$–$1000$ conformal fields on the near-Nariai configuration, without any pulse, domains up to $400$.
+*Result:* no growth; the polarisation is stabilising (it raises the classical threshold above $W=0.071$ at $c=300$).
+**Type:** negative numerical result.
+
+### F29. Positive-energy perturbations (Round 6c)
+*Result:* outgoing positive energy ($W<0$) at three amplitudes gives the trapped (collapsing) branch, never a daughter: Farhi–Guth, and Proposition
+6c-13 (the minimal anti-trapped radius cannot decrease under the NEC, in any parent).
+**Type:** consistency check.
+
+### F30. A hole formed in true vacuum with a thin false-vacuum layer (Round 6c)
+*Tried:* true vacuum deeper than $u_{\rm inner}=6$–$60$ along the ingoing ray (the black-hole horizon is crossed at $u_{\rm hole}=34.6$).
+*Result:* no growth, even at four times the pulse; with $u_{\rm inner}\ge100$ the daughter grows and is hidden. The false vacuum must continue inside
+the horizon.
+**Type:** requirement found (Proposition 6c-15).
+
+### F31. Non-minimal coupling as the classical NEC violator (Round 6c)
+*Result:* $\xi\phi^2R$ is conformally equivalent to GR with NEC-satisfying matter; Farhi–Guth holds in the Einstein frame, so a Jordan-frame
+daughter with $\phi\to$ const is impossible unless $\Omega^2=1-8\pi G\xi\phi^2\to0$ (strong coupling).
+**Type:** structural negative result.

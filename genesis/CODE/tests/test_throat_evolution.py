@@ -82,7 +82,7 @@ def test_nariai_throat_positive_result():
     grow = TE.nariai_false_vacuum(delta=1e-8, Nflux=0.04, h=0.1, Lu=120, Lv=120)
     assert grow["grew"] and 40 < grow["u_growth"] < 60
     assert grow["true_vacuum_untrapped_large_r"] == 0 and grow["true_vacuum_trapped"] > 0     # hidden behind a trapped region
-    assert 0.011 < grow["delta_m"] / grow["M_N"] < 0.013                                        # a ~1.2% push
+    assert 0.011 < grow["delta_m"] / grow["M_N"] < 0.013                                        # local energy ~1.2% M_N (invariant: sqrt(f0) times that)
     weak = TE.nariai_false_vacuum(delta=1e-8, Nflux=0.01, h=0.1, Lu=120, Lv=120)
     assert not weak["grew"]
     qnec = TE.nariai_false_vacuum(delta=1e-8, c=24 * np.pi * 0.06 / 0.1, Y=0.1, wp=2.0, h=0.1, Lu=120, Lv=120)

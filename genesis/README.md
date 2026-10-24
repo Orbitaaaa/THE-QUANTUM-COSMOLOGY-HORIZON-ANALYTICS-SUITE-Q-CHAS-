@@ -16,6 +16,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   The asymptotic clock folds back (its "Klein-type" reading is withdrawn in round 3, F17). The alternative-mechanism ledger and the "five numbers".
 * **[ROADMAP_ROUNDS5_7_12.md](ROADMAP_ROUNDS5_7_12.md)**: Round 5 (field theory), Round 7 (observables from an explicit quantum field), Rounds 8–12
   (theory-only requirements).
+* **[ROADMAP_ROUND6C.md](ROADMAP_ROUND6C.md)**: Round 6c, making the throat work: a hidden, inflating daughter from a near-Nariai throat, the
+  universal tipping law, why quantum fields cannot supply the tip and what classical field can (the ghost condensate), what the initial geometry
+  needs, P-S3 solved, 3+1 greybody factors, and the status of every remaining open problem.
 * **[ROADMAP_ROUND6B_GSL.md](ROADMAP_ROUND6B_GSL.md)**: Round 6b, "GENESIS — a serious attempt to get around the GSL": the genesis dichotomy
   (what the GSL forbids), the QNEC cost of genesis, exact 2D results, near-extremal throats, and the GSL form of Problem B.
 * **[ROADMAP_ROUND6_MECHANISM_ATLAS.md](ROADMAP_ROUND6_MECHANISM_ATLAS.md)**: Round 6, the systematic search for a controllable creation
@@ -126,6 +129,22 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Requires a sector that violates positivity (the claimed GSL violation is withdrawn in Round 6b, F21).
   * A seed's edge must open a throat (G7), or the result is a visible bubble that consumes the parent.
 
+## Round 6c in brief (making the throat work)
+
+* **The extremal throat cannot both hide and grow** a daughter (Theorem 6c-1: normal false vacuum is always sub-horizon).
+* **The Nariai throat can.** A near-Nariai Schwarzschild–de Sitter hole in a false-vacuum layer, tipped by outgoing negative energy, grows an
+  inflating daughter behind a persistent trapped neck. Every run obeys one law: the daughter grows iff the weighted NEC deficit
+  $W=-\int Ne^{-u/\tau}du$ exceeds $1.85\times10^{-3}r_N/G$, with $\tau=3.2r_N$.
+* **Cost (corrected, F26).** In local energy, 0.55% of the hole mass, 270 times below the flat-space flip. Invariantly, $\sim10^{-2}\sqrt\delta$ of
+  the hole mass, bought with tuning $\delta$.
+* **Sources.** No QNEC-constrained quantum field can tip it inside the effective theory: that needs $c\ge0.89(r_N/\ell_P)^2$, and vacuum
+  polarisation is stabilising. No NEC-respecting field can do it in any parent. A ghost condensate can, 145–430 times below its stability ceiling
+  (Lorentz-violating; its GSL is not universal).
+* **Preparation.** Possible in theory from normal data with a regular past, if the hole forms inside the false vacuum. The vacuum is tied to the
+  hole by $\rho_f^{1/4}=0.433\,{\rm GeV}(M_\odot/M)^{1/2}$. There is no laboratory route.
+* **Also:** P-S3 solved ($c(0^+)=-13/18$); 3+1 greybody factors (P-R7); GSL-3 without spherical symmetry (given the support form of the
+  local GSL).
+
 ## Round 6b in brief (getting around the GSL)
 
 * **Correction F21:** NEC violation is not GSL violation; Round 6's "Route G must violate the GSL" is withdrawn.
@@ -151,7 +170,8 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 ```
 CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunnelling, thickwall, quantum, contours,
                      doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas,
-                     selection, signatures, crosscheck, mechanisms, field_theory, radiation, gsl
+                     selection, signatures, crosscheck, mechanisms, field_theory, radiation, gsl, throat_evolution,
+                     obstructions, quantum_throat, nariai, greybody
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log
@@ -163,7 +183,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 159 tests
+cd .. && python -m pytest tests -q                # 172 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

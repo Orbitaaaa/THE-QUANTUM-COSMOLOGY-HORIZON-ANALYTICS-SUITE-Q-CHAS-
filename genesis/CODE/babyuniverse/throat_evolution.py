@@ -250,14 +250,34 @@ def classify(res: dict, d: dict = None) -> dict:
 
 
 # ------------------------------------------------------------------ Round 6c: the Nariai throat (positive result)
+def conformal_pulse(c: float, A: float, up: float, w: float, L: float, W2: float):
+    """A CFT state obtained from the vacuum by the conformal map X(u) with y = ln X', y' = A s1(u) s2(u): a rise of width w at up and a
+    fall of width W2 at up + L.  Its flux t_u = (c/24 pi)(y'^2/2 - y'') saturates the strong QNEC (Proposition 6c-7) and obeys ANEC
+    (int t_u = (c/48 pi) int y'^2 >= 0) and the Fewster-Hollands null QEI.  The negative lobe -(c/24 pi) A (rise) comes first; the
+    compensating positive energy is spread over L.  Returns t_u(u) and y'(u)."""
+    def yp(u):
+        u = np.asarray(u, float)
+        return A * 0.25 * (1 + np.tanh((u - up) / w)) * (1 - np.tanh((u - up - L) / W2))
+
+    def ypp(u):
+        u = np.asarray(u, float)
+        s1, s2 = 0.5 * (1 + np.tanh((u - up) / w)), 0.5 * (1 - np.tanh((u - up - L) / W2))
+        return A * (0.5 / w / np.cosh((u - up) / w) ** 2 * s2 - s1 * 0.5 / W2 / np.cosh((u - up - L) / W2) ** 2)
+
+    return (lambda u: c / (24 * np.pi) * (0.5 * yp(u) ** 2 - ypp(u))), yp
+
+
 def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.005, eps: float = 2.0, wall_frac: float = 0.95,
                         h: float = 0.08, Lu: float = 200.0, Lv: float = 200.0, Nflux: float = 0.0, up: float = 2.0, width: float = 1.0,
-                        c: float = 0.0, Y: float = 0.0, wp: float = 1.0) -> dict:
+                        c: float = 0.0, Y: float = 0.0, wp: float = 1.0, tu_func=None, u_inner: float = None,
+                        w_inner: float = 2.0) -> dict:
     """Near-Nariai configuration (Proposition 6c-9): a Schwarzschild-de Sitter black hole of mass M = M_N (1 - delta), M_N = 1/(3 sqrt Lambda),
     Lambda = 3/l_H^2, inside a false-vacuum region (tilted quartic, light thin walls) whose outer wall sits at wall_frac of the way from
     r_N = 1/sqrt Lambda to the cosmological horizon r_c (so the data are normal).  Corner at r_N with symmetric expansions; false vacuum
     on the whole ingoing ray (the hole is inside the false vacuum).  Optional outgoing negative-energy pulse: classical null fluid of
-    amplitude Nflux (delta m = Nflux sqrt(pi) width) or a QNEC-saturating CFT step (c, Y).  Returns the evolution and its diagnostics."""
+    amplitude Nflux or a QNEC-saturating CFT step (c, Y).  "delta_m" is the pulse's local energy W = int|N| du = Nflux sqrt(pi) width
+    in the corner's geodesic frame; "dm_misner_sharp" = sqrt(f0) W is its invariant (Misner-Sharp) size.  Returns the evolution and its
+    diagnostics."""
     from scipy.optimize import brentq
     Lam = 3 / l_H**2
     rho_f = Lam / (8 * np.pi)
@@ -273,9 +293,12 @@ def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.
     rv0 = np.sqrt(f0) / 2
     v2 = wall_frac * (rc - rN) / rv0
     phi_v = lambda vv: vphi * np.tanh((np.asarray(vv, float) - v2) / w)
-    phi_u = lambda uu: -vphi + 0 * np.asarray(uu, float)
-    tu = None
-    if c > 0 and Y != 0:
+    if u_inner is None:
+        phi_u = lambda uu: -vphi + 0 * np.asarray(uu, float)
+    else:                                   # inner wall: true vacuum deeper than u_inner along the ingoing ray (a hole formed by collapse)
+        phi_u = lambda uu: -vphi * np.tanh((u_inner - np.asarray(uu, float)) / w_inner) / np.tanh(u_inner / w_inner)
+    tu = tu_func
+    if tu is None and c > 0 and Y != 0:
         tu = lambda u: c / (24 * np.pi) * (0.5 * (0.5 * Y * (1 + np.tanh((u - up) / wp))) ** 2 - 0.5 * Y / wp / np.cosh((u - up) / wp) ** 2)
     Nu = (lambda u: -Nflux * np.exp(-((u - up) / width) ** 2)) if Nflux else None
     a, b, _ = characteristic_data(0.0, c, rN, -rv0, rv0, h, int(Lv / h), int(Lu / h), phi_v=phi_v, phi_u=phi_u, t_u=tu, N_u=Nu)
@@ -287,7 +310,12 @@ def nariai_false_vacuum(l_H: float = 30.0, delta: float = 1e-8, vphi: float = 0.
     rmax_u = np.nanmax(np.where(good, R, np.nan), axis=1)
     k = np.where(rmax_u > 5 * rN)[0]
     tv = (P > 0) & np.isfinite(R)
+    uu = np.arange(int(Lu / h) + 1) * h
+    flux = (tu(uu) if tu is not None else 0 * uu) + (Nu(uu) if Nu is not None else 0 * uu)
     return dict(res=res, cls=C, grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN),
+                neg_energy=float(-np.trapezoid(np.minimum(flux, 0), uu)), net_energy=float(np.trapezoid(flux, uu)),
+                dm_misner_sharp=float(np.sqrt(f0) * -np.trapezoid(np.minimum(flux, 0), uu)), r_b=float(brentq(f, 1e-3 * rN, rN)),
+                r_c=float(rc), u_hole=float((rN - brentq(f, 1e-3 * rN, rN)) / rv0),
                 f0=float(f0), delta_m=float(Nflux * np.sqrt(np.pi) * width) if Nflux else (float(c * Y / (24 * np.pi)) if c else 0.0),
                 u_growth=float(k[0] * h) if len(k) else None, true_vacuum_trapped=int(np.sum(tv & (C == -1))),
                 true_vacuum_untrapped_large_r=int(np.sum(tv & (C >= 0) & (R > 5 * rN))), n_anti=cl["n_anti"])

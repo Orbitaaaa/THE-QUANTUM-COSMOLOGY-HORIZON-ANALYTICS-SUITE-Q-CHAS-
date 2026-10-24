@@ -154,6 +154,24 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R84 | **Remark GSL-11**: the Standard-Model electroweak corona stays below decompactification ($\Lambda Q^2\le0.075$; $\le0.226$ in an overestimate) | Assessment |
 | R85 | **Problem B, GSL form**: the GSL forbids exactly eternal, data-determined (and disconnected) daughters; transient connected daughters and Cauchy-horizon daughters are GSL-compatible; the remaining obstacle is $\rho\gtrsim m_P^6/M^2$, common to all routes | Assessment built on R76–R83 |
 
+## Round 6c (ROADMAP_ROUND6C.md)
+
+| ID | result | status |
+|---|---|---|
+| R86 | **Theorem 6c-1 / Corollaries 6c-2 to 6c-5 (extremal throat)**: normal false vacuum is sub-horizon ($L_{\max}/2\ell_H\le0.78$); no throat discount for growth; the extremal throat can hide or grow, not both | Theorem + Proposition-N |
+| R87 | **Proposition 6c-9 (Nariai throat)**: a near-Nariai SdS hole in a false-vacuum layer, tipped by outgoing negative energy, grows a hidden inflating daughter ($r>10^4r_N$, persistent trapped neck); converged; robust to wall position, tuning, Bunch–Davies back-reaction up to $c=150$ | Proposition-N |
+| R88 | **Proposition 6c-12 (universal tipping law)**: all 25 runs obey "daughter iff $W=-\int Ne^{-u/\tau}du>W_{\rm th}$", $\tau=3.2r_N$, $W_{\rm th}=1.85\times10^{-3}r_N/G$ (local frame) | Proposition-N |
+| R89 | **Invariant cost (correction F26)**: Misner–Sharp jump $\sqrt{f_0}W\approx(0.3\text{–}2)\times10^{-2}\sqrt\delta M_N$ ($(2.5\text{–}5)\times10^{-7}M_N$ at $\delta=10^{-8}$); $P_{\rm Hawking}=7.44\times10^{-5}/M^2$ reproduced; local energy $0.55\%M_N$, 270× below the flat-space flip | exact relation + Proposition-N |
+| R90 | **Proposition 6c-10 / Corollary 6c-11 (P-A1)**: 2D CFT weighted ANEC $\int Te^{-u/\tau}\ge-c/48\pi\tau$ (sharp); tipping by a CFT needs $c\ge0.89(r_N/\ell_P)^2$ (species length = throat radius); vacuum polarisation is stabilising | Theorem (2D) + Proposition-N |
+| R91 | **Proposition 6c-13**: with $T_{uu}\ge0$ the minimal anti-trapped radius never decreases, in any parent (de Sitter included) | Theorem (spherical) |
+| R92 | **Proposition 6c-14 (ghost condensate)**: tipping needs $\lvert\rho+p\rvert\ge4.6\times10^{-3}\rho_f$ for $\gtrsim\tau$, 145–430× below the CLNS stability ceiling | Proposition (conditional on the EFT) |
+| R93 | **Proposition 6c-15 (preparation)**: normal data with a regular past suffice; the hole must form inside the false vacuum (inner wall at $u\ge3u_{\rm hole}$); partner vacuum $\rho_f=1/24\pi G^2M^2$, $\rho_f^{1/4}=0.433$ GeV $(M_\odot/M)^{1/2}$ | Proposition + Proposition-N |
+| R94 | **Propositions 6c-6/7/8 (P-R6g, P-R6h)**: LLL reduction $c=\lvert q\rvert N_f$; conformal vacua saturate the strong QNEC on curved 2D backgrounds (anomaly included); exact Schwarzian moments | Theorem |
+| R95 | **Theorem 6c-R6i**: GSL-3 without spherical symmetry, by comparison at the touching point of the smallest enclosing normal leaf, given the support form of the local GSL | Theorem (conditional on (S)) |
+| R96 | **Theorem 6c-S3 (P-S3 solved)**: $c(E)$ in closed form; $c(0^+)=-13/18$ exactly; $c\simeq-(16/\pi)E^{-3/2}$ | Theorem |
+| R97 | **Proposition 6c-16 (P-R7)**: Regge–Wheeler greybody factors; the 3+1 branch difference is IR-finite (0.005–0.006 quanta per event per scalar) | Proposition-N |
+| R98 | **Proposition 6c-17**: near threshold no exterior measurement distinguishes daughter from no daughter | Theorem + Proposition-N |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

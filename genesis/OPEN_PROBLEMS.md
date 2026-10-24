@@ -8,7 +8,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-T5 (mostly done, roadmap Part A).** A theorem for light walls (S3: $B=B_{\rm CdL}\Phi$), and in the double-flip class wherever the $\Delta t^W_E<0$ criterion holds (S5).
   Rigorous closed-form bounds S1 and S2. Round 3: the A/B end of the strip is a theorem (Prop. S5-b); certificates hold from $1.02E_{AB}$ (sampled);
   $J<0$ on 2100 points down to $10^{-7}$. Open (**P-T5″**): interval-verified certificates on $(E_{AB},E_\omega)$ and a quantitative remainder at the end.
-* **P-S3 (new, round 3 D3).** Derive the correction coefficient $c(E)$ of S3 analytically: $-0.73<c<0$, $c(0^+)=-0.722221$ (conjecture $-13/18$), tail $-5E^{-3/2}$.
+* ~~P-S3~~ **done (Round 6c, Theorem 6c-S3):** $c(E)=2-2mI_0'/I_0+I_1/I_0$ in closed form, $c(0^+)=-13/18$ exactly, tail $-(16/\pi)E^{-3/2}$. Original text: Derive the correction coefficient $c(E)$ of S3 analytically: $-0.73<c<0$, $c(0^+)=-0.722221$ (conjecture $-13/18$), tail $-5E^{-3/2}$.
 * **P-L1.** Compare T0–T3 with FGG's pseudomanifold rule and FMP's Hamiltonian formulae, and with
   de Alwis et al. / Céspedes et al., term by term (full texts required; arXiv is blocked in this environment).
 * ~~P-G1~~ **done**: the atlas (roadmap Part G) and, in round 3, the Euclidean sections with conical defects, $I(\beta)=-(A_b+A_c)/4G$ for every $\beta$ (`sds_atlas.euclidean_section`). Original text: Explicit Penrose diagrams for the SdS exterior (patched Kruskal atlas at $r_b$ and $r_c$); Euclidean SdS
@@ -68,7 +68,7 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-Q9′.** Klein–Gordon current of the spherically symmetric Wheeler–DeWitt equation through the Einstein–Rosen bridge (imaginary part of the Kuchař phase).
 * **P-T3′.** One-loop prefactor (wall and bulk fluctuations) of the laboratory transition.
 * **P-T5′.** Analytic control of $\Delta t^W_E$ in the strip $E_{AB}<E<1.6E_{AB}$. (The bound $\Phi\ge\max(1,8/3E+2/3)$ is proved.)
-* **P-A1.** The QEI species bound with curved-space, interacting QEIs and exact constants (currently a scaling argument with Ford–Roman constants).
+* **P-A1 (2D done, Round 6c):** exact weighted-ANEC bound $c/48\pi\tau$ for 2D CFTs (Prop. 6c-10) and its tipping corollary; 4D interacting QEIs remain open (no null QEI exists in 4D, Fewster–Roman). Original text: The QEI species bound with curved-space, interacting QEIs and exact constants (currently a scaling argument with Ford–Roman constants).
 
 ## Round 3 additions
 
@@ -91,13 +91,20 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-T2 (now central).** The thick-wall laboratory exponent. Perturbative theories reach small $B_{\rm CdL}$ only with thick walls, where S3 and S7 are not established.
 * **P-C4 (sharpened).** The field's state after the transition on the daughter branch, from a full treatment. Round 7 shows the branch difference is set entirely by it
   (about 0.1 quanta per event under D1).
-* **P-R7.** 3+1 greybody factors and higher multipoles for the Round 7 flux.
+* ~~P-R7~~ **done (Round 6c, Proposition 6c-16):** Regge–Wheeler greybody factors for $l=0$–4; the branch difference is IR-finite in 3+1. Original text: 3+1 greybody factors and higher multipoles for the Round 7 flux.
 
 ## Round 6b additions (ROADMAP_ROUND6B_GSL.md)
 
-* **P-R6f.** 1+1 Einstein–Maxwell–scalar evolution of a bud in an extremal magnetic throat: its edges, hiding (GSL-10), persistence of the neck.
-* **P-R6g.** The QNEC and its strong 2D form for Landau-level fermions in a curved magnetic throat at large $q$, with massive-mode corrections.
+* ~~P-R6f~~ **done (Round 6c):** the extremal throat cannot both hide and grow (Theorem 6c-1, Cor. 6c-2–6c-5); the Nariai throat does (Prop. 6c-9, 6c-12). Original text: 1+1 Einstein–Maxwell–scalar evolution of a bud in an extremal magnetic throat: its edges, hiding (GSL-10), persistence of the neck.
+* **P-R6g (largely done, Round 6c):** LLL reduction and strong-QNEC saturation on curved 2D backgrounds proved (Prop. 6c-6/7); massive-mode QNEC on curved backgrounds remains [Literature only in Minkowski]. Original text: The QNEC and its strong 2D form for Landau-level fermions in a curved magnetic throat at large $q$, with massive-mode corrections.
 * **P-R6h.** The sub-$T_{\rm brk}$ (Schwarzian) regime: anti-trapping and the bud as a quantum state in an SYK/JT model (escape E3; Route Q).
-* **P-R6i.** Theorem GSL-3 without spherical symmetry (needs a mean-convexity comparison for horizon cross-sections on normal data).
+* **P-R6i (done modulo (S), Round 6c):** Theorem 6c-R6i proves GSL-3 without symmetry given the support form (S) of the local GSL; open: derive (S) from the GSL for non-smooth horizons. Original text: Theorem GSL-3 without spherical symmetry (needs a mean-convexity comparison for horizon cross-sections on normal data).
 * **P-R6a (updated).** Beyond-Horndeski: the dynamical-entropy second law around time-dependent scalar backgrounds with $c_s\neq1$, and stability
   of a time-dependent inhomogeneous throat.
+
+## Round 6c additions (ROADMAP_ROUND6C.md)
+
+* **P-R6j.** Simulate the in-situ lift of a false vacuum around a black hole across its horizon (Proposition 6c-15) through to the tipping.
+* **P-R6k.** The ghost condensate in the Nariai throat as an EFT simulation (gradient and Jeans dynamics included), not through its flux.
+* **P-D2′.** Non-spherical stability of Nariai tipping (the $l\ge1$ modes on the Nariai $S^2$).
+* **P-N1′ (attempted).** Reformulated as $-EJ=E^2\int sk(W-s^2)^{-1/2}ds$; the interval certificate is still open.

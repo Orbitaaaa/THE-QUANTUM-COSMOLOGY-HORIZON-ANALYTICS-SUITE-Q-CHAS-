@@ -1,5 +1,7 @@
 """Round 6c (positive result): the Nariai throat.  A near-Nariai Schwarzschild-de Sitter hole inside a false-vacuum bubble, pushed by a
-small outgoing negative-energy pulse, grows a hidden inflating daughter; QNEC-bounded CFT pulses do not, because of their back-reaction."""
+small outgoing negative-energy pulse, grows a hidden inflating daughter; QNEC-bounded CFT pulses do not, because of their back-reaction.
+"delta_m" in the output is the pulse's local energy W = int|N| du in the corner's geodesic frame; the invariant Misner-Sharp jump is
+sqrt(f0) W ("dm_misner_sharp"), see ROADMAP_ROUND6C Part I.5 (correction F26)."""
 import warnings
 
 import numpy as np
@@ -66,7 +68,7 @@ ax[0].text(4, 100, "anti-trapped false vacuum:\ninflates to I+ (r > 10^4)", font
 ax[0].text(36, 30, "trapped true vacuum:\nthe parent's black hole\n(neck; daughter hidden)", fontsize=8, color=INK)
 ax[0].set_xlabel("v")
 ax[0].set_ylabel("u")
-ax[0].set_title("(a) Nariai throat + 1.2% mass pulse: hidden growing daughter", fontsize=9)
+ax[0].set_title("(a) Nariai throat + pulse of local energy 1.2% M_N: hidden growing daughter", fontsize=9)
 for delta, col in ((1e-4, C1), (1e-6, C2), (1e-8, C3)):
     rows = [t for t in thr if t["delta"] == delta]
     ax[1].plot([t["delta_m"] / t["M_N"] * 100 for t in rows], [t["r_max"] / t["r_N"] if t["r_max"] else 1 for t in rows], "o-",
@@ -74,9 +76,9 @@ for delta, col in ((1e-4, C1), (1e-6, C2), (1e-8, C3)):
 ax[1].axhline(5, color=INK, lw=1)
 ax[1].text(0.32, 5.4, "growth criterion (r > 5 r_N, coherent region)", fontsize=8, color=INK)
 ax[1].set_yscale("log")
-ax[1].set_xlabel("pulse delta m / M_N  (%)")
+ax[1].set_xlabel("pulse local energy W / M_N  (%)   [invariant mass: sqrt(f0) W]")
 ax[1].set_ylabel("largest r / r_N in the anti-trapped false vacuum")
-ax[1].set_title("(b) Threshold 0.6-0.9% of the hole mass (flat space needs O(1))", fontsize=9)
+ax[1].set_title("(b) Threshold W ~ 0.55% M_N local; flat-space flip needs 270x more", fontsize=9)
 ax[1].legend(frameon=False, fontsize=8, loc="upper left")
 qq = [q for q in qn if q["Y"] > 0]
 ax[2].scatter([q["k_over_r2"] for q in qq], [q["r_max"] / q["r_N"] if q["r_max"] else 1 for q in qq], color=C2, s=40,
