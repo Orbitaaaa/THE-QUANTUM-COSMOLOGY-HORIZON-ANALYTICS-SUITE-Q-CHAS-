@@ -306,7 +306,7 @@ def nariai_condensate(n0, l_H=30.0, delta=1e-4, vphi=0.0015, eps=4.0, wall_frac=
     W_v = float(-np.trapezoid(np.minimum(info["T2vv"], 0) * np.exp(-v / tau), v))
     T = stress(res)
     n_corner = T["n"][:, 0]
-    return dict(res=res, cls=Cc, grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN), f0=float(f0),
+    return dict(res=res, pot=pot, cls=Cc, grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN), f0=float(f0),
                 r_c=float(rc), r_b=float(rb), u_hole=float(u_hole), v_wall=float(v2), W_u=W_u, W_v=W_v, n0=float(n0),
                 neg_energy_u=float(-np.trapezoid(np.minimum(info["T2uu"], 0), u)), true_vacuum_untrapped_large_r=int(np.sum(tv & (Cc >= 0) & (R > 5 * rN))),
                 true_vacuum_trapped=int(np.sum(tv & (Cc == -1))),
@@ -349,7 +349,7 @@ def route_condensate(lam_f=0.0, n0=0.0, E=7.258540773391722, l_H=30.0, r0=15.0, 
     for i in (50, 80):
         js = np.where(np.isfinite(R[i]))[0]
         rows.append(float(R[i, js.max()]))
-    return dict(res=res, cls=cl["cls"], grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN),
+    return dict(res=res, pot=pot, cls=cl["cls"], grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN),
                 v_wall=float(v_wall), normal_on_data=bool(np.all(info["ru_b"] < 0) and np.all(info["rv_a"] > 0)),
                 r_at_end_of_rows_u2_u3p2=rows, lam_f=lam_f, n0=n0)
 

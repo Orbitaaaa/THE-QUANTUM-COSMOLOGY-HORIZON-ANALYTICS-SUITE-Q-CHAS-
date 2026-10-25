@@ -56,3 +56,24 @@ def daughter_horizons(o: dict, factor: float = 5.0, n_points: int = 12) -> dict:
                         S_at_corner_of_piece=float(np.pi * R[0, j] ** 2)))
     return dict(points=len(out), max_deficit=float(max(max(x["deficit_ingoing_piece"], x["deficit_outgoing_piece"]) for x in out)),
                 S_N=float(np.pi * rN**2), rows=out)
+
+
+def ending_observer_deficits(o: dict, region: np.ndarray, n_points: int = 12) -> dict:
+    """Generalised-entropy decrease (S_out = 0) on the past boundaries of observers whose histories end at the last computed point of a
+    row (next to a singularity or crunch): for endpoints p = (u*, v*) in `region` at the end of their rows, the pieces {v = v*, u <= u*}
+    and {u = u*, v <= v*}.  Returns the largest decrease and the area at the start of each piece."""
+    R = o["res"]["r"]
+    h = o["res"]["h"]
+    ends = []
+    for i in range(R.shape[0]):
+        js = np.where(np.isfinite(R[i]))[0]
+        if len(js) and region[i, js.max()]:
+            ends.append((i, js.max()))
+    if not ends:
+        return dict(points=0)
+    pick = [ends[k] for k in np.linspace(0, len(ends) - 1, min(n_points, len(ends))).astype(int)]
+    rows = []
+    for i, j in pick:
+        rows.append(dict(u=float(i * h), v=float(j * h), r_end=float(R[i, j]), deficit_ingoing=_deficit(R[: i + 1, j]),
+                         deficit_outgoing=_deficit(R[i, : j + 1]), S_max_on_boundary=float(np.pi * np.nanmax(np.concatenate([R[: i + 1, j], R[i, : j + 1]])) ** 2)))
+    return dict(points=len(rows), max_deficit=float(max(max(x["deficit_ingoing"], x["deficit_outgoing"]) for x in rows)), rows=rows)
