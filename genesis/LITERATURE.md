@@ -158,6 +158,17 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   violation as the source of GSL violation.
 * arXiv:0908.4123, "Can ghost condensate decrease entropy?" (2009). Argues the proposed violations do not occur.
 
+### Round 6e
+* **Arkani-Hamed, Creminelli, Mukohyama, Zaldarriaga** (2004) JCAP 04, 001, hep-th/0312100. Ghost inflation: a soft shift-breaking tilt
+  V(φ) of the ghost condensate, used here (confined to the false vacuum) to make the NEC-phase charge.
+* **Farhi, Guth** (1987) PLB 183, 149. An inflating region made classically needs an anti-trapped surface, hence a past singularity or NEC
+  violation (Theorem 6e-8 uses the converse: normal data are not obstructed).
+* **Guth** (1981) PRD 23, 347. Supercooling into a false vacuum (the creation mechanism of Proposition-N 6e-10).
+* **Caprini et al.** (2016) JCAP 04, 001, arXiv:1512.06239. Strong first-order transitions and the parameter α (ratio of vacuum to radiation
+  energy).
+* **Jacobson, Parentani** (2003) Found. Phys. 33, 323, gr-qc/0302099. Horizon entropy and causal horizons for arbitrary observers. Relevant
+  to the caveat on crunching observers (P-R6e-b).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

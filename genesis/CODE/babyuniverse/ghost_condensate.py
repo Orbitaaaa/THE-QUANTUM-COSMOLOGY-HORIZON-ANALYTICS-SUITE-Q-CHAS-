@@ -50,8 +50,9 @@ def eps0_for_tipping(M: float, r_N: float, margin: float = 1.0) -> float:
 
 
 def mode_growth(M: float, eps0: float, r_N: float, alpha: float = 1.0, Ppp: float = 1.0, t_end_over_rN: float = 10.0,
-                ks=None, ls=None, jeans: bool = True) -> dict:
-    """Largest amplification max_t |pi|/|pi_0| (energy-normalised) over modes (k, l) for t in [0, t_end]; pi_0 = 1, pi_t0 = 0."""
+                ks=None, ls=None, jeans: bool = True, eps_t=None, r_t=None) -> dict:
+    """Largest amplification max_t |pi|/|pi_0| (energy-normalised) over modes (k, l) for t in [0, t_end]; pi_0 = 1, pi_t0 = 0.
+    eps_t(t): optional NEC-phase history (default eps0 e^{-t/r_N}); r_t(t): optional sphere radius for the l modes (default r_N)."""
     H = 1 / r_N
     A = 2 * Ppp
     C = alpha / (2 * M * M)
@@ -63,8 +64,9 @@ def mode_growth(M: float, eps0: float, r_N: float, alpha: float = 1.0, Ppp: floa
     for l in ls:
         for k in ks:
             def rhs(t, y):
-                kp2 = k * k * np.exp(-2 * t * H) + l * (l + 1) * H * H
-                eps = eps0 * np.exp(-t * H)
+                rr = r_N if r_t is None else r_t(t)
+                kp2 = k * k * np.exp(-2 * t * H) + l * (l + 1) / (rr * rr)
+                eps = eps0 * np.exp(-t * H) if eps_t is None else eps_t(t)
                 w2 = (eps * kp2 + C * kp2 * kp2 - J * kp2) / A
                 return [y[1], -H * y[1] - w2 * y[0]]
             sol = solve_ivp(rhs, (0, t_end_over_rN * r_N), [1.0, 0.0], rtol=1e-6, atol=1e-9, max_step=r_N / 20)

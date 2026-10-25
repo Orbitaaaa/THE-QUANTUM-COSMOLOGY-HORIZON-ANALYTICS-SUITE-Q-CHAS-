@@ -270,3 +270,45 @@ the same physical data) fixes it, but the near-horizon band is then too compress
 *Result:* the complete route closes (hidden daughter), but the push sits where f ≈ 0.75 and its invariant energy is ~1.5 M_N: the Nariai
 discount needs the NEC source in the band.
 **Type:** partial success.
+
+### F37. Condensate data at rest in the static frame (Round 6e)
+*Result:* near both horizons the static observers are boosted without limit, and the condensate's null fluxes blow up (W_v = 10³–10⁶).
+The physical frame is the corner's geodesic frame.
+**Type:** wrong set-up.
+
+### F38. Splitting the tilt into "charge source only" or "vacuum drift only" (Round 6e)
+*Result:* each half violates energy–momentum conservation. The relative constraint residual is 0.04–0.39 and does not converge; the
+conserving pair gives 2e-6 → 2e-7. Only the combination is physical.
+**Type:** inconsistent model.
+
+### F39. Exits that do not work (Round 6e)
+*Result:* three variants fail.
+* A fixed hilltop false vacuum drains the band before it tips.
+* An exactly stationary false vacuum never exits without a seed.
+* The unclipped tilted quartic can roll into a second positive-energy minimum.
+
+The working exit is driven by the condensate clock (Proposition-N 6e-7).
+**Type:** dead end / artefact.
+
+### F40. Coherent classical lift of the ball, without dissipation (Round 6e)
+*Result:* an ingoing massive-field packet crosses the barrier only transiently.
+* Late false-basin points cover ≤ 10% of the interior.
+* With full gravity the packets collapse to black holes (2m/r up to 0.9).
+* Capture into a metastable basin needs a sink for the kinetic energy.
+
+**Type:** dead end.
+
+### F41. Confined-radiation fireball (Round 6e)
+*Result:* a normal closed ball turns around with ρ_rad ≥ ρ_f at a < l_H/√2 (Proposition 6e-9), radius ≤ 0.42 l_H. It cannot be the
+route's empty ball of radius 0.6 l_H.
+**Type:** no-go (homogeneous model).
+
+### F42. Explicit stiff mass term in the diamond scheme (Round 6e)
+*Result:* the explicit potential force is unstable wherever m h e^s/2 > 1 (s ≳ 2 inside the parent hole).
+* A field 10⁻⁶ v off the false vacuum grows into a spurious true-vacuum intrusion. That removed the daughter in every seeded run, and it
+  contaminated the first transient-daughter run (withdrawn).
+* Fixed in `condensate.py` with an implicit (Newton) potential step. Seeded and unseeded daughters are now identical.
+* Results with the field exactly at the minimum (Rounds 6c and 6d, and the unseeded Round 6e runs) are unaffected, because that state is an
+  exact solution.
+
+**Type:** numerical (fixed).

@@ -116,3 +116,19 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-R6m.** The creation ("lift") of the false-vacuum ball by NEC-respecting dynamics.
 * **P-R6n.** GSL accounting for the ghost condensate: S_out of the condensate and its quanta across daughter-observer horizons versus the
   required ~3√δ S_N (Proposition 6d-6); decides between the Mukohyama and Feldstein readings for this route.
+
+## Round 6e additions (ROADMAP_ROUND6E.md)
+
+* **Status of the Round 6d items.**
+  * P-R6k advanced: the condensate is a dynamical, back-reacting source in its IR limit.
+  * P-R6l done: the push is made by the condensate inside the band.
+  * P-R6m largely done: creation by supercooling (Proposition-N 6e-10).
+  * P-R6n replaced: Theorem 6e-6 (eternal daughters always violate the local GSL) and Proposition-N 6e-7 (transient daughter, GSL-consistent
+    for complete observers).
+* **P-R6e-a.** The full ghost-condensate EFT (k² and k⁴ terms, beyond the IR fluid) simulated nonlinearly, together with non-spherical modes.
+* **P-R6e-b.** The GSL for observers who end at the daughter's crunch (Jacobson–Parentani horizons). Also long-lived transient daughters,
+  and a persistent-neck (charged) variant.
+* **P-R6e-c.** One GR simulation of the fireball emptying (free-streaming radiation, moving wall), with reflection and timing, handed off
+  to the route's data.
+* **P-R6e-d.** Microphysics of the false-vacuum tilt and of the thermal sector. That includes the strong quartic coupling of the toy
+  units (λ ≈ 5×10⁷) and the realistic scaling with r_N.
