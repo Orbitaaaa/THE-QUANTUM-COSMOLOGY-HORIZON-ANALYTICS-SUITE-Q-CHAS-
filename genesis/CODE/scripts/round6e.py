@@ -2,6 +2,8 @@
 false-vacuum tilt), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
 false-vacuum ball from the true vacuum by supercooling."""
 import gc
+import json
+import sys
 import warnings
 from concurrent.futures import ProcessPoolExecutor
 
@@ -113,97 +115,101 @@ def transient(seed):
         fin = np.isfinite(R[sl])
         windows[f"{lo}-{hi}"] = dict(daughter_points=int(dau[sl].sum()), r_max=float(np.nanmax(np.where(fin, R[sl], np.nan))),
                                      max_phi_over_v=float(np.nanmax(np.where(fin, P[sl], np.nan)) / 0.0015))
-    first_exit = np.argwhere(np.isfinite(P) & (P > 0) & (T > 150))
+    band = np.zeros_like(P, dtype=bool)
+    band[:, : int(25 / h)] = True                                       # inside the old wall position (v2 = 32.9): band and daughter
+    first_exit = np.argwhere(band & np.isfinite(P) & (P / 0.0015 > -0.5))
     eh = GS.parent_event_horizon(o)
     return dict(seed=seed, grew=bool(o["grew"]), T_exit_pred=RHO_F / (3 * 2e-7), windows=windows, parent_deficit=eh.get("deficit"),
+                hiding=C.hiding_report(o),
                 T_at_first_exit=float(T[tuple(first_exit[np.argmin(T[tuple(first_exit.T)])])]) if len(first_exit) else None)
 
 
-out = {}
-# ------------------------------------------------ problem 1: verification of the dynamical condensate
-ver = dict(schwarzschild=[], tilt=[])
-M_, r0_ = 1.0, 6.0
-f0_ = 1 - 2 * M_ / r0_
-lump = lambda x: 2e-3 * np.exp(-((np.asarray(x, float) - 2.0) / 0.8) ** 2)
-for h in (0.1, 0.05, 0.025):
-    N = int(6 / h)
-    A, B, _ = C.condensate_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, h, N, N, lump, lump, frame="corner")
-    cr = C.constraint_residual(C.evolve(A, B, 0.0, 0.0, TE.Potential(), h))
-    ver["schwarzschild"].append(dict(h=h, Evv=cr["Evv"], Euu=cr["Euu"]))
-z = lambda x: 0 * np.asarray(x, float)
-A, B, _ = C.condensate_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, 0.05, 200, 200, z, z, frame="corner")
-a, b, _ = TE.characteristic_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, 0.05, 200, 200)
-ver["zero_condensate_reproduces_diamond_solver"] = float(np.nanmax(np.abs(C.evolve(A, B, 0.0, 0.0, TE.Potential(), 0.05)["r"]
-                                                                          - TE.evolve(a, b, 0.0, 0.0, TE.Potential(), 0.05)["r"])))
-with ProcessPoolExecutor(4) as ex:
-    ver["tilt"] = list(ex.map(tilt_diag, [("consistent", 4e-7, 4e-7, h, 40.0) for h in (0.08, 0.04, 0.02)] +
-                              [("drift_only", 4e-7, 0.0, 0.08, 40.0), ("drift_only_full", 4e-7, 0.0, 0.08, 200.0),
-                               ("source_only", 0.0, 4e-7, 0.08, 200.0)]))
-out["verification"] = ver
+if "--figure-only" in sys.argv:                  # redraw from DATA/round6e.json without recomputing
+    out = json.load(open(f"{FIG}/../DATA/round6e.json"))
+    p1, p2, p3 = out["problem1"], out["problem2"], out["problem3"]
+else:
+    out = {}
+    # ------------------------------------------------ problem 1: verification of the dynamical condensate
+    ver = dict(schwarzschild=[], tilt=[])
+    M_, r0_ = 1.0, 6.0
+    f0_ = 1 - 2 * M_ / r0_
+    lump = lambda x: 2e-3 * np.exp(-((np.asarray(x, float) - 2.0) / 0.8) ** 2)
+    for h in (0.1, 0.05, 0.025):
+        N = int(6 / h)
+        A, B, _ = C.condensate_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, h, N, N, lump, lump, frame="corner")
+        cr = C.constraint_residual(C.evolve(A, B, 0.0, 0.0, TE.Potential(), h))
+        ver["schwarzschild"].append(dict(h=h, Evv=cr["Evv"], Euu=cr["Euu"]))
+    z = lambda x: 0 * np.asarray(x, float)
+    A, B, _ = C.condensate_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, 0.05, 200, 200, z, z, frame="corner")
+    a, b, _ = TE.characteristic_data(0.0, 0.0, r0_, -np.sqrt(f0_) / 2, np.sqrt(f0_) / 2, 0.05, 200, 200)
+    ver["zero_condensate_reproduces_diamond_solver"] = float(np.nanmax(np.abs(C.evolve(A, B, 0.0, 0.0, TE.Potential(), 0.05)["r"]
+                                                                              - TE.evolve(a, b, 0.0, 0.0, TE.Potential(), 0.05)["r"])))
+    with ProcessPoolExecutor(4) as ex:
+        ver["tilt"] = list(ex.map(tilt_diag, [("consistent", 4e-7, 4e-7, h, 40.0) for h in (0.08, 0.04, 0.02)] +
+                                  [("drift_only", 4e-7, 0.0, 0.08, 40.0), ("drift_only_full", 4e-7, 0.0, 0.08, 200.0),
+                                   ("source_only", 0.0, 4e-7, 0.08, 200.0)]))
+    out["verification"] = ver
 
-# ------------------------------------------------ problem 1: thresholds, location, self-generation, route
-p1 = {}
-jobs = [dict(h=0.08, lo=5e-6, hi=1e-5), dict(h=0.04, lo=5e-6, hi=1e-5),
-        dict(h=0.08, profile="lump", lump_width=4.0, lo=1e-6, hi=1e-3), dict(h=0.08, profile="lump", lump_width=8.0, lo=1e-6, hi=1e-3),
-        dict(h=0.08, profile="lump", lump_width=16.0, lo=1e-6, hi=1e-3), dict(h=0.08, v_end=20.0, lo=1e-6, hi=1e-3),
-        dict(h=0.08, u_end_frac=0.3, lo=1e-6, hi=1e-3), dict(h=0.08, u_end_frac=0.9, lo=1e-6, hi=1e-3)]
-with ProcessPoolExecutor(4) as ex:
-    p1["initial_charge_thresholds"] = list(ex.map(thr_fill, jobs))
-    p1["tilt_thresholds"] = list(ex.map(thr_tilt, [0.08, 0.04]))
-    p1["route_tilt_threshold"] = ex.submit(thr_route, 0).result()
-    hist = list(ex.map(history, ["initial_charge", "self_generated"]))
-    p1["stability"] = list(ex.map(modes, [(t, x, nu, rr, f) for (t, x, nu, rr) in hist for f in (0.5, 1.5, 5.0)]))
-p1["route_runs"] = []
-for lf in (0.0, 3e-7, 1e-6, 3e-6):
-    o = C.route_condensate(lam_f=lf)
-    R, P, Cc = o["res"]["r"], o["res"]["phi"], o["cls"]
-    p1["route_runs"].append(dict(lam_f=lf, grew=bool(o["grew"]), n_big=o["n_big"], normal_on_data=o["normal_on_data"],
-                                 true_vacuum_untrapped_large_r_after_u0p4=int(np.sum(((np.abs(P / 0.0015 - 1) < 0.5) & (Cc >= 0) & (R > 5 * o["r_N"]))[10:])),
-                                 phi_positive_flags=int(np.sum(((P > 0) & (Cc >= 0) & (R > 5 * o["r_N"]))[10:])),
-                                 parent_deficit=GS.parent_event_horizon(dict(res=o["res"], cls=Cc, r_N=o["r_N"])).get("deficit")))
-    del o
-    gc.collect()
-for kk in ("h0.02_n4.7e-6", "h0.02_n5.1e-6"):
-    nval = -float(kk.split("_n")[1])
-    o = C.nariai_condensate(nval, frame="corner", h=0.02)
-    p1[kk] = dict(grew=bool(o["grew"]), n_big=o["n_big"])
-    del o
-    gc.collect()
-p1["CLNS_ceiling_nu"] = 1 / (4 * np.pi)
-out["problem1"] = p1
+    # ------------------------------------------------ problem 1: thresholds, location, self-generation, route
+    p1 = {}
+    jobs = [dict(h=0.08, lo=5e-6, hi=1e-5), dict(h=0.04, lo=5e-6, hi=1e-5),
+            dict(h=0.08, profile="lump", lump_width=4.0, lo=1e-6, hi=1e-3), dict(h=0.08, profile="lump", lump_width=8.0, lo=1e-6, hi=1e-3),
+            dict(h=0.08, profile="lump", lump_width=16.0, lo=1e-6, hi=1e-3), dict(h=0.08, v_end=20.0, lo=1e-6, hi=1e-3),
+            dict(h=0.08, u_end_frac=0.3, lo=1e-6, hi=1e-3), dict(h=0.08, u_end_frac=0.9, lo=1e-6, hi=1e-3)]
+    with ProcessPoolExecutor(4) as ex:
+        p1["initial_charge_thresholds"] = list(ex.map(thr_fill, jobs))
+        p1["tilt_thresholds"] = list(ex.map(thr_tilt, [0.08, 0.04]))
+        p1["route_tilt_threshold"] = ex.submit(thr_route, 0).result()
+        hist = list(ex.map(history, ["initial_charge", "self_generated"]))
+        p1["stability"] = list(ex.map(modes, [(t, x, nu, rr, f) for (t, x, nu, rr) in hist for f in (0.5, 1.5, 5.0)]))
+    p1["route_runs"] = []
+    for lf in (0.0, 3e-7, 1e-6, 3e-6):
+        o = C.route_condensate(lam_f=lf)
+        R, P, Cc = o["res"]["r"], o["res"]["phi"], o["cls"]
+        p1["route_runs"].append(dict(lam_f=lf, grew=bool(o["grew"]), n_big=o["n_big"], normal_on_data=o["normal_on_data"], **C.hiding_report(o)))
+        del o
+        gc.collect()
+    for kk in ("h0.02_n4.7e-6", "h0.02_n5.1e-6"):
+        nval = -float(kk.split("_n")[1])
+        o = C.nariai_condensate(nval, frame="corner", h=0.02)
+        p1[kk] = dict(grew=bool(o["grew"]), n_big=o["n_big"])
+        del o
+        gc.collect()
+    p1["CLNS_ceiling_nu"] = 1 / (4 * np.pi)
+    out["problem1"] = p1
 
-# ------------------------------------------------ problem 2: generalised entropy, eternal versus transient
-with ProcessPoolExecutor(3) as ex:
-    p2 = dict(eternal=list(ex.map(gsl_case, [("fill", -6e-6), ("tilt", 1.3e-7), ("tilt", 4e-7), ("route_tilt", 1e-6), ("route_tilt", 3e-6),
-                                               ("route_push", 10.0)])))
-    p2["transient"] = list(ex.map(transient, [1.5e-9, 0.0]))
-out["problem2"] = p2
+    # ------------------------------------------------ problem 2: generalised entropy, eternal versus transient
+    with ProcessPoolExecutor(3) as ex:
+        p2 = dict(eternal=list(ex.map(gsl_case, [("fill", -6e-6), ("tilt", 1.3e-7), ("tilt", 4e-7), ("route_tilt", 1e-6), ("route_tilt", 3e-6),
+                                                   ("route_push", 10.0)])))
+        p2["transient"] = list(ex.map(transient, [1.5e-9, 0.0]))
+    out["problem2"] = p2
 
-# ------------------------------------------------ problem 3: creating the ball by supercooling
-p3 = dict(static_ball=[], confined=[])
-for al in (2.0, 2.5, 3.0, 4.0):
-    fb = FB.Fireball(eps=4.0, alpha_pt=al)
-    p3["static_ball"].append(dict(alpha_pt=al, **FB.static_hot_ball(fb, T_over_Tc=1.4)))
-fb = FB.Fireball(eps=4.0, alpha_pt=1.0)
-xs = np.linspace(-0.7, 1.3, 4000) * fb.v
-for rT in np.linspace(1.0, 3.0, 401):
-    Fp = fb.cT * (rT * fb.Tc) ** 2 * (xs + fb.v) + fb.dU(xs)
-    if not np.any((Fp[:-1] < 0) & (Fp[1:] >= 0)):
-        p3["spinodal_T1_over_Tc_eps4"] = float(rT)
-        break
-for al, Ti, sb in ((1.0, 1.8, 0.6), (2.0, 1.8, 0.75), (0.5, 1.6, 0.6)):
-    fb = FB.Fireball(eps=4.0, alpha_pt=al)
-    rho_i = fb.thermo(fb.v, 0.0, Ti * fb.Tc)[0]
-    ad = 0.95 * np.sqrt(1 - sb * sb) / sb
-    a_i = np.sqrt((1 + ad**2) / (8 * np.pi / 3 * rho_i))
-    p3["confined"].append(dict(alpha_pt=al, Ti_over_Tc=Ti, **fb.summary(fb.run(Ti * fb.Tc, a_i, t_max=400.0), sin_chi_b=sb)))
-meta = PR.build(7.258540773391722, v_shell=4.5, w_shell=0.25, Lv=1500.0, Lu=2.0)
-a, b, info, pot, mt = meta
-m_ray = PR._ray_mass(a, b, info, 0.04, 1.0, 0.0, 0.0, pot)[0]
-p3["route_data"] = dict(normal_everywhere=mt["normal_everywhere"], r_wall_over_lH=float(np.interp(mt["v_wall"], np.arange(len(a[0])) * 0.04, a[0]) / 30),
-                        ADM_mass=float(np.nanmedian(m_ray[-200:])), M_N=mt["M_N"], delta=mt["delta"])
-out["problem3"] = p3
-dump("round6e.json", out)
+    # ------------------------------------------------ problem 3: creating the ball by supercooling
+    p3 = dict(static_ball=[], confined=[])
+    for al in (2.0, 2.5, 3.0, 4.0):
+        fb = FB.Fireball(eps=4.0, alpha_pt=al)
+        p3["static_ball"].append(dict(alpha_pt=al, **FB.static_hot_ball(fb, T_over_Tc=1.4)))
+    fb = FB.Fireball(eps=4.0, alpha_pt=1.0)
+    xs = np.linspace(-0.7, 1.3, 4000) * fb.v
+    for rT in np.linspace(1.0, 3.0, 401):
+        Fp = fb.cT * (rT * fb.Tc) ** 2 * (xs + fb.v) + fb.dU(xs)
+        if not np.any((Fp[:-1] < 0) & (Fp[1:] >= 0)):
+            p3["spinodal_T1_over_Tc_eps4"] = float(rT)
+            break
+    for al, Ti, sb in ((1.0, 1.8, 0.6), (2.0, 1.8, 0.75), (0.5, 1.6, 0.6)):
+        fb = FB.Fireball(eps=4.0, alpha_pt=al)
+        rho_i = fb.thermo(fb.v, 0.0, Ti * fb.Tc)[0]
+        ad = 0.95 * np.sqrt(1 - sb * sb) / sb
+        a_i = np.sqrt((1 + ad**2) / (8 * np.pi / 3 * rho_i))
+        p3["confined"].append(dict(alpha_pt=al, Ti_over_Tc=Ti, **fb.summary(fb.run(Ti * fb.Tc, a_i, t_max=400.0), sin_chi_b=sb)))
+    meta = PR.build(7.258540773391722, v_shell=4.5, w_shell=0.25, Lv=1500.0, Lu=2.0)
+    a, b, info, pot, mt = meta
+    m_ray = PR._ray_mass(a, b, info, 0.04, 1.0, 0.0, 0.0, pot)[0]
+    p3["route_data"] = dict(normal_everywhere=mt["normal_everywhere"], r_wall_over_lH=float(np.interp(mt["v_wall"], np.arange(len(a[0])) * 0.04, a[0]) / 30),
+                            ADM_mass=float(np.nanmedian(m_ray[-200:])), M_N=mt["M_N"], delta=mt["delta"])
+    out["problem3"] = p3
+    dump("round6e.json", out)
 
 # ------------------------------------------------ figure
 C1, C2, C3, INK, MUTED, GRID = "#2a78d6", "#eb6834", "#1baf7a", "#0b0b0b", "#52514e", "#e4e3df"
@@ -231,7 +237,7 @@ ax[2].barh(range(len(names)), [e["max_daughter_deficit"] or 0 for e in p2["etern
 ax[2].barh(range(len(names)), [e["parent_deficit"] or 0 for e in p2["eternal"]], color=C1, label="parent event horizon")
 ax[2].set_yticks(range(len(names))); ax[2].set_yticklabels(names, fontsize=7)
 ax[2].set_xlabel("largest decrease of A/4G (nats); S_N = 942")
-ax[2].set_title("(c) eternal daughters violate the local GSL (Theorem 6e-3)", fontsize=9)
+ax[2].set_title("(c) eternal daughters violate the local GSL (Theorem 6e-6)", fontsize=9)
 ax[2].legend(frameon=False, fontsize=7)
 fb = FB.Fireball(eps=4.0, alpha_pt=3.0)
 from scipy.integrate import solve_ivp
@@ -243,8 +249,9 @@ ax[3].plot(s.t, s.y[0] / fb.v, color=C3, lw=1.2)
 ax[3].axhline(-1, color=INK, lw=0.8); ax[3].axhline(1, color=INK, lw=0.8, ls=":")
 ax[3].axvline(6, color=MUTED, lw=0.8, ls="--")
 ax[3].set_xscale("symlog", linthresh=1)
+ax[3].set_xlim(0, 6 + 4 * R)
 ax[3].set_xlabel("time (light-crossing of the ball = 18)"); ax[3].set_ylabel("phi / v")
-ax[3].set_title("(d) the ball is created: true -> false vacuum by heating, kept while the radiation leaves", fontsize=8)
+ax[3].set_title("(d) ball created: heating moves phi to the false vacuum;\nit stays there while the radiation leaves", fontsize=8)
 fig.tight_layout()
 fig.savefig(f"{FIG}/round6e.png", dpi=150, facecolor="#fcfcfb")
 print("done")

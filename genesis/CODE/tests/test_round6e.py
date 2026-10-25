@@ -45,6 +45,7 @@ def test_condensate_tips_the_throat_by_itself():
     assert seeded["grew"] and seeded["n_big"] == o["n_big"]                    # the stiff scalar stable where m h e^s / 2 > 1 (F42)
     dh, eh = GS.daughter_horizons(o, n_points=6), GS.parent_event_horizon(o)
     assert eh["deficit"] == 0.0 and dh["max_deficit"] > 0                      # eternal daughter: local GSL deficit only on daughter horizons
+    assert C.hiding_report(o)["hidden"]                                          # no daughter row reaches the outer edge
 
 
 def test_self_generated_nec_phase():

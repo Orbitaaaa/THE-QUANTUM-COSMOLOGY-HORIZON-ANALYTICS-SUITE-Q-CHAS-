@@ -141,7 +141,7 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Simulated as a dynamical, back-reacting source in the IR limit: geodesic flow, shift charge, a clock.
   * Its own stress tensor tips the throat, with no prescribed flux, and the daughter is hidden.
   * The charge that matters is the charge near the corner, which is where the condensate stays.
-  * It is stable on the measured history.
+  * It is stable on the measured history. In the self-generated case the window is tight, about a factor 3 in M³r_N.
   * Shift symmetry forbids making the charge from nothing (Theorem 6e-1). A soft tilt confined to the false vacuum makes it from zero
     charge, and the complete route closes with that self-made charge.
 * **2. Generalised entropy.**

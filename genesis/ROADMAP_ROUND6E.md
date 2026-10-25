@@ -23,7 +23,7 @@ and scale classically with r_N.
 
 | Problem | Answer | What was done |
 |---|---|---|
-| 1. Condensate makes the pulse itself, located, stable | **Yes, with one stated input** | The condensate's own stress tensor tips the throat (no prescribed flux). Its charge sits where it is needed, and it is stable on the measured history. Shift symmetry forbids making the charge from nothing (Theorem 6e-1). A soft false-vacuum tilt makes it dynamically, from zero charge (Proposition-N 6e-3). The complete route closes with this self-generated charge. |
+| 1. Condensate makes the pulse itself, located, stable | **Yes, with one stated input (the self-generated window is tight)** | The condensate's own stress tensor tips the throat (no prescribed flux). Its charge sits where it is needed, and it is stable on the measured history. Shift symmetry forbids making the charge from nothing (Theorem 6e-1). A soft false-vacuum tilt makes it dynamically, from zero charge (Proposition-N 6e-3). The complete route closes with this self-generated charge. |
 | 2. Generalised entropy and physical consistency | **Resolved for transient daughters. Impossible for eternal ones (theorem)** | Every eternal daughter grown from normal data violates the local GSL, whatever supplies the NEC violation (Theorem 6e-6, measured 7–164 nats). The same tilt that makes the charge also ends the daughter's inflation (Proposition-N 6e-7). The daughter then exits to Λ = 0 and recollapses inside the parent hole. The GSL then holds on every causal horizon of a complete observer. |
 | 3. Create the false-vacuum ball | **Explained and computed, one link open** | No classical obstruction applies (Theorem 6e-8). Heating restores the false vacuum from the true vacuum. Free-streaming cooling then leaves an empty, momentarily static ball of radius 0.6 l_H, normal throughout for strong transitions (Proposition-N 6e-10). Confined radiation cannot do it (Proposition 6e-9). Open: one GR simulation of the emptying, handed off to the route. |
 
@@ -96,23 +96,25 @@ The condensate makes its own NEC phase wherever the false vacuum is.
 * **Energy bookkeeping.** By energy conservation the false-vacuum energy rises with the condensate clock, ρ_f → ρ_f + λ_f T. The two
   pieces together have ρ + p = n < 0.
 * **Neither piece alone is physical.**
-  * The relative constraint residual is 2.0e-6 → 5.2e-7 → 2.3e-7 (h = 0.08, 0.04, 0.02) for the consistent pair.
-  * It is 0.25–0.39, and does not converge, with the drift alone.
+  * The relative constraint residual is 2.1e-6 → 5.3e-7 → 2.3e-7 (h = 0.08, 0.04, 0.02) for the consistent pair.
+  * It is 0.04–0.37, and does not converge, with either half alone.
   * The source alone does not tip; the drift alone does.
   * Only the conserved combination is reported as physics. Its strongly negative pressure also helps the tipping.
-* **Threshold.** λ_th r_N³ = 5.5×10⁻⁴ (h = 0.08) and 4.5×10⁻⁴ (h = 0.04). The daughter is hidden and the parent area never decreases.
+* **Threshold.** λ_th r_N³ = 4.7×10⁻⁴ (h = 0.08) and 3.8×10⁻⁴ (h = 0.04). These are final values with the stable (implicit) scalar step;
+  the explicit step gave 5.5 and 4.5 ×10⁻⁴. The daughter is hidden and the parent area never decreases.
 
 ### 1.5 Proposition-N 6e-4 (stability on the measured history)
 * **Method.** The NEC history along the corner worldline is taken from the simulations. Beyond the simulated range (≈1.1τ) it is
   continued by dS₂ dilution (initial charge) or held at its steady state with daughter expansion (self-generated). The full mode
   equation (gradient, k⁴ and Jeans terms) is then integrated over all (k, l) up to 3τ at r_N = 10⁶.
 * **Initial charge.**
-  * The integrated phase is I = ∫|n r_N²|dx = 0.0028.
-  * Growth is 3.7×, 2.4× and 1.05× at 0.5, 1.5 and 5 times the analytic lower edge (M³r_N = I/4 ≈ 7×10⁻⁴).
-  * The window is roughly 7×10⁻⁴ ≤ M³r_N ≤ 1.7×10⁻², about 24 wide.
+  * The integrated phase is I = ∫|n r_N²|dx = 0.0032.
+  * Growth is 3.96×, 2.67× and 1.04× at 0.5, 1.5 and 5 times the analytic lower edge (M³r_N = I/4 ≈ 8×10⁻⁴).
+  * The window is roughly 1×10⁻³ ≤ M³r_N ≤ 1.7×10⁻², about 17 wide.
 * **Self-generated.**
-  * I = 0.015.
-  * Growth is ≤ 2.5× everywhere tested, and 1.3× even beyond the nominal Jeans edge.
+  * I = 0.042: the steady NEC phase lasts, so the integrated phase is larger.
+  * Growth is 3.1× at M³r_N = 5.2×10⁻³ and 1.97× at 1.6×10⁻². It is 11.6× at 5.2×10⁻², beyond the Jeans edge (1.7×10⁻²).
+  * The window is narrow, roughly 6×10⁻³ ≤ M³r_N ≤ 1.7×10⁻², about 3 wide. It exists, but it is tight.
 * **What "nonlinear stability" covers.** The radial (l = 0) sector is fully nonlinear in the simulation. All l ≥ 1 sectors are linear
   on the nonlinear background, with growth < e. Spherical symmetry prevents a nonlinear l ≥ 1 test (P-D2′).
 
@@ -122,10 +124,16 @@ Setup:
 * the in-ball push replaced by the tilted condensate with zero initial charge.
 
 Results:
-* A daughter grows for λ_f ≥ 10⁻⁶ and not for 3×10⁻⁷ (the bisected threshold is in `DATA/round6e.json`).
-* Every true-vacuum point beyond the data ray is trapped, so the daughter is inside the parent black hole.
+* A daughter grows above λ_th = (3.5–3.8)×10⁻⁷ (bisected) and not below.
+* **Hidden, by the event-horizon test.**
+  * The parent's event horizon sits at u_EH = 0 to grid resolution.
+  * None of the daughter's outgoing rows reaches the outer edge: 0 of 79 at λ_f = 10⁻⁶ and 0 of 215 at 3×10⁻⁶.
+* **Transiently untrapped far exterior.** With the tilt, part of the far exterior (v ≈ 250–340, u ≈ 3.5–4.8) stays locally untrapped
+  true vacuum for a while. It lies inside the parent's event horizon, and every one of its rows ends at the singularity. (The cruder
+  "untrapped true vacuum at large r" count used in Round 6d therefore misreports this case; `condensate.hiding_report` gives the
+  event-horizon test.)
 * The parent's event-horizon deficit is 0.
-* λ_th r_N³ ≈ (1.6–5.2)×10⁻³ at the route's δ ≈ 0.009, about 10 times the δ = 10⁻⁴ value. That is consistent with the √δ scaling of the
+* λ_th r_N³ ≈ 1.9×10⁻³ at the route's δ ≈ 0.009, about 5 times the δ = 10⁻⁴ value. That is consistent with the √δ scaling of the
   invariant cost.
 * The push is now made in the band itself. The Round 6d penalty F36 (an in-ball push costing 1.5 M_N) no longer applies.
 
@@ -192,8 +200,10 @@ Simulation (the route's ε = 4, λ_f = 2×10⁻⁷, so T_exit = ρ_f/(3λ_f) = 2
   * At clock time T ≈ 225–250 the field rolls to the true vacuum, against 221 predicted.
   * The region then recollapses inside the parent black hole: r_max 139 → 66 → 42 → 30 → 16 by u = 520.
 * **Control** (no seed, so it cannot exit): it keeps r_max at 76–427 over the same range.
-* The parent's event-horizon area never decreases in either run.
-* Window-by-window daughter areas are in `DATA/round6e.json`.
+* Final driver numbers:
+  * First exit inside the band at clock time T = 232, against 221 predicted.
+  * Largest radius by u-window: seeded 9,905 → 9,686 → 1,294 → 34; control 9,905 → 9,766 → 9,982 → 9,985 (the tracked limit is 10⁴).
+* Both daughters are hidden (no outgoing row reaches the outer edge), and the parent's event-horizon area never decreases in either run.
 
 (An earlier version of this run used ε = 2.5 with the explicit scalar scheme. It was contaminated by the instability recorded as F42, so it
 is withdrawn.)
@@ -264,7 +274,7 @@ leading (high-T) thermal correction then favours ϕ = −v:
 F(ϕ, T) = −(π²/30)g T⁴ + (c_T/2)T²(ϕ + v)² + U(ϕ),
 with dissipation Γ of the field's oscillations into the bath.
 
-**Spinodal.** Above T₁ = 1.375 T_c (computed for ε = 2), the field cannot stay in the true vacuum.
+**Spinodal.** Above T₁ = 1.24 T_c (for the route's ε = 4; 1.375 T_c for ε = 2), the field cannot stay in the true vacuum.
 
 **Stage A — restoration.** A momentarily static hot ball of radius 0.6 l_H at T = 1.4 T_c, with ϕ in the true vacuum:
 * It is normal iff the transition is strong: 2m/r = 0.95 at α_PT = 2.5 and 0.68 at α_PT = 3, but 1.37 at α_PT = 2.
@@ -302,7 +312,7 @@ with dissipation Γ of the field's oscillations into the bath.
 * **F37.** Condensate data at rest in the static frame. Near both horizons the static observers are boosted without limit, so W_v
   blows up (W_v = 10³–10⁶). The physical frame is the corner's geodesic frame.
 * **F38.** Splitting the tilt into "charge source only" or "vacuum drift only". Each violates energy conservation (relative constraint
-  residual 0.25–0.39). Only the combination is physical.
+  residual 0.04–0.37). Only the combination is physical.
 * **F39.** Exits that do not work:
   * A fixed hilltop false vacuum drains the band before it tips.
   * An exactly stationary false vacuum never exits without a seed.

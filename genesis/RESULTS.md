@@ -185,6 +185,22 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R105 | **Proposition 6d-5 (complete route)**: from data with no black hole (false-vacuum ball, light wall, imploding ordinary-radiation shell; normal, bridge-free, NEC except the push), a push gives a hidden daughter inflating to r ≈ 4,500 inside the parent's black hole; push injected inside the ball (no discount in this realisation) | Proposition-N |
 | R106 | **Proposition 6d-6 (generalised entropy of the solution)**: the parent's event-horizon area never decreases; daughter-observer horizons carry a deficit ≤ 3.3√δ S_N (0.6–2.4 nats in the runs), the quantity the ghost-condensate GSL dispute must accommodate | Proposition-N + bound |
 
+## Round 6e (ROADMAP_ROUND6E.md)
+
+| ID | result | status |
+|---|---|---|
+| R107 | **Dynamical ghost condensate**: the IR condensate (geodesic flow, shift charge, clock) as a back-reacting source in the double-null solver. It reproduces the solver bit for bit at zero charge, constraints converge at second order (5.9e-4 → 1.6e-4 → 4.2e-5), and the potential force is implicit (F42) | verified code |
+| R108 | **Theorem 6e-1 (shift charge)**: ∇(nu) = αM²□θ − V′. Without explicit breaking, each element's NEC-phase charge is conserved, and α only renormalises G (G_eff = G/(1 − 12πGαM²)). A charge-free condensate cannot make the pulse; a soft tilt V′ can | Theorem (EFT) |
+| R109 | **Proposition-N 6e-2**: the condensate's own stress tensor tips the near-Nariai band, with no prescribed flux. Threshold \|n\|r_N² = 1.94, 1.65, ≈1.47 ×10⁻³ (h = 0.08, 0.04, 0.02); same weighted-deficit law (W ≈ 0.09–0.12); hidden; charge × width const for compact lumps; ≈50× below the CLNS ceiling | Proposition-N |
+| R110 | **Proposition-N 6e-3 (self-generated)**: a tilt confined to the false vacuum makes the NEC phase from zero charge. λ_th r_N³ = 4.7 and 3.8 ×10⁻⁴ (h = 0.08, 0.04); only the energy-conserving pair (charge plus vacuum drift) satisfies the constraints (2e-6 → 2e-7, against 0.04–0.37 for either half) | Proposition-N |
+| R111 | **Proposition-N 6e-4 (stability on the measured history)**: growth < e over 3τ for all (k, l). Window ≈ 1×10⁻³–1.7×10⁻² in M³r_N for an initial charge; a tight window, ≈ 6×10⁻³–1.7×10⁻², for the self-generated case | Proposition-N |
+| R112 | **Proposition-N 6e-5 (complete route, self-made push)**: from data without a black hole, the tilted condensate (zero initial charge) gives a hidden daughter above λ_th = (3.5–3.8)×10⁻⁷ (λ r_N³ ≈ 1.9×10⁻³). u_EH = 0, no daughter row reaches the outer edge, parent area non-decreasing; the in-ball penalty F36 no longer applies | Proposition-N |
+| R113 | **Theorem 6e-6**: with normal data and classical sources, every eternal daughter violates the local GSL on a complete observer's horizon (its ingoing generator starts on the data with decreasing area). Measured 7–164 nats (S_N = 942), whatever supplies the NEC violation | Theorem (spherical) |
+| R114 | **Proposition-N 6e-7 (transient daughter)**: the tilt also destabilises the false vacuum at T_exit = ρ_f(16/(3ε) − 1)/λ_f. Simulated exit at T = 232 (predicted 221), then recollapse inside the parent (r_max 9,905 → 34); the unseeded control keeps growing. GSL-consistent for complete observers; observers who end at the crunch are open (P-R6e-b) | Proposition-N |
+| R115 | **Theorem 6e-8**: the route's data are normal, sub-horizon (wall at 0.595 l_H), NEC-satisfying and bridge-free, so no Farhi–Guth or Penrose obstruction to making them applies | Theorem |
+| R116 | **Proposition 6e-9**: a recollapsing closed ball of radiation plus vacuum turns around with ρ_rad ≥ ρ_f at a < l_H/√2, so confined radiation cannot empty the ball | Theorem (homogeneous model) |
+| R117 | **Proposition-N 6e-10 (creation by supercooling)**: a momentarily static hot ball of radius 0.6 l_H with ϕ in the true vacuum is normal for α_PT ≥ 2.5. Heating (T > T₁ = 1.24 T_c) restores the false vacuum, and free-streaming cooling keeps it there with zero kinetic energy (adiabaticity 0.004). Released radiation 2.9–5.3, against a shell need of ≈5.7. Open: one GR simulation of the emptying, handed off to the route | Proposition-N (model) |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

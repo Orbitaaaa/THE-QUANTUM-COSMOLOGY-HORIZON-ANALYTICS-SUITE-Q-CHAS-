@@ -352,3 +352,24 @@ def route_condensate(lam_f=0.0, n0=0.0, E=7.258540773391722, l_H=30.0, r0=15.0, 
     return dict(res=res, cls=cl["cls"], grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN),
                 v_wall=float(v_wall), normal_on_data=bool(np.all(info["ru_b"] < 0) and np.all(info["rv_a"] > 0)),
                 r_at_end_of_rows_u2_u3p2=rows, lam_f=lam_f, n0=n0)
+
+
+def hiding_report(o, vphi=0.0015):
+    """Is the daughter behind the parent's event horizon?  u_EH: last outgoing row that reaches the outer edge v = L_v with r increasing in
+    true vacuum (``gsl_solution.parent_event_horizon``); a daughter is hidden iff none of its rows reaches the outer edge.  Also counts
+    true-vacuum points (|phi/v - 1| < 0.5) that are locally untrapped at large r after u_EH, and how their rows end (1 = singularity)."""
+    from . import gsl_solution as GS
+    R, P, Cc, end = o["res"]["r"], o["res"]["phi"], o["cls"], o["res"]["end"]
+    h, rN = o["res"]["h"], o["r_N"]
+    eh = GS.parent_event_horizon(dict(res=o["res"], cls=Cc, r_N=rN))
+    i_eh = int(round((eh.get("u_EH") or 0.0) / h))
+    dau = (Cc == 1) & (P < 0) & np.isfinite(R) & (R > 5 * rN)
+    rows_d = np.unique(np.argwhere(dau)[:, 0])
+    tv = (np.abs(P / vphi - 1) < 0.5) & np.isfinite(R) & (Cc >= 0) & (R > 5 * rN)
+    tv[: i_eh + 1] = False
+    rows_tv = np.unique(np.argwhere(tv)[:, 0])
+    return dict(u_EH=eh.get("u_EH"), parent_deficit=eh.get("deficit"), first_daughter_u=float(rows_d.min() * h) if len(rows_d) else None,
+                daughter_rows=int(len(rows_d)), daughter_rows_reaching_outer_edge=int(sum(np.isfinite(R[i, -1]) for i in rows_d)),
+                hidden=bool(len(rows_d) > 0 and all(not np.isfinite(R[i, -1]) for i in rows_d) and (eh.get("u_EH") is not None)
+                            and rows_d.min() > i_eh),
+                untrapped_true_vacuum_large_r_inside=int(tv.sum()), their_rows_reaching_outer_edge=int(sum(np.isfinite(R[i, -1]) for i in rows_tv)))
