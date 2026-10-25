@@ -315,10 +315,11 @@ def nariai_condensate(n0, l_H=30.0, delta=1e-4, vphi=0.0015, eps=4.0, wall_frac=
 
 
 def route_condensate(lam_f=0.0, n0=0.0, E=7.258540773391722, l_H=30.0, r0=15.0, eps=4.0, vphi=0.0015, h=0.04, Lu=30.0, Lv=600.0,
-                     v_shell=4.5, w_shell=0.25, wall_frac=0.6, delta_target=4e-3, r_inf=1e4):
+                     v_shell=4.5, w_shell=0.25, wall_frac=0.6, delta_target=4e-3, r_inf=1e4, clip=0, dphi0=0.0):
     """The complete route of Round 6d (``preparation.build``: corner inside a false-vacuum de Sitter ball, an imploding shell of ordinary
     radiation of local energy E, a light wall, normal true vacuum; no black hole and no bridge on the data), with the push replaced by the
-    ghost condensate: n0 = initial NEC-phase density in the false vacuum (corner frame), lam_f = tilt that makes the charge dynamically."""
+    ghost condensate: n0 = initial NEC-phase density in the false vacuum (corner frame), lam_f = tilt that makes the charge dynamically.
+    clip = 1 with dphi0 > 0 (the false vacuum displaced by dphi0 inside the wall) lets the tilted false vacuum exit (Round 6f, item 4)."""
     from scipy.optimize import brentq
     Lam = 3 / l_H**2
     rho_f = Lam / (8 * np.pi)
@@ -335,13 +336,13 @@ def route_condensate(lam_f=0.0, n0=0.0, E=7.258540773391722, l_H=30.0, r0=15.0, 
                                       phi_u=lambda u: -vphi + 0 * np.asarray(u, float), N_v=shell)
     j = np.where(a0[0] >= rN + wall_frac * (rc - rN))[0]
     v_wall = j[0] * h
-    phi_v = lambda v: vphi * np.tanh((np.asarray(v, float) - v_wall) / w)
-    phi_u = lambda u: -vphi + 0 * np.asarray(u, float)
+    phi_v = lambda v: vphi * np.tanh((np.asarray(v, float) - v_wall) / w) + dphi0 * 0.5 * (1 - np.tanh((np.asarray(v, float) - v_wall) / w))
+    phi_u = lambda u: -vphi + dphi0 + 0 * np.asarray(u, float)
     n_v = lambda x: n0 * 0.5 * (1 - np.tanh((np.asarray(x, float) - v_wall) / w))
     n_u = lambda x: n0 + 0 * np.asarray(x, float)
     A, B, info = condensate_data(0.0, 0.0, r0, -rv0, rv0, h, Nv, Nu, n_v, n_u, phi_v=phi_v, phi_u=phi_u, pot=pot, frame="corner",
                                  extra_Nv=shell)
-    res = evolve(A, B, 0.0, 0.0, pot, h, r_inf=r_inf, phi_max=10 * vphi, lam_f=lam_f)
+    res = evolve(A, B, 0.0, 0.0, pot, h, r_inf=r_inf, phi_max=10 * vphi, lam_f=lam_f, clip=clip)
     cl = TE.classify(res)
     g = TE.inflated(res, cl, rN)
     R = res["r"]

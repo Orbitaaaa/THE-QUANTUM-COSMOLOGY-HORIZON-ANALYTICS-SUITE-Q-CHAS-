@@ -535,3 +535,72 @@ def overlap_check(resA, resB, i1, j1, fields=("r", "s", "phi", "lnTf")):
         out[f] = float(np.nanmax(d) / (scale if scale > 0 else 1.0))
         out[f + "_points"] = int(np.sum(np.isfinite(d)))
     return out
+
+
+# ------------------------------------------------------------------ item 1: can heating make a persistent, normal false-vacuum ball?
+def restores_homogeneous(E, plasma, pot, t_max=150.0):
+    """Homogeneous test of thermal restoration (flat, no gravity): the field starts at rest in the true vacuum +v and shares the total
+    energy density E with the plasma (T from energy conservation, friction Gamma).  Returns (restored, time): restored iff the field
+    ends in the false vacuum (phi < -0.9 v); time of first arrival there."""
+    from scipy.integrate import solve_ivp
+    from scipy.optimize import brentq
+    v = pot.v
+
+    def Tof(p, pd):
+        return brentq(lambda T: plasma.eos(T, p)[0] - (E - 0.5 * pd * pd - pot.U(p)), 1e-8, 20.0)
+
+    def dU(p):
+        return pot.lam * p * (p * p - v * v) - pot.rho_f * (0.75 - 0.75 * (p / v) ** 2) / v
+    try:
+        s = solve_ivp(lambda t, y: [y[1], -plasma.Gamma * y[1] - dU(y[0]) - plasma.eos(Tof(y[0], y[1]), y[0])[2]], (0, t_max), [v, 0.0],
+                      max_step=0.02, rtol=1e-8)
+    except ValueError:
+        return False, None
+    k = np.where(s.y[0] < -0.9 * v)[0]
+    return bool(s.y[0][-1] < -0.9 * v), (float(s.t[k[0]]) if len(k) else None)
+
+
+def restoration_threshold(plasma, pot, lo=1.0, hi=6.0, n=11):
+    """Smallest total energy density (in units of rho_f) that restores the false vacuum homogeneously (bisection; None if hi fails)."""
+    if not restores_homogeneous(hi * pot.rho_f, plasma, pot)[0]:
+        return None
+    for _ in range(n):
+        mid = 0.5 * (lo + hi)
+        if restores_homogeneous(mid * pot.rho_f, plasma, pot)[0]:
+            hi = mid
+        else:
+            lo = mid
+    return float(hi)
+
+
+def largest_normal_ball(plasma, T_hot, R_grid, h=0.05, w=0.5, G=1.0):
+    """Largest radius R (from R_grid) of a hot ball (temperature T_hot inside, the floor outside, field in the true vacuum, all at rest)
+    whose outgoing cone from a regular centre is normal (r_v > 0 everywhere on the cone).  None if no radius is normal."""
+    best = None
+    for R in R_grid:
+        ball = lambda r, R=R: plasma.T_floor + (T_hot - plasma.T_floor) * 0.5 * (1 - np.tanh((np.asarray(r, float) - R) / w))
+        Z0 = centre_cone_data(h, 3 * R + 20, plasma, phi_r=lambda r: plasma.v + 0 * np.asarray(r, float), T_r=ball, G=G)
+        if np.min(np.gradient(Z0[0], h)) > 0:
+            best = float(R)
+    return best
+
+
+def centre_history(res, times, vphi):
+    """Along the slices t = (u + v)/2 of a centre-stage run: the largest areal radius still in the false vacuum (phi < -v/2) and whether
+    any trapped point (r_u < 0, r_v < 0) exists on the slice."""
+    h, R, P = res["h"], res["r"], res["phi"]
+    ru = np.gradient(R, h, axis=0)
+    rv = np.gradient(R, h, axis=1)
+    out = []
+    for t in times:
+        k = int(round(2 * t / h))
+        ii = np.arange(R.shape[0])
+        jj = k - ii
+        m = (jj >= ii) & (jj < R.shape[1])
+        ii, jj = ii[m], jj[m]
+        r_, p_ = R[ii, jj], P[ii, jj] / vphi
+        ok = np.isfinite(r_)
+        fv = ok & (p_ < -0.5)
+        out.append(dict(t=float(t), r_false_vacuum=float(r_[fv].max()) if fv.any() else 0.0,
+                        trapped=bool(np.any((ru[ii, jj] < 0) & (rv[ii, jj] < 0) & ok)), computed=bool(ok.any())))
+    return out
