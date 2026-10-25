@@ -169,6 +169,36 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Jacobson, Parentani** (2003) Found. Phys. 33, 323, gr-qc/0302099. Horizon entropy and causal horizons for arbitrary observers. Relevant
   to the caveat on crunching observers (P-R6e-b).
 
+### Round 6f
+* **Arkani-Hamed, Cheng, Luty, Mukohyama, Wiseman** (2007) JHEP 0701, 036, hep-ph/0507120, "Dynamics of gravity in a Higgs phase": the
+  nonlinear dynamics of the ghost condensate dominates for all gravitational sources of interest; cited by later work (Mukohyama 2006,
+  hep-th/0607181) for the bound M ≲ 100 GeV, against ≈ 10 MeV from the linear Jeans instability. (Checked through abstracts and citing
+  papers; arXiv itself was not reachable.)
+* **Arkani-Hamed, Cheng, Luty, Mukohyama** (2004) JHEP 0405, 074, hep-th/0312099: Jeans-like instability rate ~ M³/M_Pl², length
+  ~ M_Pl/M²; X = 0 is a ghost, so the condensed phase is the vacuum.
+* **Dubovsky, Grégoire, Nicolis, Rattazzi** (2006) JHEP 0603, 025, hep-th/0512260: NEC violation generically brings instabilities;
+  stable counter-examples need anisotropic backgrounds and superluminal modes.
+* **Creminelli, Luty, Nicolis, Senatore** (2006) JHEP 0612, 080, hep-th/0606090: the ghost condensate with a soft shift-breaking potential
+  violates the NEC stably.
+* **Dubovsky, Sibiryakov** (2006) PLB 638, 509, hep-th/0603158: species-dependent speeds from the ghost condensate allow a perpetuum mobile
+  of the second kind; **Eling, Foster, Jacobson, Wall** (2007) hep-th/0702124: any theory with several limiting speeds conflicts with the
+  GSL; **Mukohyama** (2009) arXiv:0901.3595 (PRD 80, 044020) and arXiv:0908.4123: for the ghost condensate the energy transfer is slower
+  than the Jeans time and accretion restores the GSL.
+* **DESI collaboration, DR2** (2025): BAO with CMB and supernovae exclude ΛCDM at 2.8–4.2σ depending on the supernova sample, with a
+  preference for a phantom crossing (w < −1 in the past). Checked through citing papers (e.g. arXiv:2504.15336); not established.
+* **Kajantie, Laine, Rummukainen, Shaposhnikov** (1996) PRL 77, 2887, hep-ph/9605288; with Tsypin (1998) hep-lat/9809004: no electroweak
+  phase transition in the Standard Model (crossover for m_H ≳ 72 GeV).
+* **BICEP/Keck** (2021) PRL 127, 151301, arXiv:2110.00483: r < 0.036 (95%), hence V^{1/4} ≲ 1.5×10¹⁶ GeV for the inflaton (standard
+  conversion, computed here).
+* **Planck 2018** I and VI, arXiv:1807.06205, 1807.06209: N_eff consistent with 3.046; ΔN_eff < 0.3 (95%).
+* **Carr, Kohri, Sendouda, Yokoyama** (2021) Rep. Prog. Phys. 84, 116902, arXiv:2002.12778: constraints on primordial black holes from
+  10⁻⁵ to 10⁵⁰ g (used qualitatively for ~10⁹ M_☉).
+* **Yoon et al.** (2021) Optica 8, 630: peak laser intensity (1.1 ± 0.2)×10²³ W/cm² (CoReLS, 4 PW).
+* **LLNL, National Ignition Facility** (2025): 8.6 ± 0.45 MJ yield from 2.08 MJ on target (7 April 2025).
+* **ALICE** (HEPData record ins1427723): Bjorken energy density 12.3 ± 1.0 GeV/fm³ in 0–5% Pb–Pb at 2.76 TeV (τ = 1 fm/c).
+* **Ignatius, Kajantie, Kurki-Suonio, Laine** (1994) PRD 49, 3854: the friction coupling between a scalar order parameter and the plasma
+  used in `formation.py`.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

@@ -1,0 +1,22 @@
+initial_charge x_max 4.54 int|nu| dx 0.0028256001072355613 nu range -0.0017999999994503656 -8.825152006632129e-05
+self_generated x_max 5.29 int|nu| dx 0.008619682796569439 nu range -0.007632859138596175 0.0
+initial_charge  r_N=1e+06 alpha=  0.1: G<1 for M^3 r_N in [1.21e-03, 1.00e-01] width 82.5
+initial_charge  r_N=1e+06 alpha=  1.0: G<1 for M^3 r_N in [3.83e-04, 3.16e-02] width 82.5
+initial_charge  r_N=1e+06 alpha= 10.0: G<1 for M^3 r_N in [1.21e-04, 1.00e-02] width 82.5
+initial_charge  r_N=1e+20 alpha=  0.1: G<1 for M^3 r_N in [1.21e-03, 1.00e-01] width 82.5
+initial_charge  r_N=1e+20 alpha=  1.0: G<1 for M^3 r_N in [3.83e-04, 3.16e-02] width 82.5
+initial_charge  r_N=1e+20 alpha= 10.0: G<1 for M^3 r_N in [1.21e-04, 1.00e-02] width 82.5
+initial_charge  r_N=1e+40 alpha=  0.1: G<1 for M^3 r_N in [1.21e-03, 1.00e-01] width 82.5
+initial_charge  r_N=1e+40 alpha=  1.0: G<1 for M^3 r_N in [3.83e-04, 3.16e-02] width 82.5
+initial_charge  r_N=1e+40 alpha= 10.0: G<1 for M^3 r_N in [1.21e-04, 1.00e-02] width 82.5
+self_generated  r_N=1e+06 alpha=  0.1: G<1 for M^3 r_N in [8.25e-03, 1.00e-01] width 12.1
+self_generated  r_N=1e+06 alpha=  1.0: G<1 for M^3 r_N in [2.61e-03, 3.16e-02] width 12.1
+self_generated  r_N=1e+06 alpha= 10.0: G<1 for M^3 r_N in [8.25e-04, 1.00e-02] width 12.1
+self_generated  r_N=1e+20 alpha=  0.1: G<1 for M^3 r_N in [8.25e-03, 1.00e-01] width 12.1
+self_generated  r_N=1e+20 alpha=  1.0: G<1 for M^3 r_N in [2.61e-03, 3.16e-02] width 12.1
+self_generated  r_N=1e+20 alpha= 10.0: G<1 for M^3 r_N in [8.25e-04, 1.00e-02] width 12.1
+self_generated  r_N=1e+40 alpha=  0.1: G<1 for M^3 r_N in [8.25e-03, 1.00e-01] width 12.1
+self_generated  r_N=1e+40 alpha=  1.0: G<1 for M^3 r_N in [2.61e-03, 3.16e-02] width 12.1
+self_generated  r_N=1e+40 alpha= 10.0: G<1 for M^3 r_N in [8.25e-04, 1.00e-02] width 12.1
+
+[exited with code 0]

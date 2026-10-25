@@ -316,3 +316,52 @@ route's empty ball of radius 0.6 l_H.
     none at h = 0.08 and 0.04. The raw ϕ > 0 count is kept in the data as `phi_positive_flags`.
 
 **Type:** numerical (fixed).
+
+### F43. Thermal creation of the false-vacuum ball (Round 6f; withdraws Proposition-N 6e-10)
+*Result:* heating restores the false vacuum only above E_min = 1.74–4.7 ρ_f (stall equilibrium; R118). The largest cone-normal hot ball
+is about the size the route needs (17.5–18.25 against 17.85). In continuous GR evolutions (plasma, field and gravity, from a regular
+centre) the false-vacuum region shrinks or is trapped before the radiation can leave (R119).
+* Proposition-N 6e-10 used the high-temperature free energy at m/T ≈ 15, where it is invalid. Its "free-streaming emptying" was not a GR
+  evolution.
+
+**Type:** no-go (model, O(1) margin, robust over ε = 1–5.2, Γ/m = 0.03–3, f_H = 0.95–0.999, x_c = 5–30).
+
+### F44. Numerical problems in the formation solver (Round 6f)
+* **Box-scheme checkerboard.** The temperature alternated with the floor, η reached ±12 and ϕ ran to −6v. Fixed with Preissmann
+  weighting θ = 0.6 and T_floor = 0.02 T_c. The plasma sector then converges at first order.
+* **An invalid homogeneous test** (constant data on null rays). Replaced by ODE data on the rays.
+* **The PDE–ODE mismatch** came from clip = 1 against the unclipped ODE. With clip = 0 they agree at second order.
+* **Centre-stage axis blow-up** (s → −15 by row 117). The axis clock was NaN during the correction step, which silently skipped it. Fixed
+  by setting the clock first.
+* **Residual near-axis temperature error** (2.4% within 1–2 cells). Accepted.
+
+**Type:** numerical (fixed).
+
+### F45. Corner-gauge grid inside an inflating daughter (Round 6f)
+*Result:* after the daughter's false vacuum passes the spinodal, h²e^{2s}|U″|/16 reaches ~4×10³. The implicit step cannot follow the
+tachyonic roll, so rows break off at T ≈ 250–270, before the exit.
+* A homogeneous-FRW hand-off failed: surfaces of constant condensate clock are not homogeneous slices (charge spread ~100%).
+* Exit and recollapse remain established only in the band geometry (R114).
+
+**Type:** numerical limitation (open, P-R6f-b).
+
+### F46. Misleading l-mode diagnostics (Round 6f)
+*Result:* two mistakes, both corrected (R123).
+* Maximising the amplification over the whole domain measures the crushing near r → 0 at the singularities (up to 10⁷, equally in the
+  controls).
+* Using the Misner–Sharp mass in the Regge–Wheeler term adds a spurious tachyonic −Λ in vacuum-energy regions.
+
+**Type:** artefact (fixed).
+
+### F47. Stability maps from white-noise rms amplification (Round 6f)
+*Result:* stable fast modes grow algebraically (~ω₀^{1/4}) in dS₂, which contaminates the rms measure, and the per-mode integration was
+far too slow at large μ. Replaced by the WKB growth exponent with k and l modes, cross-checked against the full ODE (R124).
+
+**Type:** method (replaced).
+
+### F48. The route with ε = 4 and a seeded exit (Round 6f)
+*Result:* at λ_f = 10⁻⁶ the false vacuum reaches its spinodal (T = 44) before the throat forms (T ≈ 125). It exits near the centre and no
+daughter forms. The exit must follow throat formation (R127). Unseeded runs "work" only because ϕ = −v exactly is an unstable
+equilibrium.
+
+**Type:** physics constraint.

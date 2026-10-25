@@ -94,7 +94,11 @@ def verification_item1():
         Z0 = F.centre_cone_data(h, 80.0, plc, phi_r=lambda r: VPHI + 0 * np.asarray(r, float), T_r=ball)
         resA = F.evolve_centre(Z0, h, pot, plc, n_rays=int(30 / h), lam_f=1e-6)
         i1, j1 = int(2.0 / h), int(32.0 / h)
-        A, B = F.handoff(resA, i1, j1, Lu=26.0, Lv=40.0)
+        try:
+            A, B = F.handoff(resA, i1, j1, Lu=26.0, Lv=40.0)
+        except ValueError as exc:                       # the centre stage stopped before the hand-off rays were complete
+            ov.append(dict(h=h, error=str(exc), rows_computed=int(np.sum(np.isfinite(resA["r"]).any(axis=1)))))
+            continue
         resB = F.evolve_corner(A, B, h, pot, plc, lam_f=1e-6)
         ov.append(dict(h=h, **F.overlap_check(resA, resB, i1, j1)))
         del resA, resB
@@ -224,50 +228,76 @@ def continuous_job(a):
 
 
 # ------------------------------------------------------------------ run
+PARTIAL = f"{DATA}/round6f_partial.json"
+
+
+def _load_partial():
+    try:
+        return json.load(open(PARTIAL))
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_partial(o):
+    json.dump(o, open(PARTIAL, "w"), default=lambda x: x.tolist() if hasattr(x, "tolist") else str(x))
+
+
 if "--figure-only" in sys.argv:
     out = json.load(open(f"{DATA}/round6f.json"))
 else:
-    out = {}
-    i1 = {}
+    out = _load_partial()
+    i1 = out.get("item1", {})
     jobs = [(eps, 0.3, 0.999, 30.0) for eps in (1.0, 2.0, 3.0, 4.0, 5.0)] + [(4.0, Gm, 0.999, 30.0) for Gm in (0.03, 1.0, 3.0)] + \
            [(5.2, 0.03, 0.999, 30.0), (4.0, 0.3, 0.95, 5.0)]
-    with ProcessPoolExecutor(4) as ex:
-        i1["restoration_thresholds"] = list(ex.map(threshold_job, jobs))
-        th = {(r["eps"], r["Gamma_over_m"], r["f_H"], r["x_c"]): r["E_min_over_rho_f"] for r in i1["restoration_thresholds"]}
-        cj = [(4.0, 0.3, 0.999, 30.0, th[(4.0, 0.3, 0.999, 30.0)], f) for f in (1.03, 1.15)] + \
-             [(5.2, 0.03, 0.999, 30.0, th[(5.2, 0.03, 0.999, 30.0)], f) for f in (1.03, 1.1)]
-        i1["centre_runs"] = list(ex.map(centre_job, cj))
-    i1["route_target"] = dict(r_wall_over_lH=0.595, ADM_mass=8.93, M_N=float(RN / 3), note="Round 6e, R117: the ball the route starts from")
-    i1["verification"] = verification_item1()
-    out["item1"] = i1
+    if "centre_runs" not in i1:
+        with ProcessPoolExecutor(4) as ex:
+            i1["restoration_thresholds"] = list(ex.map(threshold_job, jobs))
+            th = {(r["eps"], r["Gamma_over_m"], r["f_H"], r["x_c"]): r["E_min_over_rho_f"] for r in i1["restoration_thresholds"]}
+            cj = [(4.0, 0.3, 0.999, 30.0, th[(4.0, 0.3, 0.999, 30.0)], f) for f in (1.03, 1.15)] + \
+                 [(5.2, 0.03, 0.999, 30.0, th[(5.2, 0.03, 0.999, 30.0)], f) for f in (1.03, 1.1)]
+            i1["centre_runs"] = list(ex.map(centre_job, cj))
+        i1["route_target"] = dict(r_wall_over_lH=0.595, ADM_mass=8.93, M_N=float(RN / 3), note="Round 6e, R117: the ball the route starts from")
+        out["item1"] = i1
+        _save_partial(out)
+    if "verification" not in i1:
+        i1["verification"] = verification_item1()
+        out["item1"] = i1
+        _save_partial(out)
     gc.collect()
 
-    with ProcessPoolExecutor(3) as ex:
-        out["item2"] = dict(ending_observers=list(ex.map(gsl_job, ["plain_black_hole", "near_nariai_collapse", "transient_daughter"])))
+    if "item2" not in out:
+        with ProcessPoolExecutor(3) as ex:
+            out["item2"] = dict(ending_observers=list(ex.map(gsl_job, ["plain_black_hole", "near_nariai_collapse", "transient_daughter"])))
+        _save_partial(out)
     gc.collect()
 
-    i3 = {}
-    with ProcessPoolExecutor(2) as ex:
-        H = {t: (x, nu, rr) for t, x, nu, rr in ex.map(history, ["initial_charge", "self_generated"])}
-    i3["histories"] = {t: dict(x_max=float(x.max()), int_abs_nu=float(np.trapezoid(np.abs(nu), x))) for t, (x, nu, rr) in H.items()}
-    with ProcessPoolExecutor(4) as ex:
-        i3["windows"] = list(ex.map(window_job, [(t, *H[t], rN, al) for t in H for rN in (1e6, 1e20, 1e40) for al in (0.1, 1.0, 10.0)]))
-        i3["eft_nonlinear"] = list(ex.map(eft_job, [(m, mode, s) for m in (3.8e-4, 3.2e-2) for mode in ("dilute", "self")
-                                                     for s in (4e-8, 1e-5, 1e-4, 1e-3)]))
-    i3["grid"] = GRID.tolist()
-    with ProcessPoolExecutor(3) as ex:
-        i3["lmodes"] = list(ex.map(lmode_job, ["band_control_no_tip", "band_self_tipping", "route_control_no_push", "route_self_made_push",
-                                               "transient_daughter"]))
-    out["item3"] = i3
+    if "item3" not in out:
+        i3 = {}
+        with ProcessPoolExecutor(2) as ex:
+            H = {t: (x, nu, rr) for t, x, nu, rr in ex.map(history, ["initial_charge", "self_generated"])}
+        i3["histories"] = {t: dict(x_max=float(x.max()), int_abs_nu=float(np.trapezoid(np.abs(nu), x))) for t, (x, nu, rr) in H.items()}
+        with ProcessPoolExecutor(4) as ex:
+            i3["windows"] = list(ex.map(window_job, [(t, *H[t], rN, al) for t in H for rN in (1e6, 1e20, 1e40) for al in (0.1, 1.0, 10.0)]))
+            i3["eft_nonlinear"] = list(ex.map(eft_job, [(m, mode, s) for m in (3.8e-4, 3.2e-2) for mode in ("dilute", "self")
+                                                         for s in (4e-8, 1e-5, 1e-4, 1e-3)]))
+        i3["grid"] = GRID.tolist()
+        with ProcessPoolExecutor(3) as ex:
+            i3["lmodes"] = list(ex.map(lmode_job, ["band_control_no_tip", "band_self_tipping", "route_control_no_push", "route_self_made_push",
+                                                   "transient_daughter"]))
+        out["item3"] = i3
+        _save_partial(out)
     gc.collect()
 
-    i4 = dict(solver_crosscheck=xcheck_job(1e-6))
-    gc.collect()
-    with ProcessPoolExecutor(2) as ex:
-        i4["continuous"] = list(ex.map(continuous_job, [(4.0, 1e-6, 1.5e-9), (2.0, 1e-6, 1.5e-9), (4.0, 1e-6, 0.0), (2.0, 0.0, 1.5e-9)]))
-    out["item4"] = i4
+    if "item4" not in out:
+        i4 = dict(solver_crosscheck=xcheck_job(1e-6))
+        gc.collect()
+        with ProcessPoolExecutor(2) as ex:
+            i4["continuous"] = list(ex.map(continuous_job, [(4.0, 1e-6, 1.5e-9), (2.0, 1e-6, 1.5e-9), (4.0, 1e-6, 0.0), (2.0, 0.0, 1.5e-9)]))
+        out["item4"] = i4
+        _save_partial(out)
     gc.collect()
 
+    i3, i4 = out["item3"], out["item4"]
     w1 = [w for w in i3["windows"] if w["alpha"] == 1.0 and w["r_N"] == 1e6]
     win = {w["history"]: (w["lo"], w["hi"]) for w in w1}
     rep = {}

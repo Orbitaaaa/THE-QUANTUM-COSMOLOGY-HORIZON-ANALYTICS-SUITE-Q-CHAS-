@@ -132,3 +132,20 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   to the route's data.
 * **P-R6e-d.** Microphysics of the false-vacuum tilt and of the thermal sector. That includes the strong quartic coupling of the toy
   units (λ ≈ 5×10⁷) and the realistic scaling with r_N.
+
+## Round 6f additions (ROADMAP_ROUND6F.md)
+
+* **Status of the Round 6e items.**
+  * P-R6e-a done within the EFT and test-field proxies: nonlinear 1+1 EFT, l-mode proxies, full linear window (R122–R124).
+  * P-R6e-b closed: Theorem 6f-3 (no GSL for observers ending at singularities, in any collapse).
+  * P-R6e-c done, negative: heating cannot make the persistent normal ball (R119); Proposition-N 6e-10 withdrawn.
+  * P-R6e-d partly answered by the problem-4 audit (R128); the microphysics of the tilt remains open.
+* **P-R6f-a.** A creation mechanism for the route's ball. Thermal creation fails by an O(1) margin (R119). Candidates: NEC violation by
+  the condensate during creation, a non-thermal (coherent plus dissipative) lift, a cosmological venue (late-blooming patches of a
+  keV-scale first-order transition, R128).
+* **P-R6f-b.** A daughter-adapted (cosmological-time) solver to follow the graceful exit and the recollapse in the route geometry (F45).
+* **P-R6f-c.** The coupled non-spherical perturbation problem (even and odd parity, with the scalar, condensate and shell), beyond the
+  test-field proxies of R123.
+* **P-R6f-d.** Observational targets for problem 4: gravity in a Higgs phase at M ≲ 100 GeV (modified potential at L ~ M_Pl/M², growth
+  on ~M_Pl²/M³), hidden keV-scale transitions (N_eff, BBN, gravitational waves), the ~10⁹ M_☉ primordial black-hole population.
+
