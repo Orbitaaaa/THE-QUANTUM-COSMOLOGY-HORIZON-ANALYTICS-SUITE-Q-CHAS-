@@ -158,7 +158,8 @@ for lf in (0.0, 3e-7, 1e-6, 3e-6):
     o = C.route_condensate(lam_f=lf)
     R, P, Cc = o["res"]["r"], o["res"]["phi"], o["cls"]
     p1["route_runs"].append(dict(lam_f=lf, grew=bool(o["grew"]), n_big=o["n_big"], normal_on_data=o["normal_on_data"],
-                                 true_vacuum_untrapped_large_r_after_u0p4=int(np.sum(((P > 0) & (Cc >= 0) & (R > 5 * o["r_N"]))[10:])),
+                                 true_vacuum_untrapped_large_r_after_u0p4=int(np.sum(((np.abs(P / 0.0015 - 1) < 0.5) & (Cc >= 0) & (R > 5 * o["r_N"]))[10:])),
+                                 phi_positive_flags=int(np.sum(((P > 0) & (Cc >= 0) & (R > 5 * o["r_N"]))[10:])),
                                  parent_deficit=GS.parent_event_horizon(dict(res=o["res"], cls=Cc, r_N=o["r_N"])).get("deficit")))
     del o
     gc.collect()

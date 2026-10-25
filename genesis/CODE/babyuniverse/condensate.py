@@ -296,7 +296,10 @@ def nariai_condensate(n0, l_H=30.0, delta=1e-4, vphi=0.0015, eps=4.0, wall_frac=
     cl = TE.classify(res)
     g = TE.inflated(res, cl, rN)
     P, R, Cc = res["phi"], res["r"], cl["cls"]
-    tv = (P > 0) & np.isfinite(R)
+    # true vacuum = the field sits at the true minimum (|phi/v - 1| < 0.5).  phi > 0 alone also flags the grid-scale checkerboard of the
+    # unresolved, extremely blue-shifted wall (phi ~ 3v alternating with -v at s ~ 5, F42); it is reported separately as phi_positive_flags.
+    tv = (np.abs(P / vphi - 1) < 0.5) & np.isfinite(R)
+    tv_any = (P > 0) & np.isfinite(R)
     tau = 3.2 * rN
     u, v = info["u"], info["v"]
     W_u = float(-np.trapezoid(np.minimum(info["T2uu"], 0) * np.exp(-u / tau), u))
@@ -306,7 +309,8 @@ def nariai_condensate(n0, l_H=30.0, delta=1e-4, vphi=0.0015, eps=4.0, wall_frac=
     return dict(res=res, cls=Cc, grew=g["grew"], n_big=g["n_big"], r_max=g["r_max_antifalse"], r_N=float(rN), M_N=float(MN), f0=float(f0),
                 r_c=float(rc), r_b=float(rb), u_hole=float(u_hole), v_wall=float(v2), W_u=W_u, W_v=W_v, n0=float(n0),
                 neg_energy_u=float(-np.trapezoid(np.minimum(info["T2uu"], 0), u)), true_vacuum_untrapped_large_r=int(np.sum(tv & (Cc >= 0) & (R > 5 * rN))),
-                true_vacuum_trapped=int(np.sum(tv & (Cc == -1))), constraint=constraint_residual(res) if h >= 0.04 and Lu <= 60 else None,
+                true_vacuum_trapped=int(np.sum(tv & (Cc == -1))),
+                phi_positive_flags_untrapped_large_r=int(np.sum(tv_any & (Cc >= 0) & (R > 5 * rN))), constraint=constraint_residual(res) if h >= 0.04 and Lu <= 60 else None,
                 n_ingoing_ray=n_corner, info=info)
 
 

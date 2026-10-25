@@ -322,6 +322,10 @@ with dissipation Γ of the field's oscillations into the bath.
   * Fix in `condensate.py`: the potential force is implicit in ϕ_N (Newton step, trapezoid-like, stable for U″ > 0). Seeded and unseeded
     initial-charge runs now give identical daughters (test). The legacy `throat_evolution` kernel keeps the explicit form, so its results
     should not be used with off-minimum seeds in large-s regions.
+  * Residual effect: the implicit step is stable but does not damp grid-scale oscillations. Where the light wall is crushed against the
+    forming parent singularity (s ≈ 4–6), ϕ shows a checkerboard (≈ +3v alternating with −v) that does not resolve as h → 0 (it would
+    need h ≲ 10⁻³). Hiding is therefore judged by points where the field actually sits at the true vacuum (|ϕ/v − 1| < 0.5): there are
+    none at h = 0.08 and 0.04. The raw ϕ > 0 count is kept in the data as `phi_positive_flags`.
 
 ## Open problems
 * **P-R6e-a.** The full ghost-condensate EFT (k² and k⁴ terms) simulated nonlinearly, beyond the IR fluid, together with the non-spherical

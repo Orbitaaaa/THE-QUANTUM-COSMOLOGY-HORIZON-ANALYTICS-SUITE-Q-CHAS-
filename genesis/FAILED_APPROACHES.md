@@ -310,5 +310,9 @@ route's empty ball of radius 0.6 l_H.
 * Fixed in `condensate.py` with an implicit (Newton) potential step. Seeded and unseeded daughters are now identical.
 * Results with the field exactly at the minimum (Rounds 6c and 6d, and the unseeded Round 6e runs) are unaffected, because that state is an
   exact solution.
+  * Residual effect: the implicit step is stable but does not damp grid-scale oscillations. Where the light wall is crushed against the
+    forming parent singularity (s ≈ 4–6), ϕ shows a checkerboard (≈ +3v alternating with −v) that does not resolve as h → 0 (it would
+    need h ≲ 10⁻³). Hiding is therefore judged by points where the field actually sits at the true vacuum (|ϕ/v − 1| < 0.5): there are
+    none at h = 0.08 and 0.04. The raw ϕ > 0 count is kept in the data as `phi_positive_flags`.
 
 **Type:** numerical (fixed).

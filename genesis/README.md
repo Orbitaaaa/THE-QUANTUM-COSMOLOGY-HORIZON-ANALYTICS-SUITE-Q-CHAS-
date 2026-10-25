@@ -19,6 +19,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6D.md](ROADMAP_ROUND6D.md)**: Round 6d, one complete route audited: an independent solver, bridge-free data, the route
   from data with no black hole to a hidden daughter, ghost-condensate stability in the Nariai geometry, the solution's generalised entropy, and
   why quantum fields cannot supply the push.
+* **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
+  self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
+  false-vacuum ball by supercooling.
 * **[ROADMAP_ROUND6C.md](ROADMAP_ROUND6C.md)**: Round 6c, making the throat work: a hidden, inflating daughter from a near-Nariai throat, the
   universal tipping law, why quantum fields cannot supply the tip and what classical field can (the ghost condensate), what the initial geometry
   needs, P-S3 solved, 3+1 greybody factors, and the status of every remaining open problem.
@@ -132,6 +135,27 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Requires a sector that violates positivity (the claimed GSL violation is withdrawn in Round 6b, F21).
   * A seed's edge must open a throat (G7), or the result is a visible bubble that consumes the parent.
 
+## Round 6e in brief (the three immediate problems)
+
+* **1. The condensate makes the pulse itself.**
+  * Simulated as a dynamical, back-reacting source in the IR limit: geodesic flow, shift charge, a clock.
+  * Its own stress tensor tips the throat, with no prescribed flux, and the daughter is hidden.
+  * The charge that matters is the charge near the corner, which is where the condensate stays.
+  * It is stable on the measured history.
+  * Shift symmetry forbids making the charge from nothing (Theorem 6e-1). A soft tilt confined to the false vacuum makes it from zero
+    charge, and the complete route closes with that self-made charge.
+* **2. Generalised entropy.**
+  * Every eternal daughter grown from normal data violates the local GSL, whatever supplies the NEC violation (Theorem 6e-6).
+  * The same tilt also ends the daughter's inflation. It exits to Λ = 0 and recollapses inside the parent, and the GSL then holds on every
+    causal horizon of a complete observer.
+* **3. Creating the ball.**
+  * No classical obstruction applies: the data are normal.
+  * Heating restores the false vacuum from the true vacuum, and free-streaming cooling leaves an empty, momentarily static ball of radius
+    0.6 l_H. Every stage stays normal for strong transitions.
+  * Open: one GR simulation of the emptying, handed off to the route.
+* **Fixed along the way (F42):** the explicit stiff-scalar step was unstable where m h e^s/2 > 1. The fix is an implicit potential force.
+  Unseeded earlier results stand.
+
 ## Round 6d in brief (one complete route)
 
 * **Verified independently:** a second solver (different method, own data) reproduces the Nariai daughter and its hiding.
@@ -198,7 +222,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 178 tests
+cd .. && python -m pytest tests -q                # 185 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.
