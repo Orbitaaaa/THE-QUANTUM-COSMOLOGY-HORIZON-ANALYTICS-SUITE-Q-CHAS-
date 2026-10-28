@@ -247,6 +247,22 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   above the parent vacuum.
 * **Brown, Teitelboim** (1987, 1988); **Bousso, Polchinski** (2000) hep-th/0004134: four-form flux and membranes.
 
+### Round 6j
+
+* **Marsden, Aurrekoetxea, Clough, Ferreira** (2025) PRD 111, L041501, arXiv:2403.17595: accretion onto black holes classically restores
+  symmetry in shells and triggers outward-growing vacuum decay (3+1 code grdzhadzha).
+* **Lavrelashvili, Lehners**, arXiv:2603.11003 (March 2026); PRD (10 August 2026) "Birth of inflationary universes via wineglass wormholes
+  and their no-boundary relatives": small-charge wormholes give longer inflation; no-boundary instantons dominate; throat pinches off as the
+  charge → 0. (A Physics Letters B version could not be found.)
+* **Sasieta, Swingle, Vilar López** (2026) PRL 137, 041501, arXiv:2512.00149: baby universes behind a JT black-hole horizon, dual to thermal
+  pure states of two SYK models with a heavy operator.
+* **CMS** arXiv:2107.13021 and **ATLAS** arXiv:2102.10874 (ADD monojet bounds); **CMS** arXiv:2604.10732 (black holes excluded below
+  8.4–11.4 TeV); **Hannestad, Raffelt** hep-ph/0304029 (astrophysical bounds); **Gamsızkan** arXiv:2404.10070 (black holes at 100 TeV).
+* **Huisken, Ilmanen** (2001) J. Diff. Geom. 59, 353; **Bray** (2001): Riemannian Penrose inequality. Reviews: Bray & Chruściel,
+  gr-qc/0312047; Bray & Khuri, arXiv:0905.2622.
+* **Carballo-Rubio, Di Filippo, Liberati, Pacilio, Visser** (2022) JHEP 09, 118, arXiv:2205.13556 (inner-extremal regular black holes);
+  "Mass inflation without Cauchy horizons", PRL (2024).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

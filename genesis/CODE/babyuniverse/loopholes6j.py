@@ -19,7 +19,9 @@ Group C (quantum spacetime):
 * ``wineglass_family``       #11 [Proposition-N 6j-9] Euclidean axion wormholes with a cosmological constant (Giddings-Strominger + Lambda):
                              a'^2 = 1 - (a^2/3)(Lambda + q^2/a^6).  The half-wormhole action S(q) -> -12 pi^2 / Lambda (no-boundary) as the
                              throat pinches off (q -> 0), reproducing the Lavrelashvili-Lehners limit.  The excess is Delta S = S(q) - S(0)
-                             = 3 pi^3 a_0^2 (8 pi G = 1), independent of Lambda to 1e-5: Delta S = (3 pi^2/8)(a_0/l_P)^2 = 1.18 x (4 pi a_0^2)/4G.
+                             = 3 pi^3 a_0^2 (8 pi G = 1), independent of Lambda to 1e-5.  Analytic for a_0 << Lambda^{-1/2}: with
+                             a_0^4 = q^2/3 the integrand is -6a sqrt(1 - a_0^4/a^4), and int_1^inf (1 - sqrt(y^2-1)/y) dy = pi/2 - 1 gives
+                             Delta S = 12 pi^2 (a_0^2/2)(pi/2) = 3 pi^3 a_0^2: Delta S = (3 pi^2/8)(a_0/l_P)^2 = 1.18 x (4 pi a_0^2)/4G.
                              A channel that stays connected through a throat pays action in proportion to the throat's area; the throat-free
                              limit is the disconnected (no-boundary) universe.
 Group D (different gravity):

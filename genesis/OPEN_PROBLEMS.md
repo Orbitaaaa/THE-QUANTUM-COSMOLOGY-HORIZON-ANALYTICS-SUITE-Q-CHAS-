@@ -186,3 +186,16 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   appearance as an apparent horizon).
 * **P-R6i-e.** Q*: what replaces the semiclassical estimate when the bridge is far below the Planck length? Does any TeV-scale, barely
   metastable false vacuum exist (in the Standard Model the Higgs symmetric point is a maximum)?
+
+## Round 6j additions (ROADMAP_ROUND6J.md)
+
+* **P-R6j-a.** The dynamical (non-time-symmetric, non-spherical) version of Propositions 6j-1 and 6j-2: the first apparent horizon of
+  regular data and the energy inside it (the Penrose conjecture in its formation form).
+* **P-R6j-b.** Does the throat-area law ΔS ∝ A/4G hold for other connected channels (Euclidean wormholes with massive fields, the FGG
+  pseudomanifold, shells with an interior hole)? An analytic derivation of the coefficient 3π³.
+* **P-R6j-c.** Barriers with many collective coordinates (two dynamical shells, thick walls): can the barrier next to the inflating branch
+  be lowered below the throat-area and "no free lunch" bounds?
+* **P-R6j-d.** Black-hole interiors in candidate quantum-gravity theories: Frolov–Markov–Mukhanov transition (daughter), static de Sitter
+  core (none), or bounce. This decides door Y1.
+* **P-R6j-e.** Large extra dimensions at 6–20 TeV (n ≥ 4): a 100 TeV collider decides door Y2. What happens inside fundamental-scale black
+  holes (R_S M_D ≈ 1) is quantum gravity.

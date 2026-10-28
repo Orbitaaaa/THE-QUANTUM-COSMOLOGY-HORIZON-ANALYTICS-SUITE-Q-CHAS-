@@ -22,6 +22,11 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6J.md](ROADMAP_ROUND6J.md)**: Round 6j, what the invariant really bounds (a geometric identity, a bound on stored energy;
+  not on supplied energy) and fifteen loopholes in four groups. Classical loopholes cost more than they buy; environments cannot prepare a
+  daughter-ready state; a connected quantum channel pays the throat-area action ΔS = 3π³a₀². Two conditional doors remain, both in quantum
+  gravity: Frolov–Markov–Mukhanov interiors, and strong gravity at 6–20 TeV (testable at a 100 TeV collider). Corrects the Round 6c partner
+  vacuum by a factor 3.
 * **[ROADMAP_ROUND6I.md](ROADMAP_ROUND6I.md)**: Round 6i, the seven routes that avoid manufacturing a false-vacuum ball (curvature activation,
   monopole cores, breathing bubbles, gauged and vacuum-dependent ghost condensation, resonant tunnelling, classical transitions, four-form
   membranes), all computed. None yields an accessible mechanism; the shared obstruction is the bridge invariant (Theorem 6i-11): every hidden
@@ -161,6 +166,19 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **Not by external assembly.** Delivering a near-Nariai region's energy within one light-crossing needs ~c⁵/(3G) ≈ 10⁵² W (static holding
   ~10⁴³ N): a conditional engineering bound. The Round 6h review withdrew the stronger "no machine of any kind" wording.
 
+## Round 6j in brief (geometry, stored and supplied energy; fifteen loopholes)
+
+* The invariant is the identity E√ρ̄ = √(3/32π)c⁶G^{−3/2}k^{3/2} at k = 1: a geometric statement and, with ρ ≥ 0, a bound on stored energy.
+  It does not bound supplied energy, but a small supplied energy needs a natural precursor that is stable, older than the universe and
+  within ~10⁻⁸ of threshold: none exists.
+* The density in the theorem is the areal mean of the zero-flux energy density (Misner–Sharp identity, symbolic). Non-uniformity and
+  negative energy only make it harder.
+* Field-dependent G: the strong-gravity core is itself horizon-class (compactness ≥ (3/4)ln²F). Finite pockets expand by 10⁻¹⁶.
+* Accretion, compact precursors and evaporating holes cannot prepare a daughter-ready state with human-scale input.
+* Euclidean wormholes: connection costs ΔS = 3π³a₀² (8πG = 1); the throat-free limit is the disconnected no-boundary universe.
+* Conditional doors: FMM-type black-hole interiors (every hole a daughter); strong gravity at 6–20 TeV (collider holes are fundamental-scale
+  objects; semiclassical interiors need 10–100 PeV).
+
 ## Round 6i in brief (seven routes; the bridge invariant)
 
 * Route 1, curvature activation (scalar–Gauss–Bonnet): the Gauss–Bonnet null stress is a total derivative, and activation raises F, so it
@@ -280,7 +298,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 213 tests
+cd .. && python -m pytest tests -q                # 224 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

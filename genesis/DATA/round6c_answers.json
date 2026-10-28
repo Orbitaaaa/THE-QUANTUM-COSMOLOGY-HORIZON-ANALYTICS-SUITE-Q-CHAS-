@@ -740,70 +740,70 @@
    "Nflux": 0.04,
    "grew": true,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 6,
    "Nflux": 0.04,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 12,
    "Nflux": 0.04,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 25,
    "Nflux": 0.04,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 40,
    "Nflux": 0.04,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 60,
    "Nflux": 0.04,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 60,
    "Nflux": 0.16,
    "grew": false,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 100,
    "Nflux": 0.04,
    "grew": true,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 150,
    "Nflux": 0.04,
    "grew": true,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "u_inner": 195,
    "Nflux": 0.04,
    "grew": true,
    "hidden": true,
-   "u_hole": 34.641487650331406
+   "u_hole": 34.641487668258215
   },
   {
    "wall_frac": 0.5,
@@ -825,10 +825,10 @@
   }
  ],
  "partner_vacuum": {
-  "M_sun_GeV": 0.4334114209796383,
-  "GUT_mass_kg": 0.003736095919762002,
-  "EW_mass_earths": 6.2560212989986645,
-  "QCD_02_mass_suns": 4.696136495889732
+  "M_sun_GeV": 0.3293214642292945,
+  "GUT_mass_kg": 0.0021570359849928545,
+  "EW_mass_earths": 3.611915581032911,
+  "QCD_02_mass_suns": 2.7113156700531627
  },
  "greybody": {
   "low": [

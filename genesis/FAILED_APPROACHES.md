@@ -429,3 +429,33 @@ disconnected from ours, which Gauss's law forbids as a process in our universe. 
 All are instances of Theorem 6i-11 or of "no free lunch".
 
 **Type:** no-go (propositions).
+
+### F56. The Round 6c partner-vacuum formula (found in Round 6j)
+*Result:* `nariai.partner_vacuum` used ρ_f = 1/(24πM²). The Nariai condition 9M²Λ = 1 gives ρ_f = Λ/8π = 1/(72πM²), the relation
+`accessibility.py` always used (ρ_f = 1/8πr_N², M_N = r_N/3). The partner scale drops by 3^{1/4}: 0.329 GeV (M_☉/M)^{1/2}, a GUT vacuum
+pairs with 2.2 g (not 3.7 g), an electroweak one with 3.6 (not 6) Earth masses. No conclusion depended on the factor.
+
+**Type:** error (corrected).
+
+### F57. A field-dependent gravitational coupling as a shortcut (Round 6j, #3)
+*Result:* the F^{3/4} reduction of the requirement is paid for by the core itself. Its canonical excursion Δχ = √(3/16π)|ln F| M_P has
+gradient energy ≥ 2πLΔχ², so the core is horizon-class for F < 0.32, long before the needed F ≈ 10⁻⁵³. f(R) is the same theory.
+
+**Type:** no-go (proposition).
+
+### F58. Environment-prepared states (Round 6j, #6–#9)
+*Result:*
+* Accretion cannot reach the partner density: Eddington flows are 10¹⁹ short, merger debris 0.25–1.8%.
+* The most compact bag star holds a sub-Hubble vacuum and collapses to a black hole.
+* Evaporating-hole catalysis is Planck-scale only.
+* Critical cosmological patches existed only in the early universe.
+* Small supplied energies need precursors within ~10⁻⁸ of threshold that are stable and older than the universe: none exists.
+
+**Type:** no-go (propositions + numerical).
+
+### F59. A connected quantum channel without a throat (Round 6j, #10–#11)
+*Result:* in Euclidean axion wormholes the cost of staying connected is ΔS = 3π³a₀² (8πG = 1), proportional to the throat area. The
+throat-free limit is the disconnected no-boundary universe. Together with Q* (Round 6i): suppression disappears exactly when the
+connection does.
+
+**Type:** no-go (numerical, exact fit).

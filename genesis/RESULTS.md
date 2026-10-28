@@ -241,6 +241,27 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R150 | **Theorem 6i-11 (bridge invariant)**: every hidden daughter contains a sphere with 2Gm/(c²r) ≥ 1 (the area radius has a minimum between the wall, β_out < 0, and our asymptotic region); from regular data its first appearance is a black-hole formation event with E√ρ̄ = √(3/32π)c⁶/G^{3/2} = 2.3×10⁶⁵ J^{3/2}m^{−3/2} (exact, scale-free, any route, any NEC-violating ingredient), 10^39.5 beyond technology. Side-change lemma: β_out changes sign only at m_s = 0 or f_out ≤ 0 (3351/3351). Escapes: quantum, a pre-existing bridge (natural black holes), charged Cauchy horizons (no help), anti-trapped backgrounds | Theorem (spherical) + Assessment |
 | R151 | **Q* (Conjecture-level door)**: a barely metastable false vacuum with a light wall has R₃ = R_CdL exactly and a semiclassical exponent ~B_CdL; at 500 GeV, B_CdL = 1: 3.5×10⁻¹⁹ m, 2.9 TeV, but a bridge of 4.7×10⁻¹⁶ l_P (bridge/l_P ≈ 9.4 (scale/M_Pl) B^{3/4}): outside R42's controlled regime and semiclassical gravity; needs an unknown TeV false vacuum | Conjecture + Assessment |
 
+
+### Round 6j
+
+| # | result | label |
+|---|---|---|
+| R152 | **Compactness identity**: E√ρ̄ = √(3/32π)c⁶/G^{3/2}k^{3/2}, k = 2GE/c⁴R; Theorem 6i-11 is its value at k = 1 (a marginally trapped sphere): a statement about geometry | Theorem (identity) |
+| R153 | **Misner–Sharp / Kodama identity**: ∂_u m = r²e^{−2s}(G_uv r_u − G_uu r_v) (and u↔v); orthonormal form dm/dr = 4πr²(ρ + F r_t/r_n). The density in Theorem 6i-11 is the areal-volume mean of the zero-flux-frame energy density | Theorem (symbolic) |
+| R154 | **Proposition 6j-1 (which density)**: at the first marginal sphere some region has density ≥ ρ̄ = 3c⁴/8πGR²; non-uniform profiles raise the peak (3.3× Gaussian, 2.9× shell); negative components raise the positive energy needed (∫ρ₊ = Rc⁴/2G + ∫ρ₋) | Proposition |
+| R155 | **Proposition 6j-2 (three bounds)**: geometric (exact), stored (≥ E_MS for ρ ≥ 0, proper ≥ areal volume), supplied (E_stored − E_natural; not bounded by the invariant) | Proposition |
+| R156 | **Proposition 6j-3 (small supplied energy)**: needs a natural precursor within δ = E_sup/Mc² of threshold that is stable (near-Nariai states decide in 3.2 r_N/c), older than 13.8 Gyr (M > 1.7×10¹¹ kg) and not pushed over naturally: δ ≤ 6.4×10⁻⁹ for 10²⁰ J. A machine cannot supply the NEC-violating trigger: Ford–Roman |E₋| ≲ ħc/R is short of 1.85×10⁻³Rc⁴/G by (R/l_P)²/540 | Proposition + Assessment |
+| R157 | **Penrose form (non-spherical)**: Riemannian Penrose inequality (Huisken–Ilmanen; Bray): time-symmetric, ρ ≥ 0 ⇒ k_A ≥ 1, the same invariant with the area radius; dynamical case open | Theorem (cited) |
+| R158 | **Proposition 6j-4 (field-dependent G)**: a core with F = (M_P,eff/M_P)² gains F^{3/4} but needs Δχ = √(3/16π)\|ln F\|M_P, gradient energy ≥ 2πLΔχ² (capacitance), compactness ≥ (3/4)ln²F: horizon-class for F < 0.32 (F ≈ 10⁻⁵³ needed: compactness 1.1×10⁴). f(R) included | Proposition |
+| R159 | **Proposition 6j-5 (finite pocket)**: a classical pocket is sub-Hubble and collapses within ~R/c, expanding by ~R/l_f (3×10⁻¹⁶ for a TeV vacuum at 10⁻¹⁸ m) | Proposition |
+| R160 | **Proposition 6j-6 (accretion)**: a daughter-ready (near-Nariai partner) vacuum needs infalling density c⁶/72πG³M² at the horizon: Eddington flows are 10^18.8–10^19.7 short, merger debris supplies 0.25–1.8%; completion still needs the NEC escape | Proposition |
+| R161 | **Proposition-N 6j-7 (compact precursor)**: the most compact bag star has 2GM/c²R = 0.54, R = 0.28 l_f, vacuum share 14%: sub-Hubble, collapses to a black hole. The QCD bag constant (145 MeV) is the Nariai partner of a 5.2 M_☉ hole | Proposition-N |
+| R162 | **Proposition-N 6j-8 (Oshita–Yokoyama, both steps)**: Σ = Σ̂(l_f/l_P)², Σ̂ = 0.013 (k_w = 0.5) to ~4×10⁻⁴ (light walls); GUT vacuum Σ ≳ 2×10⁷; daughters from evaporating holes only for l_f ≲ 10²–10³ l_P | Proposition-N |
+| R163 | **Proposition 6j-9 (throat-area law; analytic for a₀ ≪ Λ^{−1/2}: ∫₁^∞(1 − √(y²−1)/y)dy = π/2 − 1)**: Euclidean axion wormholes with Λ: S(q) → −12π²/Λ (no-boundary) as the throat pinches off, and ΔS = S(q) − S(0) = 3π³a₀² (8πG = 1) independent of Λ to 10⁻⁵, i.e. ≈ 1.18 × 4πa₀²/4G: a connected channel pays action in proportion to its throat area; throat-free = disconnected | Theorem (small throats) + Proposition-N |
+| R164 | **Proposition 6j-10 (FMM interiors)**: Schwarzschild meets de Sitter (Hubble l) across a spacelike surface at r₀ = (2Ml²)^{1/3} (K_θθ continuous, M > l/2), Kretschmann 12/l⁴; the de Sitter region starts at r₀/l = (2M/l)^{1/3} > 1 and inflates. If quantum gravity does this, every black hole holds a daughter | Proposition (conditional on the FMM hypothesis) |
+| R165 | **Proposition 6j-11 (extra dimensions)**: with n ≥ 4 and M_D ≈ 6–20 TeV (allowed), black holes form at a few M_D: a 100 TeV collider makes them. But R_S M_D ≈ 1.0 at 5 M_D (n = 4–7): fundamental-scale objects; a semiclassical interior (R_S = 3/M_D) needs 960 M_D (n = 4) to 10⁴ M_D (n = 6) | Proposition (conditional) |
+| R166 | **Correction F56**: the Round 6c partner vacuum is ρ_f = 1/(72πM²) (Nariai 9M²Λ = 1), not 1/(24πM²): ρ_f^{1/4} = 0.329 GeV (M_☉/M)^{1/2}; GUT partner 2.2 g, electroweak 3.6 Earth masses | Correction |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
