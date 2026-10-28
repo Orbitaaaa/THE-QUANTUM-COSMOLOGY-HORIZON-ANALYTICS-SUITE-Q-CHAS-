@@ -149,3 +149,15 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-R6f-d.** Observational targets for problem 4: gravity in a Higgs phase at M ≲ 100 GeV (modified potential at L ~ M_Pl/M², growth
   on ~M_Pl²/M³), hidden keV-scale transitions (N_eff, BBN, gravitational waves), the ~10⁹ M_☉ primordial black-hole population.
 
+## Round 6g additions (ROADMAP_ROUND6G.md)
+
+* **Status.**
+  * P-R6f-a (creating the ball) is answered by nature: a supercooled first-order transition leaves false-vacuum patches, and the
+    near-critical ones are the route's ball; supercritical ones become hidden daughters (R131–R133).
+  * There is no human route (Theorem 6g-2).
+* **P-R6g-a.** Follow every supercritical patch until the exterior traps (f = 0.9 runs end first): the daughter-adapted solver of P-R6f-b.
+* **P-R6g-b.** From nucleation statistics to the distribution of patch sizes, hence the abundance of daughters (as primordial black holes)
+  and the gravitational-wave background, for a given transition scale.
+* **P-R6g-c.** The cosmological route with a realistic plasma (heavy species, friction, latent heat in the walls) and statistically
+  nucleated walls, beyond spherical symmetry.
+

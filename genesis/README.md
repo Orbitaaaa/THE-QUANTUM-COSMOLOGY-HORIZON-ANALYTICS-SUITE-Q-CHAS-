@@ -22,6 +22,13 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6G.md](ROADMAP_ROUND6G.md)**: Round 6g, the two remaining "no"s. The false-vacuum region is made by the universe: a
+  supercooled patch in an expanding universe, simulated with gravity, collapses below 0.57–0.59 l_H and above it inflates into a daughter
+  hidden behind a black hole, with the GSL satisfied; the near-critical patches are the route's ball. No machine can make it: Planck-class
+  power (~10⁵² W) or force (~10⁴³ N) is required, whatever the vacuum scale (Theorem 6g-2).
+* **[ROADMAP_ROUND6F.md](ROADMAP_ROUND6F.md)**: Round 6f, formation in one GR evolution (thermal creation fails; 6e-10 withdrawn), observers who
+  end at singularities (no GSL, in any collapse), the condensate beyond its fluid limit with non-spherical modes and the full stability window,
+  the two-solver cross-check, and problems 4 and 5 (the laboratory corner excluded; an invariant 39 orders beyond technology).
 * **[ROADMAP_ROUND6C.md](ROADMAP_ROUND6C.md)**: Round 6c, making the throat work: a hidden, inflating daughter from a near-Nariai throat, the
   universal tipping law, why quantum fields cannot supply the tip and what classical field can (the ghost condensate), what the initial geometry
   needs, P-S3 solved, 3+1 greybody factors, and the status of every remaining open problem.
@@ -135,6 +142,24 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   * Requires a sector that violates positivity (the claimed GSL violation is withdrawn in Round 6b, F21).
   * A seed's edge must open a throat (G7), or the result is a visible bubble that consumes the parent.
 
+## Round 6g in brief (creating the region; a machine)
+
+* **Created by the universe.** A first-order transition with supercooling leaves false-vacuum patches. In the project's own GR solver
+  (cosmological light-cone data, FRW verified), patches below 0.57–0.59 l_H collapse into black holes and larger ones inflate, behind a
+  trapped region, with non-decreasing horizon areas for the parent and the daughter observers. The near-critical patches are the route's ball,
+  and the condensate tilt turns collapsing ones into daughters.
+* **Not by any machine.** Assembling any near-Nariai region needs ≳ c⁵/(3G) ≈ 10⁵² W or ≳ c⁴/(9G) ≈ 10⁴³ N: 10³⁹ times humanity's power,
+  above the conjectured maximum luminosity. Every machine fails, including invented ones. The loopholes need new physics.
+
+## Round 6f in brief (one history, crunching observers, the condensate, problems 4 and 5)
+
+* Thermal creation of the ball fails in one GR evolution (restoration needs ≥ 1.74 ρ_f; the region is trapped before the radiation leaves).
+* No GSL holds for observers who end at a singularity, in any collapse (Theorem 6f-3).
+* Nonlinear condensate EFT = its exact linearisation; non-spherical proxies show no extra growth; the stability window is universal in r_N.
+* Two solvers agree on the route to 10⁻⁵; the seeded exit needs the spinodal after the throat forms.
+* Problem 4: the condensate bound (M ≲ 100 GeV) forces ≳ 10⁹ M_☉ throats. Problem 5: an invariant E√ρ ≈ 8.9×10⁶⁴ J^{3/2} m^{−3/2}, 10³⁹
+  beyond technology.
+
 ## Round 6e in brief (the three immediate problems)
 
 * **1. The condensate makes the pulse itself.**
@@ -151,8 +176,7 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **3. Creating the ball.**
   * No classical obstruction applies: the data are normal.
   * Heating restores the false vacuum from the true vacuum, and free-streaming cooling leaves an empty, momentarily static ball of radius
-    0.6 l_H. Every stage stays normal for strong transitions.
-  * Open: one GR simulation of the emptying, handed off to the route.
+    0.6 l_H. Every stage stays normal for strong transitions. **Withdrawn in Round 6f** (invalid free energy; the GR evolution fails).
 * **Fixed along the way (F42):** the explicit stiff-scalar step was unstable where m h e^s/2 > 1. The fix is an implicit potential force.
   Unseeded earlier results stand.
 
@@ -210,7 +234,7 @@ CODE/babyuniverse/   model, symbolic, branches, geometry, plotting, causal, tunn
                      doublenull, stability, quantum_system, observability, bounds, stokes_exact, daughter, alternatives, sds_atlas,
                      selection, signatures, crosscheck, mechanisms, field_theory, radiation, gsl, throat_evolution,
                      obstructions, quantum_throat, nariai, greybody, throat_mol, preparation,
-                     collapse, ghost_condensate, gsl_solution
+                     collapse, ghost_condensate, gsl_solution, condensate, fireball, formation, condensate_eft, accessibility
 CODE/scripts/        run_all.py reproduces every file in DATA/ and FIGURES/
 CODE/tests/          pytest suite (symbolic identities, junction, atlas, geometry, tunnelling, thick walls, quantum)
 DATA/                JSON results, derivation log

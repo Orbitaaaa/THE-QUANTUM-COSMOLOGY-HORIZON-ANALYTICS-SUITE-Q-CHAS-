@@ -199,6 +199,21 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Ignatius, Kajantie, Kurki-Suonio, Laine** (1994) PRD 49, 3854: the friction coupling between a scalar order parameter and the plasma
   used in `formation.py`.
 
+### Round 6g
+* **Garriga, Vilenkin, Zhang** (2016) JCAP 02, 064, arXiv:1512.01819: vacuum bubbles and domain walls nucleated during inflation; supercritical
+  ones become baby universes behind black holes, connected by wormholes.
+* **Deng, Vilenkin** (2017) JCAP 12, 044, arXiv:1710.02865: primordial black-hole formation by vacuum bubbles, with numerical simulations;
+  small bubbles collapse to black holes, supercritical ones inflate into baby universes.
+* **Kawana, Kim, Lu** (2022) arXiv:2212.14037: PBH formation from overdensities in delayed vacuum transitions (abstract checked via ar5iv).
+* **Liu, Bian, Cai, Guo, Wang** (2022) PRD 105, L021303: PBHs from delayed decay in first-order phase transitions (checked through an
+  institute summary and citing papers).
+* **Gibbons** (2002) Found. Phys. 32, 1891, hep-th/0210109: the maximum tension c⁴/4G in GR; the related maximum luminosity c⁵/4G
+  (Dyson); challenged in modified theories (Dąbrowski, Gohar 2015, arXiv:1504.01547).
+* **LIGO/Virgo, GW150914**: peak gravitational-wave luminosity 3.6 (+0.5/−0.4)×10⁴⁹ W (200 M_☉c²/s).
+* **CMS** (2018) JHEP 11, 042, arXiv:1805.06013: semiclassical black holes excluded up to 10.1 TeV, string balls up to 9.5 TeV.
+* **Plasma wakefield acceleration**: LBNL 7.8 GeV in 20 cm (≈ 400 GV/m average, laser driven); AWAKE 2 GeV in 10 m, Run 2 aiming at
+  0.5–1 GV/m.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

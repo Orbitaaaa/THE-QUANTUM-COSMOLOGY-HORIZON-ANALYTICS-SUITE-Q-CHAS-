@@ -365,3 +365,26 @@ daughter forms. The exit must follow throat formation (R127). Unseeded runs "wor
 equilibrium.
 
 **Type:** physics constraint.
+
+### F49. Conformal FRW gauge for an inflating patch (Round 6g)
+*Result:* with s = ln a(η) of the radiation background on the initial cone, the null coordinates do not follow the patch's own
+exponential expansion. Inside a super-Hubble patch, r tripled within one cell and the explicit predictor diverged (r ~ 10²² at the next
+cell).
+* The affine cone gauge (s = 0 on the cone, comoving fluid at η_f = ln a) and h = 0.05 fix this for the first 10²–10⁴ of growth.
+* The inflating interior still becomes stiff later (as in F45), which ends the computed domain.
+
+**Type:** numerical (gauge; partly fixed).
+
+### F50. A machine humanity could build (Round 6g)
+*Result:* every candidate fails Theorem 6g-2, including invented ones:
+* colliders, lasers, explosions;
+* an ideal focus of one year of world energy in 100 TeV quanta;
+* a parsec-long collider;
+* a Dyson sphere.
+
+The required power (~10⁵² W) or force (~10⁴³ N) is a fixed fraction of c⁵/G and c⁴/G, whatever the vacuum scale. Only physics
+beyond 4D GR would change that (gravity strong at the TeV scale). It is excluded below 10.1 TeV, and would itself be a set of new
+problems.
+
+**Type:** no-go (theorem).
+
