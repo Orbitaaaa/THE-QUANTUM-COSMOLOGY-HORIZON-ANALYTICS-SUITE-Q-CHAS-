@@ -174,3 +174,15 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-R6h-e.** The near-critical scaling of the trigger in the cosmological background, which needs the daughter-adapted solver
   (P-R6f-b) to resolve outcomes close to the threshold.
 
+## Round 6i additions (ROADMAP_ROUND6I.md)
+
+* **P-R6i-a.** Full spherical (inhomogeneous) scalar–Gauss–Bonnet evolution of a near-Nariai throat, with a Ricci coupling to keep the
+  system hyperbolic (Thaalba et al.). Does any arrangement tip toward the daughter outside the kinetic-degeneracy regime?
+* **P-R6i-b.** A field theory of the vacuum-dependent condensate M(χ) (Proposition 6i-9): a ghost-free interpolation through a wall thicker
+  than 1/M_out, and the bounds on its coupling to our vacuum.
+* **P-R6i-c.** The breathing bubble without a composite shell: a thick wall-plus-matter configuration whose net surface energy never
+  vanishes. Do stable hidden-side wells exist at all (the side-change lemma says not for thin shells)?
+* **P-R6i-d.** Theorem 6i-11 without spherical symmetry (a minimal surface between the daughter and our asymptotic region, and its first
+  appearance as an apparent horizon).
+* **P-R6i-e.** Q*: what replaces the semiclassical estimate when the bridge is far below the Planck length? Does any TeV-scale, barely
+  metastable false vacuum exist (in the Standard Model the Higgs symmetric point is a maximum)?

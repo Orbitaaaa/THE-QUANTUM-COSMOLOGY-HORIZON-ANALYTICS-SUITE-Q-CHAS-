@@ -87,6 +87,7 @@ else:
     out["ledger"] = R6.ledger()
     out["bridge_invariant"] = R6.bridge_invariant()
     out["side_change_lemma"] = R6.side_change_lemma()
+    out["subplanck_Qstar"] = [R6.subplanck_route(v, b) for v, b in ((500.0, 1.0), (500.0, 10.0), (1e4, 1.0), (1e10, 1.0), (1e16, 1.0), (1e16, 10.0))]
     mb0 = out["membrane"]["rows"][0]
     out["no_free_lunch"] = dict(monopole_B_own_mass=out["monopole"]["own_mass_channel"][1]["B"], monopole_cdl=SS.monopole_cdl(1.0),
                                 membrane_B_M0=mb0["B"], membrane_cdl=SS.cdl_flat(1e-3, 0.05 * (0.05 + 0.025)))

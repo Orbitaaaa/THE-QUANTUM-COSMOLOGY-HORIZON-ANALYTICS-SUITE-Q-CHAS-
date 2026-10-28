@@ -226,6 +226,27 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   numerical probability was available from the sources reachable here.
 * **Oshita, Yamada, Yamaguchi** (2019) PLB 791, 149, arXiv:1808.01382: horizonless compact objects catalyse (downward) vacuum decay.
 
+### Round 6i
+
+* **Doneva, Yazadjiev** (2018) PRL 120, 131103; **Silva et al.** (2018) PRL 120, 131104: spontaneous scalarisation (coupling f(φ)GB).
+* **Ripley, Pretorius** (2019) PRD 99, 084014, arXiv:1902.01468: elliptic regions in spherical sGB collapse. **Thaalba, Bezares, Franchini,
+  Sotiriou**, arXiv:2306.01695: a Ricci coupling restores well-posedness. **Hegade K.R., Ripley, Yunes**, arXiv:2211.08477: focusing, not
+  NCC violation, drives the breakdown.
+* **Kanti, Kleihaus, Kunz** (2011) arXiv:1108.3003: wormholes in dilatonic EGB without exotic matter. **Cuyubamba, Konoplya, Zhidenko**
+  (2018) PRD 98, 044040, arXiv:1804.11170: they are unstable for all parameters.
+* GW230529 tests of GR, arXiv:2406.03568: √α_GB ≲ 0.28 km; arXiv:2405.13279: 0.26–0.30 km. Nonlinear scalarisation: EPJC (January 2026);
+  Herdeiro et al., arXiv:2603.24164. (The "January 2026 PRL" in the request could not be identified.)
+* **Sakai, Nakao, Ishihara, Kobayashi** (2006) gr-qc/0602084: a monopole in the laboratory (thin shell; stable, collapsing, inflating;
+  domain-wall collision or tunnelling). Topological inflation needs η ≳ O(m_P) (global defects: η > m_P/4).
+* **Guendelman, Sakai** (2008) arXiv:0803.0268: breathing bubbles (wall and dust components of opposite sign); child universe or
+  parent-eating bubble by the sign of the wall term.
+* **Cheng, Luty, Mukohyama, Thaler** (2006) JHEP 05, 076, hep-th/0603010: gauged ghost condensation, M < min(10¹² GeV, g²10¹⁵ GeV).
+* **Saffin, Padilla, Copeland** (2008) JHEP, arXiv:0804.3801: resonant decay of a contracting-bubble state; **Copeland, Padilla, Saffin**:
+  no resonance for the homogeneous false vacuum.
+* **Easther, Giblin, Hui, Lim** (2009) arXiv:0907.3234; **Johnson, Yang** (2010) arXiv:1005.3506: classical transitions; with gravity not
+  above the parent vacuum.
+* **Brown, Teitelboim** (1987, 1988); **Bousso, Polchinski** (2000) hep-th/0004134: four-form flux and membranes.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

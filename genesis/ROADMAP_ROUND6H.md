@@ -45,6 +45,9 @@ Labels as before (Theorem, Proposition, Proposition-N, Literature, Assessment, C
     * (iii) a quantum transition.
 * **Consequence.** A machine built of ordinary (NEC-respecting) matter, acting on a universe with a regular past, cannot create a daughter.
   This holds whatever its power, whatever its duration, and whatever the strategy: rapid, slow, dynamical, staged or triggered.
+* **Wording sharpened in Round 6i (section 8).** "Regular past" is local: the argument closes once the past null generators of the anti-trapped
+  surface reach their focal points, within an affine length ~R, which holds for any laboratory region in our (past-incomplete) universe.
+  Round 6i adds the bridge invariant (Theorem 6i-11), which covers NEC-violating matter as well.
 * **What it does not depend on.** It uses no assembly time, no maximum force and no maximum luminosity. That is why it, and not
   Proposition 6g-2, is the rigorous classical statement. Stage One already stated the obstruction precisely; this is its form for machines.
 * **The project's escapes.**

@@ -106,3 +106,10 @@ def test_membrane_and_bridge_invariant():
     assert 0.9 < mb["rows"][0]["B"] / SS.cdl_flat(1e-3, 0.05 * 0.075) < 1.2       # no free lunch (R10, R37)
     b = R6.bridge_invariant()
     assert 2.2e65 < b["E_sqrt_rho_SI"] < 2.4e65 and b["log10_gap"] > 39
+
+
+def test_subplanck_door_is_outside_controlled_physics():
+    q = R6.subplanck_route(500.0, 1.0)
+    assert abs(q["R3_over_Rcdl"] - 1) < 1e-9 and q["throat_over_lP"] < 1e-15 and not q["controlled"]
+    assert 2e3 < q["M_GeV"] < 4e3 and 3e-19 < q["R_cdl_m"] < 4e-19
+    assert R6.subplanck_route(1e16, 10.0)["throat_over_lP"] < 1

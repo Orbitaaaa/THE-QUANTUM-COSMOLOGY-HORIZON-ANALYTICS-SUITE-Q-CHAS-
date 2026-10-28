@@ -29,6 +29,9 @@ Synthesis:
                             tunnelling (bounded by R10/R37), a pre-existing bridge (natural black holes; Round 6c needs horizon-scale false vacuum
                             inside them), a charged Cauchy horizon, an anti-trapped (cosmological) background.
 * ``side_change_lemma``     Thin-shell form: beta_out changes sign only at m_s = 0 or where f_out <= 0 (3351 of 3351 random sign changes).
+* ``subplanck_route``       New method Q* (Conjecture-level door): a barely metastable false vacuum with a light wall has R_3 = R_CdL and a
+                            semiclassical exponent ~ B_CdL; at 500 GeV and B_CdL = 1 the bubble is 3.5e-19 m and 2.9 TeV, but its bridge is
+                            4.7e-16 l_P: outside the controlled regime of R42 and of semiclassical gravity (bridge/l_P ~ 9.4 (scale/M_Pl) B^{3/4}).
 """
 
 from __future__ import annotations
@@ -186,3 +189,23 @@ def side_change_lemma(n=3000, seed=11) -> dict:
             changes += 1
             explained += int(m[i] * m[i + 1] <= 0 or min(fo[i], fo[i + 1]) <= 0)
     return dict(sign_changes=changes, explained=explained)
+
+
+def subplanck_route(vac_scale_GeV=500.0, B_cdl=1.0) -> dict:
+    """New method Q* (outside controlled physics).  A false vacuum of energy density eps = vac_scale^4 above ours with a wall light enough
+    that its flat thin-wall CdL exponent is B_cdl: sigma = (2 eps^3 B_cdl / 27 pi^2)^{1/4}.  In the light-wall limit the hidden inflating
+    branch at M -> 0 starts at R_3 = 2 kappa / chi^2 = 3 sigma / eps = R_CdL (exact identity), and the semiclassical exponent is
+    ~ B_CdL Phi (R41).  The bound bubble carries M ~ 72 pi sigma^3 / eps^2 (wall + vacuum energy at R_CdL), so its bridge 2GM/c^2 is far below
+    the Planck length: the controlled-regime bound R42 (M >= m_P) does not apply, and neither does semiclassical gravity."""
+    M_PL = 1.220890e19
+    HBARC_M = 1.97327e-16                       # GeV m
+    eps = vac_scale_GeV**4
+    sigma = (2 * eps**3 * B_cdl / (27 * np.pi**2)) ** 0.25
+    R_cdl = 3 * sigma / eps
+    chi = np.sqrt(8 * np.pi * eps / 3) / M_PL
+    kappa = 4 * np.pi * sigma / M_PL**2
+    R3 = 2 * kappa / (chi**2 + kappa**2)
+    M = 72 * np.pi * sigma**3 / eps**2
+    return dict(vac_scale_GeV=vac_scale_GeV, B_cdl=B_cdl, sigma_GeV3=float(sigma), R_cdl_m=float(R_cdl * HBARC_M), R3_m=float(R3 * HBARC_M),
+                R3_over_Rcdl=float(R3 / R_cdl), l_f_m=float(HBARC_M / chi), M_GeV=float(M), throat_over_lP=float(2 * M / M_PL),
+                controlled=bool(M >= M_PL and B_cdl >= 10))

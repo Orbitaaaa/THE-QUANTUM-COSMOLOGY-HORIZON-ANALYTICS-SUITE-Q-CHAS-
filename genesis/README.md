@@ -22,6 +22,12 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6I.md](ROADMAP_ROUND6I.md)**: Round 6i, the seven routes that avoid manufacturing a false-vacuum ball (curvature activation,
+  monopole cores, breathing bubbles, gauged and vacuum-dependent ghost condensation, resonant tunnelling, classical transitions, four-form
+  membranes), all computed. None yields an accessible mechanism; the shared obstruction is the bridge invariant (Theorem 6i-11): every hidden
+  daughter contains a sphere with 2Gm/c²r ≥ 1, so a classical route is a black-hole formation event at E√ρ ≈ 2.3×10⁶⁵, 10^39.5 beyond
+  technology. The vacuum-dependent condensate lowers the background to 9×10⁸ kg; the one door no established result closes lies below the
+  Planck length.
 * **[ROADMAP_ROUND6H.md](ROADMAP_ROUND6H.md)**: Round 6h, four routes toward a controllable mechanism (trigger, black-hole-assisted,
   dynamical assembly, different gravity), after the user's review. The Round 6g impossibility claim is withdrawn; what holds for every
   strategy is Penrose / Farhi–Guth for machines of ordinary matter (Theorem 6h-1). A positive-energy trigger works in a cosmological
@@ -155,6 +161,21 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **Not by external assembly.** Delivering a near-Nariai region's energy within one light-crossing needs ~c⁵/(3G) ≈ 10⁵² W (static holding
   ~10⁴³ N): a conditional engineering bound. The Round 6h review withdrew the stronger "no machine of any kind" wording.
 
+## Round 6i in brief (seven routes; the bridge invariant)
+
+* Route 1, curvature activation (scalar–Gauss–Bonnet): the Gauss–Bonnet null stress is a total derivative, and activation raises F, so it
+  pushes throats toward black holes (Proposition 6i-1). Nonlinear Nariai throats collapse or lose predictivity: 0 daughters in 152 runs.
+  Laboratories are 19 orders short of activation.
+* Route 2, monopole cores: stable below η_c ≈ 0.25–0.40 m_P (reproduced). The cheap channel (B ≈ 650/λ) ends disconnected from our universe;
+  the connected one needs a magnetic black hole (M > Q ≈ 7 m_P) and has B ≥ 3×10³.
+* Route 3, breathing bubbles: the hidden case needs NEC-violating dust, and every well crosses zero net surface energy at light speed.
+* Route 4: the gauged universal condensate has an empty window (screening). A vacuum-dependent scale M(χ) lowers the background to 9×10⁸ kg
+  (conditional).
+* Route 5: resonance never removes the barrier next to the inflating branch. Route 6: collision pockets cannot reach the hidden branch in a
+  normal parent. Route 7: four-form membranes are Farhi–Guth walls, with B ≈ B_CdL.
+* Theorem 6i-11 (bridge invariant): every classical route is a black-hole formation event at E√ρ̄ = √(3/32π)c⁶/G^{3/2} = 2.3×10⁶⁵ J^{3/2}m^{−3/2}.
+  The one door no established result closes (Q*, a barely metastable TeV vacuum) has a bridge 10⁻¹⁶ of a Planck length.
+
 ## Round 6h in brief (routes A–D; what actually blocks a machine)
 
 * Theorem 6h-1 (Penrose / Farhi–Guth): no machine of NEC-respecting matter can create a daughter from a universe with a regular past, by any
@@ -259,7 +280,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 201 tests
+cd .. && python -m pytest tests -q                # 213 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

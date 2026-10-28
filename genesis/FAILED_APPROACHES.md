@@ -398,3 +398,34 @@ The rigorous strategy-independent statement is Theorem 6h-1 (Penrose / Farhi–G
 
 **Type:** overclaim (corrected).
 
+### F52. Curvature activation as the trigger (Round 6i, route 1)
+*Result:* a field the Gauss–Bonnet coupling destabilises in a vacuum-energy throat (GB > 0) rolls so as to raise F = λ²f, and the weighted
+Gauss–Bonnet flux is then pro-collapse (Proposition 6i-1). Scalarised Nariai throats collapse or lose predictivity (degenerate kinetic matrix);
+the reversed sign with a positive-energy minimum gave 0 daughters in 144 runs. Laboratories fall short of activation by 19 orders.
+
+**Type:** no-go (proposition + numerical).
+
+### F53. Unbounded-potential "daughters" in the Gauss–Bonnet scan (Round 6i, discarded in the same round)
+*Result:* runs with V = 1 − μ²φ²/2 reached b = 3 r_N and were first counted as daughters. The potential had already turned negative
+(t ≈ 4–8 r_N) and the solution ran away (φ ~ 10²⁷, constraint lost). With a positive-energy minimum no daughter occurs.
+
+**Type:** numerical artefact (caught).
+
+### F54. Monopole to daughter at the monopole's own mass (Round 6i, route 2)
+*Result:* the thin-shell exponent is only ≈ 650/λ, but M ≪ Q: the exterior has no bridge, and the β_out < 0 branch is a universe
+disconnected from ours, which Gauss's law forbids as a process in our universe. The connected channel needs a magnetic black hole
+(M > Q ≈ 7 m_P) and has B ≥ 3×10³. Negative dust lowers B by at most 20%.
+
+**Type:** no-go (assessment + numerical).
+
+### F55. Breathing bubbles, gauged ghosts, resonance, collisions, membranes (Round 6i, routes 3–7)
+*Result:*
+* Breathing: the hidden case needs NEC-violating dust and changes side only through zero net surface energy at light speed.
+* Gauged universal condensate: the window is empty by ≥ 5 orders (screening).
+* Resonance: never removes the last barrier.
+* Collision pockets: cannot reach the hidden branch in a normal parent.
+* Membranes: Farhi–Guth walls; B ≈ B_CdL.
+
+All are instances of Theorem 6i-11 or of "no free lunch".
+
+**Type:** no-go (propositions).
