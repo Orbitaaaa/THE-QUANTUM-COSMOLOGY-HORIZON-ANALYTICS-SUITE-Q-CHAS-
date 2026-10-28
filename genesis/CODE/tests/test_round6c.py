@@ -70,8 +70,8 @@ def test_tipping_law_and_invariant_cost():
 def test_preparation_and_partner_vacuum():
     assert TE.nariai_false_vacuum(Nflux=0.04, u_inner=150.0)["grew"]                 # hole formed inside the false vacuum: grows
     assert not TE.nariai_false_vacuum(Nflux=0.16, u_inner=40.0)["grew"]              # thin layer around a true-vacuum hole: does not
-    assert abs(NA.partner_vacuum(NA.M_SUN_KG) - 0.433) < 0.002
-    assert abs(NA.partner_mass(1e16) - 3.74e-3) < 0.02e-3
+    assert abs(NA.partner_vacuum(NA.M_SUN_KG) - 0.329) < 0.002          # corrected in Round 6j (was 0.433: factor 3 in rho_f)
+    assert abs(NA.partner_mass(1e16) - 2.157e-3) < 0.02e-3
     gc = NA.ghost_condensate_window(17.3205)
     assert abs(gc["need_over_rho_f"] - 4.6e-3) < 0.1e-3 and gc["ceiling_over_need_lH"] > 100
 

@@ -237,7 +237,7 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   polarisation is stabilising. No NEC-respecting field can do it in any parent. A ghost condensate can, 145–430 times below its stability ceiling
   (Lorentz-violating; its GSL is not universal).
 * **Preparation.** Possible in theory from normal data with a regular past, if the hole forms inside the false vacuum. The vacuum is tied to the
-  hole by $\rho_f^{1/4}=0.433\,{\rm GeV}(M_\odot/M)^{1/2}$. There is no laboratory route.
+  hole by $\rho_f^{1/4}=0.329\,{\rm GeV}(M_\odot/M)^{1/2}$ (corrected in Round 6j). There is no laboratory route.
 * **Also:** P-S3 solved ($c(0^+)=-13/18$); 3+1 greybody factors (P-R7); GSL-3 without spherical symmetry (given the support form of the
   local GSL).
 

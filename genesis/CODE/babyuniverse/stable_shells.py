@@ -57,13 +57,15 @@ class Shell:
     eta: float = 0.0           # exterior Hubble rate
     k_1: float = 0.0           # string-gas term (m_s ~ R)
     k_3: float = 0.0           # radiation-gas term (m_s ~ 1/R)
+    M_in: float = 0.0          # black hole inside the bubble (Oshita-Yokoyama, Round 6j)
 
     def ms(self, R):
         R = np.asarray(R, float)
         return self.k_w * R**2 + self.m_d + self.k_1 * R + self.k_3 / R
 
     def f_in(self, R):
-        return 1 - self.chi**2 * np.asarray(R, float) ** 2
+        R = np.asarray(R, float)
+        return 1 - 2 * self.M_in / R - self.chi**2 * R**2
 
     def f_out(self, R):
         R = np.asarray(R, float)

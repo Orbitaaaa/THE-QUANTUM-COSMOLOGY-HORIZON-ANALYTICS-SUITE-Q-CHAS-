@@ -270,7 +270,7 @@ Coulomb/|ρ+p| = (P″|δ|/9)g²M²R². The violation is screened beyond R ~ 3/(
 * **Monopole plus Reissner–Nordström Cauchy horizon (escape iii above).** Computed: with added mass from 1× to 10× the static value,
   including past the horizon threshold, the forbidden band between the bound region and the inflating branch persists (`added_mass` in the
   data). No classical path.
-* **Natural black holes as the bridge.** A stellar-mass black hole pairs with a QCD-scale false vacuum (ρ^{1/4} = 0.43 GeV (M_☉/M)^{1/2},
+* **Natural black holes as the bridge.** A stellar-mass black hole pairs with a QCD-scale false vacuum (ρ^{1/4} = 0.33 GeV (M_☉/M)^{1/2}, corrected in Round 6j,
   Round 6c). The region to be filled is horizon-scale, so its energy is about the hole's own mass at nuclear density: natural events only.
 * **Q*: barely metastable vacuum with a light wall (outside controlled physics; Conjecture-level door).**
   * *The construction.* For a false vacuum ε above ours, choose the wall so that its flat thin-wall CdL exponent is B_CdL.

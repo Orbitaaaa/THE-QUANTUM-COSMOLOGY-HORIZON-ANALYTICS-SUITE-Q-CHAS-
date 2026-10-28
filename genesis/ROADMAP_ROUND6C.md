@@ -33,7 +33,7 @@ designed and no experimental procedure is proposed.** Labels as before: [Theorem
 | Is the daughter hidden behind a trapped exterior? | **Yes**, in every growing run: no untrapped true-vacuum point at large $r$, and a trapped neck that persists. *(Round 6d, F32: in these runs the exterior was already trapped on the data; the bridge-free light-wall runs of Round 6d confirm hiding with an asymptotically connected exterior.)* | Proposition-N |
 | Can QNEC-constrained quantum fields supply the perturbation? | **No, not inside the effective theory.** A 2D CFT can supply at most $W=c/48\pi\tau$ (Proposition 6c-10, sharp, from the Fewster–Hollands QEI). Tipping therefore needs $c\ge0.89(r_N/\ell_P)^2$, at which point the species length reaches the throat radius. The vacuum polarisation of the same fields is stabilising: it never tips the throat (tested at $c=30$–$1000$) and it raises the threshold. | Theorem (2D) + Proposition-N |
 | Is there a physically consistent classical field that can? | **Yes, conditionally: the ghost condensate.** It needs $\lvert\rho+p\rvert\ge4.6\times10^{-3}\rho_f$ held for $\gtrsim\tau$. CLNS's stability ceiling for a softly broken ghost condensate, $\lvert\dot H\rvert\lesssim H^2$, lies 145–430 times above that. It is Lorentz-violating, and its GSL is not universal, as GSL-3 requires of any eternal daughter. No NEC-respecting field can do it in any parent (Proposition 6c-13). | Proposition (conditional on the EFT) + Theorem |
-| Can the initial geometry be prepared? | **In theory, yes. No laboratory route exists.** The configuration is normal and can have a regular past: a hole formed inside false vacuum, or a vacuum lifted in situ across the horizon. Requirements: the outer wall inside the static band; $\delta\lesssim10^{-4}$; false vacuum continuing inside the horizon; and the hole tied to the vacuum by $\rho_f=1/(24\pi G^2M^2)$, i.e. $\rho_f^{1/4}=0.433\,{\rm GeV}\,(M_\odot/M)^{1/2}$. A GUT vacuum pairs with a 3.7 g black hole. The assembly process itself has not been simulated (P-R6j). | Proposition + Proposition-N |
+| Can the initial geometry be prepared? | **In theory, yes. No laboratory route exists.** The configuration is normal and can have a regular past: a hole formed inside false vacuum, or a vacuum lifted in situ across the horizon. Requirements: the outer wall inside the static band; $\delta\lesssim10^{-4}$; false vacuum continuing inside the horizon; and the hole tied to the vacuum by $\rho_f=1/(72\pi G^3M^2)$, i.e. $\rho_f^{1/4}=0.329\,{\rm GeV}\,(M_\odot/M)^{1/2}$ (corrected in Round 6j from $24\pi$ and 0.433 GeV; F56). A GUT vacuum pairs with a 2.2 g black hole. The assembly process itself has not been simulated (P-R6j). | Proposition + Proposition-N |
 
 Two further results with definite answers: **P-S3 is solved** (Theorem 6c-S3, $c(0^+)=-13/18$ exactly, tail $-(16/\pi)E^{-3/2}$), and **P-R7 is
 done** (3+1 greybody factors; the branch difference is IR-finite in 3+1).
@@ -259,7 +259,7 @@ On (S):
     $(10^{16}\,{\rm GeV})^4\leftrightarrow3.7$ g.
 * **42. Non-spherical and quantum-gravity corrections.**
   * Theorem 6c-R6i removes the symmetry from GSL-3.
-  * Quantum-gravity corrections: one loop $Gc/12\pi r_N^2\approx10^{-11}c$ for the 3.7 g case; fluctuations $\ell_P/r_N\approx2\times10^{-6}$.
+  * Quantum-gravity corrections: one loop $Gc/12\pi r_N^2\approx3\times10^{-11}c$ for the 2.2 g case (Round 6j correction; $10^{-11}c$ for the old 3.7 g); fluctuations $\ell_P/r_N\approx3.4\times10^{-6}$.
   * Non-spherical stability of the tipping: open. The $l\ge1$ modes on the $S^2$ of Nariai are massive, $m^2\sim l(l+1)/r_N^2$ [Assessment].
 * **43. Predictability and EFT validity.**
   * The runs are deterministic evolutions inside the domain of dependence of normal data.
@@ -270,7 +270,7 @@ On (S):
 * **44. Formation rate or deterministic evolution.**
   * **Deterministic evolution is shown** (Proposition 6c-9 with a classical source).
   * A spontaneous quantum tip would need a radion fluctuation of $W_{\rm th}/r_N$ against a width $\ell_P/r_N$. Its probability is
-    $\sim\exp[-\frac12(1.85\times10^{-3}r_N/\ell_P)^2]$, which is $e^{-4\times10^5}$ for the 3.7 g case [Assessment].
+    $\sim\exp[-\frac12(1.85\times10^{-3}r_N/\ell_P)^2]$, which is $e^{-1.5\times10^5}$ for the 2.2 g case (Round 6j correction of the 3.7 g figure $e^{-4\times10^5}$) [Assessment].
 
 ---
 

@@ -22,9 +22,10 @@ The data are normal.  An outgoing negative-energy flux N(u) on the ingoing ray v
                             |rho + p| >= W_th / (pi r_N^2 tau (1 - e^{-T/tau})) = 4.6e-3 rho_f (T >> tau).  Creminelli-Luty-Nicolis-
                             Senatore (hep-th/0606090) show the softly broken ghost condensate violates the NEC stably up to
                             |dH/dt| ~ H^2, i.e. |rho + p| <~ H^2/(4 pi G): with H = 1/l_H (1/r_N) the ceiling is 145 (430) times the need.
-* ``partner_vacuum``        The Nariai condition ties the hole to the false vacuum: rho_f = 1/(24 pi G^2 M^2), i.e.
-                            rho_f^{1/4} = 0.433 GeV (M_sun / M)^{1/2}; a GUT-scale vacuum (10^16 GeV)^4 pairs with a 3.7 g hole, an
-                            electroweak one (100 GeV)^4 with 6 Earth masses.
+* ``partner_vacuum``        The Nariai condition 9 G^2 M^2 Lambda = 1 ties the hole to the false vacuum: rho_f = Lambda/8 pi G = 1/(72 pi G^3 M^2)
+                            (Planck units 1/(72 pi M^2)), i.e. rho_f^{1/4} = 0.329 GeV (M_sun / M)^{1/2}; a GUT-scale vacuum (10^16 GeV)^4
+                            pairs with a 2.2 g hole, an electroweak one (100 GeV)^4 with 3.6 Earth masses.  (Corrected in Round 6j: the
+                            formula had 24 pi, a factor 3 in rho_f; accessibility.py always used the correct 1/(8 pi r_N^2), M_N = r_N/3.)
 * ``preparation``           Proposition 6c-15 (what the initial geometry needs) [Numerical + Theorem pieces]: the outer wall inside the
                             static band, |1 - M/M_N| = delta <~ 1e-4 (W_th grows only like delta^0.15, the band width like sqrt delta), and
                             false vacuum continuing inside the black-hole horizon to u >~ 3 u_hole along the ingoing ray (inner wall at
@@ -87,12 +88,12 @@ def ghost_condensate_window(r_N: float = 1.0, T_over_tau: float = np.inf) -> dic
 
 
 def partner_vacuum(M_kg: float) -> float:
-    """rho_f^{1/4} in GeV for which a hole of mass M is at the Nariai point: rho_f = 1/(24 pi G^2 M^2) (Planck units)."""
+    """rho_f^{1/4} in GeV for which a hole of mass M is at the Nariai point: rho_f = 1/(72 pi M^2) (Planck units)."""
     m = M_kg / M_PLANCK_KG
-    return float((1 / (24 * np.pi * m * m)) ** 0.25 * M_PLANCK_GEV)
+    return float((1 / (72 * np.pi * m * m)) ** 0.25 * M_PLANCK_GEV)
 
 
 def partner_mass(rho_quarter_GeV: float) -> float:
     """Inverse of partner_vacuum: the Nariai hole mass in kg for a false vacuum rho_f = (rho_quarter_GeV)^4."""
     rho = (rho_quarter_GeV / M_PLANCK_GEV) ** 4
-    return float(M_PLANCK_KG / np.sqrt(24 * np.pi * rho))
+    return float(M_PLANCK_KG / np.sqrt(72 * np.pi * rho))
