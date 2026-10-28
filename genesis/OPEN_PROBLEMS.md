@@ -161,3 +161,16 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-R6g-c.** The cosmological route with a realistic plasma (heavy species, friction, latent heat in the walls) and statistically
   nucleated walls, beyond spherical symmetry.
 
+## Round 6h additions (ROADMAP_ROUND6H.md)
+
+* **P-R6h-a.** Near-critical false-vacuum interiors inside primordial black holes. Do any survive long enough for an infalling trigger to
+  act? (Our subcritical runs: the false vacuum shrinks to nothing inside the horizon.)
+* **P-R6h-b.** A condensate whose condensed phase exists only inside the false vacuum (P(X, ϕ)). Needs a ghost-free interpolation through
+  the wall, the condensate's wall dynamics, and the observational bounds on its coupling to our vacuum. It would remove the 10⁹ M_☉ floor.
+* **P-R6h-c.** The Oshita–Yokoyama rate in this project's potential: the Euclidean action, and the black-hole masses at which it is not
+  negligible.
+* **P-R6h-d.** A condensate coupled to controllable matter, which could let a machine source NEC-phase charge. Bounded by the
+  ghost-condensate Lorentz-violation constraints.
+* **P-R6h-e.** The near-critical scaling of the trigger in the cosmological background, which needs the daughter-adapted solver
+  (P-R6f-b) to resolve outcomes close to the threshold.
+

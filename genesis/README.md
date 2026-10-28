@@ -22,10 +22,14 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6H.md](ROADMAP_ROUND6H.md)**: Round 6h, four routes toward a controllable mechanism (trigger, black-hole-assisted,
+  dynamical assembly, different gravity), after the user's review. The Round 6g impossibility claim is withdrawn; what holds for every
+  strategy is Penrose / Farhi–Guth for machines of ordinary matter (Theorem 6h-1). A positive-energy trigger works in a cosmological
+  background. With the condensate observation allows, the background is ≥ 10⁹ M_☉; every escape needs new physics.
 * **[ROADMAP_ROUND6G.md](ROADMAP_ROUND6G.md)**: Round 6g, the two remaining "no"s. The false-vacuum region is made by the universe: a
   supercooled patch in an expanding universe, simulated with gravity, collapses below 0.57–0.59 l_H and above it inflates into a daughter
-  hidden behind a black hole, with the GSL satisfied; the near-critical patches are the route's ball. No machine can make it: Planck-class
-  power (~10⁵² W) or force (~10⁴³ N) is required, whatever the vacuum scale (Theorem 6g-2).
+  hidden behind a black hole, with the GSL satisfied; the near-critical patches are the route's ball. External assembly needs Planck-class
+  power (a conditional bound; the "no machine" claim is corrected in Round 6h).
 * **[ROADMAP_ROUND6F.md](ROADMAP_ROUND6F.md)**: Round 6f, formation in one GR evolution (thermal creation fails; 6e-10 withdrawn), observers who
   end at singularities (no GSL, in any collapse), the condensate beyond its fluid limit with non-spherical modes and the full stability window,
   the two-solver cross-check, and problems 4 and 5 (the laboratory corner excluded; an invariant 39 orders beyond technology).
@@ -148,8 +152,17 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   (cosmological light-cone data, FRW verified), patches below 0.57–0.59 l_H collapse into black holes and larger ones inflate, behind a
   trapped region, with non-decreasing horizon areas for the parent and the daughter observers. The near-critical patches are the route's ball,
   and the condensate tilt turns collapsing ones into daughters.
-* **Not by any machine.** Assembling any near-Nariai region needs ≳ c⁵/(3G) ≈ 10⁵² W or ≳ c⁴/(9G) ≈ 10⁴³ N: 10³⁹ times humanity's power,
-  above the conjectured maximum luminosity. Every machine fails, including invented ones. The loopholes need new physics.
+* **Not by external assembly.** Delivering a near-Nariai region's energy within one light-crossing needs ~c⁵/(3G) ≈ 10⁵² W (static holding
+  ~10⁴³ N): a conditional engineering bound. The Round 6h review withdrew the stronger "no machine of any kind" wording.
+
+## Round 6h in brief (routes A–D; what actually blocks a machine)
+
+* Theorem 6h-1 (Penrose / Farhi–Guth): no machine of NEC-respecting matter can create a daughter from a universe with a regular past, by any
+  strategy. The escapes are NEC violation, a cosmological past singularity, or a quantum transition.
+* Route A: in a cosmological (anti-trapped) background, a positive-energy trigger of ~10% of a patch's vacuum energy turns collapse into a
+  daughter. In a normal background the trigger must violate the NEC.
+* Routes B–D: the black-hole-assisted route needs Nariai-class black holes; dynamical assembly with the allowed condensate needs
+  ≥ 2.5×10⁹ M_☉; TeV gravity is excluded below 10.1 TeV. A false-vacuum-only condensate would lower the floor (open).
 
 ## Round 6f in brief (one history, crunching observers, the condensate, problems 4 and 5)
 
@@ -246,7 +259,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 200 tests
+cd .. && python -m pytest tests -q                # 201 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

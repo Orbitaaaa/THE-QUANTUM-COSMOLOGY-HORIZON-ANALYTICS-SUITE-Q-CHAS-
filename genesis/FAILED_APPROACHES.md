@@ -388,3 +388,13 @@ problems.
 
 **Type:** no-go (theorem).
 
+### F51. "No machine of any kind" (Round 6g, withdrawn in Round 6h after review)
+*Result:* the claim does not follow from Proposition 6g-2, for three reasons.
+* Rapid external delivery and static holding are two preparation strategies, not every possible history.
+* The Planck force and luminosity are conjectures with counterexamples in GR.
+* The computed stress (1.3×10⁴³ N) is below c⁴/4G, and an assembly time of 1.5 light-crossings puts the power below c⁵/4G.
+
+The rigorous strategy-independent statement is Theorem 6h-1 (Penrose / Farhi–Guth). It applies to machines of NEC-respecting matter.
+
+**Type:** overclaim (corrected).
+

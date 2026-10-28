@@ -8,9 +8,25 @@ Request (user, after Round 6f):
 | Research objective | Status before | Status after Round 6g |
 |---|---|---|
 | Create the initial false-vacuum region | Thermal route fails | **Yes, by the universe** (not by us). A supercooled first-order transition leaves false-vacuum patches. Simulated with gravity, patches larger than ≈ 0.58 l_H inflate into daughters hidden behind a black hole, with the GSL satisfied. The near-critical ones are exactly the route's ball. |
-| Establish a technologically accessible mechanism | Current route exceeds accessible scales | **No, and now proved impossible for any machine.** Building any near-Nariai false-vacuum region needs ≳ 10⁵² W (or ≳ 10⁴³ N of force): 10³⁹ times all of humanity's power, above the conjectured maximum luminosity of any physical system. This is a property of gravity, not of present technology. |
+| Establish a technologically accessible mechanism | Current route exceeds accessible scales | **Not found.** External assembly within one light-crossing needs ~10⁵² W (a conditional bound). The claim that no machine of any kind can do it is **withdrawn in Round 6h**; see the correction below and `ROADMAP_ROUND6H.md`. |
 
-The second row cannot honestly be made a yes. The rest of this report shows why, and audits every machine that could be proposed.
+> **Correction (Round 6h, after review by the user).** Part B first called Theorem 6g-2 a proof that no machine of any kind can build the
+> ball. That does not follow, for three reasons.
+> 1. Rapid external delivery and static holding are two preparation strategies, not every possible history. A dynamical evolution, or a
+>    small trigger acting on a pre-existing near-critical background, is not covered.
+> 2. The Planck force and power are conjectured limits, not theorems. Jowsey & Visser (2021) give counterexamples to the maximum-force
+>    conjecture in GR (disputed in a later comment). Cardoso et al. (2018) find GR initial data with arbitrarily large luminosity; it seems
+>    limited only when past horizons are excluded.
+> 3. The report's own numbers do not exceed these conjectures robustly. The holding stress, 1.3×10⁴³ N, is below c⁴/4G = 3.0×10⁴³ N, and
+>    with an assembly time of 1.5 light-crossings the power, 8.1×10⁵¹ W, is below c⁵/4G = 9.1×10⁵¹ W.
+>
+> What stands:
+> * **Proposition 6g-2, now conditional.** External assembly within αR/c costs (k/2α)c⁵/G; static holding costs a stress ~(k²/4)c⁴/G.
+> * **Theorem 6h-1.** The classical no-go that does hold for any strategy is Penrose / Farhi–Guth. A machine of NEC-respecting matter acting
+>   on data with a regular past cannot create a daughter, whatever its power, duration or method. The escapes are NEC violation, a past
+>   singularity, or a quantum transition.
+>
+> The sections below are kept as written, with this correction taking precedence.
 
 New code:
 * `formation.frw_cone_data` (radiation-dominated FRW data on a light cone, in conformal or affine gauge) and `formation.cosmic_patch`
@@ -121,7 +137,7 @@ problem is introduced. It is not created by humans: see part B.
 
 ## B. A technologically accessible mechanism: why no machine can do it
 
-### B.1 Theorem 6g-2 (Planck power or Planck force)
+### B.1 Proposition 6g-2 (Planck power or Planck force for external assembly; conditional, see the correction above)
 
 * **Setting.** Let a region of radius R hold energy E with compactness k = 2GE/(Rc⁴). The route's near-Nariai ball, and any
   daughter-forming throat, has k ≈ 2/3. Such a region is gravitationally unstable, and the false vacuum is also pulled in by its own
@@ -175,9 +191,9 @@ E_total · E_q ≥ ħc (E√ρ)_req^{2/3} = 6.3×10¹⁷ J².
 * **Steering nature.** Using an astrophysical collapse, or the universe's own phase transitions, is the only process that reaches the
   required power. It is not under human control.
 
-**Verdict for the accessibility row: no, and it cannot be made a yes.** The obstacle is fixed by G and c, through the Planck power and
-force, which no machine of any size or technology can reach. Only gravitational collapse and cosmology do. Calling it "a technology we
-don't have yet" would be wrong.
+**Verdict for the accessibility row (as corrected in Round 6h): no accessible mechanism has been found.** External assembly needs
+Planck-class power or stresses, but that bound is conditional, not universal. The rigorous no-go for NEC-respecting machines is
+Theorem 6h-1 (Penrose / Farhi–Guth). With the condensate the remaining obstacle is the background (`ROADMAP_ROUND6H.md`).
 
 ---
 
@@ -191,7 +207,7 @@ don't have yet" would be wrong.
 | Establish nonlinear condensate stability | Within the investigated regime (Round 6f) |
 | Reproduce the principal result with two solvers | Agreement around 10⁻⁵ |
 | Create the initial false-vacuum region | **Yes, by the universe** (cosmological first-order transition; simulated with gravity, hidden daughter, GSL holds) |
-| Establish a technologically accessible mechanism | **No: proved impossible for any machine** (Planck power / force, Theorem 6g-2) |
+| Establish a technologically accessible mechanism | **Not found.** The impossibility claim is withdrawn; what holds: Penrose / Farhi–Guth for NEC matter, and the conditional external-assembly bound (Round 6h) |
 
 ## Literature used (Round 6g)
 

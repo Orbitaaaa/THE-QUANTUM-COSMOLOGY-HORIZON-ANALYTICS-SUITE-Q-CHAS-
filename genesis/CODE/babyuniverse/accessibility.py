@@ -130,13 +130,15 @@ WORLD_ENERGY_PER_YEAR = 6.0e20             # J
 
 
 def assembly_bounds(compactness=2.0 / 3.0, alpha=1.0) -> dict:
-    """Theorem 6g-2.  A region of radius R holding energy E with 2GE/(Rc^4) = compactness (the near-Nariai ball: 2/3) is gravitationally
-    unstable and evolves in t_dyn = alpha R / c.  Building it needs either
-      (i)  delivering E within t_dyn:  P >= E / t_dyn = (compactness / (2 alpha)) c^5 / G, or
-      (ii) holding it statically against collapse (or the false vacuum against its own tension and negative pressure): the stress across
-           a cross-section ~ G E^2 / (c^4 R^2) = (compactness^2 / 4) c^4 / G.
-    Both are fixed fractions of the Planck power and force, independent of the vacuum scale; Gibbons' maximum tension is c^4/(4G) and
-    the conjectured maximum luminosity c^5/(4G)."""
+    """Proposition 6g-2 (conditional engineering bound; corrected in Round 6h).  A region of radius R holding energy E with
+    k = 2GE/(Rc^4) (the near-Nariai ball: 2/3) evolves in t_dyn = alpha R / c.  Two preparation strategies cost:
+      (i)  delivering E from outside within t_dyn:  P >= (k / (2 alpha)) c^5 / G  (1.2e52 W for alpha = 1; 8.1e51 W for alpha = 1.5);
+      (ii) holding it static while it is assembled: a stress across a cross-section ~ (k^2 / 4) c^4 / G (1.3e43 N).
+    These are NOT the only possible histories (a system can evolve dynamically, or a small trigger can act on a pre-existing near-critical
+    background), and the Planck power and force are not proven limits: the maximum-tension c^4/4G (3.0e43 N, above the holding stress)
+    and maximum-luminosity c^5/4G conjectures have counterexamples in GR (Jowsey & Visser 2021; Cardoso et al. 2018).  The bound says
+    what external assembly costs; it does not exclude every machine.  The classical no-go that holds for any strategy is Penrose /
+    Farhi-Guth (``penrose_farhi_guth``)."""
     P = compactness / (2 * alpha) * PLANCK_POWER
     F = compactness**2 / 4 * PLANCK_FORCE
     return dict(power_W=float(P), force_N=float(F), max_luminosity_W=float(PLANCK_POWER / 4), max_tension_N=float(PLANCK_FORCE / 4),
@@ -195,3 +197,46 @@ def tev_gravity_conditional(M_D_TeV=10.1) -> dict:
     collider would need E_cm well above that, and the whole route would have to be rebuilt in higher dimensions."""
     E = M_D_TeV * 1e12 * 1.602176634e-19
     return dict(M_D_TeV=M_D_TeV, power_scale_W=float(E**2 / HBAR), excluded_below_TeV=10.1, fcc_hh_E_cm_TeV=100.0)
+
+
+
+# ------------------------------------------------------------------ Round 6h: what survives, and what a background would take
+def penrose_farhi_guth() -> dict:
+    """Theorem 6h-1 (Penrose 1965; Farhi-Guth 1987; non-spherical form via the time-reversed Penrose theorem).  In a globally hyperbolic
+    spacetime with non-compact Cauchy surfaces obeying the null energy condition, a closed anti-trapped surface implies past null
+    incompleteness.  An inflating daughter region contains closed anti-trapped surfaces.  So a daughter needs (i) NEC violation, (ii) a
+    past singularity (the Big Bang: the cosmological route), or (iii) a quantum transition.  A machine of NEC-respecting matter acting on
+    data with a regular past has none of these, whatever its power, duration or strategy (rapid, slow, dynamical, triggered)."""
+    return dict(escapes=("NEC violation (the ghost condensate; quantum fields are limited by QEIs, Round 6c)",
+                         "a past singularity (cosmology, Round 6g)", "quantum tunnelling (bounded by R42)"),
+                applies_to_any_assembly_strategy=True)
+
+
+def background_requirements(vac_scale_GeV: float) -> dict:
+    """With NEC violation available, the route still needs a near-Nariai false-vacuum ball (normal, not anti-trapped, so Theorem 6h-1
+    does not forbid it).  For a vacuum scale rho_f^{1/4}: its size r_N, mass M_N = r_N c^2 / (3G), the smallest quantum energy that can
+    be localised in it (hbar c / r_N), how many such quanta carry M_N c^2, the light-crossing time, and a linac at 100 GV/m reaching that
+    quantum energy."""
+    rho = (vac_scale_GeV / E_P_GEV) ** 4
+    s = physical_scales((8 * np.pi * rho) ** -0.5)
+    Eq = HBAR * C_LIGHT / s["r_N_m"]
+    return dict(vac_scale_GeV=float(vac_scale_GeV), r_N_m=s["r_N_m"], M_N_kg=s["M_N_kg"], E_N_J=s["E_N_J"], quantum_J=float(Eq),
+                quantum_GeV=float(Eq / GEV_J), n_quanta=float(s["E_N_J"] / Eq), crossing_time_s=s["crossing_time_s"],
+                linac_100GV_m=accelerator_size(Eq, gradient_V_per_m=1e11))
+
+
+def route_ledger() -> list:
+    """Routes A-D of Round 6h with what each still needs (see ROADMAP_ROUND6H.md)."""
+    return [
+        dict(route="A: trigger a near-critical background", status="works with a small positive-energy trigger only in an anti-trapped "
+             "(cosmological) background; in a normal background the trigger must violate the NEC (Theorem 6h-1, tipping law R88)",
+             needs="a pre-existing near-critical false-vacuum configuration; none is accessible today"),
+        dict(route="B: black-hole-assisted (Oshita-Yokoyama)", status="nucleation only once the black hole's mass is below ~ the false "
+             "vacuum's Hubble scale; quantum, suppressed by a Euclidean action", needs="a black hole of about the Nariai mass class at "
+             "the end of its evaporation (primordial only; making one is itself a horizon-class assembly)"),
+        dict(route="C: dynamical assembly", status="cannot evade Theorem 6h-1 with NEC matter; with the condensate it still has to "
+             "produce the near-Nariai ball (mass r_N c^2 / 3G), e.g. by gravitational collapse of natural matter",
+             needs=">= 2.5e9 solar masses if the condensate is the universal one allowed by observation (M <= 100 GeV)"),
+        dict(route="D: different gravitational physics", status="TeV-scale gravity would put horizon-class objects in reach of colliders",
+             needs="M_D above the CMS bound of 10.1 TeV and the whole route rebuilt in higher dimensions"),
+    ]

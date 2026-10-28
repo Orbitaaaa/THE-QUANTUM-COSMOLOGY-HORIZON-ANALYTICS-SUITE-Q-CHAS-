@@ -67,10 +67,20 @@ def test_condensate_turns_a_collapsing_patch_into_a_daughter():
     assert F.cosmic_patch(0.9, 0.6, h=0.1, eps=2.0, lam_f=1e-6)["outcome"] == "inflates"
 
 
-def test_no_machine_can_build_the_ball():
+def test_external_assembly_bounds_are_conditional():
     a = AC.assembly_bounds()
-    assert a["power_W"] > a["max_luminosity_W"] and a["log10_power_gap"] > 38             # Theorem 6g-2: Planck-class power
-    assert a["force_N"] > 0.3 * a["max_tension_N"]                                       # or Planck-class force
+    assert a["log10_power_gap"] > 38                                                     # external delivery within one crossing
+    assert AC.assembly_bounds(alpha=1.5)["power_W"] < a["max_luminosity_W"]             # depends on the assembly time (Round 6h)
+    assert a["force_N"] < a["max_tension_N"]                                             # below Gibbons' conjectured maximum
     m = AC.machine_audit()
-    assert all(r["log10_shortfall"] > 1.5 for r in m["machines"])                        # even one year of world energy, ideally focused
-    assert m["single_collision_quantum_GeV"] > 1e18 and m["linac_100GV_per_m_m"] > 3e16 # a parsec-long collider
+    assert all(r["log10_shortfall"] > 1.5 for r in m["machines"])                        # every audited machine, ideally focused
+    assert m["single_collision_quantum_GeV"] > 1e18 and m["linac_100GV_per_m_m"] > 3e16
+
+
+def test_background_requirements_and_trigger():
+    b = AC.background_requirements(1.5e16)                                               # a GUT-scale false vacuum
+    assert 1e-31 < b["r_N_m"] < 1e-29 and 1e-4 < b["M_N_kg"] < 1e-2 and b["quantum_GeV"] > 1e13
+    assert AC.penrose_farhi_guth()["applies_to_any_assembly_strategy"]
+    lo, hi = F.cosmic_patch(0.9, 0.60, h=0.1), F.cosmic_patch(0.9, 0.62, h=0.1)         # a positive-energy trigger of ~10% of the
+    assert lo["outcome"] == "collapses" and hi["outcome"] == "inflates"                  # patch's vacuum energy, in a cosmological
+    assert (0.62 / 0.60) ** 3 - 1 < 0.11                                                 # (anti-trapped) background

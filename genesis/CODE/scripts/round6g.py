@@ -148,7 +148,7 @@ ax[2].set_title("(c) critical size: near-critical patches are the route's ball",
 ax[2].legend(frameon=False, fontsize=7, loc="center left", bbox_to_anchor=(0.45, 0.4))
 # (d) the power ladder
 asm = out["machines"]["assembly"]
-names = ["humanity (all primary power)", "peak of GW150914 (black-hole merger)", "max luminosity c^5/4G (conjecture)", "needed to build the ball"]
+names = ["humanity (all primary power)", "peak of GW150914 (black-hole merger)", "c^5/4G (a conjecture, not a limit)", "external assembly within R/c"]
 vals = [AC.WORLD_POWER, asm["GW150914_peak_W"], asm["max_luminosity_W"], asm["power_W"]]
 cols = [C1, C3, MUTED, C2]
 ax[3].barh(range(len(names)), np.log10(vals), color=cols)
@@ -157,7 +157,7 @@ for k, val in enumerate(vals):
 ax[3].set_yticks(range(len(names))); ax[3].set_yticklabels(names, fontsize=7)
 ax[3].set_xlim(0, 60)
 ax[3].set_xlabel("log10 power (W)")
-ax[3].set_title(f"(d) building the ball needs 10^{asm['log10_power_gap']:.0f} x humanity's power\n(Theorem 6g-2; any machine, any vacuum scale)", fontsize=8)
+ax[3].set_title(f"(d) external assembly within one light-crossing: 10^{asm['log10_power_gap']:.0f} x humanity's power\n(conditional bound, Proposition 6g-2; not a proof that no machine can exist)", fontsize=8)
 fig.tight_layout()
 fig.savefig(f"{FIG}/round6g.png", dpi=150, facecolor="#fcfcfb")
 print("done")

@@ -214,6 +214,18 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Plasma wakefield acceleration**: LBNL 7.8 GeV in 20 cm (≈ 400 GV/m average, laser driven); AWAKE 2 GeV in 10 m, Run 2 aiming at
   0.5–1 GV/m.
 
+### Round 6h
+* **Penrose** (1965) PRL 14, 57; **Farhi, Guth** (1987) PLB 183, 149: trapped or anti-trapped surfaces and incompleteness; a growing
+  false-vacuum bubble from regular data needs an initial singularity (Theorem 6h-1 is their form for machines).
+* **Jowsey, Visser** (2021) arXiv:2102.01831: counterexamples to the maximum force conjecture in GR (fluid spheres near collapse). Disputed
+  in arXiv:2109.07700; Faraoni (arXiv:2105.07929) argues for a black-hole-restricted version.
+* **Cardoso, Ikeda, Moore, Yoo** (2018) PRD 97, 084013, arXiv:1803.03271: GR initial data with arbitrarily large luminosity; bounded when
+  past horizons are excluded; critical collapse reaches ~0.2 of the Planck luminosity. **Jowsey, Visser** (2021) arXiv:2105.06650.
+* **Oshita, Yokoyama** (2018) PLB 785, 197, arXiv:1601.03929: an inflationary universe from a black hole. Hawking radiation thermally
+  creates a false-vacuum bubble, which tunnels to a wormhole once the black hole's mass is below ~ the false vacuum's Hubble scale. No
+  numerical probability was available from the sources reachable here.
+* **Oshita, Yamada, Yamaguchi** (2019) PLB 791, 149, arXiv:1808.01382: horizonless compact objects catalyse (downward) vacuum decay.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |
