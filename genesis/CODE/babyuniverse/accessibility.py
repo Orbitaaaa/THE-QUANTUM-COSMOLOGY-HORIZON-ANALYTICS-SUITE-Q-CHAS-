@@ -118,3 +118,80 @@ def gap_report(window=WINDOW_ALPHA1, M_bounds_GeV=(100.0, 1e-2), lab_masses_kg=(
     tech = [c for c in out["capabilities"] if c["kind"] == "technology"]
     out["best_technology_gap_log10"] = float(min(c["log10_gap"] for c in tech))
     return out
+
+
+# ------------------------------------------------------------------ Round 6g: can any machine do it?
+G_SI = 6.67430e-11
+HBAR = 1.054571817e-34
+PLANCK_POWER = C_LIGHT**5 / G_SI          # 3.63e52 W
+PLANCK_FORCE = C_LIGHT**4 / G_SI          # 1.21e44 N
+WORLD_POWER = 1.9e13                       # W, world primary energy use (~600 EJ / yr)
+WORLD_ENERGY_PER_YEAR = 6.0e20             # J
+
+
+def assembly_bounds(compactness=2.0 / 3.0, alpha=1.0) -> dict:
+    """Theorem 6g-2.  A region of radius R holding energy E with 2GE/(Rc^4) = compactness (the near-Nariai ball: 2/3) is gravitationally
+    unstable and evolves in t_dyn = alpha R / c.  Building it needs either
+      (i)  delivering E within t_dyn:  P >= E / t_dyn = (compactness / (2 alpha)) c^5 / G, or
+      (ii) holding it statically against collapse (or the false vacuum against its own tension and negative pressure): the stress across
+           a cross-section ~ G E^2 / (c^4 R^2) = (compactness^2 / 4) c^4 / G.
+    Both are fixed fractions of the Planck power and force, independent of the vacuum scale; Gibbons' maximum tension is c^4/(4G) and
+    the conjectured maximum luminosity c^5/(4G)."""
+    P = compactness / (2 * alpha) * PLANCK_POWER
+    F = compactness**2 / 4 * PLANCK_FORCE
+    return dict(power_W=float(P), force_N=float(F), max_luminosity_W=float(PLANCK_POWER / 4), max_tension_N=float(PLANCK_FORCE / 4),
+                power_over_world=float(P / WORLD_POWER), log10_power_gap=float(np.log10(P / WORLD_POWER)),
+                GW150914_peak_W=3.6e49)
+
+
+def quantum_requirement() -> float:
+    """Energy delivered by quanta of energy E_q can be localised no better than hbar c / E_q, so the invariant of Theorem 6f-7 becomes
+    E_total * E_q >= hbar c * (E sqrt(rho))_req^(2/3)  (J^2)."""
+    return float(HBAR * C_LIGHT * requirement_invariant() ** (2 / 3))
+
+
+def single_quantum_energy() -> float:
+    """The quantum energy at which one collision (E_total ~ 2 E_q) meets the requirement: E_q = sqrt(requirement / 2) (J)."""
+    return float(np.sqrt(quantum_requirement() / 2))
+
+
+def accelerator_size(E_q_J, gradient_V_per_m=None, dipole_T=None) -> float:
+    """Length (m) of a linear accelerator with the given gradient, or circumference of a ring with the given dipole field (protons,
+    E[GeV] = 0.3 B[T] R[m]; synchrotron losses ignored), reaching the quantum energy E_q."""
+    E_eV = E_q_J / 1.602176634e-19
+    if gradient_V_per_m is not None:
+        return float(E_eV / gradient_V_per_m)
+    return float(2 * np.pi * (E_eV / 1e9) / (0.3 * dipole_T))
+
+
+MACHINES = [
+    dict(name="LHC (whole stored beam, 7 TeV protons, focused ideally)", E_total_J=3.6e8, E_quantum_J=7e12 * 1.602176634e-19),
+    dict(name="FCC-hh design (8 GJ beam, 50 TeV protons, focused ideally)", E_total_J=8.4e9, E_quantum_J=5e13 * 1.602176634e-19),
+    dict(name="NIF laser (2.1 MJ, 351 nm photons)", E_total_J=2.1e6, E_quantum_J=3.5 * 1.602176634e-19),
+    dict(name="50 Mt thermonuclear explosion (keV X-rays)", E_total_J=2.1e17, E_quantum_J=1e3 * 1.602176634e-19),
+    dict(name="one year of world energy in 100 TeV quanta (invented, ideal focus)", E_total_J=WORLD_ENERGY_PER_YEAR, E_quantum_J=1e14 * 1.602176634e-19),
+]
+
+
+def machine_audit() -> dict:
+    """Every machine against the quantum form of the invariant and against the assembly power; the ideal-focus rows assume the whole
+    energy can be put into one quantum-limited spot (hbar c / E_q) within one light-crossing of it, which no device can approach."""
+    need = quantum_requirement()
+    rows = []
+    for m in MACHINES:
+        prod = m["E_total_J"] * m["E_quantum_J"]
+        L = HBAR * C_LIGHT / m["E_quantum_J"]
+        P = m["E_total_J"] * C_LIGHT / L
+        rows.append(dict(m, product_J2=float(prod), log10_shortfall=float(np.log10(need / prod)), spot_m=float(L), power_if_delivered_W=float(P)))
+    Eq = single_quantum_energy()
+    return dict(requirement_J2=need, machines=rows, single_collision_quantum_J=Eq, single_collision_quantum_GeV=float(Eq / 1.602176634e-10),
+                linac_100GV_per_m_m=accelerator_size(Eq, gradient_V_per_m=1e11), ring_16T_m=accelerator_size(Eq, dipole_T=16.0),
+                assembly=assembly_bounds())
+
+
+def tev_gravity_conditional(M_D_TeV=10.1) -> dict:
+    """If gravity became strong at M_D (large extra dimensions), the Planck power and force would be replaced by M_D^2 c^4/hbar-class
+    values, reachable in a single collision above M_D.  CMS excludes semiclassical black holes up to 10.1 TeV (JHEP 11 (2018) 042), so a
+    collider would need E_cm well above that, and the whole route would have to be rebuilt in higher dimensions."""
+    E = M_D_TeV * 1e12 * 1.602176634e-19
+    return dict(M_D_TeV=M_D_TeV, power_scale_W=float(E**2 / HBAR), excluded_below_TeV=10.1, fcc_hh_E_cm_TeV=100.0)

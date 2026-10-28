@@ -348,7 +348,7 @@ ells = ["2", "3", "5", "10", "20"]
 xs = np.arange(len(ells))
 for k, c in enumerate(cases):
     col = [MUTED, C1, "#a9a8a2", C2, C3][k]
-    ax[2].plot(xs, [c["rw_weyl_regular"][l] for l in ells], "o-", color=col, ms=5, lw=1.5, label=c["case"].replace("_", " "))
+    ax[2].plot(xs, [c["rw_weyl_regular"].get(l, c["rw_weyl_regular"].get(int(l))) if isinstance(c["rw_weyl_regular"], dict) else None for l in ells], "o-", color=col, ms=5, lw=1.5, label=c["case"].replace("_", " "))
 ax[2].set_xticks(xs); ax[2].set_xticklabels(ells)
 ax[2].set_xlabel("l (Regge-Wheeler proxy, curvature amplitude)"); ax[2].set_ylabel("largest amplification for r > r_N / 2")
 ax[2].set_ylim(0.8, 5)

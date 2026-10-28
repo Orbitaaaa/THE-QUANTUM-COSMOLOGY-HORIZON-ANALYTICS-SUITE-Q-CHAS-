@@ -30,19 +30,9 @@ New code:
 Labels as before: **Theorem**, **Proposition**, **Proposition-N** (numerical, with convergence evidence), **Literature**, **Assessment**,
 **Conjecture**. Units G = c = ħ = 1. The simulations use l_H = 30 (r_N = 17.3, S_N = 942).
 
-> **Status (paused at the user's request).**
->
-> All results below are computed. Their raw outputs and scratch scripts are in `DATA/round6f_scratch/`, and the documents are written.
->
-> Still to do when the round resumes:
-> 1. Run `CODE/scripts/round6f.py`, which writes `DATA/round6f.json` and `FIGURES/round6f.png`. It now saves each finished item to
->    `DATA/round6f_partial.json`; the first attempt stopped at a hand-off check, which is now guarded. Then check the numbers in
->    Section 1.3 (centre runs) and Section 5.2 against the JSON.
-> 2. Run `tests/test_round6f.py` in full. Four tests passed. The EFT test failed before the linearisation fix and now passes the same
->    check by hand. The others have not been run yet.
-> 3. Run the whole suite (185 + 11 tests).
-> 4. Update README, and add Addendum 8 to the paper.
-> 5. Send the final ZIP.
+> **Status.** Complete. `CODE/scripts/round6f.py` wrote `DATA/round6f.json` and `FIGURES/round6f.png`; the numbers below are taken
+> from that file. Raw outputs of the exploratory runs and their scratch scripts are kept in `DATA/round6f_scratch/`. The follow-up round
+> on creation and accessibility is `ROADMAP_ROUND6G.md`.
 
 ---
 
@@ -84,14 +74,16 @@ There are two stages:
 
 **Verification (Proposition-N).**
 
-* **Homogeneous limit (G → 0), against the ODE for field + plasma + friction.** Second order: ϕ error 1.3×10⁻³ → 3.0×10⁻⁴ → 6.0×10⁻⁵ of
-  v; T error 6×10⁻⁴ → 2×10⁻⁴ → 8×10⁻⁵ (h = 0.02, 0.01, 0.005).
+* **Homogeneous limit (G → 0), against the ODE for field + plasma + friction.** Second order: ϕ error 5.7×10⁻³ → 1.5×10⁻³ → 4.3×10⁻⁴ of
+  v; T error 7.9×10⁻⁴ → 2.6×10⁻⁴ → 9.8×10⁻⁵ (h = 0.02, 0.01, 0.005; restoration from 1.1 × the spinodal temperature).
 * **Constraints.**
   * Corner stage: first order in the plasma sector (6.3×10⁻³ → 2.1×10⁻³ → 8.4×10⁻⁴), because the θ-weighting is first order.
   * Centre stage with gravity: relative residual 8.2×10⁻⁵ → 2.5×10⁻⁵ → 1.3×10⁻⁵; E_uu 4.3×10⁻⁴ → 1.9×10⁻⁴ → 9.9×10⁻⁵.
 * **Vacuum on the centre stage.** |s_axis| ≈ 3×10⁻¹¹ over the whole run, after the axis clock is set before the correction step (F44).
-* **Hand-off overlap.** Where both stages are computed, the median differences are 10⁻¹⁰–10⁻⁷. The 95th percentile of ϕ is ~10⁻³ v; the
-  largest differences sit only in late, near-spinodal regions.
+* **Hand-off overlap.** At h = 0.04 the largest differences where both stages are computed (6.5×10⁵ points) are 1.8×10⁻⁵ in r and
+  4.9×10⁻⁴ in s. They reach about one v in ϕ and 0.6 in ln T only in late, near-spinodal regions; the medians there, from the
+  exploratory runs, are 10⁻¹⁰–10⁻⁷. At h = 0.02 the hand-off rays could not be formed, because the centre stage stops (near the axis)
+  before they are complete (F44).
 * **Near-axis temperature.** Errors are 2.4% within 1–2 cells of the axis, 0.4% at 5 cells and < 0.1% at 20, from the r²-weighted
   fluxes. Accepted.
 
@@ -120,9 +112,13 @@ Two things work against the hot ball:
   R ≈ 17.5 (ε = 4) to 18.25 (ε = 5.2). The route needs a ball of radius 0.595 l_H = 17.85. Normality of null-cone data is stricter than
   the spacelike estimate 2m/r < 1.
 * **Dynamics.** Continuous centre-stage evolutions (plasma, field, gravity; radiation free to leave) of the largest normal balls:
-  * E = 2.05 ρ_f, R = 17. The false-vacuum radius peaks near 11, the region is trapped by t ≈ 30, and it collapses to a black hole.
-  * E = 2.3 ρ_f, R = 16. The false vacuum reaches ≈ 15, but the region is trapped.
-  * ε = 5.2, E = 1.79 ρ_f. The false vacuum is intermittent (radius 3.6, 0, 13.1, 0 at successive times) and trapped by t = 40.
+  * ε = 4, E = 2.06 ρ_f, R = 17. The false vacuum returns only near the centre (radius ≤ 3.8), is gone again by t = 15, and the
+    region is trapped from t ≈ 30.
+  * ε = 4, E = 2.30 ρ_f, R = 16.25. The false vacuum grows to radius 13.2 by t = 30, but the region is trapped from then on and the
+    false vacuum shrinks to nothing by t = 70.
+  * ε = 5.2, E = 1.80 ρ_f, R = 18.25. The false vacuum reaches radius 13.0 at t = 30, the region is trapped by t = 40, and the false
+    vacuum is gone by t = 60.
+  * ε = 5.2, E = 1.92 ρ_f, R = 17.75. As in the first case: radius ≤ 4.1, gone by t = 15, trapped from t ≈ 30.
 
   The runs of `scripts/round6f.py` are recorded in `DATA/round6f.json` (item1.centre_runs); see Fig. (a).
 
@@ -228,7 +224,8 @@ Stability is G < 1 (one e-fold). Cross-check: e^G tracks the full ODE amplificat
 
 The table gives the window in M³r_N.
 
-* **Universality.** The windows are identical for r_N = 10⁶, 10²⁰ and 10⁴⁰. Every rate depends on M³r_N alone.
+* **Universality.** The windows are identical for r_N = 10⁶, 10²⁰ and 10⁴⁰ on the scan grid; the growth exponent itself agrees to
+  0.3% (the sampled wavenumbers scale with μ). Every rate depends on M³r_N alone.
 * **Scaling.** Both edges scale as α^(−1/2).
 * **Comparison with Round 6e (R111).**
   * The upper edge is about twice R111's analytic 1.7×10⁻², because Hubble friction in dS₂ limits the Jeans growth.
@@ -269,7 +266,8 @@ route's data are tuned to 6×10⁻⁹ there, so any extra energy on the outer ra
   * For ε = 2 the exit is delayed to T = 221. The route then works: normal data (shell energy retuned to E = 7.2330 so the data ray is
     again marginal at 6×10⁻⁹), a daughter, hidden. The control with λ_f = 0 makes no daughter.
 * **What the grid cannot do.** Once the daughter's false vacuum passes the spinodal (T > 221), the corner-gauge cells are far larger in
-  proper time than the field's roll-off time. The stiffness parameter h²e^{2s}|U″|/16 reaches ~4×10³.
+  proper time than the field's roll-off time. The stiffness parameter h²e^{2s}|U″|/16 is ≈ 2×10² (median over the post-spinodal daughter
+  cells) and up to ~4×10³.
   * Rows break off a little after the spinodal (T ≈ 250–270), before the roll to the true vacuum (F45).
   * A homogeneous-FRW hand-off was attempted. It fails because surfaces of constant condensate clock are not homogeneous slices: the
     charge spread is ~100%.

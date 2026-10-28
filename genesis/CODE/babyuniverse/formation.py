@@ -406,12 +406,14 @@ def _evolve_c(Z0, h, n_rays, G, lam, vv, rho_f, lam_f, clip, aL, aH, kg2, Gam, T
     NQ = Z0.shape[0]
     N = Z0.shape[1] - 1
     Z = np.full((NQ, n_rays + 1, N + 1), np.nan)
+    end = np.zeros(n_rays + 1, dtype=np.int64)
     Z[:, 0, :] = Z0
     X = np.empty((NQ, 3))
     Pc = np.empty(3)
     Fs_prev = np.zeros(N + 1)
     for i in range(1, n_rays + 1):
         if i >= N or not (math.isfinite(Z[0, i - 1, i]) and math.isfinite(Z[0, i - 1, i + 1])):
+            end[i] = 4
             break
         # axis point (i, i)
         Z[0, i, i] = 0.0
@@ -452,21 +454,26 @@ def _evolve_c(Z0, h, n_rays, G, lam, vv, rho_f, lam_f, clip, aL, aH, kg2, Gam, T
                 Z[6, i, i] = o[6]
                 X[6, 1] = o[6]
                 o = _diamond_c(X, Pc, h, G, lam, vv, rho_f, lam_f, clip, aL, aH, kg2, Gam, T_floor, th, n_iter, True)
-            ok = True
+            code = 0
             for q in range(NQ):
                 if not math.isfinite(o[q]):
-                    ok = False
-            if ok and (abs(o[1]) > 500.0 or abs(o[3]) > 30.0 or (o[0] > 0.0 and abs(o[2] / o[0]) > phi_max)):
-                ok = False
-            if ok and o[0] < r_exc and o[0] < Z[0, i, j - 1]:
-                ok = False
-            if ok and o[0] > r_inf:
-                ok = False
-            if not ok:
+                    code = 3
+            if code == 0 and abs(o[1]) > 500.0:
+                code = 5
+            if code == 0 and abs(o[3]) > 30.0:
+                code = 6
+            if code == 0 and o[0] > 0.0 and abs(o[2] / o[0]) > phi_max:
+                code = 7
+            if code == 0 and o[0] < r_exc and o[0] < Z[0, i, j - 1]:
+                code = 1
+            if code == 0 and o[0] > r_inf:
+                code = 2
+            if code != 0:
+                end[i] = code
                 break
             for q in range(NQ):
                 Z[q, i, j] = o[q]
-    return Z
+    return Z, end
 
 
 def centre_cone_data(h, v_max, plasma, phi_r, T_r, n_r=None, N_v=None, G=1.0):
@@ -500,11 +507,11 @@ def evolve_centre(Z0, h, pot, plasma, n_rays=None, lam_f=0.0, clip=1, G=1.0, n_i
     aL, aH, kg2, Gam, Tfl = plasma.args()
     N = Z0.shape[1] - 1
     n_rays = N - 1 if n_rays is None else min(N - 1, n_rays)
-    Z = _evolve_c(np.ascontiguousarray(Z0, float), h, n_rays, G, pot.lam, pot.v, pot.rho_f, lam_f, int(clip), aL, aH, kg2, Gam, Tfl,
-                  theta, n_iter, k_axis, 2 * h, r_inf, phi_max if phi_max is not None else 10 * pot.v)
+    Z, end = _evolve_c(np.ascontiguousarray(Z0, float), h, n_rays, G, pot.lam, pot.v, pot.rho_f, lam_f, int(clip), aL, aH, kg2, Gam, Tfl,
+                       theta, n_iter, k_axis, 2 * h, r_inf, phi_max if phi_max is not None else 10 * pot.v)
     with np.errstate(invalid="ignore", divide="ignore"):
         phi = np.where(Z[0] > 0, Z[2] / Z[0], np.nan)
-    return dict(r=Z[0], s=Z[1], psi=Z[2], phi=phi, eta=Z[3], D=Z[4], T=Z[5], lnTf=Z[6], etaf=Z[7], h=h, G=G, Q=0.0, c=0.0)
+    return dict(r=Z[0], s=Z[1], psi=Z[2], phi=phi, eta=Z[3], D=Z[4], T=Z[5], lnTf=Z[6], etaf=Z[7], h=h, G=G, Q=0.0, c=0.0, end=end)
 
 
 def handoff(resA, i1, j1, Lu, Lv=None):
@@ -604,3 +611,96 @@ def centre_history(res, times, vphi):
         out.append(dict(t=float(t), r_false_vacuum=float(r_[fv].max()) if fv.any() else 0.0,
                         trapped=bool(np.any((ru[ii, jj] < 0) & (rv[ii, jj] < 0) & ok)), computed=bool(ok.any())))
     return out
+
+
+# ------------------------------------------------------------------ Round 6g: the false-vacuum region made by the universe itself
+def frw_cone_data(h, v_max, plasma, pot, eta0, chi_p=None, w_chi=None, T_in0=None, T_out0=None, G=1.0, gauge="conformal"):
+    """Initial outgoing cone from a regular centre in a radiation-dominated FRW universe (a(eta0) = 1, a = eta / eta0), vertex at conformal
+    time eta0, comoving radius chi along the cone.  Optional false-vacuum patch: phi = -v for chi < chi_p (wall of comoving width w_chi),
+    true vacuum outside; T_in0 / T_out0 are the comoving plasma temperatures at eta0 (T ~ 1/a).  Two gauges on the cone:
+      gauge = "conformal": v = 2 chi, s = ln a, comoving fluid at eta_f = 0 (exact FRW coordinates);
+      gauge = "affine":    s = 0 (dv = a^2 dV, V = 2 chi), comoving fluid and condensate at rapidity eta = ln a; more cells where the
+                           universe has expanded most.
+    The areal radius follows from the constraint (e^{-2s} r_v)_v = -4 pi G r e^{-2s} [phi_v^2 + (rho + p) e^{2s - 2 eta_f} / 4].
+    Condensate absent (n = 0); clock = cosmic time since eta0."""
+    from scipy.integrate import solve_ivp
+    N = int(round(v_max / h))
+    v = np.arange(N + 1) * h
+    vv = pot.v
+    a_of = lambda V: (eta0 + 0.5 * np.asarray(V, float)) / eta0
+    if chi_p is None:
+        phi_V = lambda V: vv + 0.0 * np.asarray(V, float)
+        T_V = lambda V: T_out0 / a_of(V)
+    else:
+        mix = lambda V: 0.5 * (1 - np.tanh((0.5 * np.asarray(V, float) - chi_p) / w_chi))
+        phi_V = lambda V: vv * np.tanh((0.5 * np.asarray(V, float) - chi_p) / w_chi)
+        T_V = lambda V: (T_out0 + (T_in0 - T_out0) * mix(V)) / a_of(V)
+    dphi_V = lambda V: (phi_V(V + 1e-6) - phi_V(V - 1e-6)) / 2e-6
+
+    if gauge == "conformal":
+        def rhs(x, y):
+            r, P = y                                   # P = e^{-2s} r_v, s = ln a, eta_f = 0
+            a = a_of(x)
+            rho, p = plasma.eos(float(T_V(x)), float(phi_V(x)))[:2]
+            return [a * a * P, -4 * np.pi * G * max(r, 0.0) * (dphi_V(x) ** 2 / (a * a) + 0.25 * (rho + p))]
+        sol = solve_ivp(rhs, (0.0, N * h), [0.0, 0.5], t_eval=v, method="DOP853", rtol=1e-11, atol=1e-13, max_step=h / 2)
+        r = sol.y[0]
+        V = v
+        s = np.log(a_of(V))
+        eta_f = 0 * v
+    else:
+        def rhs(x, y):
+            r, rv, V = y                               # s = 0; dV/dv = 1/a^2; eta_f = ln a
+            a = a_of(V)
+            rho, p = plasma.eos(float(T_V(V)), float(phi_V(V)))[:2]
+            phv = dphi_V(V) / (a * a)
+            return [rv, -4 * np.pi * G * max(r, 0.0) * (phv * phv + 0.25 * (rho + p) / (a * a)), 1.0 / (a * a)]
+        sol = solve_ivp(rhs, (0.0, N * h), [0.0, 0.5, 0.0], t_eval=v, method="DOP853", rtol=1e-11, atol=1e-13, max_step=h / 2)
+        r, V = sol.y[0], sol.y[2]
+        s = 0 * v
+        eta_f = np.log(a_of(V))
+    if len(r) < N + 1:
+        raise ValueError("cone integration failed")
+    eta_c = eta0 + 0.5 * V
+    t_cosmic = (eta_c**2 - eta0**2) / (2 * eta0)
+    return np.vstack([r, s, r * phi_V(V), eta_f, 0 * v, t_cosmic, np.log(T_V(V)), eta_f])
+
+
+def cosmic_patch(f, chi_p_over_eta0, h=0.05, lam_f=0.0, eps=4.0, l_H=30.0, vphi=0.0015, n_eta0_after=4.0, r_inf=1e8):
+    """Round 6g: a supercooled false-vacuum patch left behind by a first-order transition in a radiation-dominated universe, evolved with
+    gravity from a regular centre (affine cone gauge).  f = rho_f / rho_total at the start (the rest is radiation, which the patch has
+    less of: total density uniform, Hubble flow everywhere); patch comoving radius chi_p = chi_p_over_eta0 * eta0, where eta0 = 1/H0 =
+    l_H sqrt(f).  Returns the run and its outcome:
+      "inflates"   anti-trapped false vacuum reaches r > 10 chi_p (a daughter; behind a black hole once the exterior traps),
+      "collapses"  a trapped region forms and no false vacuum inflates (a black hole with no daughter),
+      "undecided"  neither within the computed domain."""
+    from scipy.optimize import brentq
+    from . import throat_evolution as TE
+    rho_f = 3 / l_H**2 / (8 * np.pi)
+    lam = 4 * rho_f / (eps * vphi**4)
+    pot = TE.Potential(lam, vphi, rho_f)
+    pl = Plasma(rho_f, vphi, lam, f_H=1e-12, T_floor_over_Tc=1e-12)          # pure radiation; the false vacuum is held by its barrier
+    eta0 = l_H * np.sqrt(f)
+    rho0 = rho_f / f
+    T_out = brentq(lambda T: pl.eos(T, vphi)[0] - rho0, 1e-9, 5)
+    T_in = brentq(lambda T: pl.eos(T, -vphi)[0] - (rho0 - rho_f), 1e-12, 5) if f < 1 else 10 * pl.T_floor
+    chi_p = chi_p_over_eta0 * eta0
+    w = np.sqrt(2) / (np.sqrt(lam) * vphi)
+    Z0 = frw_cone_data(h, 2 * chi_p + (n_eta0_after + 1) * eta0, pl, pot, eta0, chi_p=chi_p, w_chi=w, T_in0=T_in, T_out0=T_out, gauge="affine")
+    res = evolve_centre(Z0, h, pot, pl, n_rays=int((2 * chi_p + n_eta0_after * eta0) / h), lam_f=lam_f, clip=1, r_inf=r_inf)
+    cls = TE.classify(res)["cls"]
+    R, P = res["r"], res["phi"]
+    ok = np.isfinite(R)
+    fv = ok & (np.abs(P / vphi + 1) < 0.5)
+    trapped = ok & (cls == -1)
+    anti_fv = fv & (cls == 1)
+    r_fv = float(R[anti_fv].max()) if anti_fv.any() else 0.0
+    outcome = "inflates" if r_fv > 10 * chi_p else ("collapses" if trapped.any() else "undecided")
+    # a trapped true-vacuum region outside the inflating false vacuum on the same outgoing rays: the daughter is behind a black hole
+    tv = ok & (np.abs(P / vphi - 1) < 0.5)
+    rows_fv = np.where(anti_fv.any(axis=1))[0]
+    hidden_rows = [int(i) for i in rows_fv if np.any(trapped[i] & tv[i])]
+    return dict(res=res, cls=cls, pot=pot, plasma=pl, r_N=float(l_H / np.sqrt(3)), eta0=float(eta0), chi_p=float(chi_p),
+                chi_p_over_lH=float(chi_p / l_H), outcome=outcome, r_fv_anti_max=r_fv, trapped_cells=int(trapped.sum()),
+                anti_fv_cells=int(anti_fv.sum()), rows_with_daughter_behind_trapped_true_vacuum=len(hidden_rows),
+                first_hidden_u=float(hidden_rows[0] * h) if hidden_rows else None)
