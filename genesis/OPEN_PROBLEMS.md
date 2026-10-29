@@ -226,3 +226,11 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   and a dedicated FCC-hh sensitivity study of the onset M_th/M_D and of the missing energy carried by remnants.
 * **P-R6l-e.** A four-dimensional or string-embedded version of the tower with a dynamical vacuum. Could the bounce at the curvature bound
   populate a false vacuum of the hole's density (Proposition 6l-2), which would turn the transient acceleration into lasting inflation?
+
+## Round 6n additions (ROADMAP_ROUND6N.md)
+
+* **P-R6n-a.** A characteristic (double-null) code for model U with fluids or scalar fields, to follow the inner-horizon collision through
+  the throat to the new universe. The double-null equations follow from the same Lovelock structure; for a massless scalar the vacuum
+  r_uv equation is r_uv = (r e^{2σ}/2)(2ψ − (D−1)h/h').
+* **P-R6n-b.** Non-spherical and rotating collapse in model U (no rotating solutions are known), and the angular-momentum shedding of
+  collider holes.

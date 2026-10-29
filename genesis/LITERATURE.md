@@ -293,6 +293,13 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   (2005). **Emparan, Horowitz, Myers**, PRL 85, 499 (2000). **NNPDF2.3**, Nucl. Phys. B 867, 244 (2013); **Pythia 8.3**, SciPost Phys.
   Codebases 8 (2022). **FCC Feasibility Study Report** (2025). **Giddings & Mangano**, PRD 78, 035009 (2008).
 
+### Round 6n
+
+* **Di Filippo, Kubizňák, Srinivasan**, PRD 114, 044061 (2026), arXiv:2604.27980: no null thin shells in quasi-topological regular black holes.
+* **Frolov, Zelnikov**, PRD 113, 084007 (2026), arXiv:2601.01861. **Bonanno, Khosravi, Saueressig**, arXiv:2010.04226. **Bonanno,
+  Panassiti, Saueressig**, arXiv:2507.03581. **Carballo-Rubio et al.**, arXiv:2402.14913. **Di Filippo, Kolář, Kubizňák**, arXiv:2404.07058.
+* **May & White** (1966), **Misner & Sharp** (1964): Lagrangian relativistic hydrodynamics.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

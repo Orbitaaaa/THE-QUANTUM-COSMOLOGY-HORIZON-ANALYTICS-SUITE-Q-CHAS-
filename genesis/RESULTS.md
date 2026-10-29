@@ -301,6 +301,17 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R186 | Both horizons regular (Kruskal metric function equal finite limits from both sides, ratio 1 ± 10⁻⁴); radial and non-radial timelike and null geodesics complete | Proposition-N |
 | R187 | **Proposition 6m-3**: the daughter IV ∪ I' lies outside J⁻(I⁺) of the parent, has its own null infinity and ADM mass μ; the finite daughter (bounced closed FRW) grows in volume ×1.3×10⁵ (C = 10⁴, D = 10) to ×8×10¹¹⁴ (4D stellar) | Proposition |
 
+
+### Round 6n
+
+| # | result | label |
+|---|---|---|
+| R188 | **Proposition 6n-0 (model-U hydrodynamics)**: Γ² − U² = 1 − R²ψ(μ/R^{D−1}), first law, tr equation (h' × GR) and Euler give D_τU = −Γ²p'/((ρ+p)R') + Rψ − ((D−1)/2)Rψ'(y + p); GR and Friedmann limits reproduced; energy-conserving Lagrangian scheme matches the exact OS bounce to 10⁻⁵ | Proposition + numerical |
+| R189 | **Proposition 6n-1**: every closed FRW universe with any perfect fluid bounces at a_b ≥ l (ψ ≤ 1/α); verified w = −0.3–1, D = 5, 10 | Proposition |
+| R190 | Inhomogeneous dust: every shell bounces at √(kα) (≤ 1.8 %), inner shells first (spread ×1.6–2.1) | Proposition-N |
+| R191 | **Proposition-N 6n-2/3**: with pressure, inhomogeneity and shocks, every run forms a horizon and bounces in an untrapped core with ψ ≤ 0.994/α and exact energy conservation; the bounced core meets the envelope at the inner horizon (R ≈ l); in 2/6 runs shells enter the white-hole region with a throat (Γ → 0) to the trapped envelope; beyond, the comoving slicing ends (resolution-dependent) | Proposition-N |
+| R192 | Pressure threshold: central p/ρ ≳ 0.2 (D = 5, γ = 5/4) prevents trapping (no black hole) | numerical |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

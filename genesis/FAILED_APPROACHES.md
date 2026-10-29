@@ -487,3 +487,12 @@ Later infall meets the bounced matter inside the same core and, after 7–30 l o
 create a second daughter. The daughter that does exist is a new asymptotic region beyond a white hole, not an inflating cosmos.
 
 **Type:** no-go within model U (propositions + numerical); open beyond thin shells (P-R6l-a).
+
+### F63. Crossing null thin shells at the inner horizon of model U (Round 6l, Proposition-N 6l-6b; withdrawn in Round 6n)
+*Result:* the junction conditions of pure-gravity quasi-topological theories admit no null thin shells in these regular black holes (Di
+Filippo, Kubizňák & Srinivasan, PRD 114, 044061 (2026)). The Dray–'t Hooft–Redmount argument we used assumed such shells, so its
+derivation does not hold in model U. Round 6n treats the same encounter, later matter meeting the bounced core at the inner horizon, with
+continuous timelike matter instead: the curvature stays bounded, matter piles up at R ≈ l, and the daughter's white-hole region begins to
+form.
+
+**Type:** withdrawn derivation (literature).

@@ -162,7 +162,7 @@ With optimistic trapping the counts are 10–10³ times larger.
   * The later matter enters and modifies the existing daughter. A theory with a Birkhoff theorem and a single regular centre leaves no
     room for a separate one. By Geroch's theorem, a disconnected daughter would need topology change, which a regular, causal spacetime
     forbids.
-* **The meeting saturates the bound [Proposition-N 6l-6b].**
+* **The meeting saturates the bound [Proposition-N 6l-6b; derivation withdrawn in Round 6n, F63: null thin shells do not exist in model U].**
   * At the meeting, the Dray–'t Hooft–Redmount relation f_P f_F = f_L f_R holds. It is kinematic: it needs only continuity of r and a
     C⁰ metric, so it holds in model U.
   * It forces the region after the crossing to have f_F → −∞ (mass inflation; in GR the mass grows by 10¹³ after 50 l).
