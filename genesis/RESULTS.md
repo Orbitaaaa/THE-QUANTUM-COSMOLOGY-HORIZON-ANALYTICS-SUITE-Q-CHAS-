@@ -329,6 +329,14 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R196 | **Independent audit**: 24/24 checks pass. Symbolic re-derivations (μ_ext, T, a_infl, Λ_c, hydro acceleration with GR limit, DL radius); direct Riemann computations of the static and FRW Kretschmann formulas (D = 4, 5); independent numerics (time integration, closed-form curvature, Monte Carlo over the raw PDF grid, RK45 evaporation). Ledger: AUDIT_ROUND6P.md | audit |
 | R197 | Standalone paper PAPER/daughter_universes.pdf (model, global spacetime, interiors, hydrodynamics, collider, results table, limitations, audit appendix) | paper |
 
+
+### Round 7
+
+| # | result | label |
+|---|---|---|
+| R198 | **Distinguishable predictions** (100 TeV, n = 6, M_D = 8 TeV, M_ext = 11.5 TeV): model-U events are mostly a single initial-state jet balanced by an invisible remnant (56–63 %) or invisible (20–22 %); median S_T 0.45–0.63 TeV, MET/S_T ≈ 0.95; GR holes at the same threshold: 2.8 objects, S_T ≈ 12 TeV, MET/S_T ≈ 0.18. Onset at M_ext = κ_n c_l^{n+1} M_D; T(M) rising from 0; remnants ≈ M_ext with β ≈ 0.4 | Proposition-N (Monte Carlo) |
+| R199 | **Separation**: model U vs GR at 5σ with ~3 events; Hayward vs Dymnikova with ~660 events (expected log-likelihood) | Proposition-N |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

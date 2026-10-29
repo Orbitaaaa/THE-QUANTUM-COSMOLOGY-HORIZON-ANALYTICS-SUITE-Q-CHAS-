@@ -188,7 +188,7 @@ class Generator:
         a_star = (self.n + 2) * J / (2 * M * C.rs_GeV(M, self.n, self.MDg))
         out = dict(sqrt_shat=shat, M=M, b=b, a_star=a_star, horizon=bool(M > max(self.M_ext, self.M_th * 0.999)) if self.kind != "gr" else True)
         if not out["horizon"]:
-            out.update(N=0, E_vis=0.0, E_miss=0.0, remnant=0.0)
+            out.update(N=0, E_vis=0.0, E_miss=0.0, remnant=0.0, tau=tau, quanta=[])
             return out
         M_end = self.M_ext * 1.0005 if self.kind != "gr" else self.MDg
         quanta = []
@@ -224,7 +224,9 @@ class Generator:
             counts[qq[0]] = counts.get(qq[0], 0) + 1
         out.update(N=len(quanta), N_vis=sum(1 for qq in quanta if qq[2]), E_vis=E_vis, E_nu=E_nu, remnant=remnant,
                    E_miss=remnant + E_nu, f_miss=(remnant + E_nu) / M, T0=T0, sphericity=float(sph), counts=counts,
-                   mean_E=float(np.mean([qq[1] for qq in quanta])) if quanta else 0.0)
+                   mean_E=float(np.mean([qq[1] for qq in quanta])) if quanta else 0.0, tau=tau)
+        if getattr(self, "keep_quanta", False):
+            out["quanta"] = quanta
         return out
 
     def run(self, n_events=2000) -> dict:
