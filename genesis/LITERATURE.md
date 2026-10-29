@@ -263,6 +263,20 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Carballo-Rubio, Di Filippo, Liberati, Pacilio, Visser** (2022) JHEP 09, 118, arXiv:2205.13556 (inner-extremal regular black holes);
   "Mass inflation without Cauchy horizons", PRL (2024).
 
+### Round 6k
+
+* **Popławski**, arXiv:1110.5019 (2011); arXiv:2008.02136; arXiv:2307.12190; arXiv:2509.11468 (IJMPA 40, 2544007, 2025); arXiv:2007.11556:
+  torsion (Einstein–Cartan–Sciama–Kibble) turns collapse into a bounce and a new universe beyond the horizon.
+* **Frolov, Markov, Mukhanov**, PLB 216, 272 (1989); PRD 41, 383 (1990). **Barrabès, Frolov**, PRD 53 (1996), hep-th/9511136.
+  **Easson, Brandenberger**, hep-th/0103019. arXiv:2007.06664 (de Sitter universe inside a Schwarzschild black hole).
+* **Chamseddine, Mukhanov**, "Nonsingular black hole", EPJC (2017); "Black hole remnants", JHEP 10 (2019) 104, arXiv:1908.03498.
+  **Ben Achour, Lamy, Liu, Noui**, arXiv:1712.03876.
+* **Ashtekar, Olmedo, Singh**, PRL 121, 241301 (2018); PRD 98, 126003 (2018).
+* **Cooper, Rozali, Swingle, Van Raamsdonk, Waddell, Wakeham**, arXiv:1810.10601, JHEP (2019): black-hole microstate cosmology.
+* **CMS**, arXiv:2604.10732, JHEP 08 (2026) 098. **Hossenfelder et al.**, hep-ph/0109085.
+* **Scholtz, Unwin**, PRL 125, 051103 (2020), arXiv:1909.11090: Planet Nine as a primordial black hole. **Witten**, arXiv:2004.14192:
+  laser-launched probes.
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

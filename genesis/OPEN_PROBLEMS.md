@@ -199,3 +199,16 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   core (none), or bounce. This decides door Y1.
 * **P-R6j-e.** Large extra dimensions at 6–20 TeV (n ≥ 4): a 100 TeV collider decides door Y2. What happens inside fundamental-scale black
   holes (R_S M_D ≈ 1) is quantum gravity.
+
+## Round 6k additions (ROADMAP_ROUND6K.md)
+
+* **P-R6k-a.** P2 from a complete theory: a black-hole interior calculation in a consistent theory that recovers GR and yields an expanding
+  daughter (ECSK with a full collapse beyond homogeneity; a limiting-curvature action without instabilities; a quantum-gravity
+  derivation).
+* **P-R6k-b.** The daughter threshold and formation at R_S ≈ l, where the semiclassical junction is marginal: what replaces it for
+  fundamental-scale black holes?
+* **P-R6k-c.** Does matter delivered into an existing black hole create a new daughter (Barrabès–Frolov multiple worlds) or feed the
+  existing one (ECSK)? This decides whether a nearby primordial black hole lets humanity create daughters with small energy.
+* **P-R6k-d.** Planet Nine: primordial black hole or planet? (Probes, astrometry, microhalo annihilation.)
+* **P-R6k-e.** Proton–proton black-hole rates above M_Y at 100 TeV with real parton distributions (BlackMax/CHARYBDIS), and discriminating
+  signatures of daughters, remnants and GR evaporation.

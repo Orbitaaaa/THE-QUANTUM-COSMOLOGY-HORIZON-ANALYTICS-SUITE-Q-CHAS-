@@ -459,3 +459,12 @@ throat-free limit is the disconnected no-boundary universe. Together with Q* (Ro
 connection does.
 
 **Type:** no-go (numerical, exact fit).
+
+### F60. A four-dimensional ECSK daughter at collider scale; the Planet-Nine/electroweak coincidence (Round 6k)
+*Result:* ECSK puts a bounce inside every hole above M_min ≈ 0.15 M_P²/m (4.3×10¹⁰ kg for nucleons). A heavier fermion lowers it only as 1/m
+(top quark: ~2×10⁸ kg), so in four dimensions no collider-scale hole holds an ECSK bounce. A collider route needs extra dimensions (P1).
+Separately, a 5–10 Earth-mass primordial hole is the Nariai partner of a 60–85 GeV vacuum, close to the electroweak V(0)^{1/4} = 104 GeV. But
+the symmetric phase is not metastable at zero temperature, and restoring it thermally costs ~200× its vacuum energy (Round 6f). The
+closeness is a coincidence, not a route.
+
+**Type:** scaling bound + assessment.

@@ -22,6 +22,11 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6K.md](ROADMAP_ROUND6K.md)**: Round 6k, the two doors worked through. Y1 is realized in definite theories
+  (Einstein–Cartan torsion bounces at 3.9×10⁵⁸ kg/m³ inside any hole above 4.3×10¹⁰ kg; limiting-curvature de Sitter junctions in any
+  dimension). With Y2 (n ≥ 4, M_D ≲ 15 TeV, allowed), black holes above 24–68 TeV hold daughters, within a 100 TeV collider's reach:
+  a conditional yes, its premises testable or theory-dependent. A primordial black hole as Planet Nine would be a natural bridge ~10 years
+  away.
 * **[ROADMAP_ROUND6J.md](ROADMAP_ROUND6J.md)**: Round 6j, what the invariant really bounds (a geometric identity, a bound on stored energy;
   not on supplied energy) and fifteen loopholes in four groups. Classical loopholes cost more than they buy; environments cannot prepare a
   daughter-ready state; a connected quantum channel pays the throat-area action ΔS = 3π³a₀². Two conditional doors remain, both in quantum
@@ -166,6 +171,15 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **Not by external assembly.** Delivering a near-Nariai region's energy within one light-crossing needs ~c⁵/(3G) ≈ 10⁵² W (static holding
   ~10⁴³ N): a conditional engineering bound. The Round 6h review withdrew the stronger "no machine of any kind" wording.
 
+## Round 6k in brief (the two doors: a conditional yes)
+
+* Y1 in definite theories: ECSK bounce at 3.9×10⁵⁸ kg/m³ (holes > 4.3×10¹⁰ kg); the interior re-expands beyond the horizon and, with vacuum
+  energy l_d < 2.6 A, inflates. Limiting curvature joins Schwarzschild(-Tangherlini) to de Sitter at r₀ = (r_s^{n+1}l²)^{1/(n+3)} if r_s > l.
+* Y1 + Y2: with n ≥ 4 extra dimensions and M_D ≲ 15 TeV (allowed), black holes above M_Y = 3.9–4.7 M_D (24–68 TeV) hold daughters, below
+  the ~71 TeV reach of a 100 TeV collider; they form before evaporation. Semiclassical control needs 10–100 PeV.
+* Test of the interior class: static cores leave remnants (T → 0); expanding interiors look like GR outside.
+* A primordial black hole as Planet Nine (if real) is ~10 years away by laser-launched probes.
+
 ## Round 6j in brief (geometry, stored and supplied energy; fifteen loopholes)
 
 * The invariant is the identity E√ρ̄ = √(3/32π)c⁶G^{−3/2}k^{3/2} at k = 1: a geometric statement and, with ρ ≥ 0, a bound on stored energy.
@@ -298,7 +312,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 224 tests
+cd .. && python -m pytest tests -q                # 230 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

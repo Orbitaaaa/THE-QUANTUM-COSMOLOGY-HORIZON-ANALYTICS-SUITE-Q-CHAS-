@@ -262,6 +262,18 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R165 | **Proposition 6j-11 (extra dimensions)**: with n ≥ 4 and M_D ≈ 6–20 TeV (allowed), black holes form at a few M_D: a 100 TeV collider makes them. But R_S M_D ≈ 1.0 at 5 M_D (n = 4–7): fundamental-scale objects; a semiclassical interior (R_S = 3/M_D) needs 960 M_D (n = 4) to 10⁴ M_D (n = 6) | Proposition (conditional) |
 | R166 | **Correction F56**: the Round 6c partner vacuum is ρ_f = 1/(72πM²) (Nariai 9M²Λ = 1), not 1/(24πM²): ρ_f^{1/4} = 0.329 GeV (M_☉/M)^{1/2}; GUT partner 2.2 g, electroweak 3.6 Earth masses | Correction |
 
+
+### Round 6k
+
+| # | result | label |
+|---|---|---|
+| R167 | **ECSK bounce**: an unpolarised spin-½ fluid (ε_eff = ε − κs²/4, s² = ħ²c²n²/8) of particle mass m bounces at ρ_b = 4m²c⁴/(πGħ²) = 3.9×10⁵⁸ kg/m³ for nucleons (10⁻³⁸ of Planck: semiclassical); a horizon forms first for M > (3/4πρ_b)^{1/2}(c²/2G)^{3/2} = 4.3×10¹⁰ kg. Every astrophysical black hole holds a bounce if ECSK holds | Proposition |
+| R168 | **Proposition-N 6k-1 (ECSK interior)**: Oppenheimer–Snyder closed dust with spin term bounces at a_min ≈ (S/A)^{1/3} and re-expands beyond the horizon into a new universe; without vacuum energy it cycles; a contracting region with vacuum energy l_d < (3√3/2)A bounces and then inflates | Proposition-N |
+| R169 | **Proposition 6k-2 (limiting curvature, D dimensions)**: Schwarzschild–Tangherlini meets de Sitter at r₀ = (r_s^{n+1}l²)^{1/(n+3)}, exists iff r_s > l, with r₀/l > 1 (inflates) | Proposition |
+| R170 | **Proposition 6k-3 (the conditional machine)**: with P1 (n ≥ 4, M_D ≲ 15 TeV; allowed) and P2 (limiting-curvature interiors, l = 1/M_D), black holes hold daughters for M_BH > M_Y = 3.9–4.7 M_D = 24–68 TeV, below the ~71 TeV reach of a 100 TeV collider; parton σ 8–34 pb; daughters form before evaporation (lifetime/interior time ≈ 7); semiclassical control needs 10³–10⁴ M_D | Proposition (conditional) |
+| R171 | **Proposition-N 6k-4 (collider test of the interior class)**: a D-dimensional static de Sitter core gives T(M) rising from zero at a remnant (μ ≈ 10.8 l^{n+1}), peaking (0.19/l) and approaching GR (5%); expanding (FMM) interiors look like GR outside | Proposition-N |
+| R172 | **Natural bridge within reach**: a Planet-Nine primordial black hole (5–10 Earth masses, ~500 AU; Scholtz–Unwin 2020) is reachable by laser-launched probes in ~8–10 years (Witten 2020); under Y1 it already holds a daughter. Its Nariai partner vacuum is 60–85 GeV, near the electroweak V(0)^{1/4} = 104 GeV (partner 3.3 Earth masses): a coincidence, not a route | Assessment |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
