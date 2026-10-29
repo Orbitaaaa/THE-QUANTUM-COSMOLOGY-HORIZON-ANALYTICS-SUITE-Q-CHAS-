@@ -43,6 +43,8 @@ rules it out.
   * The Oppenheimer–Snyder interior (closed dust FRW) with the spin term obeys ȧ² = A/a − S/a⁴ − 1 + a²/l_d².
   * It bounces at a_min ≈ (S/A)^{1/3} (numerics agree to 10⁻⁴) and re-expands beyond the horizon, into a new universe.
   * Without vacuum energy it returns to its original size and cycles.
+  * (Round 6l, F61: a homogeneous ball cannot sit in a vacuum exterior; the bounce is inhomogeneous, an untrapped core inside an inner
+    apparent horizon.)
   * A contracting region that carries vacuum energy with l_d < (3√3/2)A bounces and then inflates for ever. That criterion is analytic and
     checked numerically: l_d = 2.5 A inflates, 3.0 A cycles.
   * Consequence: a lasting cosmos from a stellar collapse needs growth from cycle to cycle (Popławski: particle production) or interior

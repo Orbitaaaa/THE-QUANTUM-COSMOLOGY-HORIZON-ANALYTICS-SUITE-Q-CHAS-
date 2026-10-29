@@ -22,6 +22,10 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6L.md](ROADMAP_ROUND6L.md)**: Round 6l, unified quantum-gravity formation. Model U (D = 4 + n gravity + a quasi-topological
+  tower) contains both doors in one pure-gravity action. Its holes are regular; matter bounces into a new universe beyond a white hole, but
+  the interior does not inflate for long. A 100 TeV collider makes such holes iff their threshold lies at 9–50 TeV (a window in the limiting
+  length). Later infall joins the existing core and saturates the curvature bound. Experiments test the interior class, never the daughter.
 * **[ROADMAP_ROUND6K.md](ROADMAP_ROUND6K.md)**: Round 6k, the two doors worked through. Y1 is realized in definite theories
   (Einstein–Cartan torsion bounces at 3.9×10⁵⁸ kg/m³ inside any hole above 4.3×10¹⁰ kg; limiting-curvature de Sitter junctions in any
   dimension). With Y2 (n ≥ 4, M_D ≲ 15 TeV, allowed), black holes above 24–68 TeV hold daughters, within a 100 TeV collider's reach:
@@ -171,6 +175,17 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **Not by external assembly.** Delivering a near-Nariai region's energy within one light-crossing needs ~c⁵/(3G) ≈ 10⁵² W (static holding
   ~10⁴³ N): a conditional engineering bound. The Round 6h review withdrew the stronger "no machine of any kind" wording.
 
+## Round 6l in brief (one model with both doors)
+
+* Model U: D = 4 + n Einstein gravity + the Bueno–Cano–Hennigar tower. Regular holes, horizons above μ_ext, T → 0 there (remnants). Matter
+  interiors bounce at a = l and accelerate for ((D−3)/(D−1)) ln(R/l) e-folds (29.6 in a 4D stellar hole), then recollapse. Lasting
+  inflation needs a vacuum as dense as the hole; vacuum collapse leaves a static core.
+* Collider (NNPDF2.3 LO): daughter-bearing holes at 100 TeV iff M_ext ≈ 9–50 TeV, i.e. l M_D ≈ 0.45–0.80 (Hayward) or 0.54–0.95
+  (Dymnikova); up to ~10⁹ events. They form 20–7000× faster than they evaporate and leave remnants holding M_ext/M of the mass.
+* Multiple daughters: later infall meets the bounced matter inside the same core; after 7–30 l of delay, DTR plus the curvature bound
+  saturate the crossing (the Barrabès–Frolov regime, open).
+* Experiments: monojets give M_D; the black-hole onset, T(M) and remnants identify the class; the daughter itself is outside J⁻(I⁺).
+
 ## Round 6k in brief (the two doors: a conditional yes)
 
 * Y1 in definite theories: ECSK bounce at 3.9×10⁵⁸ kg/m³ (holes > 4.3×10¹⁰ kg); the interior re-expands beyond the horizon and, with vacuum
@@ -312,7 +327,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 230 tests
+cd .. && python -m pytest tests -q                # 237 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

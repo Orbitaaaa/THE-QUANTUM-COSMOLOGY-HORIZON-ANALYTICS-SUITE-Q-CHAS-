@@ -212,3 +212,17 @@ Grouped by the phase that should attack them. Each item has a precise statement 
 * **P-R6k-d.** Planet Nine: primordial black hole or planet? (Probes, astrometry, microhalo annihilation.)
 * **P-R6k-e.** Proton–proton black-hole rates above M_Y at 100 TeV with real parton distributions (BlackMax/CHARYBDIS), and discriminating
   signatures of daughters, remnants and GR evaporation.
+
+## Round 6l additions (ROADMAP_ROUND6L.md)
+
+* **P-R6l-a.** Thick-shell (or fluid) dynamics in model U at the curvature bound. After 7–30 l of delay, a late infall drives the crossing
+  region to ψ = 1/α (locally de Sitter, trapped). Does this seal the core, modify the existing daughter, or create a new de Sitter world
+  (Barrabès–Frolov)? This decides whether matter delivered into an existing hole makes new daughters.
+* **P-R6l-b.** The limiting length l = c_l/M_D. The collider decides the question iff c_l lies in the window found (≈ 0.45–0.80 Hayward,
+  0.54–0.95 Dymnikova). Is there a principle (UV completion, entropy bound, positivity) that fixes c_l?
+* **P-R6l-c.** Inner-horizon stability of model-U holes. The white-hole exit is where mass inflation acts. Do "inner-extremal" towers
+  (κ₋ = 0; Carballo-Rubio et al. 2022) exist inside the quasi-topological family?
+* **P-R6l-d.** A full event generator for model-U black holes (BlackMax/CHARYBDIS with a regular-core T(M), remnants, greybody factors),
+  and a dedicated FCC-hh sensitivity study of the onset M_th/M_D and of the missing energy carried by remnants.
+* **P-R6l-e.** A four-dimensional or string-embedded version of the tower with a dynamical vacuum. Could the bounce at the curvature bound
+  populate a false vacuum of the hole's density (Proposition 6l-2), which would turn the transient acceleration into lasting inflation?

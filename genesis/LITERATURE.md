@@ -277,6 +277,22 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Scholtz, Unwin**, PRL 125, 051103 (2020), arXiv:1909.11090: Planet Nine as a primordial black hole. **Witten**, arXiv:2004.14192:
   laser-launched probes.
 
+### Round 6l
+
+* **Bueno, Cano, Hennigar**, PLB 861 (2025), arXiv:2403.04827: regular black holes as unique vacuum solutions of quasi-topological towers,
+  D ≥ 5 (Hayward, Bardeen-like and Dymnikova-like).
+* **Bueno, Cano, Hennigar, Murcia**, PRD 111, 104009 (2025), arXiv:2412.02740; PRL 134, 181401 (2025), arXiv:2412.02742: thin-shell
+  collapse, Birkhoff theorem, junction conditions, bounces and white-hole explosions into a new universe, evidence for a curvature bound.
+* **Bueno, Cano, Hennigar, Murcia, Vicente-Cano**, arXiv:2505.09680: Oppenheimer–Snyder collapse; the Friedmann equation h(Φ) ∝ ρ.
+* **Fernandes**, PRD 112, 084028 (2025), arXiv:2504.07692. **Ling & Yu**, arXiv:2509.00137.
+* **Barrabès & Frolov**, PRD 53, 3215 (1996), hep-th/9511136; gr-qc/9607040: multiple de Sitter worlds bounded by lightlike surfaces.
+* **Poisson & Israel**, PRD 41, 1796 (1990); **Dray & 't Hooft** (1985); **Barrabès & Israel** (1991). **Carballo-Rubio et al.**,
+  arXiv:2101.05006; inner-extremal regular black holes (JHEP 2022).
+* **Geroch**, J. Math. Phys. 8, 782 (1967). **Hayward**, PRL 96, 031103 (2006). **Frolov**, JHEP 05 (2014) 049.
+* **Eardley & Giddings**, PRD 66, 044011 (2002). **Yoshino & Nambu**, PRD 67, 024009 (2003). **Yoshino & Rychkov**, PRD 71, 104028
+  (2005). **Emparan, Horowitz, Myers**, PRL 85, 499 (2000). **NNPDF2.3**, Nucl. Phys. B 867, 244 (2013); **Pythia 8.3**, SciPost Phys.
+  Codebases 8 (2022). **FCC Feasibility Study Report** (2025). **Giddings & Mangano**, PRD 78, 035009 (2008).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

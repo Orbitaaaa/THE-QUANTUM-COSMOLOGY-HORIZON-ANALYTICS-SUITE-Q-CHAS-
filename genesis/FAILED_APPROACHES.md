@@ -468,3 +468,22 @@ the symmetric phase is not metastable at zero temperature, and restoring it ther
 closeness is a coincidence, not a route.
 
 **Type:** scaling bound + assessment.
+
+### F61. A homogeneous Einstein-Cartan ball re-expanding inside a vacuum exterior (Round 6k picture, corrected in Round 6l)
+*Result:* the spin pressure does work, so the homogeneous ball's Misner–Sharp mass falls from (sin³χ/2)A to (sin³χ/2)a_b by the bounce:
+99 % of it for S = 10⁻⁶. That is incompatible with a vacuum exterior of fixed mass. Kinematically, any bounce sphere is untrapped
+(Proposition 6l-3). So the ECSK bounce must be inhomogeneous: an untrapped core inside an inner apparent horizon, with the outer layers
+still falling. The Round 6k statement that ECSK interiors re-expand into a new universe survives only in this form.
+
+**Type:** consistency correction (proposition + numerical).
+
+### F62. Inflating daughters, and extra daughters by adding matter, in the unified model (Round 6l)
+*Result:* in model U, the one consistent action found that contains both P1 and P2:
+* vacuum collapse leaves a static de Sitter core;
+* matter cores accelerate only for N ≈ ((D−3)/(D−1)) ln(a_max/l) e-folds and then recollapse;
+* lasting inflation needs a vacuum as dense as the hole.
+
+Later infall meets the bounced matter inside the same core and, after 7–30 l of delay, saturates the curvature bound: it does not quietly
+create a second daughter. The daughter that does exist is a new asymptotic region beyond a white hole, not an inflating cosmos.
+
+**Type:** no-go within model U (propositions + numerical); open beyond thin shells (P-R6l-a).
