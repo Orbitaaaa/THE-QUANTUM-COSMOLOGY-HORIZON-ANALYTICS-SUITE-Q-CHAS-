@@ -22,6 +22,8 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6P.md](ROADMAP_ROUND6P.md)**: Round 6p, independent audit (24/24 checks: symbolic, direct Riemann, independent numerics; ledger in
+  [AUDIT_ROUND6P.md](AUDIT_ROUND6P.md)) and the standalone paper [PAPER/daughter_universes.pdf](PAPER/daughter_universes.pdf).
 * **[ROADMAP_ROUND6O.md](ROADMAP_ROUND6O.md)**: Round 6o, collider formation, interior and evaporation in one spacetime (yes). The evaporating
   model-U hole approaches a zero-temperature remnant: the trapped region never closes, and the bounced partons reach the daughter's boundary
   at finite affine parameter. Event generator: near-threshold holes emit almost nothing, and the remnant carries 95 % of the energy.
@@ -337,7 +339,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 247 tests
+cd .. && python -m pytest tests -q                # 250 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

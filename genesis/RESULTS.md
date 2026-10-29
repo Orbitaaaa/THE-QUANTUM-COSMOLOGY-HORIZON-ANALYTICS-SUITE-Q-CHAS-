@@ -321,6 +321,14 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R194 | **Proposition-N 6o-1**: μ − μ_ext ∝ v^{−1.00±0.03}, r₊ − r₋ ∝ v^{−0.50±0.02} (24 cases): the trapped region never closes; the bounced partons stay below r₋ and reach the parent-chart boundary at finite affine parameter 2.0–2.1 l: the daughter persists through evaporation | Proposition-N |
 | R195 | **Event generator** (100 TeV, n = 6, M_D = 8 TeV, M_ext = 11.5 TeV, σ ≈ 13.7 pb): model U emits 0.2–0.3 quanta per event (no quantum in 76–85 %), missing fraction 0.95–0.97; a GR hole at the same threshold emits ~2 and loses none. Near-threshold model-U production is largely invisible | Proposition-N |
 
+
+### Round 6p
+
+| # | result | label |
+|---|---|---|
+| R196 | **Independent audit**: 24/24 checks pass. Symbolic re-derivations (μ_ext, T, a_infl, Λ_c, hydro acceleration with GR limit, DL radius); direct Riemann computations of the static and FRW Kretschmann formulas (D = 4, 5); independent numerics (time integration, closed-form curvature, Monte Carlo over the raw PDF grid, RK45 evaporation). Ledger: AUDIT_ROUND6P.md | audit |
+| R197 | Standalone paper PAPER/daughter_universes.pdf (model, global spacetime, interiors, hydrodynamics, collider, results table, limitations, audit appendix) | paper |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
