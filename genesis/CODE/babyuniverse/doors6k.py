@@ -20,7 +20,7 @@ Y1 (ROADMAP_ROUND6K.md, section 1):
                              r_0/l = (r_s/l)^{(n+1)/(n+3)} > 1: the de Sitter region starts larger than its Hubble length and inflates.
 Y2 and Y1 + Y2 (sections 2-3):
 * ``add_daughter_machine``   [Proposition 6k-3, conditional] With limiting length l = c_l / M_D, a collider black hole holds an FMM daughter iff
-                             R_S > l: M_BH > M_Y = threshold mass.  For c_l = 1, M_Y = 4.4 M_D (n = 4) to 4.9 M_D (n = 7): inside the reach of
+                             R_S > l: M_BH > M_Y = threshold mass.  For c_l = 1, M_Y = 3.9 M_D (n = 4) to 4.7 M_D (n = 6): inside the reach of
                              a 100 TeV collider for M_D <~ 10-15 TeV.  The interior reaches r_0 in a proper time ~R_S/c, shorter than the
                              Hawking lifetime ~(1/M_D)(M/M_D)^{(n+3)/(n+1)} by a factor ~5-10.  Semiclassical control (R_S >= 3 l) needs
                              M_BH ~ 1e3-1e4 M_D.
