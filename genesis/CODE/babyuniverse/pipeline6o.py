@@ -113,7 +113,8 @@ def vaidya_history(n=6, c_l=0.65, mu0_over_ext=3.0, kind="hayward", v_max=None, 
 
 
 class Generator:
-    def __init__(self, lumi: C.Lumi, sqrt_s_TeV=100.0, n=6, M_D_TeV=8.0, c_l=0.65, kind="hayward", trapped="conservative", seed=1):
+    def __init__(self, lumi: C.Lumi, sqrt_s_TeV=100.0, n=6, M_D_TeV=8.0, c_l=0.65, kind="hayward", trapped="conservative", seed=1,
+                 M_th_TeV=None):
         self.lumi, self.rs, self.n, self.MD, self.c_l, self.kind = lumi, sqrt_s_TeV, n, M_D_TeV, c_l, kind
         self.D = n + 4
         self.rng = np.random.default_rng(seed)
@@ -123,6 +124,7 @@ class Generator:
         self.A = a_n(n, c_l)
         self.me = U.extremal_mu(self.D, 1.0, kind) if kind != "gr" else 0.0
         self.M_ext = self.A * self.MDg * self.me if kind != "gr" else 0.0
+        self.M_th_override = M_th_TeV * 1e3 if M_th_TeV else None
         self._build_sampler()
         # temperature table T(M) [GeV] in terms of mu_hat
         if kind != "gr":
@@ -132,7 +134,7 @@ class Generator:
 
     def _build_sampler(self):
         s = (self.rs * 1e3) ** 2
-        M_th = self.M_ext if self.kind != "gr" else 2.0 * self.MDg
+        M_th = self.M_th_override or (self.M_ext if self.kind != "gr" else 2.0 * self.MDg)
         self.M_th = max(M_th, 1e-3)
         tau_min = (self.M_th / self.y) ** 2 / s
         self.tau_min = tau_min
@@ -154,21 +156,26 @@ class Generator:
             return 0.0
         return float(np.interp(mu, self._Ttab_mu, self._Ttab_T))
 
+    _XG = np.linspace(1e-4, 45.0, 6000)
+    _CDF = {}
+    for _st, _sgn in (("B", -1.0), ("F", 1.0)):
+        _pdf = _XG**3 / (np.exp(_XG) + _sgn)
+        _c = np.concatenate([[0.0], np.cumsum(0.5 * (_pdf[1:] + _pdf[:-1]) * np.diff(_XG))])
+        _CDF[_st] = _c / _c[-1]
+
     def _emit(self, T):
-        """One Hawking quantum at temperature T: species by number-flux weight, energy from the Bose/Fermi spectrum (masses respected)."""
+        """One Hawking quantum at temperature T: species by number-flux weight (bosons 1, fermions 3/4, Boltzmann-suppressed when massive),
+        energy from the exact x^3/(e^x -+ 1) spectrum by inverse transform, rest mass respected."""
         w = np.array([d * (1.0 if st == "B" else 0.75) * (np.exp(-m / T) if m > 0 else 1.0) for (_, d, st, m, _, _) in SPECIES])
-        k = self.rng.choice(len(SPECIES), p=w / w.sum())
-        name, d, st, m, q, vis = SPECIES[k]
-        for _ in range(200):
-            x = self.rng.gamma(4.0, 1.0)                    # proposal ~ x^3 e^-x
-            acc = (1.0 / (1 - np.exp(-x))) if st == "B" else (1.0 / (1 + np.exp(-x)))
-            if self.rng.random() < acc / (1.0 / (1 - np.exp(-1e-3)) if st == "B" else 1.0) or st == "F":
-                if st == "F" and self.rng.random() > acc:
-                    continue
+        for _ in range(50):
+            k = self.rng.choice(len(SPECIES), p=w / w.sum())
+            name, d, st, m, q, vis = SPECIES[k]
+            for _ in range(20):
+                x = float(np.interp(self.rng.random(), self._CDF[st], self._XG))
                 E = x * T
                 if E > m:
                     return name, E, vis, q
-        return name, max(3 * T, m * 1.01), vis, q
+        return "photon", 3 * T, True, 0
 
     def event(self):
         u = self.rng.random()
@@ -179,7 +186,7 @@ class Generator:
         b = np.sqrt(self.rng.random()) * np.sqrt(C.YN_FORM_FACTOR[self.n]) * rh
         J = 0.5 * b * shat
         a_star = (self.n + 2) * J / (2 * M * C.rs_GeV(M, self.n, self.MDg))
-        out = dict(sqrt_shat=shat, M=M, b=b, a_star=a_star, horizon=bool(M > self.M_ext) if self.kind != "gr" else True)
+        out = dict(sqrt_shat=shat, M=M, b=b, a_star=a_star, horizon=bool(M > max(self.M_ext, self.M_th * 0.999)) if self.kind != "gr" else True)
         if not out["horizon"]:
             out.update(N=0, E_vis=0.0, E_miss=0.0, remnant=0.0)
             return out
@@ -235,3 +242,24 @@ class Generator:
                     E_vis_TeV=(arr("E_vis") / 1e3).tolist(), remnant_TeV=(arr("remnant") / 1e3).tolist(), T0_GeV=arr("T0").tolist(),
                     sphericity=arr("sphericity").tolist(), a_star=arr("a_star").tolist(), mean_E_GeV=arr("mean_E").tolist(),
                     species_fractions={k: v / tot for k, v in species.items()})
+
+
+def event_timeline(n=6, M_D_TeV=8.0, c_l=0.6, M_TeV=25.0, kind="hayward") -> dict:
+    """One event in seconds: horizon formation (light-crossing of R_S), the partons' bounce through the regular centre (2.7 l of proper
+    time for matter released near the horizon, Round 6l), evaporation to within 1 % of the remnant, and the daughter's boundary reached at
+    finite affine parameter."""
+    from .collider6l import evaporation, interior_time
+    D = n + 4
+    MD = M_D_TeV * 1e3
+    l = c_l / MD
+    mu_hat = (C.rs_GeV(M_TeV * 1e3, n, MD) / l) ** (n + 1)
+    me = U.extremal_mu(D, 1.0, kind)
+    hz = U.static_horizons(mu_hat, D, 1.0, kind)
+    ev = evaporation(n, M_D_TeV, c_l, M_TeV * 1e3 / MD, kind)
+    it = interior_time(n, mu_hat / me, kind)
+    vh = vaidya_history(n, c_l, mu_hat / me, kind, n_pts=600)
+    s = 6.582119569e-25
+    return dict(n=n, M_D_TeV=M_D_TeV, c_l=c_l, M_TeV=M_TeV, mu_over_ext=float(mu_hat / me), r_plus_m=float(hz[1] * l * 1.97327e-16),
+                t_formation_s=float(hz[1] * l * s), t_bounce_s=float(it["tau_horizon_to_bounce_l"] * l * s), t_evaporation_s=ev["lifetime_s"],
+                remnant_TeV=ev["M_remnant_TeV"], quanta=ev["quanta"], daughter_persists=bool(vh["horizons_never_meet"] and vh["shell_below_inner_horizon"]),
+                affine_to_daughter_boundary_l=vh["affine_final"])
