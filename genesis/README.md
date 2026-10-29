@@ -22,6 +22,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND6M.md](ROADMAP_ROUND6M.md)**: Round 6m, the global daughter spacetime (yes). Model-U collapse gives a curvature-bounded
+  (mass-independent bound), horizon-regular, geodesically complete spacetime. Its daughter universe (white hole plus a new asymptotically flat
+  region) is causally disconnected from the parent; the finite daughter (the bounced closed interior) grows in volume by up to 10¹¹⁵.
 * **[ROADMAP_ROUND6L.md](ROADMAP_ROUND6L.md)**: Round 6l, unified quantum-gravity formation. Model U (D = 4 + n gravity + a quasi-topological
   tower) contains both doors in one pure-gravity action. Its holes are regular; matter bounces into a new universe beyond a white hole, but
   the interior does not inflate for long. A 100 TeV collider makes such holes iff their threshold lies at 9–50 TeV (a window in the limiting
@@ -327,7 +330,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 237 tests
+cd .. && python -m pytest tests -q                # 241 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.

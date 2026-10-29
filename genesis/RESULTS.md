@@ -290,6 +290,17 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R181 | **FMM patches**: induced-metric continuity gives Δt_dS = Δv; on the expanding de Sitter branch, entries separated by Δv > l ln((r₀+l)/(r₀−l)) ≈ 2l(l/r_s)^{1/3} land in causally disjoint patches; on the contracting (FMM) branch, one closed de Sitter world | Proposition |
 | R182 | **Proposition-N 6l-7/6l-8**: (closure) a compact trapped region with a regular centre returns everything to our future null infinity: no daughter persists without a remnant-like endpoint; (exterior equivalence) interiors that agree on J⁻(I⁺) give identical exterior data and Hawking out-states: experiments test the class (M_D from monojets; onset M_th/M_D; T(M); remnants), never the daughter | Proposition-N |
 
+
+### Round 6m
+
+| # | result | label |
+|---|---|---|
+| R183 | **Global daughter spacetime**: OS collapse in model U glued exactly to the static exterior (surface = geodesic with E = cos χ_b); maximal extension I → II → III → IV → I' computed in diamond patches matched through the finite null coordinate | Proposition |
+| R184 | **Proposition 6m-1**: max Kretschmann × l⁴ is mass-independent over μ = 10⁻³–10⁸ (D = 4: 29–34; D = 5: 45–48; D = 10: 188 Hayward, 919 Dymnikova); the closed interior peaks at the de Sitter value 2D(D−1)/l⁴ at the bounce | Proposition-N |
+| R185 | **Proposition 6m-2**: for μ > μ_ext the ball surface crosses r₊, r₋, bounces where f = E² > 0 and reaches the new universe I' in finite proper time (2.5–35 l); for μ < μ_ext it bounces back into the parent | Proposition |
+| R186 | Both horizons regular (Kruskal metric function equal finite limits from both sides, ratio 1 ± 10⁻⁴); radial and non-radial timelike and null geodesics complete | Proposition-N |
+| R187 | **Proposition 6m-3**: the daughter IV ∪ I' lies outside J⁻(I⁺) of the parent, has its own null infinity and ADM mass μ; the finite daughter (bounced closed FRW) grows in volume ×1.3×10⁵ (C = 10⁴, D = 10) to ×8×10¹¹⁴ (4D stellar) | Proposition |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in
