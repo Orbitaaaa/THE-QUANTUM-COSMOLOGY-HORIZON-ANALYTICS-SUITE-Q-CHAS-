@@ -347,6 +347,16 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R202 | **Proposition-N 8-1 (safety)**: a remnant captured in a neutron star re-radiates its accretion (10¹³–10¹⁴ GeV/s), sitting (2–40)×10⁻⁹ above extremality at T ≈ 0.16 GeV: no growth | Proposition-N |
 | R203 | **Future reach** (≥ 10 holes, conservative): HL-LHC 6.3 TeV, HE-LHC 12.7 TeV, FCC-hh 85 TeV 40.6 TeV, 100 TeV 48.2 TeV: the window is covered by FCC-hh-class machines only | Proposition-N |
 
+
+### Round 9
+
+| # | result | label |
+|---|---|---|
+| R204 | **Experimental design**: FCC-hh 85 TeV (100 TeV option), monojet + invisible remnant (lead p_T, MET > p_cut, MET/S_T > 0.8; p_cut optimised 3–16 TeV), Asimov 5σ with s ≥ 5 against Z(→νν)+jet × 3 (order of magnitude) | Proposition-N |
+| R205 | **Reach** (n = 6, M_D(DL) = 8 TeV): 5σ discovery to M_ext ≈ 33.5 TeV (85 TeV, 20 ab⁻¹) and 40.0 TeV (100 TeV, 30 ab⁻¹); 10 selected events to 35.8 / 44.2 TeV; 10 charged remnants (if 30 % charged) to 39.1 / 46.3 TeV; HE-LHC 27 TeV: 9.7 TeV; the Hayward and Dymnikova towers agree to within 1 TeV | Proposition-N |
+| R206 | **Early running**: discovery needs 7 pb⁻¹ at M_ext = 11 TeV, 2 fb⁻¹ at 21 TeV and 0.3 ab⁻¹ at 29 TeV (85 TeV); S/B > 1 to 31 TeV (85) and 36 TeV (100) | Proposition-N |
+| R207 | **Detector**: MET and jet triggers at 1 TeV, hermeticity to \|η\| ≈ 6, 30–50 ps timing (β = 0.39 remnants arrive 52 ns late at 10 m), dE/dx ≈ 7 × MIP, M = p/(βγ); six-branch decision tree linking outcomes to the interior class | design |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

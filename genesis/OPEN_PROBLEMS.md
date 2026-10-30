@@ -234,3 +234,13 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   r_uv equation is r_uv = (r e^{2σ}/2)(2ψ − (D−1)h/h').
 * **P-R6n-b.** Non-spherical and rotating collapse in model U (no rotating solutions are known), and the angular-momentum shedding of
   collider holes.
+
+## Rounds 7–9 additions (ROADMAP_ROUND7.md – ROADMAP_ROUND9.md)
+
+* **P-R9-a.** A full detector simulation of the design: FCC-hh detector response with pile-up (~10³ interactions per crossing), NLO
+  Z(→νν)+jet, W(→ℓν)+jet, tt̄ and QCD-mismeasurement backgrounds, and the onset fit. Round 9 used a generic detector and order-of-magnitude
+  backgrounds. These matter only at the top of the window, where s ~ b.
+* **P-R9-b.** The charge and hadronisation of model-U remnants. A colour-neutral, electrically neutral remnant is favoured by Schwinger
+  discharge. A hadronic dressing (as for R-hadrons) would make a fraction charged and open the direct mass measurement M = p/(βγ).
+* **P-R9-c.** The recoil-spectrum onset as a measurement of c_l: the precision on M_ext from the edge of the MET spectrum, including ISR
+  modelling and jet-energy-scale uncertainties.

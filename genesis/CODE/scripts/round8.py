@@ -68,7 +68,7 @@ ax[1].semilogy(ls["M"], np.maximum(ls["cons"], 1e-9), color=C1, label="13 TeV, c
 ax[1].axhline(E.ATLAS_MONOJET_LIMIT_FB / 0.5, color=INK, ls="--", lw=1, label="ATLAS monojet limit 0.3 fb / efficiency 0.5")
 ax[1].set_ylim(1e-6, 1e4)
 ax[1].set_xlabel("model-U threshold M_ext (TeV)"); ax[1].set_ylabel("sigma(pp -> model-U hole) (fb)")
-ax[1].set_title("(b) LHC: model-U holes sit in the monojet high-recoil region; current data exclude\nM_ext below ~8 TeV (full trapping) or ~6-7 TeV (conservative)", fontsize=8)
+ax[1].set_title("(b) LHC: model-U holes sit in the monojet high-recoil region; current data exclude\nM_ext below ~8-9 TeV (full trapping) or ~4.7-5.5 TeV (conservative)", fontsize=8)
 ax[1].legend(frameon=False, fontsize=7)
 acc = out["multiobject_acceptance"]
 names = list(acc.keys())

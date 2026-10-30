@@ -300,6 +300,16 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
   Panassiti, Saueressig**, arXiv:2507.03581. **Carballo-Rubio et al.**, arXiv:2402.14913. **Di Filippo, Kolář, Kubizňák**, arXiv:2404.07058.
 * **May & White** (1966), **Misner & Sharp** (1964): Lagrangian relativistic hydrodynamics.
 
+### Rounds 7–9
+
+* **CMS**, PRD 97, 092005 (2018), arXiv:1712.02345: monojet search, 35.9 fb⁻¹; M_D(PDG) > 9.9, 7.5, 6.3, 5.7, 5.3 TeV for n = 2–6.
+  **ATLAS**, PRD 103, 112006 (2021), arXiv:2102.10874: monojet search, 139 fb⁻¹; model-independent limit σ × A × ε < 0.3 fb in the tightest
+  inclusive region.
+* **Giudice, Rattazzi, Wells**, Nucl. Phys. B 544, 3 (1999), hep-ph/9811291 (the PDG convention for M_D). **Dimopoulos, Landsberg**, PRL 87,
+  161602 (2001), hep-ph/0106295 (the horizon-radius convention used here).
+* **Cowan, Cranmer, Gross, Vitells**, EPJC 71, 1554 (2011), arXiv:1007.1727: the Asimov discovery significance.
+* **FCC Collaboration**, FCC-hh Conceptual Design Report, Eur. Phys. J. Spec. Top. 228, 755 (2019); FCC Feasibility Study Report (2025).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |
