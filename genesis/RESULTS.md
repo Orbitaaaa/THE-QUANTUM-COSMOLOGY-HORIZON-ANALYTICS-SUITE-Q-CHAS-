@@ -337,6 +337,16 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R198 | **Distinguishable predictions** (100 TeV, n = 6, M_D = 8 TeV, M_ext = 11.5 TeV): model-U events are mostly a single initial-state jet balanced by an invisible remnant (56–63 %) or invisible (20–22 %); median S_T 0.45–0.63 TeV, MET/S_T ≈ 0.95; GR holes at the same threshold: 2.8 objects, S_T ≈ 12 TeV, MET/S_T ≈ 0.18. Onset at M_ext = κ_n c_l^{n+1} M_D; T(M) rising from 0; remnants ≈ M_ext with β ≈ 0.4 | Proposition-N (Monte Carlo) |
 | R199 | **Separation**: model U vs GR at 5σ with ~3 events; Hayward vs Dymnikova with ~660 events (expected log-likelihood) | Proposition-N |
 
+
+### Round 8
+
+| # | result | label |
+|---|---|---|
+| R200 | **Convention correction (F64)**: M_D(DL) = M_D(PDG)[8π/(2π)^n]^{1/(n+2)} = 0.89–0.38 M_D(PDG) (n = 2–6); CMS monojet bounds become M_D(DL) > 8.8, 4.7, 3.2, 2.4, 2.0 TeV | correction |
+| R201 | **LHC**: model-U holes appear in the monojet high-recoil region; ATLAS 0.3 fb excludes M_ext ≲ 8–9 TeV (full trapping) or ≲ 4.7–5.5 TeV (conservative); multi-object black-hole searches accept only 1–6 % of model-U events (GR 75–97 %), so their limits do not apply | Proposition-N |
+| R202 | **Proposition-N 8-1 (safety)**: a remnant captured in a neutron star re-radiates its accretion (10¹³–10¹⁴ GeV/s), sitting (2–40)×10⁻⁹ above extremality at T ≈ 0.16 GeV: no growth | Proposition-N |
+| R203 | **Future reach** (≥ 10 holes, conservative): HL-LHC 6.3 TeV, HE-LHC 12.7 TeV, FCC-hh 85 TeV 40.6 TeV, 100 TeV 48.2 TeV: the window is covered by FCC-hh-class machines only | Proposition-N |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

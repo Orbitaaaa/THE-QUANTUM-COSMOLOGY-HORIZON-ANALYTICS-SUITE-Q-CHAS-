@@ -496,3 +496,10 @@ continuous timelike matter instead: the curvature stays bounded, matter piles up
 form.
 
 **Type:** withdrawn derivation (literature).
+
+### F64. Comparing M_D across conventions (Rounds 6k-6l; corrected in Round 8)
+*Result:* our formulas use the Dimopoulos–Landsberg horizon radius, i.e. G_D = 1/M_D^{n+2}. Experimental bounds use the PDG convention,
+G_D = (2π)^n/(8πM_D^{n+2}), so M_D(DL) = 0.89–0.38 M_D(PDG) for n = 2–6. Rounds 6k–6l quoted "M_D ≳ 5–11 TeV allowed" without converting.
+Statements made in terms of M_ext (TeV) are unaffected. The allowed range of M_D(DL) is wider: M_D(DL) > 2.0–8.8 TeV.
+
+**Type:** convention error (corrected).

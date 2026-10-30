@@ -22,6 +22,9 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
 * **[ROADMAP_ROUND6E.md](ROADMAP_ROUND6E.md)**: Round 6e, the three immediate problems: the ghost condensate as its own source (also
   self-generated), the generalised entropy of the complete transition (eternal versus transient daughters), and the creation of the
   false-vacuum ball by supercooling.
+* **[ROADMAP_ROUND8.md](ROADMAP_ROUND8.md)**: Round 8, model U against data (yes). It survives LHC monojet and black-hole searches (the latter
+  are blind to its topology) and neutron-star survival (remnants re-radiate what they accrete). It is testable at FCC-hh 85 / 100 TeV, not at
+  the HL-LHC. Corrects the M_D convention (F64).
 * **[ROADMAP_ROUND7.md](ROADMAP_ROUND7.md)**: Round 7, distinguishable predictions (yes). Model-U holes near threshold look like a single jet
   balanced by an invisible ~M_ext remnant (MET/S_T ≈ 0.95), while GR holes give ~12 TeV of balanced multi-object activity: 5σ separation with
   ~3 events. Onset at κ_n c_l^{n+1} M_D, a T(M) that rises from zero, and slow heavy remnants.
@@ -342,7 +345,7 @@ Reproduce (Python ≥ 3.10):
 ```bash
 pip install -r genesis/CODE/requirements.txt
 cd genesis/CODE/scripts && python run_all.py      # regenerates DATA/ and FIGURES/ (Stage One + Phases II-VI + roadmap + round 3)
-cd .. && python -m pytest tests -q                # 252 tests
+cd .. && python -m pytest tests -q                # 254 tests
 ```
 
 Units: $G=c=\hbar=1$ unless stated; signature $(-,+,+,+)$.
