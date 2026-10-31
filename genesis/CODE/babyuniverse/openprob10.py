@@ -132,20 +132,28 @@ def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, s
                 n_cycles=len(maxima), cycle_maxima=maxima[:12], t_end=float(sol.t[-1]))
 
 
-def scalar_bounce_scan(D=10, ratios=(0.5, 0.9, 1.5, 3.0), eps_list=(0.01, 0.1), n_phase=16, kind="hayward", t_max=3000.0) -> list:
-    """Fraction of bounce-time field values (uniform in [0, 1], both velocity signs) that end in lasting inflation."""
-    rows = []
+def _scan_job(args):
+    D, C_d, q, eps, phi_b, sgn, kind, t_max = args
+    r = scalar_from_bounce(D, C_d, q, eps, phi_b, sgn, kind, t_max=t_max)
+    return q, eps, r["fate"].startswith("lasting"), r["in_false_vacuum"], r["n_cycles"]
+
+
+def scalar_bounce_scan(D=10, ratios=(0.5, 0.9, 1.5, 3.0), eps_list=(0.01, 0.1), n_phase=16, kind="hayward", t_max=3000.0,
+                       workers=4) -> list:
+    """Fraction of bounce-time field values (uniform in [0, 1], both velocity signs) that end in lasting inflation (parallel)."""
+    import multiprocessing as mp
     C_d = 3.0 * U.extremal_mu(D, 1.0, kind)
+    jobs = [(D, C_d, q, eps, float(pb), sgn, kind, t_max) for q in ratios for eps in eps_list
+            for pb in np.linspace(0.0, 1.0, n_phase) for sgn in (1.0, -1.0)]
+    with mp.Pool(workers) as pool:
+        res = pool.map(_scan_job, jobs)
+    rows = []
     for q in ratios:
         for eps in eps_list:
-            n_inf = 0; n_false = 0; tot = 0; cyc = []
-            for phi_b in np.linspace(0.0, 1.0, n_phase):
-                for sgn in (1.0, -1.0):
-                    r = scalar_from_bounce(D, C_d, q, eps, float(phi_b), sgn, kind, t_max=t_max)
-                    tot += 1; n_inf += r["fate"].startswith("lasting"); n_false += r["in_false_vacuum"]
-                    if r["fate"].startswith("lasting"):
-                        cyc.append(r["n_cycles"])
-            rows.append(dict(VF_over_Lc=q, eps=eps, fraction_lasting_inflation=n_inf / tot, fraction_in_false_vacuum=n_false / tot, n=tot,
+            rr = [r for r in res if r[0] == q and r[1] == eps]
+            cyc = [r[4] for r in rr if r[2]]
+            rows.append(dict(VF_over_Lc=q, eps=eps, fraction_lasting_inflation=float(np.mean([r[2] for r in rr])),
+                             fraction_in_false_vacuum=float(np.mean([r[3] for r in rr])), n=len(rr),
                              median_cycles_to_escape=float(np.median(cyc)) if cyc else None))
     return rows
 

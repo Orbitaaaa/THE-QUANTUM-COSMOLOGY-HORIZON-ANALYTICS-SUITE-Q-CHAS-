@@ -53,6 +53,7 @@ else:
     out["static_hybrid"] = dict(u=float(st["u"][i6]), r_minus=float(st["r_minus"]), r_end=float(st["r"][i6, -1]),
                                 K_end=float(st["K"][i6, -1]), K_static_rminus=float(st["K"][i6, -1]))
     out["sigma_uv_gr_check"] = bool(N.derive_sigma_uv()["gr_matches"])
+    print("static checks done", flush=True)
     # the pulse at two resolutions
     runs = {}
     for tag, (nu, nv) in (("lo", (2000, 8000)), ("hi", (4000, 16000))):
@@ -72,15 +73,18 @@ else:
         res = evolve(*args, 26.0, 2000, 8000, **kw)
         _, variants[tag] = ray(res)
     out["variants"] = variants
+    print("double-null runs done", flush=True)
     # other open problems
     out["causality"] = O.causality_threshold()
     out["lambda_c"] = O.lambda_c_physical()
-    out["vacuum_scan"] = O.scalar_bounce_scan(10, ratios=(0.05, 0.2, 0.5, 1.0, 2.0), eps_list=(1e-4, 1e-2), n_phase=6)
+    print("vacuum scan ...", flush=True)
+    out["vacuum_scan"] = O.scalar_bounce_scan(10, ratios=(0.05, 0.2, 0.5, 1.0, 2.0), eps_list=(1e-4, 1e-2), n_phase=6, workers=4)
     out["hysteresis_example"] = O.scalar_from_bounce(10, None, 0.05, 1e-3, 1.0, 1.0, t_max=3000.0)
     out["hysteresis_control"] = O.scalar_from_bounce(10, None, 0.5, 0.0, 1.0, 1.0, t_max=3000.0)
     L = C.load_lumi(f"{DATA}/round6l_lumi.json")
     out["spin_down"] = O.spin_down(L, 100.0, 6, 8.0, 0.66, n_events=3000)
     out["discharge"] = O.remnant_discharge(6, 8.0, 0.66)
+    print("spin / discharge done", flush=True)
     dump("round10_open.json", out)
 
 # ------------------------------------------------------------------ figure
