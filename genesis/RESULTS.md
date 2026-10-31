@@ -390,6 +390,18 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R228 | **Remnants (G11-14)**: β median 0.11 (all < 0.5); if charged: dE/dx ≈ 31 × MIP, +41 ns at 1.5 m, ~43 % stop in 1450 g/cm² (factor ~2 uncertain); U-vs-GR separation 13 events independent of the emission model | Proposition-N / Assessment |
 | R229 | **Timing demonstrator V1 (G11-17 … G11-24)**: calibrated LGAD model (Landau floor 29 ps) → 30–35 ps per plane for gain ≥ 15, noise ≤ 3 mV, 1–1.5 GHz, ≥ 5 GS/s; analysis chain recovers planes within 2 ps on simulated Sr-90 runs; cosmics infeasible at 1 m → Sr-90 bench + beam test; BOM with all prices UNRESOLVED | design |
 
+### Round 12
+
+| # | result | label |
+|---|---|---|
+| R230 | **Lemma 12-0**: f decreases strictly on (0, r₋] (Hayward analytic; Dymnikova numerical), so a collapsing ball's surface cannot turn round in the core and must leave it through the Cauchy horizon v = ∞ at an event E | Lemma |
+| R231 | **Theorem 12-1 (Cauchy-development daughter)**: the post-bounce dust interior below the ingoing null cone from E lies in the maximal globally hyperbolic development and behind the event horizon: the daughter needs no continuation through the Cauchy horizon | Theorem |
+| R232 | **Proposition 12-2 (de Sitter timing law)**: in the de Sitter-core limit the cone reaches the daughter's centre at η − η_b = π/2, the end of the core's de Sitter phase (the Cauchy horizon is the core's de Sitter horizon); numerically η_cone − η_b ∈ [π/2, 2.00]; ODE and quadrature agree to 10⁻⁵ | Proposition + numerical |
+| R233 | **Proposition-N 12-3 (inflating daughter)**: D = 5, χ_s = 0.5: the centre grows ×9–51 for μ = 10–10⁴ μ_ext with a_cone ≈ 1.72 C^{1/(D−1)} and N_acc ≈ ln C/(D−1) e-folds of acceleration inside the determined region | Proposition-N |
+| R234 | **Proposition-N 12-4 (the cycle)**: the daughter reaches its maximum and recollapses inside the determined region for 85 % (Dymnikova D = 10), 79 % (Hayward D = 10), 54 % (Hayward D = 8), 0.4 % (Hayward D = 5) of untrapped configurations; full cycle (second bounce) for Dymnikova D = 10, μ ≲ 1.1 μ_ext, χ_s ≳ 1.27 (2.8 %); example: bounce → maximum (Δη 0.817) → second bounce (1.633) before the cone (1.690), proper time 1.73 l ≈ 10⁻²⁸ s at collider scale | Proposition-N |
+| R235 | **Loophole 1 (compact trapped region)**: no event horizon or Cauchy horizon; RSET growth exponent ∫κ₋dv = 17–65 for trapped lifetimes 21–76 l; the bounced matter is released into the parent (matter returns) | Proposition-N |
+| R236 | **Loophole 2 (extremality attractor)**: κ₋ ∝ v^{−0.49} along model-U evaporation; blueshift exponent ≈ 12.5 v^{1/2} unbounded; bounded only with exponentially decaying perturbations (v* = 3×10⁹⁵ l for our H₀) or finite-time extremality (exponent 30–42, needs non-thermal emission) | Proposition-N |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

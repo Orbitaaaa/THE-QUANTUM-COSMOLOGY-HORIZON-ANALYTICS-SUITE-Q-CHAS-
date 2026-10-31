@@ -1,5 +1,9 @@
 # Paper C — outline (G11-27): daughter dynamics in quasi-topological gravity
 
+> **Round 12 update.** The gate is passed. A finite daughter that forms, expands, reaches its maximum and recollapses (a full cycle for
+> Dymnikova in D = 10) lies inside the Cauchy development on open sets of initial data. Draft: `PAPER/paperC_daughter_cycle.pdf`;
+> details in `ROADMAP_ROUND12.md`. The outline below is kept for the record.
+
 **Status: not ready for drafting.** The central premise (a daughter reached by the field equations) holds only for the idealised
 solution and the tuned inner-extremal family (G11-04). Paper C should be written only after one of the following:
 

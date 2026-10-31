@@ -33,6 +33,13 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   inflation. Full Pythia + FCC-hh detector + pile-up pipeline, validated on ATLAS data. Profile-likelihood reach 33.4 TeV (100 TeV) and
   26.8 TeV (85 TeV). Exact separation from GR, ADD and dark matter. LHC reinterpretation: M_ext > 3.5-7.2 TeV. Timing demonstrator,
   open-data tool, and the machine (FIGURES/machine.png).
+* **[ROADMAP_ROUND12.md](ROADMAP_ROUND12.md)**: Round 12, the finite daughter cycle works. The daughter does not need to cross the
+  Cauchy horizon: it lives inside the region the field equations determine. It forms in the regular core, inflates, and (in D ≥ 7, near
+  threshold) reaches its maximum and recollapses. With the Dymnikova tower in D = 10 it completes a full cycle to a second bounce. All
+  of this is hidden behind the event horizon, on open sets of initial data. The Cauchy horizon is the core's de Sitter horizon (timing
+  law η = π/2). The five proposed loopholes were tested: compact trapped region (works, but matter returns to the parent), inner
+  extremality as an attractor (too slow), and three assessments. Paper C draft:
+  [PAPER/paperC_daughter_cycle.pdf](PAPER/paperC_daughter_cycle.pdf).
 * **[ROADMAP_ROUND11.md](ROADMAP_ROUND11.md)**: Round 11, does Model U support a persistent daughter? Not generically by classical
   evolution: in D = 5 the Cauchy horizon becomes a Tipler-weak null singularity (continuation C⁰ only); an inner-extremal tower crosses
   r₋ without mass inflation (fine-tuned); D = 10 is open beyond v ≈ 14.5 l. Greybody factors of the regular metric (gauge bosons

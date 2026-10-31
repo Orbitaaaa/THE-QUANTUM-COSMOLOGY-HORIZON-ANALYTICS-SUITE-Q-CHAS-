@@ -285,3 +285,16 @@ New:
 * **P-R11-d.** Rotating solutions of the tower; superradiant greybody factors.
 * **P-R11-e.** High-statistics background tail samples; bulk-graviton emission; a full detector simulation.
 * **P-R11-f.** Detuned inner-extremal towers over times ≫ 1/κ₋; a stable-core family of positive measure.
+
+## Round 12 status and additions (ROADMAP_ROUND12.md)
+
+* **The finite daughter cycle is established inside the Cauchy development (R231–R234).** This answers the Round 12 request, and the
+  Paper C gate is passed (the regime is an open set).
+* **P-R11-f** (detuned inner-extremal towers): no longer needed for the finite daughter.
+
+New:
+* **P-R12-a.** A hydrodynamic version (pressure inside, pressure-free surface): does stiffer matter enlarge the full-cycle region?
+* **P-R12-b.** Collider-formed holes (null-shell initial data): is there a homogeneous expanding daughter, and in which regime?
+* **P-R12-c.** A characteristic code with fluid and a regular centre, to follow the Round 6n throat (daughter separation) and its
+  recollapse.
+* **P-R12-d.** Semiclassical stress-energy inside the daughter region, near the cone.

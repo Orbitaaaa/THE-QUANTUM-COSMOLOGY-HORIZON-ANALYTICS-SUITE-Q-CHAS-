@@ -48,7 +48,15 @@ full-text access before submission. Any NEW item below could turn out to exist i
 | B3 | Discovery/exclusion reach with a full uncertainty budget | NEW (application) | Standard profile likelihood (Cowan et al.) | `round11b.py`; `analysis_config.json` |
 | B4 | 13 TeV ATLAS validation and reinterpretation | REPRODUCTION plus reinterpretation | ATLAS 2102.10874 | `round10.py` |
 
-## Paper C (daughter dynamics, hysteresis): outline only
+## Paper C (Round 12 draft: finite daughters inside the Cauchy development)
+
+| # | Claim | Grade | Starting point → new element | Reproduce |
+|---|---|---|---|---|
+| C1 | The bounced interior lies in the maximal globally hyperbolic development up to the ingoing cone from the surface's exit point E | NEW (to our knowledge) | BCH-M-V give Oppenheimer–Snyder collapse and the extended geometry → identification of the daughter region inside the Cauchy development | Theorem 12-1; `daughter12.cdd` |
+| C2 | de Sitter timing law: the Cauchy horizon is the core's de Sitter horizon (η_cone − η_b → π/2) | NEW (to our knowledge) | — | `daughter12.cdd_fast`; `tests/test_round12.py` |
+| C3 | Maximum, recollapse and full cycle inside the determined region (D ≥ 7, near threshold; Dymnikova D = 10) | NEW (to our knowledge) | — | `scripts/round12.py` (maps) |
+
+## Paper C (earlier outline)
 
 The daughter claims are conditional on G11-02/04, so Paper C is not ready (see `PAPER_C_OUTLINE.md`).
 

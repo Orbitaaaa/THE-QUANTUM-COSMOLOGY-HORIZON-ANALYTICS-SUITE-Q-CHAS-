@@ -357,3 +357,18 @@ All novelty claims are provisional until checked against the full texts (OPEN_PR
 * **Funding (checked 31 Oct 2026):** RCF autumn call closes 11 Nov 2026 (provisional); ERC CoG 2027 closes 12 Jan 2027; SKR single round
   15–30 Oct 2026; Väisälä 2026 round 14 Aug–14 Sep; Magnus Ehrnrooth window conflicting (January vs Oct–Nov). See
   ROUND11/funding/G11-34_FUNDING_STRATEGY.md for links.
+
+### Round 12
+
+* **Carballo-Rubio, Di Filippo, Liberati, Visser**, arXiv:2607.03916 (July 2026), "Semiclassical regularity of compact trapped regions:
+  from dynamical horizons to inner extremality". In the s-wave Polyakov approximation, the RSET of a compact (finite-lifetime) trapped
+  region grows exponentially in time and diverges only for an everlasting trapped region. (The PRD acceptance date quoted by the user
+  was not verified.)
+* **Di Filippo**, PRL 136, 161402 (2026), arXiv:2510.20649: charged, radiating collapse in GR can avoid both the singularity and the
+  Cauchy horizon.
+* **Calzà, Rinaldi, Zerbini**, PRD 112, 024024 (2025), arXiv:2505.04427: hyperbolic and toroidal regular black holes without Cauchy
+  horizons.
+* **Gajic, Luk**, Pure Appl. Anal. 1, 263 (2019), arXiv:1709.09137: dynamical extremal black holes extend beyond the Cauchy horizon as
+  non-unique weak solutions (C^{0,1/2} ∩ W^{1,2}_loc). The sub-extremal case is generically worse.
+* **Bonanno, Panassiti, Saueressig**, arXiv:2507.03581 (preprint found). The user's description of a September 2026 PRD with logarithmic
+  mass growth was not verified.
