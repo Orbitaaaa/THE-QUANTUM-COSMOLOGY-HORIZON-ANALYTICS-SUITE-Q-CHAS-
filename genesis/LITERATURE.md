@@ -310,6 +310,23 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 * **Cowan, Cranmer, Gross, Vitells**, EPJC 71, 1554 (2011), arXiv:1007.1727: the Asimov discovery significance.
 * **FCC Collaboration**, FCC-hh Conceptual Design Report, Eur. Phys. J. Spec. Top. 228, 755 (2019); FCC Feasibility Study Report (2025).
 
+### Round 10
+
+* **Camanho, Edelstein, Maldacena, Zhiboedov**, JHEP 02 (2016) 020, arXiv:1407.5597: Gauss–Bonnet-type corrections to the graviton
+  three-point coupling require higher-spin states at their scale.
+* **Sahni, Toporensky**, PRD 85, 123542 (2012), arXiv:1203.0395: cosmological hysteresis in a cyclic universe with a scalar field.
+* **Di Filippo, Kolář, Kubizňák**, PRD 111, L041505 (2025), arXiv:2404.07058: inner-extremal regular black holes from quasi-topological
+  gravity. They need a tuned mass; the limitation is generic.
+* **Di Filippo, Kubizňák, Srinivasan** (2026), arXiv:2604.27980: no null thin shells, so stability is open. Round 10 provides the
+  continuous-flux analysis. **Frolov, Zelnikov** (2026), arXiv:2601.01861: significant mass inflation only for crossings very close to
+  the horizon.
+* **Hod, Piran** (1998); **Burko** (1997); **Hamadé, Stewart** (1996): characteristic evolution of scalar collapse and mass inflation.
+  (Standard references; not re-checked online here.)
+* **Bierlich et al.**, Pythia 8.3, SciPost Phys. Codebases 8 (2022). **Delphes FCC-hh card** (M. Selvaggi,
+  github.com/delphes/delphes, cards/FCC/FCChh.tcl). **Cacciari, Salam, Soyez**, FastJet, EPJC 72, 1896 (2012).
+* **ATLAS**, PRD 103, 112006 (2021), arXiv:2102.10874 (yields via the CheckMATE 2 database). **CMS**, arXiv:2604.10732 (microscopic
+  black holes, string balls, sphalerons; model-independent σ × A limits vs S_T and multiplicity).
+
 ## E. Novelty comparison for the results of Stage One
 
 | result | closest literature | difference |

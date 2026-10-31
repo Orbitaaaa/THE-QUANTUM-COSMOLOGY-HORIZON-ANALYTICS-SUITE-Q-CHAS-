@@ -503,3 +503,42 @@ G_D = (2π)^n/(8πM_D^{n+2}), so M_D(DL) = 0.89–0.38 M_D(PDG) for n = 2–6. R
 Statements made in terms of M_ext (TeV) are unaffected. The allowed range of M_D(DL) is wider: M_D(DL) > 2.0–8.8 TeV.
 
 **Type:** convention error (corrected).
+
+### F65. Flat-efficiency LHC bound and crude FCC-hh reach (Rounds 8-9; corrected in Round 10)
+*Result:* Round 8 bounded model U with a single inclusive ATLAS limit (σ × A × ε < 0.3 fb) and an assumed 50 % efficiency. That gave
+M_ext ≳ 8–9 TeV (full trapping) or 4.7–5.5 TeV (head-on trapping). Round 9 used an order-of-magnitude Z(→νν) background with a
+leading-log ISR spectrum.
+
+*What Round 10 found:*
+* The full chain (Pythia shower, detector, pile-up, exact selection) and a 13-bin likelihood give a weaker LHC exclusion,
+  M_ext ≲ 3.5–4.2 TeV (head-on) and ≲ 6.7–7.2 TeV (full trapping).
+* The realistic 100 TeV discovery reach is ≈ 32.5 TeV, not ≈ 40 TeV.
+* The reason is physical: a heavy invisible remnant only recoils against initial-state radiation, so its MET (≈ 0.5–1 TeV) does not
+  grow with M_ext. Near the top of the window the signal sits on the Z(→νν)+jet background at low MET.
+
+The window stays open and testable. Its numbers move.
+
+**Type:** method too crude (corrected with full simulation).
+
+### F66. Double-null evolution in (r, σ) near a regular Cauchy horizon (Round 10)
+*Result:* in the standard (r, σ, φ) variables, truncation errors near the inner horizon are blueshifted, exactly as physical
+perturbations are. ψ is derived from r_u r_v e^{−2σ}, so it overshoots the tower's pole ψ = 1/α, and even the static hole drifts
+for v ≳ 20 l. Evolving the mass function instead, (r, μ, φ), fails at apparent horizons because of the division by f.
+
+*What works:* a hybrid. μ is carried with the first-law fluxes and ψ = h⁻¹(μ/r^{D−1}) feeds the metric equations. The static hole
+is then exact to 10⁻⁷, and constraint violation converges.
+
+**Type:** numerical formulation (replaced).
+
+### F67. Profile-likelihood fits on raw counts with linear nuisances (Round 10, caught before reporting)
+*Result:* with up to 5×10⁷ events per bin, the raw −ln L is ~10⁷. L-BFGS-B then stopped at non-minima: a "free" fit came out worse
+than the constrained one, giving Z = 11.5 where the correct value is 4.0. Linear normalisation nuisances (1 + σθ) also let a signal be
+switched off at a bounded cost.
+
+*Fix:*
+* use the saturated-model-subtracted likelihood;
+* use log-normal normalisation nuisances;
+* fit with Fisher scoring (damped Gauss–Newton) on the analytic Jacobian, gradients checked to 2×10⁻⁷;
+* validate against the analytic Asimov formula (agreement to 10⁻¹⁰) and against pseudo-experiments.
+
+**Type:** numerical method (fixed).

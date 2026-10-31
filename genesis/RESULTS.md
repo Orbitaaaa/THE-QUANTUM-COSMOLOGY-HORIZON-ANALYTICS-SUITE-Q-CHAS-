@@ -357,6 +357,22 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R206 | **Early running**: discovery needs 7 pb⁻¹ at M_ext = 11 TeV, 2 fb⁻¹ at 21 TeV and 0.3 ab⁻¹ at 29 TeV (85 TeV); S/B > 1 to 31 TeV (85) and 36 TeV (100) | Proposition-N |
 | R207 | **Detector**: MET and jet triggers at 1 TeV, hermeticity to \|η\| ≈ 6, 30–50 ps timing (β = 0.39 remnants arrive 52 ns late at 10 m), dE/dx ≈ 7 × MIP, M = p/(βγ); six-branch decision tree linking outcomes to the interior class | design |
 
+
+### Round 10
+
+| # | result | label |
+|---|---|---|
+| R208 | **Double-null code for model U** (massless scalar): constraints h'(psi)(r_uu - 2 sigma_u r_u) = -r phi_u^2, r_uv from the first law, sigma_uv derived by sympy (GR limit exact; static hole sigma_uv = -f f''/8); hybrid (r, sigma, mu, phi) solver keeps psi < 1/alpha, static hole exact to 1e-7, second-order convergence | Proposition (derivation) + numerical |
+| R209 | **Proposition-N 10-1 (inner-horizon instability)**: after a scalar pulse the Kretschmann scalar at the Cauchy horizon of a D = 5 model-U hole grows by > 10 orders of magnitude by v ~ 20 l (converged), driven by the radial-temporal curvature, while psi stays below 1/alpha, r ~ r_- and the mass grows ~x2; same for Dymnikova; a late infall feeds the same region (mass x9, psi -> 0.99/alpha), no new world | Proposition-N |
+| R210 | **P-R6l-b**: the tower contains Gauss-Bonnet with coefficient l^2; CEMZ causality requires higher-spin states at m <~ 1/l = M_D/c_l (1.25-2.2 M_D in the window) | Assessment |
+| R211 | **Proposition-N 10-2 (hysteresis)**: a scalar given 1e-4-1e-3 of the bounce energy pumps successive bounce cycles (maxima 1.5 -> 49) until the interior enters the de Sitter branch: lasting inflation for V_F >= 0.05 Lambda_c (single-bounce threshold Lambda_c = 0.28/l^2); controls cycle for ever | Proposition-N |
+| R212 | **Rotation and charge (P-R6n-b, P-R9-b)**: near-threshold holes carry a* ~ 3.3, E_rot ~ 25 % of M (Myers-Perry proxy); colour discharges in ~0.01 fm/c (100x faster than hadronisation) -> neutral remnants, discharge partons 0.5-1.4 TeV; both carried as signal variants | Assessment |
+| R213 | **10A pipeline validated**: Pythia backgrounds + Les Houches-showered signal + Delphes-card FCC-hh detector + pile-up (mu = 1000); at 13 TeV it reproduces the ATLAS 139 fb^-1 monojet background in 13 bins with K = 1.18 and 10 % rms residual (Z 70 %, W 28 %, top 2 %) | numerical |
+| R214 | **Profile-likelihood reach** (n = 6, M_D(DL) = 8 TeV): 5 sigma to M_ext = 33.4 TeV (100 TeV, 30 ab^-1) and 26.8 TeV (85 TeV, 20 ab^-1); exclusion 35.0 / 28.0 TeV; insensitive to background systematics; toys agree with asymptotics; supersedes Round 9 (F65) | Proposition-N |
+| R215 | **Exact separation** (S/B = 1): model U vs GR at the same threshold 12-13 events; vs ADD 563; vs dark-matter mediators 239-367; Hayward vs Dymnikova 170; onset measures c_l to 0.3-1 % | Proposition-N |
+| R216 | **LHC reinterpretation** (ATLAS 13-bin likelihood): M_ext < 3.5-4.2 TeV (head-on) or < 6.6-7.2 TeV (full trapping) excluded for n = 4-6, M_D(DL) = 2-4 TeV; CMS multi-object acceptance <= 0.4 % (limits do not apply) | Proposition-N |
+| R217 | **10B / 10D**: remnant beta median 0.13 (median +32 ns at 1.5 m, +215 ns at 10 m: multi-crossing readout needed); L1 MET trigger 99.9 %; two-plane LGAD demonstrator sigma_TOF = 49 ps; CMS Open Data selection tool | numerical / design |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

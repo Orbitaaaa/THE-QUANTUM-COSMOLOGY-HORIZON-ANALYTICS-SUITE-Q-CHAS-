@@ -28,12 +28,15 @@ $N\simeq\frac{D-3}{D-1}\ln(a_{\max}/l)$ e-folds, so lasting inflation would need
 (iii)~An energy-conserving hydrodynamics code built on the generalised Misner--Sharp equations reproduces the exact bounce to $10^{-5}$ and
 shows that, with pressure, inhomogeneity and shocks, a horizon forms and the matter bounces in an untrapped core with bounded curvature; in
 realistic collapse the bounced core meets the envelope at the inner horizon, and in some runs enters the white-hole region through a throat.
-(iv)~With real parton distributions, a $100$\,TeV collider produces such holes iff the horizon threshold lies between $\sim5$--$9$\,TeV (the
-LHC bound, depending on the trapped fraction) and $\sim50$\,TeV; they form a trapped surface in $10^{-28}$\,s, evaporate in $10^{-26}$\,s toward a zero-temperature remnant, and the trapped
-region never closes, so the daughter survives. Near threshold the holes emit almost nothing and the remnant carries $\sim95\%$ of the energy.
-(v)~The events are a multi-TeV jet recoiling against an invisible remnant, separable from GR black holes of the same threshold with
-$\sim3$ events; the model survives all current data (the LHC multi-object black-hole searches are blind to it), and an FCC-hh monojet
-search would discover it up to $M_{\rm ext}\simeq33$\,TeV at $85$\,TeV ($40$\,TeV at $100$\,TeV).
+(iv)~With real parton distributions, a $100$\,TeV collider produces such holes iff the horizon threshold lies between $\sim3.5$--$7$\,TeV
+(the LHC bound, depending on the trapped fraction) and $\sim50$\,TeV; they form a trapped surface in $10^{-28}$\,s, evaporate in $10^{-26}$\,s
+toward a zero-temperature remnant, and the trapped region never closes. A double-null evolution with a scalar field shows, however, that
+the inner (Cauchy) horizon becomes a curvature singularity under perturbation while $\psi$ stays bounded, so the continuation of the
+bounced interior beyond it is open. A bouncing interior with a scalar field reaches lasting inflation through cosmological hysteresis.
+(v)~In a full simulation (Pythia, an FCC-hh detector, pile-up of $10^3$, validated on ATLAS data to $10\%$) the events are a jet
+recoiling against an invisible remnant, separable from GR black holes of the same threshold with $\sim13$ selected events at $S/B=1$; the
+model survives all current data (a full reinterpretation of the ATLAS monojet bins), and a profile-likelihood analysis discovers it up to
+$M_{\rm ext}\simeq27$\,TeV at $85$\,TeV ($33$\,TeV at $100$\,TeV).
 All key formulas and numbers are independently re-derived (Appendix~\ref{app:audit}).
 \end{abstract}
 
@@ -131,7 +134,7 @@ collapse in a spacetime diagram; (e) bounded curvature and exact energy conserva
 \section{Collider formation, evaporation and the daughter}
 Cross-sections use NNPDF2.3 LO \cite{NNPDF23} (momentum sum $0.998$), $\hat\sigma=F_n\pi R_S^2$ with the Yoshino--Nambu factors \cite{YN03},
 and the head-on trapped mass $y_n\sqrt{\hat s}$ ($y_0=1/\sqrt2$). Holes above $M_{\rm ext}$ are produced at $100$\,TeV with $30$\,ab$^{-1}$
-(at least 10 events) iff $M_{\rm ext}\lesssim46$--$51$\,TeV, and are compatible with the LHC iff $M_{\rm ext}\gtrsim5$--$9$\,TeV
+(at least 10 events) iff $M_{\rm ext}\lesssim46$--$51$\,TeV, and are compatible with the LHC iff $M_{\rm ext}\gtrsim3.5$--$7$\,TeV
 (Sec.~\ref{sec:data}): a window in $c_l$ of width $\sim0.15$--$0.25$. In the evaporating model-U Vaidya geometry $f(v,r)=1-r^2\psi(\mu(v)/r^{D-1})$ with brane Stefan--Boltzmann
 emission \cite{EHM00}, $\mu-\mu_{\rm ext}\propto v^{-1}$ and $r_+-r_-\propto v^{-1/2}$: the trapped region never closes, and the bounced partons
 reach the boundary of the parent's chart at finite affine parameter ($\simeq2\,l$). Formation takes $\sim10^{-28}$\,s and evaporation
@@ -162,20 +165,23 @@ number of events needed to separate the classes; (d) the temperature--mass relat
 \emph{Convention.} Earlier versions of this analysis compared $M_D^{\rm DL}$ directly with experimental $M_D^{\rm PDG}$; converted, the CMS
 monojet bounds $M_D^{\rm PDG}>9.9$, $7.5$, $6.3$, $5.7$, $5.3$\,TeV ($n=2$--$6$) \cite{CMS18} become $M_D^{\rm DL}>8.8$, $4.7$, $3.2$, $2.4$,
 $2.0$\,TeV. All benchmarks used here are allowed.
-\emph{LHC.} Near-threshold model-U events populate the monojet high-recoil region; the ATLAS model-independent limit
-$\sigma\times A\times\epsilon<0.3$\,fb \cite{ATLAS21} (efficiency $0.5$ assumed) excludes $M_{\rm ext}\lesssim8$--$9$\,TeV with full trapping, or
-$\lesssim4.7$--$5.5$\,TeV with the head-on trapped fraction ($n=4$--$7$). Multi-object black-hole searches (high $S_T$, $\geq3$ objects) accept
-only $1$--$6\%$ of model-U events ($75$--$97\%$ for GR holes); their limits do not apply.
+\emph{LHC.} Near-threshold model-U events populate the monojet region. A full likelihood over the $13$ exclusive MET bins of the ATLAS
+$139$\,fb$^{-1}$ search \cite{ATLAS21}, with our signal passed through the simulation of Sec.~\ref{sec:sim}, excludes $M_{\rm ext}<6.6$--$7.2$\,TeV
+with full trapping and $<3.5$--$4.2$\,TeV with the head-on trapped fraction ($n=4$--$6$, $M_D^{\rm DL}=2$--$4$\,TeV); an earlier single-region
+estimate with an assumed $50\%$ efficiency overstated this. Multi-object black-hole searches (high $S_T$, $\geq2$--$5$ objects) accept
+$\lesssim0.4\%$ of model-U events; their limits do not apply.
 \emph{Neutron stars.} A remnant captured in a neutron star accretes $\sim10^{13}$--$10^{14}$\,GeV/s and re-radiates it from
 $(2$--$40)\times10^{-9}$ above extremality at $T\simeq0.16$\,GeV: there is no growth, consistent with the survival of neutron stars
 (cf.~\cite{GM08}). \emph{Future machines.} With at least 10 holes (head-on trapping), the reach in $M_{\rm ext}$ is $6.3$\,TeV at the
-HL-LHC, $12.7$\,TeV at $27$\,TeV, $40.6$\,TeV at FCC-hh ($85$\,TeV, $20$\,ab$^{-1}$) and $48.2$\,TeV at $100$\,TeV ($30$\,ab$^{-1}$).
+HL-LHC, $12.7$\,TeV at $27$\,TeV, $40.6$\,TeV at FCC-hh ($85$\,TeV, $20$\,ab$^{-1}$) and $48.2$\,TeV at $100$\,TeV ($30$\,ab$^{-1}$);
+the discovery reach after a realistic selection is lower (Sec.~\ref{sec:sim}).
 
 \begin{figure}[t]\centering\includegraphics[width=\textwidth]{round8.png}
 \caption{Model U against current and future data (Round 8): the convention correction, the LHC monojet bound, the acceptance of
 black-hole searches, neutron-star safety, future reach and the surviving $(M_D,c_l)$ region.}\label{fig:data}\end{figure}
 
-\section{Experimental design}\label{sec:design}
+\section{Experimental design (first estimate)}\label{sec:design}
+\emph{The numbers in this section use order-of-magnitude backgrounds and are superseded by Sec.~\ref{sec:sim}; the design logic stands.}
 \emph{Selection.} Leading object $p_T>p_{\rm cut}$, ${\rm MET}>p_{\rm cut}$ and ${\rm MET}/S_T>0.8$, with $p_{\rm cut}$ optimised between $3$
 and $16$\,TeV. \emph{Background.} $Z(\to\nu\bar\nu)+$jet with ${\rm MET}>p_{\rm cut}$, multiplied by $3$ for $W(\to\ell\nu)+$jet with a lost lepton
 (order of magnitude). \emph{Statistics.} Discovery requires the Asimov significance \cite{CCGV11}
@@ -194,6 +200,51 @@ closes and the daughter persists (Fig.~\ref{fig:design}).
 \caption{The experimental design (Round 9): discovery, class and remnant-mass luminosities; signal over background; detector
 requirements; decision tree; specification.}\label{fig:design}\end{figure}
 
+\section{Inner-horizon stability and a dynamical vacuum}\label{sec:inner}
+\emph{Double-null evolution.} With $ds^2=-2e^{2\sigma}du\,dv+r^2d\Omega^2$ and a massless scalar, the tower's equations are
+$h'(\psi)(r_{uu}-2\sigma_ur_u)=-r\phi_u^2$ (and $u\leftrightarrow v$), $r_{uv}=\tfrac12re^{2\sigma}[2\psi-(D-1)h/h']$, the wave equation, and a
+$\sigma_{uv}$ equation obtained symbolically from constraint preservation (it reduces to GR for $h=\psi$ and gives $\sigma_{uv}=-ff''/8$ for the
+static hole). Evolving the mass with the first-law fluxes keeps $\psi=h^{-1}(\mu/r^{D-1})<1/\alpha$. A scalar pulse into a $D=5$ Hayward hole
+drives the Kretschmann scalar at the Cauchy horizon up by more than ten orders of magnitude by $v\simeq20\,l$ (converged), almost entirely in
+the curvature of the radial-temporal plane, while $\psi$ stays below $0.95/\alpha$, $r$ stays at $r_-$ and the mass merely doubles; a later
+infall feeds the same region. The curvature bound of the tower constrains the areal curvature, not the blueshifted product of influx and
+outflux: the inner horizon of a perturbed model-U hole is a null curvature singularity of finite area (Ori-type; whether it is weak is
+open), consistent with the general fragility of inner horizons and providing the continuous-flux analysis that \cite{DKS26} found missing.
+\emph{Hysteresis.} In a bouncing closed interior with a scalar field in a false/true-vacuum potential, a field given $10^{-4}$--$10^{-3}$ of the
+bounce energy pumps successive cycles (maxima $1.5\to49$) until the interior enters the de Sitter branch: lasting inflation for false-vacuum
+energies down to $0.05$ of the single-bounce threshold, by cosmological hysteresis \cite{ST12}; with no kick, or a zero-energy vacuum, the
+interior cycles for ever. \emph{Causality.} The tower contains Gauss--Bonnet with coefficient $l^2$, so higher-spin states must appear at
+$m\lesssim1/l=M_D/c_l$ \cite{CEMZ}: $c_l$ is tied to a second observable.
+
+\begin{figure}[t]\centering\includegraphics[width=\textwidth]{round10_open.png}
+\caption{Open problems (Round 10): (a)--(c) double-null evolution of a perturbed model-U hole; (d) hysteresis; (e) rotation; (f) discharge.}
+\label{fig:inner}\end{figure}
+
+\section{Realistic simulation, reach and current data}\label{sec:sim}
+\emph{Pipeline.} Backgrounds ($Z(\to\nu\bar\nu)$, $W(\to\ell\nu)$+jet, $t\bar t$, QCD) are generated with Pythia~8.3 \cite{Pythia83}; the
+model-U production system is written to a Les Houches file and showered by Pythia, Hawking quanta being added in the hole frame; a
+parametric detector follows the Delphes FCC-hh card (calorimetry to $|\eta|=6$), with a minimum-bias pile-up overlay ($\langle\mu\rangle=1000$,
+charged removal $95\%$, neutral residual $30\%$). At $13$\,TeV the same chain with the exact ATLAS selection reproduces the published
+background in all $13$ MET bins with one factor $K=1.18$ and a $10\%$ rms residual. \emph{Statistics.} A binned profile likelihood with
+log-normal process normalisations, a MET-scale morphing, luminosity, a $30\%$ signal normalisation and per-bin MC statistics, fitted by
+Fisher scoring, agrees with pseudo-experiments. \emph{Reach.} For $n=6$, $M_D^{\rm DL}=8$\,TeV the median $5\sigma$ discovery reach is
+$M_{\rm ext}=33.4$\,TeV at $100$\,TeV ($30$\,ab$^{-1}$) and $26.8$\,TeV at $85$\,TeV ($20$\,ab$^{-1}$), the expected exclusion $35.0$ and
+$28.0$\,TeV, insensitive to the background systematics: the remnant recoils only against initial-state radiation, so at the top of the
+window the signal sits on the $Z(\nu\bar\nu)$ background at MET $\sim$ TeV. Discharge partons and spin-down quanta raise the acceptance.
+\emph{What the signature establishes.} The exact $N$-event likelihood ratio gives a $5\sigma$ separation from a GR hole at the same threshold
+with $12$--$13$ selected events at $S/B=1$, from ADD graviton emission with $\sim560$ and from vector-mediator dark matter with $240$--$370$;
+the onset rate measures $c_l$ to $0.3$--$1\%$, and the rate--onset consistency with the KK-measured $(n,M_D)$ is what a dark-matter mediator
+with a free coupling cannot reproduce. \emph{Remnants} are slow (median $\beta=0.13$; $+32$\,ns at $1.5$\,m, $+215$\,ns at $10$\,m), requiring
+multi-crossing readout if charged.
+
+\begin{figure}[t]\centering\includegraphics[width=\textwidth]{round10.png}
+\caption{Round 10: (a) validation against ATLAS; (b) profile-likelihood discovery luminosity; (c) signal variants; (d) exact separation
+from alternatives; (e) reinterpretation of the ATLAS monojet data; (f) detector and timing-demonstrator studies.}\label{fig:sim}\end{figure}
+
+\begin{figure}[t]\centering\includegraphics[width=\textwidth]{machine.png}
+\caption{The machine: the FCC-hh ring, the detector with the model-U-specific elements, a model-U event, and what each element measures.}
+\label{fig:machine}\end{figure}
+
 \FloatBarrier
 \section{Summary of results}
 \begin{table}[!htbp]\centering\small
@@ -206,18 +257,21 @@ Transient acceleration & $N\simeq\frac{D-3}{D-1}\ln(a_{\max}/l)$; $29.6$ for a s
 Lasting inflation & needs $\Lambda>\Lambda_c(C)$ (hole-density vacuum) & exact (audited)\\
 Finite daughter & volume growth $(a_{\max}/l)^{D-1}$, up to $8\times10^{114}$ & exact\\
 Hydrodynamic bounce & every run; $\psi\le0.994/\alpha$; energy exact; throat in 2/6 & numerical\\
-Collider window & $5$--$9\lesssim M_{\rm ext}\lesssim50$\,TeV at 100\,TeV & numerical (audited)\\
+Collider window & $3.5$--$7\lesssim M_{\rm ext}\lesssim50$\,TeV at 100\,TeV & full likelihood (ATLAS)\\
+Inner horizon & curvature singularity under perturbation; $\psi<1/\alpha$ & numerical (double null)\\
+Lasting inflation & by hysteresis for $V_F\geq0.05\,\Lambda_c$ & numerical (homogeneous)\\
 Evaporation & $\mu-\mu_{\rm ext}\propto v^{-1}$, gap $\propto v^{-1/2}$, never closes & numerical (audited)\\
 Near-threshold events & 0.2--0.3 quanta; remnant carries $\simeq95\%$ & Monte Carlo\\
-Separation from GR & $\sim3$ events at $5\sigma$ (towers: $\sim660$) & Monte Carlo\\
+Separation from GR & $12$--$13$ events at $5\sigma$, $S/B=1$ (DM: $240$--$370$) & exact LLR, full sim.\\
 Current data & monojet, BH searches, neutron stars: consistent & numerical\\
-FCC-hh $5\sigma$ reach & $M_{\rm ext}\simeq33$\,TeV ($85$\,TeV), $40$\,TeV ($100$\,TeV) & Monte Carlo, o.o.m.\ bkg.\\\bottomrule
+FCC-hh $5\sigma$ reach & $M_{\rm ext}=26.8$\,TeV ($85$\,TeV), $33.4$\,TeV ($100$\,TeV) & profile likelihood\\\bottomrule
 \end{tabular}\caption{Main results. ``Audited'' means re-derived independently (Appendix~\ref{app:audit}).}\end{table}
 
 \section{Limitations}
-Rotation is not included (collider holes have large spin; no rotating model-U solutions are known); greybody factors are omitted;
-backgrounds are order-of-magnitude estimates and no detector simulation (with FCC-hh pile-up) has been done; the remnant charge is unknown; the
-throat stage of inhomogeneous collapse needs a characteristic code; the threshold window depends on the unknown coefficient $c_l$; and
+Rotating model-U solutions are unknown (rotation enters only as a signal variant); greybody factors are omitted; the detector is
+parametric (Delphes-card level) and backgrounds are leading order with one validated $K$ factor; the double-null results are converged to
+$v\simeq25\,l$ in $D=5$ only, and the strength of the Cauchy-horizon singularity is open; hysteresis is shown for a homogeneous interior;
+the threshold window depends on the unknown coefficient $c_l$; and
 the daughter itself is outside $J^-(\mathcal I^+)$, so experiments can test the interior class (onset, $T(M)$, remnants) but not the daughter
 directly.
 
@@ -248,6 +302,9 @@ luminosity table; and an independent ODE integrator for the evaporation. The led
 \bibitem{GM08} S.~B.~Giddings, M.~L.~Mangano, Phys.\ Rev.\ D \textbf{78}, 035009 (2008).
 \bibitem{CCGV11} G.~Cowan, K.~Cranmer, E.~Gross, O.~Vitells, Eur.\ Phys.\ J.\ C \textbf{71}, 1554 (2011), arXiv:1007.1727.
 \bibitem{FCC19} FCC Collaboration, Eur.\ Phys.\ J.\ Spec.\ Top.\ \textbf{228}, 755 (2019).
+\bibitem{CEMZ} X.~O.~Camanho, J.~D.~Edelstein, J.~Maldacena, A.~Zhiboedov, JHEP \textbf{02} (2016) 020, arXiv:1407.5597.
+\bibitem{ST12} V.~Sahni, A.~Toporensky, Phys.\ Rev.\ D \textbf{85}, 123542 (2012), arXiv:1203.0395.
+\bibitem{Pythia83} C.~Bierlich et al., SciPost Phys.\ Codebases \textbf{8} (2022).
 \bibitem{EHM00} R.~Emparan, G.~T.~Horowitz, R.~C.~Myers, Phys.\ Rev.\ Lett.\ \textbf{85}, 499 (2000).
 \end{thebibliography}
 \end{document}

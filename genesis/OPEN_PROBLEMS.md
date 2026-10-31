@@ -244,3 +244,26 @@ Grouped by the phase that should attack them. Each item has a precise statement 
   discharge. A hadronic dressing (as for R-hadrons) would make a fraction charged and open the direct mass measurement M = p/(βγ).
 * **P-R9-c.** The recoil-spectrum onset as a measurement of c_l: the precision on M_ext from the edge of the MET spectrum, including ISR
   modelling and jet-energy-scale uncertainties.
+
+## Round 10 status and additions (ROADMAP_ROUND10.md)
+
+Status of the model-U open problems after Round 10:
+* **Answered:** P-R6k-c, P-R6l-a (late infall feeds the existing region), P-R6l-c (inner horizon unstable, R209), P-R6l-d and
+  P-R9-a (10A pipeline), P-R6l-e (hysteresis, R211, homogeneous), P-R6n-a (double-null code), P-R9-b (neutral baseline), P-R9-c (onset
+  measures c_l to ~1 %), P-R6k-e.
+* **Partly answered:**
+  * P-R6k-a: the UV completion must contain the CEMZ higher-spin tower.
+  * P-R6k-b: the semiclassical caveat remains.
+  * P-R6l-b: c_l is tied to M_HS, not fixed.
+  * P-R6n-b: rotating solutions are still unknown.
+* **Out of scope:** P-R6k-d.
+
+New:
+* **P-R10-a.** Strength of the Cauchy-horizon singularity of perturbed model-U holes (Conjecture 10-1: weak, Ori-type, finite area).
+  Also: quantum back-reaction, adaptive mesh refinement to v >> 25 l, and D = 10. This decides whether the region beyond the inner
+  horizon, where the daughter's continuation lies, is reachable.
+* **P-R10-b.** Cosmological hysteresis in an inhomogeneous bouncing interior and with quantum particle production. Does the pumped
+  cycle survive gradients?
+* **P-R10-c.** A Geant-level FCC-hh simulation and NLO V+jets with control-region constraints. Also: ISR-shape systematics for the
+  onset fit, and an optimised selection for the top of the window (where MET ~ pT(ISR) sits on Z(νν)).
+* **P-R10-d.** Building the two-plane LGAD timing demonstrator. Running the open-data selection on CMS 2016 NanoAOD.

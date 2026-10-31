@@ -16,3 +16,4 @@ genesis/CODE/**/__pycache__/
 genesis/PAPER/*.aux
 genesis/PAPER/*.log
 genesis/PAPER/*.out
+genesis/DATA/round10_events/
