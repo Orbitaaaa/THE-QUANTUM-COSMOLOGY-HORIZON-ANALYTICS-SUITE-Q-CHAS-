@@ -33,6 +33,12 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   inflation. Full Pythia + FCC-hh detector + pile-up pipeline, validated on ATLAS data. Profile-likelihood reach 33.4 TeV (100 TeV) and
   26.8 TeV (85 TeV). Exact separation from GR, ADD and dark matter. LHC reinterpretation: M_ext > 3.5-7.2 TeV. Timing demonstrator,
   open-data tool, and the machine (FIGURES/machine.png).
+* **[ROADMAP_ROUND11.md](ROADMAP_ROUND11.md)**: Round 11, does Model U support a persistent daughter? Not generically by classical
+  evolution: in D = 5 the Cauchy horizon becomes a Tipler-weak null singularity (continuation C⁰ only); an inner-extremal tower crosses
+  r₋ without mass inflation (fine-tuned); D = 10 is open beyond v ≈ 14.5 l. Greybody factors of the regular metric (gauge bosons
+  suppressed near extremality); FCC-hh reach 33.4 (+0.8/−1.1) TeV with a full uncertainty budget and reproducibility manifest. LGAD
+  timing demonstrator engineering package, papers A and B, originality audit, review dossier and funding package in
+  [ROUND11/](ROUND11/).
 * **[ROADMAP_ROUND7.md](ROADMAP_ROUND7.md)**: Round 7, distinguishable predictions (yes). Model-U holes near threshold look like a single jet
   balanced by an invisible ~M_ext remnant (MET/S_T ≈ 0.95), while GR holes give ~12 TeV of balanced multi-object activity: 5σ separation with
   ~3 events. Onset at κ_n c_l^{n+1} M_D, a T(M) that rises from zero, and slow heavy remnants.

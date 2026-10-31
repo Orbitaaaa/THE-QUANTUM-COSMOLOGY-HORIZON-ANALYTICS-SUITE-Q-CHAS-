@@ -373,6 +373,23 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R216 | **LHC reinterpretation** (ATLAS 13-bin likelihood): M_ext < 3.5-4.2 TeV (head-on) or < 6.6-7.2 TeV (full trapping) excluded for n = 4-6, M_D(DL) = 2-4 TeV; CMS multi-object acceptance <= 0.4 % (limits do not apply) | Proposition-N |
 | R217 | **10B / 10D**: remnant beta median 0.13 (median +32 ns at 1.5 m, +215 ns at 10 m: multi-crossing readout needed); L1 MET trigger 99.9 %; two-plane LGAD demonstrator sigma_TOF = 49 ps; CMS Open Data selection tool | numerical / design |
 
+### Round 11
+
+| # | result | label |
+|---|---|---|
+| R218 | **Theorem 11-1 (area control)**: along an outgoing null ray r_λλ = −r R̃/(D−2), R̃ = (D−2)φ_λ²/h′(ψ) ≥ 0; with r ∈ [r₁, r₂], finite Tipler integral ⟺ bounded focusing, finite Królak integral ⟺ finite r_λ | Theorem |
+| R219 | **Proposition-N 11-1**: the D = 5 Cauchy horizon after a pulse is a Tipler-weak null singularity: λ* = 1.03, r → 1.0521, I_T → 0.0327 (two resolutions within 0.2 %; with a v⁻³ tail 0.0323), I_K ≈ 410–520 and still growing (Królak undetermined); extension at most C⁰, not fixed by the field equations | Proposition-N |
+| R220 | **Proposition-N 11-2 (classification)**: D = 5 singular growth (×10¹⁰–10¹¹) for ψ₋α = 0.89–0.99; D = 10 crosses the inner apparent horizon with growth 2–140 within the evolved range | Proposition-N |
+| R221 | **Proposition-N 11-3 (inner-extremal tower)**: f with a triple root at r₋² = 1.5 (κ₋ = 0) and μ = 16; after a pulse μ grows only 1 %, K l⁴ ≤ 106, rays cross r₋ at v = 27.4 (converged). Fine-tuned (detuned by accretion); semiclassically unstable (McMaken 2023) | Proposition-N + Assessment |
+| R222 | **Proposition-N 11-5 (D = 10)**: μ ×3.15, ψα → 0.990, 150 ≤ K l⁴ ≤ 400, I_T = 0.127 through v ≈ 14.5 l (two resolutions agree); later times not converged. Conjecture 11-1: curvature-saturated mass inflation | Proposition-N + Conjecture |
+| R223 | **G11-04 verdict**: a persistent daughter reached by the field equations is established only for the unperturbed solution and the tuned inner-extremal family; generic D = 5 data give an undetermined (C⁰) continuation; D = 10 open. The daughter lies outside J⁻(I⁺): no collider observable tests it | Assessment |
+| R224 | **Theorem 11-2 (exterior test fields)**: for the Hayward tower f′ > 0 beyond r₊, so brane scalar, brane Maxwell and bulk scalar potentials are positive and the brane Dirac operator is A†A: no exterior mode instability (numerically checked for Hayward and Dymnikova, μ/μ_ext = 1.01–100) | Theorem |
+| R225 | **Proposition-N 11-6 (greybody)**: brane greybody factors on the model-U metric (validated: Γ₀ → 4r₊²ω², geometric-optics limit, 10⁻⁴ agreement with Schwarzschild code); near extremality gauge-boson emission is 7 % of blackbody (scalars 142 %, fermions 101 %); SM luminosity 0.92–1.32 of geometric | Proposition-N |
+| R226 | **Proposition-N 11-7 (hysteresis, test fields)**: inhomogeneities ℓ = 1–40 on S⁹ amplified ≤ 17 (V_F/Λ_c = 0.5, 2) and ≤ 9.5×10³ (0.05) before de Sitter escape; energy fraction ≤ 2×10⁻⁸ from 10⁻⁶; constraint ≤ 10⁻⁷; net positive work per cycle | Proposition-N |
+| R227 | **Proposition-N 11-8 (reach with budget)**: FCC-hh 100 TeV, 30 ab⁻¹: discovery M_ext = 33.4 (+0.8/−1.1) TeV, exclusion 35.0 (+1.2/−1.0) TeV; signal PDF luminosity dominates (NNPDF3.1/2.3 = 0.59 at c_l = 0.70); greybody emission −0.06 TeV; EW Sudakov estimate +0.8 TeV (not counted) | Proposition-N |
+| R228 | **Remnants (G11-14)**: β median 0.11 (all < 0.5); if charged: dE/dx ≈ 31 × MIP, +41 ns at 1.5 m, ~43 % stop in 1450 g/cm² (factor ~2 uncertain); U-vs-GR separation 13 events independent of the emission model | Proposition-N / Assessment |
+| R229 | **Timing demonstrator V1 (G11-17 … G11-24)**: calibrated LGAD model (Landau floor 29 ps) → 30–35 ps per plane for gain ≥ 15, noise ≤ 3 mV, 1–1.5 GHz, ≥ 5 GS/s; analysis chain recovers planes within 2 ps on simulated Sr-90 runs; cosmics infeasible at 1 m → Sr-90 bench + beam test; BOM with all prices UNRESOLVED | design |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

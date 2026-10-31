@@ -267,3 +267,21 @@ New:
 * **P-R10-c.** A Geant-level FCC-hh simulation and NLO V+jets with control-region constraints. Also: ISR-shape systematics for the
   onset fit, and an optimised selection for the top of the window (where MET ~ pT(ISR) sits on Z(νν)).
 * **P-R10-d.** Building the two-plane LGAD timing demonstrator. Running the open-data selection on CMS 2016 NanoAOD.
+
+## Round 11 status and additions (ROADMAP_ROUND11.md)
+
+* **P-R10-a: partly answered.** D = 5 is a Tipler-weak null singularity (R219); Królak strength is undetermined; D = 10 converged only
+  to v ≈ 14.5 l.
+* **P-R10-b: partly answered.** Test-field inhomogeneities survive for δ ≲ 10⁻³/amplification (R226). Metric perturbations and horizon
+  coupling are open.
+* **P-R10-c: partly answered.** Full uncertainty budget (R227); a Geant-level simulation is still open.
+* **P-R10-d: specified, not built.** Engineering package G11-17 … G11-24. Open-data run blocked by network access.
+
+New:
+* **P-R11-a.** Compactified-v, mesh-refined evolution of D = 10 model U to late times. Decides Conjecture 11-1 and the generic daughter
+  question in D = 10.
+* **P-R11-b.** Well-posedness of the quasi-topological tower off spherical symmetry; gravitational perturbations of the exterior.
+* **P-R11-c.** A single code for collapse, inner region and evaporation, with a semiclassical source.
+* **P-R11-d.** Rotating solutions of the tower; superradiant greybody factors.
+* **P-R11-e.** High-statistics background tail samples; bulk-graviton emission; a full detector simulation.
+* **P-R11-f.** Detuned inner-extremal towers over times ≫ 1/κ₋; a stable-core family of positive measure.

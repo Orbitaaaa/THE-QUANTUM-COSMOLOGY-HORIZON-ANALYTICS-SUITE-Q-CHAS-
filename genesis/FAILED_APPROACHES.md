@@ -542,3 +542,32 @@ switched off at a bounded cost.
 * validate against the analytic Asimov formula (agreement to 10⁻¹⁰) and against pseudo-experiments.
 
 **Type:** numerical method (fixed).
+
+### F68. Polynomial ansatz for the inner-extremal tower (Round 11)
+*Result:* solving for h(ψ) with a polynomial ansatz so that κ₋ = 0 diverged: Newton iterations left the domain ψ < 1/α.
+
+*Fix:* construct f(x), x = r², directly, with a triple root at x₋ and a simple root at x₊, then read off ψ and h(ψ) from the tables.
+
+**Type:** method (fixed).
+
+### F69. Wrong mass normalisation of the inner-extremal tower (Round 11, caught before reporting)
+*Result:* μ = 13.5 was used. The GR-limit condition h′ → 1 requires μ = 3x₋ + x₊ + p₃ = 16. Separately, the ψ table was noisy near
+ψ → 1; fixed with x_min = 10⁻³.
+
+**Type:** error (fixed).
+
+### F70. Uncalibrated LGAD timing model (Round 11, caught before reporting)
+*Result:* the first waveform model gave 12 ps per plane, about 3× better than measured LGADs.
+
+*Fix:* scale the Landau fluctuation of the deposited-charge profile (LANDAU_SCALE = 3, charge renormalised) to reproduce the ~40 ps
+measured at gain ~20 for HGTD-type pads. The Landau floor is now 29 ps. This is a calibration, not a first-principles model.
+
+**Type:** model (calibrated).
+
+### F71. Late-time D = 10 evolution (Round 11)
+*Result:* beyond v ≈ 14.5 l the two resolutions disagree: curvature spikes of 3×10⁸ vs 1.7×10⁵, and mass jumps to 350 vs 250. Not
+interpreted.
+
+*Next step:* compactified v with mesh refinement (P-R11-a).
+
+**Type:** numerical limitation (open).

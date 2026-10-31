@@ -341,3 +341,19 @@ Categories: [T] theorem, [S] semiclassical computation, [F] formal proposal, [N]
 | S3/S7 (thin-barrier law, frontier), S4 (flip class), Q10.2–Q10.3 (clock fold, Klein-type creation) | Freivogel et al. 2006 (boundary unitarity) | not found in accessible sources |
 
 All novelty claims are provisional until checked against the full texts (OPEN_PROBLEMS.md P-L1).
+
+### Round 11
+
+* **McMaken**, PRD 107, 125023 (2023), arXiv:2303.03562: semiclassical instability of inner-extremal regular black holes.
+* **Konoplya, Zhidenko**, PRD 109, 104005 (2024), arXiv:2403.07848: quasinormal modes and late-time behaviour of D-dimensional regular
+  black holes from an infinite tower. Konoplya, arXiv:2603.03189 (4D quasi-topological regular black holes).
+* **Kanti, March-Russell**, hep-ph/0203223, hep-ph/0212199: brane greybody factors (scalars; fermions and gauge fields), enhanced with
+  the number of extra dimensions.
+* **Lindert et al.**, EPJC 77, 829 (2017), arXiv:1705.04664: V+jets dark-matter backgrounds at NNLO QCD ⊗ NLO EW.
+  **Becher, Garcia i Tormo**, arXiv:1305.4202: EW corrections up to ~20 % near p_T = 1 TeV. **Kühn, Kulesza, Pozzorini, Schulze**,
+  hep-ph/0507178: weak corrections to Z+jet, up to ~40 % at p_T ≳ 2 TeV.
+* **Myers, Robinson**, arXiv:1004.2055 (quasi-topological gravity). **Reall, Tanahashi, Way**, arXiv:1406.3379. **Papallo, Reall**,
+  arXiv:1705.04370. **Kovács, Reall**, arXiv:2003.08398 (well-posed Lovelock/Horndeski at weak coupling; not re-checked online).
+* **Funding (checked 31 Oct 2026):** RCF autumn call closes 11 Nov 2026 (provisional); ERC CoG 2027 closes 12 Jan 2027; SKR single round
+  15–30 Oct 2026; Väisälä 2026 round 14 Aug–14 Sep; Magnus Ehrnrooth window conflicting (January vs Oct–Nov). See
+  ROUND11/funding/G11-34_FUNDING_STRATEGY.md for links.
