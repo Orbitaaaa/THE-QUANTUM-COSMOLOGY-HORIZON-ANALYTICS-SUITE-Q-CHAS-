@@ -15,6 +15,7 @@ from babyuniverse import doublenull10 as N
 from babyuniverse import openprob10 as O
 from babyuniverse import unified6l as U
 from babyuniverse import collider6l as C
+from babyuniverse import global6m as G
 
 warnings.simplefilter("ignore")
 
@@ -51,7 +52,7 @@ else:
     st = N.run_hyb(5, 10.0, "hayward", nu=2000, nv=8000, v_max=40.0, u_eh=3.5745, n_cluster=600, n_out_u=240, n_out_v=80)
     i6 = np.argmin(abs(st["u"] - 6.0))
     out["static_hybrid"] = dict(u=float(st["u"][i6]), r_minus=float(st["r_minus"]), r_end=float(st["r"][i6, -1]),
-                                K_end=float(st["K"][i6, -1]), K_static_rminus=float(st["K"][i6, -1]))
+                                K_end=float(st["K"][i6, -1]), K_static_rminus=float(G.kretschmann_static(st["r_minus"], 10.0, 5, 1.0, "hayward")))
     out["sigma_uv_gr_check"] = bool(N.derive_sigma_uv()["gr_matches"])
     print("static checks done", flush=True)
     # the pulse at two resolutions
@@ -97,7 +98,7 @@ pm = out["pulse_map"]
 Z = np.array(pm["log10K"], dtype=float)
 im = ax[0].pcolormesh(pm["v"], pm["u"], Z, shading="auto", cmap="magma", vmin=-2, vmax=13)
 ax[0].axhline(pm["u_eh"], color="w", lw=0.8, ls="--")
-ax[0].set_xlabel("advanced time v (units of l)"); ax[0].set_ylabel("retarded coordinate u (r-gauge on v = 0)")
+ax[0].set_xlabel("advanced time v (units of l)"); ax[0].set_ylabel("retarded coordinate u (r-gauge on v = 0)"); ax[0].set_xlim(0, 24)
 ax[0].set_title("(a) log10 K l^4 after a scalar pulse falls into a model-U hole (D = 5, Hayward);\ndashed: event horizon; the inner (Cauchy) horizon at late v becomes a curvature singularity", fontsize=8)
 fig.colorbar(im, ax=ax[0], fraction=0.04)
 for tag, col, ls in (("lo", C1, "--"), ("hi", C2, "-")):
@@ -106,7 +107,7 @@ for tag, col, ls in (("lo", C1, "--"), ("hi", C2, "-")):
 rr = out["pulse_D5_hayward"]["hi"]
 ax[1].semilogy(rr["v"], np.array(rr["mu"]) / 10.0, color=C3, label="mu / mu_0")
 ax[1].semilogy(rr["v"], np.array(rr["psi"]), color=C4, label="psi l^2 (bound: 1)")
-ax[1].set_xlabel("v along an interior outgoing ray"); ax[1].set_ylim(1e-1, 1e14)
+ax[1].set_xlabel("v along an interior outgoing ray (converged range)"); ax[1].set_ylim(1e-1, 1e14); ax[1].set_xlim(0, 24)
 ax[1].set_title("(b) converged: curvature grows by > 10 orders of magnitude while psi stays below\nthe tower's bound and the area radius stays at r ~ r_- (mild mass inflation)", fontsize=8)
 ax[1].legend(frameon=False, fontsize=7)
 for tag, col, lab in (("small_pulse", C1, "small pulse (0.01)"), ("late_infall", C2, "late infall at v = 12-16"),
@@ -114,7 +115,7 @@ for tag, col, lab in (("small_pulse", C1, "small pulse (0.01)"), ("late_infall",
     rr = out["variants"][tag]
     ax[2].semilogy(rr["v"], rr["K"], color=col, label=lab)
 ax[2].semilogy(out["pulse_D5_hayward"]["hi"]["v"], out["pulse_D5_hayward"]["hi"]["K"], color=INK, lw=1, label="baseline")
-ax[2].set_ylim(1e0, 1e17); ax[2].set_xlabel("v")
+ax[2].set_ylim(1e0, 1e17); ax[2].set_xlabel("v (converged range)"); ax[2].set_xlim(0, 24)
 ax[2].set_title("(c) the same in every variant; a late infall feeds the existing inner region\n(mass x9, psi -> 0.99/alpha) instead of opening a new world", fontsize=8)
 ax[2].legend(frameon=False, fontsize=7)
 vs = out["vacuum_scan"]

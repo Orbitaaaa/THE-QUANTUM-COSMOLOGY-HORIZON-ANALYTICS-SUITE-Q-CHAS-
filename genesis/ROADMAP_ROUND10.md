@@ -109,6 +109,9 @@ given to the field, and energy is conserved.
 interior then crosses into the de Sitter branch, and lasting inflation follows for **V_F as low as 0.05 Λ_c**. This is cosmological
 hysteresis (Sahni & Toporensky, PRD 85, 123542 (2012)).
 
+**Scan.** Kicked configurations (ε = 10⁻³–10⁻², field value at the bounce in [0, 1], both signs) reach lasting inflation within
+t = 600 l in 75–100 % of cases for V_F/Λ_c = 0.05–2, after a median of 0–15 cycles. Two of the 48 runs exhausted the integration budget.
+
 **Controls.** With ε = 0, or with the field's vacuum at V = 0, the interior cycles for ever: 800–960 identical cycles.
 
 **Scope.** Homogeneous interior only. The inhomogeneous and quantum versions are P-R10-b.

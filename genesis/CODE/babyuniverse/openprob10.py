@@ -94,7 +94,7 @@ def scalar_bounce(D=10, C_dust=None, VF_over_Lc=2.0, A=None, phi0=0.0, dphi0=0.0
                 phi_end=float(phi[-1]), in_false_vacuum=in_false, fate=fate)
 
 
-def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, sgn=1.0, kind="hayward", t_max=600.0) -> dict:
+def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, sgn=1.0, kind="hayward", t_max=600.0, max_evals=3_000_000) -> dict:
     """Start at the dust bounce (H = 0, h(1/a^2) = rho) with a fraction eps of the bounce density given to the scalar as kinetic energy
     at field value phi_b (the bounce density, ~ 1/l^2, exceeds any sub-cutoff barrier), then evolve the re-expansion."""
     C_dust = 3.0 * U.extremal_mu(D, 1.0, kind) if C_dust is None else C_dust
@@ -108,7 +108,15 @@ def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, s
     a0 = a_b                                               # total density unchanged, so the bounce radius is unchanged
     dphi0 = sgn * np.sqrt(2.0 * K0)
 
+    count = [0]
+
+    class _Budget(Exception):
+        pass
+
     def rhs(t, y):
+        count[0] += 1
+        if count[0] > max_evals:
+            raise _Budget()
         a, H, phi, dphi = y
         r_ = C_dust / a ** (D - 1) + 0.5 * dphi**2 + _V(phi, VF, A)
         psi = float(U.h_inv(r_, 1.0, kind))
@@ -120,7 +128,12 @@ def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, s
     ev_big.terminal = True
     ev_crunch = lambda t, y: y[0] - 0.5 * a_b
     ev_crunch.terminal = True
-    sol = solve_ivp(rhs, (0.0, t_max), [a0, 1e-9, phi_b, dphi0], method="DOP853", rtol=1e-9, atol=1e-12, events=[ev_big, ev_crunch], max_step=0.5)
+    try:                                                                   # integration budget (stiff corners)
+        sol = solve_ivp(rhs, (0.0, t_max), [a0, 1e-9, phi_b, dphi0], method="DOP853", rtol=1e-9, atol=1e-12,
+                        events=[ev_big, ev_crunch], max_step=0.5)
+    except _Budget:
+        return dict(VF_over_Lc=VF_over_Lc, eps=eps, phi_b=phi_b, a_max=float("nan"), phi_end=float("nan"), in_false_vacuum=False,
+                    fate="undetermined (integration budget)", n_cycles=0, cycle_maxima=[], t_end=float("nan"))
     a, H, phi = sol.y[0], sol.y[1], sol.y[2]
     grew = bool(len(sol.t_events[0]) > 0)
     in_false = bool(abs(phi[-1] - 1.0) < 0.3)
@@ -135,7 +148,7 @@ def scalar_from_bounce(D=10, C_dust=None, VF_over_Lc=2.0, eps=0.05, phi_b=0.0, s
 def _scan_job(args):
     D, C_d, q, eps, phi_b, sgn, kind, t_max = args
     r = scalar_from_bounce(D, C_d, q, eps, phi_b, sgn, kind, t_max=t_max)
-    return q, eps, r["fate"].startswith("lasting"), r["in_false_vacuum"], r["n_cycles"]
+    return q, eps, r["fate"].startswith("lasting"), r["in_false_vacuum"], r["n_cycles"], r["fate"].startswith("undetermined")
 
 
 def scalar_bounce_scan(D=10, ratios=(0.5, 0.9, 1.5, 3.0), eps_list=(0.01, 0.1), n_phase=16, kind="hayward", t_max=3000.0,
@@ -153,7 +166,7 @@ def scalar_bounce_scan(D=10, ratios=(0.5, 0.9, 1.5, 3.0), eps_list=(0.01, 0.1), 
             rr = [r for r in res if r[0] == q and r[1] == eps]
             cyc = [r[4] for r in rr if r[2]]
             rows.append(dict(VF_over_Lc=q, eps=eps, fraction_lasting_inflation=float(np.mean([r[2] for r in rr])),
-                             fraction_in_false_vacuum=float(np.mean([r[3] for r in rr])), n=len(rr),
+                             fraction_in_false_vacuum=float(np.mean([r[3] for r in rr])), n=len(rr), n_undetermined=int(sum(r[5] for r in rr)),
                              median_cycles_to_escape=float(np.median(cyc)) if cyc else None))
     return rows
 
