@@ -213,3 +213,29 @@ def make_emission(tables: dict, mode="greybody"):
         return g
 
     return patch
+
+
+# --------------------------------------------------------------------------------------------------------------- G11-06 exterior check
+
+def bulk_scalar_potential(m: Metric, r, l):
+    """Massless bulk scalar on the D-dimensional metric (psi = r^{(D-2)/2} Phi):
+    V = f [ l(l+D-3)/r^2 + (D-2)(D-4) f/(4 r^2) + (D-2) f'/(2 r) ]."""
+    D = m.D; f = m.f(r)
+    return f * (l * (l + D - 3) / r**2 + (D - 2) * (D - 4) * f / (4 * r**2) + (D - 2) * m.fp(r) / (2 * r))
+
+
+def exterior_positivity(D=10, kinds=("hayward", "dymnikova"), qs=(1.01, 1.05, 1.5, 3.0, 10.0, 100.0), n=4000) -> list:
+    """min over r in (r_+, 60 r_+) of r_+^2 V for brane spin 0 (l=0), brane spin 1 (l=1), bulk scalar (l=0), and of f' (monotonicity).
+    Positive potentials mean the operator -d^2/dr*^2 + V has no negative spectrum: no exterior mode instability of these test fields."""
+    rows = []
+    for kind in kinds:
+        for q in qs:
+            m = Metric(D, mu_over_ext=q, kind=kind)
+            r = m.r_plus * (1 + np.geomspace(1e-6, 59.0, n))
+            vals = dict(brane_s0=potential(m, r, 0, 0), brane_s1=potential(m, r, 1, 1), bulk_s0=bulk_scalar_potential(m, r, 0), fprime=m.fp(r))
+            row = dict(kind=kind, mu_over_ext=q)
+            for k, v in vals.items():
+                row["n_negative_" + k] = int(np.sum(v < -1e-12))            # finite-difference f' underflows to 0 far out: test for negatives
+                row["max_" + k] = float(np.max(v) * (m.r_plus**2 if k != "fprime" else m.r_plus))
+            rows.append(row)
+    return rows

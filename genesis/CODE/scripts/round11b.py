@@ -99,17 +99,28 @@ def budget(K):
                                             sig_prefix="s100%s_U_" % dv), "detector")
     add("detector JES 5%", C11.Config(K=K, jes=0.05), "detector")
     res["groups"] = groups
-    # combination: within a group, two-sided pairs give the larger |shift| per side
+    combine_budget(res)
+    return res
+
+
+EXCLUDED = ("lhc_like", "EW", "x^2")
+
+
+def combine_budget(res):
+    """Quadrature combination per group and in total (positive and negative shifts separately).  Excluded from the totals: the EW Sudakov
+    and lhc_like-prior rows (one-sided improvements a real analysis would earn with NLO EW and control regions) and the geometric x^2
+    emission spectrum (superseded by the computed greybody spectrum, shown for reference only)."""
+    keep = lambda l: not any(e in l for e in EXCLUDED)
     comb = {}
-    for g, labs in groups.items():
+    for g, labs in res["groups"].items():
+        labs = [l for l in labs if keep(l)]
         comb[g] = dict(discovery=C11.combine({l: res["shifts_discovery"][l] for l in labs}),
                        exclusion=C11.combine({l: res["shifts_exclusion"][l] for l in labs}))
-    tot_d = C11.combine({l: v for l, v in res["shifts_discovery"].items() if "lhc_like" not in l and "EW" not in l})
-    tot_e = C11.combine({l: v for l, v in res["shifts_exclusion"].items() if "lhc_like" not in l and "EW" not in l})
-    res["combined"] = dict(groups=comb, total_discovery=tot_d, total_exclusion=tot_e,
-                           rule="quadrature sum of one-at-a-time shifts, positive and negative separately; the EW Sudakov and lhc_like-prior rows "
-                                "are reported but excluded from the total (one-sided improvements a real analysis would earn with NLO EW and "
-                                "control regions)")
+    res["combined"] = dict(groups=comb,
+                           total_discovery=C11.combine({l: v for l, v in res["shifts_discovery"].items() if keep(l)}),
+                           total_exclusion=C11.combine({l: v for l, v in res["shifts_exclusion"].items() if keep(l)}),
+                           excluded_from_total=[l for l in res["shifts_discovery"] if not keep(l)],
+                           rule=combine_budget.__doc__.strip())
     return res
 
 
@@ -140,9 +151,10 @@ def figure(out):
     # (a) tornado, discovery
     labs = list(b["shifts_discovery"]); vals = np.array([b["shifts_discovery"][l] for l in labs])
     o = np.argsort(np.abs(vals)); labs = [labs[i] for i in o]; vals = vals[o]
-    col = ["#c0392b" if v < 0 else "#2471a3" for v in vals]
+    exc = [any(e in l for e in EXCLUDED) for l in labs]
+    col = ["#b3b1ab" if x else ("#c0392b" if v < 0 else "#2471a3") for v, x in zip(vals, exc)]
     ax[0, 0].barh(range(len(labs)), vals, color=col)
-    ax[0, 0].set_yticks(range(len(labs))); ax[0, 0].set_yticklabels(labs, fontsize=7)
+    ax[0, 0].set_yticks(range(len(labs))); ax[0, 0].set_yticklabels([l + (" [not in total]" if x else "") for l, x in zip(labs, exc)], fontsize=7)
     ax[0, 0].axvline(0, color="k", lw=0.8)
     ax[0, 0].set_xlabel("shift of the 5 sigma discovery reach in M_ext [TeV]")
     tot = b["combined"]["total_discovery"]
@@ -198,7 +210,7 @@ def figure(out):
            "G11-15 separation from alternatives (S/B = 1, shape only):"]
     for mode, d in out.get("separations", {}).items():
         for k, v in d.items():
-            nn = v.get("events_for_5sigma", v.get("n5", None))
+            nn = v.get("events_5sigma")
             txt.append("  %-8s %-26s events for 5 sigma: %s" % (mode, k, "%.0f" % nn if isinstance(nn, (int, float)) else str(nn)))
     ax[1, 1].text(0, 1, "\n".join(txt), va="top", family="monospace", fontsize=7.5)
     ax[1, 1].set_title("(e) remnants and alternatives")
@@ -216,8 +228,10 @@ def figure(out):
 
 
 if __name__ == "__main__":
-    if "--figure-only" in sys.argv:
+    if "--figure-only" in sys.argv or "--recombine" in sys.argv:
         out = json.load(open(f"{DATA}/round11_collider.json"))
+        if "--recombine" in sys.argv:
+            combine_budget(out["budget"]); C11.write_json(out, f"{DATA}/round11_collider.json")
         figure(out); sys.exit()
     nw = int(sys.argv[sys.argv.index("--workers") + 1]) if "--workers" in sys.argv else 3
     R.pu_lib(100.0)
