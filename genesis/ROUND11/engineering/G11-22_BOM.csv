@@ -1,0 +1,25 @@
+variant,item,description,identifier_or_spec,quantity,source_status,unit_price,currency,price_source
+V1,1,LGAD single-pad sensor,"50 um, 1.3x1.3 mm2, gain 15-30 (HPK/FBK/CNM class)",5,collaboration loan preferred,UNRESOLVED,,quote required
+V1,2,Single-channel amplifier board,UCSC-type topology,3,request from community,UNRESOLVED,,quote required
+V1,3,Second-stage RF gain block,"Mini-Circuits GALI-52+ (published use arXiv:2104.08369) or equivalent, evaluation board",3,catalogue part,UNRESOLVED,,quote required
+V1,4,Digitiser,"shared oscilloscope >=4 ch, >=1.5 GHz, >=10 GS/s",1,borrowed,0,,not purchased
+V1,5,HV supply,">=300 V current-limited",1,borrowed or purchase,UNRESOLVED,,quote required
+V1,6,LV supply,bench supply,1,borrowed,0,,not purchased
+V1,7,Sr-90 sealed source,~37 kBq class (activity per radiation-safety officer),1,institutional source preferred,UNRESOLVED,,quote/licence required
+V1,8,Enclosure rail source holder,aluminium box with feedthroughs,1,workshop,UNRESOLVED,,quote required
+V1,9,Cables and connectors,"SMA matched, SHV, adapters",1,catalogue,UNRESOLVED,,quote required
+V1,10,Wire bonding and gluing,bonding machine access,1,partner lab service,UNRESOLVED,,quote required
+V2,11,Digitiser,"PSI DRS4 Evaluation Board (4 ch, 0.7-5 GS/s, 1024 samples)",2,vendor (PSI technology transfer),UNRESOLVED,,quote required
+V2,12,Multichannel HV supply,">=4 ch, >=300 V, current read-back",1,vendor,UNRESOLVED,,quote required
+V2,13,In-house amplifier PCB,4-layer RF PCB fabrication+assembly (2 iterations x 6),12,board house,UNRESOLVED,,quote required
+V2,14,Temperature/humidity monitoring,"Pt100/NTC, dew-point sensor, logger",1,catalogue,UNRESOLVED,,quote required
+V2,15,Optional cooling,"Peltier stage, controller, dry-air/N2 flush",1,catalogue,UNRESOLVED,,quote required
+V2,16,Pulser,fast pulse generator (rise <= 1 ns),1,borrowed/quote,UNRESOLVED,,quote required
+V2,17,DAQ computer,workstation,1,existing,0,,not purchased
+V3,18,Second station,as items 1-3 and 8,1,as above,UNRESOLVED,,quote required
+V3,19,Trigger scintillators,"plastic paddles + PMT/SiPM, discriminator, coincidence",4,facility/partner/quote,UNRESOLVED,,quote required
+V3,20,Timing reference (optional),MCP-PMT,1,borrowed/quote,UNRESOLVED,,quote required
+V3,21,Rail and survey,1.2 m aluminium profile + survey,1,workshop/facility,UNRESOLVED,,quote required
+V3,22,Additional digitiser channels,second DRS4 board or multichannel DRS4 digitiser,1,vendor,UNRESOLVED,,quote required
+V3,23,Beam time,"mixed hadron beam 0.5-3 GeV/c (facility TBD, proposal required)",1,facility allocation,UNRESOLVED,,allocation required
+V3,24,Travel and shipping,campaign,1,-,UNRESOLVED,,estimate required

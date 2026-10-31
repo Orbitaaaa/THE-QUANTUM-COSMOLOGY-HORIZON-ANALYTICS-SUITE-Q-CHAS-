@@ -280,7 +280,7 @@ VIS_KIND = {"quark": "jet", "gluon": "jet", "top": "jet", "W": "jet", "Z": "jet"
 
 
 def signal(lumi: C.Lumi, sqrt_s_TeV=100.0, n=6, M_D_TeV=8.0, c_l=0.6, kind="hayward", n_events=2000, det: Detector = None, seed=7,
-           discharge=False, spin=False, alpha_s=0.09, f_charged=0.0, M_th_TeV=None, trapped="conservative"):
+           discharge=False, spin=False, alpha_s=0.09, f_charged=0.0, M_th_TeV=None, trapped="conservative", emission=None):
     """Model-U (or GR, kind='gr') signal through Pythia's shower and the detector.  discharge: add one colour-discharge parton of energy
     U(0.3, 1) x alpha_s C_F / r_+ in the hole frame (P-R9-b); spin: add the Myers-Perry rotational energy as visible quanta (P-R6n-b)."""
     import pythia8mc as p8
@@ -288,6 +288,8 @@ def signal(lumi: C.Lumi, sqrt_s_TeV=100.0, n=6, M_D_TeV=8.0, c_l=0.6, kind="hayw
     det = det or Detector("fcchh", seed=seed)
     rng = np.random.default_rng(seed)
     g = P.Generator(lumi, sqrt_s_TeV, n, M_D_TeV, c_l, kind, trapped=trapped, seed=seed, M_th_TeV=M_th_TeV)
+    if emission is not None:                                            # Round 11: greybody / geometric emission patch (greybody11)
+        emission(g)
     g.keep_quanta = True
     lab = Q.LabGenerator(g, isr=False, seed=seed)
     pdf = lab.pdf
