@@ -78,7 +78,7 @@ else:
     out["causality"] = O.causality_threshold()
     out["lambda_c"] = O.lambda_c_physical()
     print("vacuum scan ...", flush=True)
-    out["vacuum_scan"] = O.scalar_bounce_scan(10, ratios=(0.05, 0.2, 0.5, 1.0, 2.0), eps_list=(1e-4, 1e-2), n_phase=6, workers=4)
+    out["vacuum_scan"] = O.scalar_bounce_scan(10, ratios=(0.05, 0.5, 2.0), eps_list=(1e-3, 1e-2), n_phase=4, workers=4, t_max=600.0)
     out["hysteresis_example"] = O.scalar_from_bounce(10, None, 0.05, 1e-3, 1.0, 1.0, t_max=3000.0)
     out["hysteresis_control"] = O.scalar_from_bounce(10, None, 0.5, 0.0, 1.0, 1.0, t_max=3000.0)
     L = C.load_lumi(f"{DATA}/round6l_lumi.json")
@@ -118,11 +118,11 @@ ax[2].set_ylim(1e0, 1e17); ax[2].set_xlabel("v")
 ax[2].set_title("(c) the same in every variant; a late infall feeds the existing inner region\n(mass x9, psi -> 0.99/alpha) instead of opening a new world", fontsize=8)
 ax[2].legend(frameon=False, fontsize=7)
 vs = out["vacuum_scan"]
-for eps, col in ((1e-4, C1), (1e-2, C2)):
+for eps, col in ((1e-3, C1), (1e-2, C2)):
     rows = [r for r in vs if abs(r["eps"] - eps) < 1e-9]
     ax[3].plot([r["VF_over_Lc"] for r in rows], [r["fraction_lasting_inflation"] for r in rows], "o-", color=col, label="eps = %g of the bounce energy in the field" % eps)
 ax[3].axvline(1, color=MUTED, ls=":"); ax[3].set_xscale("log")
-ax[3].set_xlabel("false-vacuum energy V_F / Lambda_c(C)"); ax[3].set_ylabel("fraction ending in lasting inflation")
+ax[3].set_xlabel("false-vacuum energy V_F / Lambda_c(C)"); ax[3].set_ylabel("fraction in lasting inflation within t = 600 l")
 ax[3].set_title("(d) P-R6l-e: cosmological hysteresis - the field's work over successive bounces pumps the cycle\nuntil the interior enters the de Sitter branch: lasting inflation even for V_F << Lambda_c (= %.2f / l^2)" % out["lambda_c"]["Lambda_c_l2"], fontsize=8)
 ax[3].legend(frameon=False, fontsize=7)
 sd = out["spin_down"]

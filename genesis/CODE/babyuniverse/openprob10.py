@@ -146,7 +146,7 @@ def scalar_bounce_scan(D=10, ratios=(0.5, 0.9, 1.5, 3.0), eps_list=(0.01, 0.1), 
     jobs = [(D, C_d, q, eps, float(pb), sgn, kind, t_max) for q in ratios for eps in eps_list
             for pb in np.linspace(0.0, 1.0, n_phase) for sgn in (1.0, -1.0)]
     with mp.Pool(workers) as pool:
-        res = pool.map(_scan_job, jobs)
+        res = list(pool.imap_unordered(_scan_job, jobs, chunksize=1))
     rows = []
     for q in ratios:
         for eps in eps_list:
