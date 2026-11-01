@@ -55,6 +55,23 @@ full-text access before submission. Any NEW item below could turn out to exist i
 | C1 | The bounced interior lies in the maximal globally hyperbolic development up to the ingoing cone from the surface's exit point E | NEW (to our knowledge) | BCH-M-V give Oppenheimer–Snyder collapse and the extended geometry → identification of the daughter region inside the Cauchy development | Theorem 12-1; `daughter12.cdd` |
 | C2 | de Sitter timing law: the Cauchy horizon is the core's de Sitter horizon (η_cone − η_b → π/2) | NEW (to our knowledge) | — | `daughter12.cdd_fast`; `tests/test_round12.py` |
 | C3 | Maximum, recollapse and full cycle inside the determined region (D ≥ 7, near threshold; Dymnikova D = 10) | NEW (to our knowledge) | — | `scripts/round12.py` (maps) |
+| C4 | Theorem 13-1: exact causal characterisation of the domain of dependence of the bounced interior (η + χ < η_E + χ_s), with certified stage events | NEW (to our knowledge) | 2D-quotient proof; certification with error budget | `ROUND13/CAUSAL_DOMAIN_PROOF.md`; `robust13.certify_case` |
+| C5 | Survival of the cycle with pressure and smooth inhomogeneity (D = 10); loss for centrally peaked profiles | NEW (numerical) | Round 6n Lagrangian code + cone tracer, validated against the exact solution | `robust13.run_cycle`; `scripts/round13.py` |
+| C6 | Collider-formed holes (unbound, massless content) do not host the bound daughter | NEW (scope result) | Lemma 13-3 (no turning point for Γ > 1; open FRW crunch) | `ROUND13/COLLIDER_FORMATION.md` |
+
+**Prior work on daughters and bounces found in the Round 13 search** (1 Nov 2026; abstracts only):
+* Frolov, Markov, Mukhanov, PRD 41, 383 (1990): a closed world in place of the singularity (limiting curvature).
+* Chakrabarty, Abdujabbarov, Malafarina, Bambi, EPJC 80 (2020), arXiv:1909.07129: a toy baby universe matching dust to an expanding
+  FRW, requiring energy-condition violation.
+* Kelly, Santacruz, Wilson-Ewing, arXiv:2006.09325: an effective-LQG Oppenheimer–Snyder bounce in which the matter re-emerges and the
+  horizon disappears (the compact-trapped-region outcome, like our loophole 1).
+* Idrissov, Quevedo, arXiv:2609.03278: in the quantum Oppenheimer–Snyder hole the turning point lies inside the Cauchy horizon
+  (consistent with our Lemma 12-0).
+* arXiv:2602.04956: a classification of Oppenheimer–Snyder collapse into singular, bouncing and soft-landing outcomes (authors not
+  checked).
+
+None of these treats the domain of dependence of the bounced interior, or the timing of the Cauchy-horizon cone against the daughter's
+cycle. A full-text search by a reviewer is still needed.
 
 ## Paper C (earlier outline)
 

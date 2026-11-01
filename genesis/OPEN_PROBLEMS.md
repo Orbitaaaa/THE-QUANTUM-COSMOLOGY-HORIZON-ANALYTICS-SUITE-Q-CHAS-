@@ -298,3 +298,20 @@ New:
 * **P-R12-c.** A characteristic code with fluid and a regular centre, to follow the Round 6n throat (daughter separation) and its
   recollapse.
 * **P-R12-d.** Semiclassical stress-energy inside the daughter region, near the cone.
+
+## Round 13 status and additions (ROADMAP_ROUND13.md)
+
+* **P-R12-a: answered (R241).** Pressure up to p/ρ ≈ 0.07 does not enlarge the full-cycle region much (it slightly helps the
+  maximum); the decisive variable is the central density gradient.
+* **P-R12-b: answered negatively (R242, R243).** Collider holes have unbound, massless content: no bounce, no massive daughter.
+* **P-R12-c:** still open (now P-R13-a).
+* **P-R12-d:** still open.
+
+New:
+* **P-R13-a.** A characteristic code with fluid and a regular centre, to follow throats and multi-component interception by the cone.
+* **P-R13-b.** An analytic criterion on the central density gradient for the daughter to reach its maximum inside 𝒟 (why peaked
+  profiles fail).
+* **P-R13-c.** A formation channel for bound (Γ < 1), compact, near-threshold, nearly homogeneous collapse.
+* **P-R13-d.** Uniqueness of the development off spherical symmetry (well-posedness of the tower; continues P-R11-b).
+* **P-R13-e.** Rotation and the anisotropic sector of the tower; full non-spherical evolution of the daughter.
+

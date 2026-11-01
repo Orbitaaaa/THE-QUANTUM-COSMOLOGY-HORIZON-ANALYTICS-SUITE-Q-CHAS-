@@ -33,6 +33,12 @@ This directory is self-contained and independent of the Q-CHAS dashboard in the 
   inflation. Full Pythia + FCC-hh detector + pile-up pipeline, validated on ATLAS data. Profile-likelihood reach 33.4 TeV (100 TeV) and
   26.8 TeV (85 TeV). Exact separation from GR, ADD and dark matter. LHC reinterpretation: M_ext > 3.5-7.2 TeV. Timing demonstrator,
   open-data tool, and the machine (FIGURES/machine.png).
+* **[ROADMAP_ROUND13.md](ROADMAP_ROUND13.md)**: Round 13, robust finite-daughter formation. Theorem 13-1 gives the exact domain of
+  dependence of the bounced interior (η + χ < η_E + χ_s); every cycle event, including the Dymnikova second bounce, is certified
+  inside it (only a tiny central volume completes the full cycle). In D = 10 the cycle survives pressure and smooth inhomogeneity when
+  the core is nearly homogeneous (48/48 uniform runs), but centrally peaked profiles end while still expanding (75/86). Collider holes
+  are near threshold but contain unbound, massless content, so they do not host the daughter (Lemma 13-3). Paper C v2 and a review
+  brief: [PAPER/paperC_daughter_cycle.pdf](PAPER/paperC_daughter_cycle.pdf), [ROUND13/](ROUND13/).
 * **[ROADMAP_ROUND12.md](ROADMAP_ROUND12.md)**: Round 12, the finite daughter cycle works. The daughter does not need to cross the
   Cauchy horizon: it lives inside the region the field equations determine. It forms in the regular core, inflates, and (in D ≥ 7, near
   threshold) reaches its maximum and recollapses. With the Dymnikova tower in D = 10 it completes a full cycle to a second bounce. All

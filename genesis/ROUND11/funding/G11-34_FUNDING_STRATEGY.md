@@ -46,3 +46,18 @@ ERC) also require a PhD-holding principal investigator. Unless the project lead 
 * **Proposal B (experimental instrumentation):** `G11-32_PROPOSAL_B_INSTRUMENTATION.md`.
 
 They are written to stand alone. B does not depend on A being right: the timing demonstrator is useful for any slow-particle search.
+
+## Update, 1 November 2026 (Round 13)
+
+**Research Council of Finland Academy Project:** re-checked. Opens 14 Oct and closes **11 Nov 2026**, still marked provisional (TBC)
+by RCF; aggregators give 23:59 Finnish time. Source:
+[RCF advance information](https://www.aka.fi/en/about-the-rcf/whats-new/press-releases/2026/advance-information-on-rcf-call-schedules-for-autumn-2026/).
+This is realistic only if a host organisation and an eligible PI are already in place. Otherwise target the next round (autumn 2027)
+and use the time for partner agreements.
+
+**Actions for the next 10 days**, if a host exists:
+1. Confirm the PI and host (eligibility is limited to Finnish research organisations).
+2. Use Proposal B (instrumentation) as the core text, with Proposal A as a theory work package.
+3. Attach the reproducibility package (Paper C evidence: `ROUND13/`, `DATA/round13.json`) as preliminary results.
+
+**Detector track:** unchanged, with all prices UNRESOLVED. Next step: request sensor loans and quotes through the partner group.

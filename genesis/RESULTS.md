@@ -402,6 +402,18 @@ Only results that passed the checks in VERIFICATION.md are listed. Labels: **The
 | R235 | **Loophole 1 (compact trapped region)**: no event horizon or Cauchy horizon; RSET growth exponent ∫κ₋dv = 17–65 for trapped lifetimes 21–76 l; the bounced matter is released into the parent (matter returns) | Proposition-N |
 | R236 | **Loophole 2 (extremality attractor)**: κ₋ ∝ v^{−0.49} along model-U evaporation; blueshift exponent ≈ 12.5 v^{1/2} unbounded; bounded only with exponentially decaying perturbations (v* = 3×10⁹⁵ l for our H₀) or finite-time extremality (exponent 30–42, needs non-thermal emission) | Proposition-N |
 
+### Round 13
+
+| # | result | label |
+|---|---|---|
+| R237 | **Definition 13-0 (daughter region)**: 𝒟 = {p ∈ D⁺(Σ) \ J⁻(I⁺) on a fluid worldline after its bounce}; stages S1–S5 defined by sign changes of θ = ∇·u; a stage is completed when a neighbourhood of the centre reaches it in 𝒟; size = volume (rest-mass) fraction | Definition |
+| R238 | **Theorem 13-1 (domain of dependence)**: for the Oppenheimer–Snyder solution of model U, an interior event (η, χ) lies in D⁺(Σ) iff η + χ < η_E + χ_s, and post-bounce events lie outside J⁻(I⁺); proof in the 2D quotient using Lemma 12-0 and E at v = ∞; uniqueness within spherical symmetry only | Theorem |
+| R239 | **Corollary 13-2 (certified cycles)**: Dymnikova D = 10, μ/μ_ext = 1.01, 1.05, 1.10: second bounce certified at the centre (margins 0.160, 0.057, 0.008; errors ≤ 7×10⁻¹²); volume fractions completing the full cycle 2×10⁻⁸, 2.5×10⁻¹², 8×10⁻²⁰; maximum reached by 7.7 %, 5.4 %, 3.7 %; Hayward D = 10 maximum certified, no second bounce | Theorem + certified numerics |
+| R240 | **Full-cycle window**: Dymnikova D = 10, μ/μ_ext ≤ 1.10, χ_s ≈ 1.26–1.55, closing at μ ≈ 1.13 μ_ext; best centre margin 0.24 at μ = 1.002 μ_ext; D = 9 only at μ ≈ 1.005 μ_ext | Proposition-N |
+| R241 | **Proposition-N 13-5 (realistic matter, D = 10)**: 240 fluid runs (4 configurations × 5 profiles × 4 pressures × 3 perturbations), all form black holes, 230 complete; uniform core: 48/48 reach maximum and recollapse in 𝒟, 12 complete the full cycle (pressure p/ρ ≤ 0.074 and 5 % smooth modes do not destroy it); peaked profiles: 75/86 end while still expanding; cored and parabolic about half reach the maximum; cone tracer validated against exact dust (2.6565 vs 2.658), verdicts N-independent | Proposition-N |
+| R242 | **Lemma 13-3 (unbound content)**: matter with Γ > 1 has no turning point in the core; the open-FRW interior never bounces and crunches to a density caustic at bounded curvature (D = 10: ρ ≈ 5×10⁵⁵ at τ = 4.5 l) | Lemma |
+| R243 | **Proposition 13-4 (collider holes)**: 100 TeV, n = 6: μ/μ_ext median 1.044, 80 % below 1.1, a* median 3.5; content is two massless partons (unbound), so collider holes do not host the bound daughter; anisotropy amplification over a near-threshold cycle (a_max/a_b)^{D−1} = 2.5–106 (effective GR scaling) | Proposition / Assessment |
+
 ## Statement for a general audience
 
 *We asked whether gravity lets a new, inflating universe grow out of a small bubble of false vacuum made in

@@ -372,3 +372,17 @@ All novelty claims are provisional until checked against the full texts (OPEN_PR
   non-unique weak solutions (C^{0,1/2} ∩ W^{1,2}_loc). The sub-extremal case is generically worse.
 * **Bonanno, Panassiti, Saueressig**, arXiv:2507.03581 (preprint found). The user's description of a September 2026 PRD with logarithmic
   mass growth was not verified.
+
+### Round 13
+
+Checked on 1 November 2026 (abstracts only; a full-text search by a reviewer is still needed):
+* **Frolov, Markov, Mukhanov**, PRD 41, 383 (1990): a closed world in place of the singularity (limiting curvature).
+* **Chakrabarty, Abdujabbarov, Malafarina, Bambi**, EPJC 80 (2020), arXiv:1909.07129: a toy baby universe matching collapsing dust to
+  an expanding FRW region, requiring energy-condition violation.
+* **Kelly, Santacruz, Wilson-Ewing**, arXiv:2006.09325: effective-LQG Oppenheimer–Snyder bounce; the matter re-emerges and the horizon
+  disappears.
+* **Idrissov, Quevedo**, arXiv:2609.03278: in the quantum Oppenheimer–Snyder hole the turning point lies inside the Cauchy horizon.
+* arXiv:2602.04956: classification of Oppenheimer–Snyder collapse into singular, bouncing and soft-landing outcomes (authors not
+  checked).
+* **Funding (re-checked 1 Nov 2026):** RCF Academy Project closes 11 Nov 2026, still provisional (TBC).
+
